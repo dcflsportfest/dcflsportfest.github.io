@@ -9,12 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="has-splash">
+    <div class="splash-screen" data-splash>
+        <img src="assets/opening-bird-only.png" alt="Doğan Cüceloğlu Fen Lisesi Sportfest kuş logosu" class="splash-logo">
+    </div>
     <div class="noise"></div>
     <header class="hero">
         <nav class="top-nav">
             <p class="brand">DCFLSPORTFEST'26</p>
-            <a href="#kayit" class="nav-link">Hemen Katıl</a>
+            <div class="nav-actions">
+                <a href="#kayit" class="nav-link">Hemen Katıl</a>
+                <a href="contact.html" class="nav-link">İletişim</a>
+            </div>
         </nav>
         <div class="hero-content">
             <p class="tag">12-13-14 Mayıs 2026 | İstanbul,Doğan Cüceloğlu Fen Lisesi
@@ -41,6 +47,20 @@
                     <h3>22+Adet İş Ortağı</h3>
                 </article>
             </div>
+            <section class="branch-list-panel" aria-label="Branş listesi">
+                <ul class="branch-list">
+                    <li>Voleybol</li>
+                    <li>Basketbol</li>
+                    <li>Futbol</li>
+                    <li>Masa tenisi</li>
+                    <li>Okçuluk</li>
+                    <li>Oryantiring</li>
+                    <li>Bahçe Satrancı</li>
+                    <li>Playstation Turnuvası</li>
+                    <li>Atletizm</li>
+                    <li>Bahçe Oyunları</li>
+                </ul>
+            </section>
         </div>
     </header>
 
@@ -93,6 +113,7 @@
             <h2>Kayıt ve İletişim</h2>
             <p class="section-text">Takım veya bireysel başvuru için bize ulaş:</p>
             <a href="mailto:sportfest@example.com" class="mail">sportfest@example.com</a>
+            <a href="contact.html" class="contact-page-link">İletişim Sayfasına Git</a>
         </section>
     </main>
 
@@ -100,5 +121,23 @@
         <p>Sportfest 2026</p>
         <p>12-13-14 Mayıs | İstanbul</p>
     </footer>
+    <script>
+        (function () {
+            var splash = document.querySelector("[data-splash]");
+            if (!splash) {
+                return;
+            }
+
+            window.addEventListener("load", function () {
+                window.setTimeout(function () {
+                    document.body.classList.add("splash-done");
+                    window.setTimeout(function () {
+                        splash.remove();
+                        document.body.classList.remove("has-splash");
+                    }, 650);
+                }, 1450);
+            });
+        })();
+    </script>
 </body>
 </html>
