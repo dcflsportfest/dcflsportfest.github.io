@@ -1,0 +1,468 @@
+﻿:root {
+    --bg-1: #060b1a;
+    --bg-2: #0d1f3d;
+    --card: rgba(255, 255, 255, 0.08);
+    --card-strong: rgba(255, 255, 255, 0.14);
+    --text: #f8fbff;
+    --muted: #b4c5dc;
+    --accent: #ff7a18;
+    --accent-2: #0ee6b7;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    color: var(--text);
+    font-family: "Manrope", sans-serif;
+    background:
+        radial-gradient(circle at 20% 10%, #214a8c 0%, transparent 40%),
+        radial-gradient(circle at 80% 20%, #1f7a5a 0%, transparent 35%),
+        linear-gradient(150deg, var(--bg-1), var(--bg-2));
+    min-height: 100vh;
+}
+
+body.has-splash {
+    overflow: hidden;
+}
+
+.splash-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background:
+        radial-gradient(circle at 30% 20%, rgba(33, 74, 140, 0.42), transparent 45%),
+        radial-gradient(circle at 75% 25%, rgba(31, 122, 90, 0.36), transparent 45%),
+        linear-gradient(150deg, #020611, #0a1832);
+    transition: opacity 0.65s ease, visibility 0.65s ease;
+}
+
+.splash-logo {
+    width: min(76vw, 420px);
+    height: auto;
+    filter: drop-shadow(0 22px 42px rgba(0, 0, 0, 0.45));
+    animation: splash-in 0.8s ease both;
+}
+
+body.splash-done .splash-screen {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+@keyframes splash-in {
+    from {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.noise {
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 3px 3px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hero,
+main,
+.footer {
+    position: relative;
+    z-index: 2;
+}
+
+.hero {
+    padding: 1.2rem 1.2rem 3.5rem;
+}
+
+.top-nav {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.brand {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+    margin: 0;
+}
+
+.nav-link {
+    color: var(--text);
+    text-decoration: none;
+    border: 1px solid var(--card-strong);
+    padding: 0.65rem 1rem;
+    border-radius: 999px;
+    transition: 0.25s ease;
+}
+
+.nav-link:hover {
+    border-color: var(--accent-2);
+    transform: translateY(-2px);
+}
+
+.hero-content {
+    max-width: 1100px;
+    margin: 2.5rem auto 0;
+    position: relative;
+    padding-right: clamp(0px, 32vw, 360px);
+}
+
+.tag {
+    margin: 0;
+    color: var(--accent-2);
+    font-weight: 700;
+}
+
+.hero-title-wrap {
+    position: absolute;
+    top: 0.2rem;
+    right: 0;
+    width: clamp(180px, 24vw, 320px);
+    margin: 0;
+    transform: rotate(-4deg);
+    pointer-events: none;
+}
+
+.hero-title-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.45));
+}
+
+.hero-text {
+    max-width: 650px;
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+
+.cta-row {
+    margin-top: 1.4rem;
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    text-decoration: none;
+    font-weight: 700;
+    padding: 0.8rem 1.15rem;
+    border-radius: 12px;
+    transition: 0.25s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, var(--accent), #ffb347);
+    color: #101214;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+.btn-ghost {
+    border: 1px solid var(--card-strong);
+    color: var(--text);
+}
+
+.btn-ghost:hover {
+    border-color: var(--accent-2);
+}
+
+.stats {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.9rem;
+    max-width: 560px;
+}
+
+.stats article {
+    background: var(--card);
+    border: 1px solid var(--card-strong);
+    border-radius: 14px;
+    padding: 0.8rem 0.9rem;
+}
+
+.stats h3 {
+    margin: 0;
+    font-size: 1.55rem;
+}
+
+.stats p {
+    margin: 0.2rem 0 0;
+    color: var(--muted);
+}
+
+.branch-list-panel {
+    max-width: 760px;
+    margin-top: 1rem;
+    background: rgba(6, 12, 27, 0.48);
+    border: 1px solid var(--card-strong);
+    border-radius: 16px;
+    padding: 0.95rem 1.15rem;
+}
+
+.branch-list {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(210px, 1fr));
+    gap: 0.5rem 1.1rem;
+}
+
+.branch-list li {
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.branch-list li::marker {
+    color: var(--accent-2);
+}
+
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.2rem 2rem;
+    display: grid;
+    gap: 1rem;
+}
+
+.panel {
+    border: 1px solid var(--card-strong);
+    border-radius: 18px;
+    background: var(--card);
+    backdrop-filter: blur(5px);
+    padding: 1.1rem;
+}
+
+h2 {
+    font-size: 1.45rem;
+    margin: 0 0 0.8rem;
+}
+
+.program-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.8rem;
+}
+
+.card {
+    background: rgba(6, 12, 27, 0.58);
+    border: 1px solid var(--card-strong);
+    border-radius: 14px;
+    padding: 0.9rem;
+}
+
+.day {
+    color: var(--accent-2);
+    margin: 0;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.card h3 {
+    margin: 0.3rem 0 0.55rem;
+}
+
+.card ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--muted);
+    display: grid;
+    gap: 0.45rem;
+}
+
+.panel-accent {
+    border-color: rgba(255, 122, 24, 0.45);
+}
+
+.section-text {
+    margin: 0;
+    color: var(--muted);
+}
+
+.sponsor-list {
+    margin-top: 0.9rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.sponsor-list span {
+    border: 1px solid var(--card-strong);
+    border-radius: 999px;
+    padding: 0.45rem 0.85rem;
+    background: rgba(255, 255, 255, 0.05);
+    font-weight: 600;
+}
+
+.register .mail {
+    display: inline-block;
+    margin-top: 0.85rem;
+    color: #121212;
+    text-decoration: none;
+    background: var(--accent-2);
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-weight: 800;
+}
+
+.contact-page-link {
+    display: inline-block;
+    margin-top: 0.65rem;
+    color: var(--text);
+    text-decoration: none;
+    border: 1px solid var(--card-strong);
+    border-radius: 10px;
+    padding: 0.6rem 0.9rem;
+    font-weight: 700;
+}
+
+.contact-page-link:hover {
+    border-color: var(--accent-2);
+}
+
+.contact-hero {
+    padding-bottom: 1.6rem;
+}
+
+.contact-header-content {
+    padding-right: 0;
+}
+
+.contact-title {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(2.5rem, 7vw, 4.8rem);
+    line-height: 0.95;
+    margin: 0.55rem 0 0.7rem;
+    letter-spacing: 0.03em;
+}
+
+.contact-main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.2rem 2rem;
+}
+
+.contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 1rem;
+}
+
+.contact-info,
+.contact-form-card {
+    background: rgba(6, 12, 27, 0.5);
+    border: 1px solid var(--card-strong);
+    border-radius: 14px;
+    padding: 1rem;
+}
+
+.contact-form {
+    display: grid;
+    gap: 0.55rem;
+}
+
+.contact-form label {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    border: 1px solid var(--card-strong);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    padding: 0.7rem 0.8rem;
+    font-family: "Manrope", sans-serif;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: rgba(248, 251, 255, 0.55);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-2);
+}
+
+.contact-submit {
+    justify-self: start;
+    margin-top: 0.25rem;
+    border: 0;
+    cursor: pointer;
+}
+
+.footer {
+    text-align: center;
+    color: var(--muted);
+    padding: 0.8rem 1rem 1.4rem;
+    font-size: 0.95rem;
+}
+
+.footer p {
+    margin: 0.2rem 0;
+}
+
+@media (max-width: 700px) {
+    .brand {
+        font-size: 1.6rem;
+    }
+
+    .hero {
+        padding-top: 0.9rem;
+    }
+
+    .panel {
+        padding: 1rem;
+    }
+
+    .hero-content {
+        padding-right: 0;
+    }
+
+    .hero-title-wrap {
+        position: static;
+        width: min(280px, 72vw);
+        margin: 0.6rem 0 0.4rem;
+        transform: none;
+    }
+
+    .branch-list {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-layout {
+        grid-template-columns: 1fr;
+    }
+}
