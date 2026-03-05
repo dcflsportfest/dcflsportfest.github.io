@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turnuva | DCFLSPORTFEST'26</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&family=Geist+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="grid-overlay"></div>
+    <div class="noise"></div>
+
+    <header class="hero">
+        <nav class="top-nav">
+            <a href="index.html" class="brand">DCFLSPORTFEST'26</a>
+            <div class="nav-actions">
+                <a href="index.html" class="nav-link">Ana Sayfa</a>
+                <a href="kurumsal.html" class="nav-link">Hakkımızda</a>
+                <a href="hizmetler.html" class="nav-link">Sıkça Sorulanlar</a>
+                <a href="program.html" class="nav-link">Program</a>
+                <a href="turnuva.html" class="nav-link active">Turnuva</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="iletisim.html" class="nav-link">İletişim</a>
+            </div>
+        </nav>
+
+        <div class="page-shell">
+            <p class="eyebrow">TURNUVA MERKEZİ</p>
+            <h1>Branş bazlı fikstür detayları.</h1>
+            <p class="hero-text">
+                Aşağıdan branş seçerek sadece o branşın maç takvimini görebilirsin.
+                Böylece tüm fikstür aynı anda ekrana yüklenmez, daha temiz bir görünüm elde edilir.
+            </p>
+        </div>
+    </header>
+
+    <main>
+        <section class="panel panel-highlight fixture-section">
+            <div class="section-head">
+                <p class="section-kicker">FİKSTÜR DETAYLARI</p>
+                <h2>Turnuva Seçim Ekranı</h2>
+            </div>
+
+            <div class="fixture-tabs" data-fixture-tabs>
+                <button type="button" class="fixture-tab active" data-fixture-tab="voleybol">Voleybol</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="basketbol">Basketbol</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="futbol">Futbol</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="masa-tenisi">Masa Tenisi</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="okculuk">Okçuluk</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="oryantiring">Oryantiring</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="bahce-satranci">Bahçe Satrancı</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="playstation">PlayStation</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="atletizm">Atletizm</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="bahce-oyunlari">Bahçe Oyunları</button>
+            </div>
+
+            <div class="fixture-panels">
+                <article class="fixture-panel active" data-fixture-panel="voleybol">
+                    <h3>Voleybol Fikstürü</h3>
+                    <div class="fixture-table-wrap">
+                        <table class="fixture-table">
+                            <thead><tr><th>Tarih</th><th>Saat</th><th>Eşleşme</th><th>Saha</th></tr></thead>
+                            <tbody>
+                                <tr><td>12 Mayıs</td><td>10:00</td><td>A Takımı vs B Takımı</td><td>Kapalı Spor Salonu</td></tr>
+                                <tr><td>12 Mayıs</td><td>12:00</td><td>C Takımı vs D Takımı</td><td>Kapalı Spor Salonu</td></tr>
+                                <tr><td>13 Mayıs</td><td>11:00</td><td>Yarı Final 1</td><td>Kapalı Spor Salonu</td></tr>
+                                <tr><td>14 Mayıs</td><td>14:00</td><td>Final</td><td>Ana Saha</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="fixture-panel" data-fixture-panel="basketbol">
+                    <h3>Basketbol Fikstürü</h3>
+                    <div class="fixture-table-wrap">
+                        <table class="fixture-table">
+                            <thead><tr><th>Tarih</th><th>Saat</th><th>Eşleşme</th><th>Saha</th></tr></thead>
+                            <tbody>
+                                <tr><td>12 Mayıs</td><td>09:30</td><td>Aslanlar vs Kartallar</td><td>Basketbol Sahası</td></tr>
+                                <tr><td>12 Mayıs</td><td>13:30</td><td>Gençler vs Yıldızlar</td><td>Basketbol Sahası</td></tr>
+                                <tr><td>13 Mayıs</td><td>15:00</td><td>Yarı Final</td><td>Basketbol Sahası</td></tr>
+                                <tr><td>14 Mayıs</td><td>16:30</td><td>Final</td><td>Ana Saha</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="fixture-panel" data-fixture-panel="futbol">
+                    <h3>Futbol Fikstürü</h3>
+                    <div class="fixture-table-wrap">
+                        <table class="fixture-table">
+                            <thead><tr><th>Tarih</th><th>Saat</th><th>Eşleşme</th><th>Saha</th></tr></thead>
+                            <tbody>
+                                <tr><td>12 Mayıs</td><td>10:30</td><td>Doğu Karması vs Batı Karması</td><td>Çim Saha</td></tr>
+                                <tr><td>12 Mayıs</td><td>14:30</td><td>11A vs 11B</td><td>Çim Saha</td></tr>
+                                <tr><td>13 Mayıs</td><td>12:30</td><td>Yarı Final</td><td>Çim Saha</td></tr>
+                                <tr><td>14 Mayıs</td><td>17:00</td><td>Final</td><td>Ana Saha</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="fixture-panel" data-fixture-panel="masa-tenisi">
+                    <h3>Masa Tenisi Fikstürü</h3>
+                    <div class="fixture-table-wrap">
+                        <table class="fixture-table">
+                            <thead><tr><th>Tarih</th><th>Saat</th><th>Tur</th><th>Alan</th></tr></thead>
+                            <tbody>
+                                <tr><td>12 Mayıs</td><td>11:00</td><td>Eleme Turu</td><td>Masa Tenisi Alanı</td></tr>
+                                <tr><td>12 Mayıs</td><td>15:00</td><td>Çeyrek Final</td><td>Masa Tenisi Alanı</td></tr>
+                                <tr><td>13 Mayıs</td><td>13:00</td><td>Yarı Final</td><td>Masa Tenisi Alanı</td></tr>
+                                <tr><td>14 Mayıs</td><td>11:30</td><td>Final</td><td>Masa Tenisi Alanı</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="fixture-panel" data-fixture-panel="okculuk">
+                    <h3>Okçuluk Fikstürü</h3>
+                    <div class="fixture-table-wrap">
+                        <table class="fixture-table">
+                            <thead><tr><th>Tarih</th><th>Saat</th><th>Tur</th><th>Alan</th></tr></thead>
+                            <tbody>
+                                <tr><td>12 Mayıs</td><td>10:00</td><td>Sıralama Atışları</td><td>Okçuluk Parkuru</td></tr>
+                                <tr><td>12 Mayıs</td><td>13:00</td><td>Eleme Turları</td><td>Okçuluk Parkuru</td></tr>
+                                <tr><td>13 Mayıs</td><td>14:30</td><td>Yarı Final</td><td>Okçuluk Parkuru</td></tr>
+                                <tr><td>14 Mayıs</td><td>12:30</td><td>Final</td><td>Okçuluk Parkuru</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="fixture-panel" data-fixture-panel="oryantiring">
+                    <h3>Oryantiring Fikstürü</h3>
+                    <div class="fixture-table-wrap">
+                        <table class="fixture-table">
+                            <thead><tr><th>Tarih</th><th>Saat</th><th>Tur</th><th>Alan</th></tr></thead>
+                            <tbody>
+                                <tr><td>12 Mayıs</td><td>09:45</td><td>Parkur Tanıtımı</td><td>Kampüs Alanı</td></tr>
+                                <tr><td>12 Mayıs</td><td>12:45</td><td>Eleme</td><td>Kampüs Alanı</td></tr>
+                                <tr><td>13 Mayıs</td><td>10:45</td><td>Yarı Final</td><td>Kampüs Alanı</td></tr>
+                                <tr><td>14 Mayıs</td><td>10:15</td><td>Final Koşusu</td><td>Kampüs Alanı</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="fixture-panel" data-fixture-panel="bahce-satranci">
+                    <h3>Bahçe Satrancı Fikstürü</h3>
+                    <div class="fixture-table-wrap">
+                        <table class="fixture-table">
+                            <thead><tr><th>Tarih</th><th>Saat</th><th>Tur</th><th>Alan</th></tr></thead>
+                            <tbody>
+                                <tr><td>12 Mayıs</td><td>11:30</td><td>Grup Maçları</td><td>Bahçe Satranç Alanı</td></tr>
+                                <tr><td>12 Mayıs</td><td>16:00</td><td>Çeyrek Final</td><td>Bahçe Satranç Alanı</td></tr>
+                                <tr><td>13 Mayıs</td><td>12:00</td><td>Yarı Final</td><td>Bahçe Satranç Alanı</td></tr>
+                                <tr><td>14 Mayıs</td><td>13:30</td><td>Final</td><td>Bahçe Satranç Alanı</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="fixture-panel" data-fixture-panel="playstation">
+                    <h3>PlayStation Turnuvası Fikstürü</h3>
+                    <div class="fixture-table-wrap">
+                        <table class="fixture-table">
+                            <thead><tr><th>Tarih</th><th>Saat</th><th>Tur</th><th>Alan</th></tr></thead>
+                            <tbody>
+                                <tr><td>12 Mayıs</td><td>10:15</td><td>Eleme Turu</td><td>E-Spor Alanı</td></tr>
+                                <tr><td>12 Mayıs</td><td>14:15</td><td>Son 16</td><td>E-Spor Alanı</td></tr>
+                                <tr><td>13 Mayıs</td><td>15:30</td><td>Yarı Final</td><td>E-Spor Alanı</td></tr>
+                                <tr><td>14 Mayıs</td><td>12:00</td><td>Final</td><td>Ana Sahne</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="fixture-panel" data-fixture-panel="atletizm">
+                    <h3>Atletizm Fikstürü</h3>
+                    <div class="fixture-table-wrap">
+                        <table class="fixture-table">
+                            <thead><tr><th>Tarih</th><th>Saat</th><th>Yarış</th><th>Pist</th></tr></thead>
+                            <tbody>
+                                <tr><td>12 Mayıs</td><td>09:00</td><td>100m Seçmeleri</td><td>Atletizm Pisti</td></tr>
+                                <tr><td>12 Mayıs</td><td>11:15</td><td>400m Seçmeleri</td><td>Atletizm Pisti</td></tr>
+                                <tr><td>13 Mayıs</td><td>14:00</td><td>Bayrak Yarışı</td><td>Atletizm Pisti</td></tr>
+                                <tr><td>14 Mayıs</td><td>15:00</td><td>Final Serileri</td><td>Atletizm Pisti</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="fixture-panel" data-fixture-panel="bahce-oyunlari">
+                    <h3>Bahçe Oyunları Fikstürü</h3>
+                    <div class="fixture-table-wrap">
+                        <table class="fixture-table">
+                            <thead><tr><th>Tarih</th><th>Saat</th><th>Etap</th><th>Alan</th></tr></thead>
+                            <tbody>
+                                <tr><td>12 Mayıs</td><td>10:45</td><td>Takım Etabı 1</td><td>Bahçe Etkinlik Alanı</td></tr>
+                                <tr><td>12 Mayıs</td><td>13:45</td><td>Takım Etabı 2</td><td>Bahçe Etkinlik Alanı</td></tr>
+                                <tr><td>13 Mayıs</td><td>16:15</td><td>Yarı Final Oyunları</td><td>Bahçe Etkinlik Alanı</td></tr>
+                                <tr><td>14 Mayıs</td><td>11:45</td><td>Final Etabı</td><td>Bahçe Etkinlik Alanı</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>DCFLSPORTFEST'26</p>
+        <p>Turnuva Sayfası</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
