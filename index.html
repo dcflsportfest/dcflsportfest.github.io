@@ -22,11 +22,13 @@
     <header class="hero" id="top">
         <nav class="top-nav">
             <a href="index.html" class="brand">DCFLSPORTFEST'26</a>
-            <div class="nav-actions">
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-links" data-nav-toggle>Menü</button>
+            <div class="nav-actions" id="site-nav-links" data-nav-links>
                 <a href="index.html" class="nav-link active">Ana Sayfa</a>
                 <a href="kurumsal.html" class="nav-link">Hakkımızda</a>
                 <a href="hizmetler.html" class="nav-link">Sıkça Sorulanlar</a>
                 <a href="program.html" class="nav-link">Program</a>
+                <a href="turnuva.html" class="nav-link">Turnuva</a>
                 <a href="blog.html" class="nav-link">Blog</a>
                 <a href="iletisim.html" class="nav-link">İletişim</a>
             </div>
@@ -38,7 +40,7 @@
                 <h1>Küresel tempoda okul festivali.</h1>
                 <p class="hero-text">
                     Altaras tarzı sekmeli altyapı ve güçlü akışla Sportfest artık tek sayfa değil,
-                    hakkımızda, sıkça sorulanlar, program, blog ve iletişim sekmeleriyle tam bir site yapısında.
+                    hakkımızda, sıkça sorulanlar, program, turnuva, blog ve iletişim sekmeleriyle tam bir site yapısında.
                 </p>
                 <div class="cta-row">
                     <a href="hizmetler.html" class="btn btn-primary">Soruları İncele</a>
@@ -53,6 +55,28 @@
 
             <aside class="hero-badge" aria-hidden="true">
                 <img src="assets/gucunu-kesfet.png" alt="#Gücünü Keşfet" class="hero-title-image">
+                <div class="countdown-card" data-countdown data-target="2026-05-12T10:00:00+03:00">
+                    <p class="countdown-title">SportFeste kalan süre</p>
+                    <div class="countdown-grid">
+                        <article class="countdown-item">
+                            <span class="countdown-value" data-unit="days">0</span>
+                            <p class="countdown-label">Gün</p>
+                        </article>
+                        <article class="countdown-item">
+                            <span class="countdown-value" data-unit="hours">00</span>
+                            <p class="countdown-label">Saat</p>
+                        </article>
+                        <article class="countdown-item">
+                            <span class="countdown-value" data-unit="minutes">00</span>
+                            <p class="countdown-label">Dakika</p>
+                        </article>
+                        <article class="countdown-item">
+                            <span class="countdown-value" data-unit="seconds">00</span>
+                            <p class="countdown-label">Saniye</p>
+                        </article>
+                    </div>
+                    <p class="countdown-note" data-countdown-note></p>
+                </div>
             </aside>
         </div>
     </header>
@@ -128,6 +152,73 @@
                 }, 1450);
             });
         })();
+
+        (function () {
+            var countdown = document.querySelector("[data-countdown]");
+            if (!countdown) {
+                return;
+            }
+
+            var targetRaw = countdown.getAttribute("data-target");
+            var target = new Date(targetRaw).getTime();
+            if (Number.isNaN(target)) {
+                return;
+            }
+
+            var daysEl = countdown.querySelector("[data-unit='days']");
+            var hoursEl = countdown.querySelector("[data-unit='hours']");
+            var minutesEl = countdown.querySelector("[data-unit='minutes']");
+            var secondsEl = countdown.querySelector("[data-unit='seconds']");
+            var noteEl = countdown.querySelector("[data-countdown-note]");
+
+            function pad(num) {
+                return String(num).padStart(2, "0");
+            }
+
+            function updateCountdown() {
+                var now = Date.now();
+                var diff = target - now;
+
+                if (diff <= 0) {
+                    daysEl.textContent = "0";
+                    hoursEl.textContent = "00";
+                    minutesEl.textContent = "00";
+                    secondsEl.textContent = "00";
+                    noteEl.textContent = "Festival başladı!";
+                    return true;
+                }
+
+                var day = Math.floor(diff / 86400000);
+                diff %= 86400000;
+                var hour = Math.floor(diff / 3600000);
+                diff %= 3600000;
+                var minute = Math.floor(diff / 60000);
+                diff %= 60000;
+                var second = Math.floor(diff / 1000);
+
+                daysEl.textContent = String(day);
+                hoursEl.textContent = pad(hour);
+                minutesEl.textContent = pad(minute);
+                secondsEl.textContent = pad(second);
+                noteEl.textContent = "";
+                return false;
+            }
+
+            var isFinished = updateCountdown();
+            if (isFinished) {
+                return;
+            }
+
+            var timer = window.setInterval(function () {
+                if (updateCountdown()) {
+                    window.clearInterval(timer);
+                }
+            }, 1000);
+        })();
     </script>
+    <script src="script.js"></script>
 </body>
 </html>
+
+
+
