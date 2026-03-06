@@ -1039,3 +1039,151 @@ h2 {
         scroll-behavior: auto !important;
     }
 }
+
+/* Mobile polish pass */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 900px) {
+    .hero-shell,
+    .page-shell,
+    .panel {
+        padding: clamp(0.82rem, 3.6vw, 1.08rem);
+    }
+
+    .hero-text,
+    .section-text {
+        max-width: 100%;
+    }
+
+    .branch-list,
+    .faq-grid,
+    .post-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .hero {
+        padding: 0.66rem 0.5rem 0.95rem;
+    }
+
+    main {
+        padding: 0 0.5rem 1rem;
+    }
+
+    .top-nav {
+        gap: 0.45rem;
+    }
+
+    .brand {
+        max-width: 66vw;
+        font-size: 0.92rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .hero-shell,
+    .page-shell,
+    .panel {
+        border-radius: 14px;
+        padding: 0.8rem;
+    }
+
+    h1 {
+        font-size: clamp(1.55rem, 8.3vw, 2.05rem);
+        line-height: 1.06;
+        margin: 0.6rem 0 0.65rem;
+    }
+
+    .eyebrow,
+    .section-kicker {
+        font-size: 0.74rem;
+        letter-spacing: 0.1em;
+    }
+
+    .hero-badge {
+        width: 100%;
+    }
+
+    .countdown-grid {
+        gap: 0.36rem;
+    }
+
+    .countdown-item {
+        padding: 0.42rem 0.3rem;
+    }
+
+    .countdown-value {
+        font-size: 0.98rem;
+    }
+
+    .contact-layout {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+    }
+
+    .contact-form label {
+        font-size: 0.9rem;
+    }
+
+    .fixture-tabs {
+        gap: 0.35rem;
+    }
+
+    .fixture-tab {
+        font-size: 0.82rem;
+        padding: 0.42rem 0.68rem;
+    }
+
+    .fixture-table {
+        min-width: 430px;
+    }
+
+    .fixture-table th,
+    .fixture-table td {
+        font-size: 0.84rem;
+        padding: 0.52rem 0.45rem;
+    }
+
+    .step {
+        padding: 0.7rem;
+    }
+}
+
+@media (max-width: 430px) {
+    .brand {
+        max-width: 60vw;
+        font-size: 0.88rem;
+    }
+
+    .hero-shell,
+    .page-shell,
+    .panel {
+        padding: 0.72rem;
+    }
+
+    .countdown-title {
+        font-size: 0.7rem;
+    }
+
+    .countdown-label {
+        font-size: 0.66rem;
+    }
+
+    .fixture-table {
+        min-width: 380px;
+    }
+}
