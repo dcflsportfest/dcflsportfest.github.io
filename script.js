@@ -17,6 +17,7 @@
 
         function setOpenState(isOpen) {
             toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+            toggle.classList.toggle("open", isOpen);
             links.classList.toggle("open", isOpen);
         }
 
