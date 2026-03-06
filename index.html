@@ -271,9 +271,9 @@
 
             var videoCacheVersion = "20260307";
             var playlist = [
-                "assets/videos/voleybol-2.mp4?v=" + videoCacheVersion,
-                "assets/videos/odul-toreni.mp4?v=" + videoCacheVersion,
-                "assets/videos/sportfest-25.mp4?v=" + videoCacheVersion
+                "assets/voleybol-2.mp4?v=" + videoCacheVersion,
+                "assets/odul-toreni.mp4?v=" + videoCacheVersion,
+                "assets/sportfest-25.mp4?v=" + videoCacheVersion
             ];
             var videos = [videoA, videoB];
             var activeSlot = 0;
@@ -294,13 +294,26 @@
                 }
             }
 
+            function buildSourcePair(src) {
+                var fallback = src;
+                if (src.indexOf("assets/videos/") === 0) {
+                    fallback = src.replace("assets/videos/", "assets/");
+                } else if (src.indexOf("assets/") === 0) {
+                    fallback = src.replace("assets/", "assets/videos/");
+                }
+                return [src, fallback];
+            }
+
             function setSource(video, src) {
                 if (video.getAttribute("data-src") === src) {
                     return;
                 }
 
-                video.setAttribute("data-src", src);
-                video.src = src;
+                var pair = buildSourcePair(src);
+                video.setAttribute("data-src", pair[0]);
+                video.setAttribute("data-src-alt", pair[1]);
+                video.setAttribute("data-src-alt-tried", "false");
+                video.src = pair[0];
                 video.load();
             }
 
@@ -362,6 +375,17 @@
                 });
 
                 video.addEventListener("error", function () {
+                    var alt = video.getAttribute("data-src-alt");
+                    var altTried = video.getAttribute("data-src-alt-tried") === "true";
+
+                    if (!altTried && alt && alt !== video.getAttribute("data-src")) {
+                        video.setAttribute("data-src-alt-tried", "true");
+                        video.src = alt;
+                        video.load();
+                        safePlay(video);
+                        return;
+                    }
+
                     if (slot === activeSlot) {
                         crossfadeToNext();
                     }
