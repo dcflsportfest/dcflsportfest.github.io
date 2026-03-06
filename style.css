@@ -187,6 +187,45 @@ main,
     background: rgba(33, 74, 147, 0.3);
 }
 
+.lang-switch {
+    display: inline-flex;
+    align-items: center;
+}
+
+.lang-picker {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(10, 23, 49, 0.42);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.45rem 0.68rem;
+    cursor: pointer;
+    min-width: 64px;
+    transition: 0.2s ease;
+}
+
+.lang-picker:hover,
+.lang-picker:focus {
+    border-color: var(--accent-soft);
+    outline: none;
+}
+
+@media (max-width: 640px) {
+    .nav-actions .lang-switch {
+        width: 100%;
+    }
+
+    .lang-picker {
+        width: 100%;
+        text-align: left;
+        border-radius: 10px;
+        padding: 0.46rem 0.78rem;
+    }
+}
+
 .hero-shell,
 .page-shell {
     max-width: 1160px;
@@ -202,6 +241,54 @@ main,
     display: grid;
     grid-template-columns: 1.15fr 0.85fr;
     gap: 1rem;
+}
+
+.hero-shell.hero-with-video {
+    position: relative;
+    background: linear-gradient(155deg, rgba(14, 28, 58, 0.62), rgba(8, 18, 38, 0.68));
+    border-color: rgba(86, 132, 206, 0.42);
+}
+
+.hero-video-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    contain: layout paint;
+}
+
+.hero-video-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 72% 20%, rgba(24, 54, 105, 0.34), transparent 44%),
+        linear-gradient(140deg, rgba(6, 13, 29, 0.74), rgba(9, 20, 44, 0.56));
+}
+
+.hero-bg-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    filter: saturate(1.05) contrast(1.02) brightness(0.54);
+    transition: opacity 0.48s ease;
+    will-change: opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.hero-bg-video.is-active {
+    opacity: 0.56;
+}
+
+.hero-shell.hero-with-video .hero-copy,
+.hero-shell.hero-with-video .hero-badge {
+    position: relative;
+    z-index: 1;
 }
 
 .page-shell {
@@ -231,6 +318,19 @@ h1 {
     margin: 0;
     color: var(--muted);
     max-width: 70ch;
+}
+
+.hero-list {
+    margin: 0.6rem 0 0;
+    padding-left: 1.1rem;
+    max-width: 70ch;
+    color: var(--muted);
+    display: grid;
+    gap: 0.28rem;
+}
+
+.hero-list li::marker {
+    color: var(--accent-soft);
 }
 
 .cta-row {
@@ -306,6 +406,10 @@ h1 {
     filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.4));
 }
 
+.mobile-brand-logo {
+    display: none;
+}
+
 .countdown-card {
     margin-top: 0.75rem;
     background: rgba(7, 15, 34, 0.64);
@@ -366,6 +470,13 @@ main {
     padding: 0 1.2rem 2rem;
     display: grid;
     gap: 0.9rem;
+}
+
+@supports (content-visibility: auto) {
+    main > .panel {
+        content-visibility: auto;
+        contain-intrinsic-size: 1px 620px;
+    }
 }
 
 .panel {
@@ -500,6 +611,324 @@ main {
 
 .faq-grid {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.finance-grid {
+    margin-top: 0.9rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.82rem;
+}
+
+.finance-group-head {
+    margin-top: 1rem;
+}
+
+.finance-group-head h3 {
+    margin: 0.26rem 0 0;
+    font-size: clamp(1.2rem, 2.6vw, 1.56rem);
+    letter-spacing: -0.01em;
+}
+
+.finance-page .page-shell h1 {
+    font-size: clamp(1.7rem, 4.1vw, 2.65rem);
+    max-width: 18ch;
+    line-height: 1.06;
+}
+
+.finance-card {
+    position: relative;
+    border: 1px solid rgba(136, 166, 218, 0.34);
+    border-radius: 20px;
+    padding: 0.82rem;
+    background: linear-gradient(165deg, #1e3156, #142341);
+    color: #eaf2ff;
+    overflow: hidden;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    gap: 0.66rem;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.finance-ayni-feature {
+    margin-top: 0.9rem;
+    display: grid;
+    grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
+    gap: 0.82rem;
+    align-items: stretch;
+}
+
+.finance-ayni-feature .finance-head {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.finance-ayni-feature .finance-body {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+}
+
+.finance-card::after {
+    content: "";
+    position: absolute;
+    inset: -90% -35%;
+    background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.17) 45%, transparent 72%);
+    transform: translateX(-48%) rotate(8deg);
+    opacity: 0;
+    transition: opacity 0.45s ease, transform 0.7s ease;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.finance-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.finance-card h3 {
+    margin: 0.3rem 0 0;
+    font-size: 1.46rem;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+}
+
+.finance-head {
+    border-radius: 16px;
+    padding: 0.9rem 0.9rem 0.84rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 7px 18px rgba(0, 0, 0, 0.24);
+}
+
+.finance-badge {
+    margin: 0;
+    font-size: 0.74rem;
+    letter-spacing: 0.11em;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.finance-sub {
+    margin: 0.3rem 0 0;
+    font-size: 0.94rem;
+    line-height: 1.4;
+    color: rgba(224, 235, 255, 0.82);
+}
+
+.finance-price {
+    margin: 0;
+    font-family: "Geist Mono", monospace;
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: #d6e4ff;
+}
+
+.finance-card ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.2rem;
+}
+
+.finance-card li {
+    position: relative;
+    padding: 0.42rem 1.4rem 0.42rem 1.1rem;
+    line-height: 1.38;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(173, 198, 238, 0.16);
+}
+
+.finance-card li::before {
+    content: "\2022";
+    position: absolute;
+    left: 0.14rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.24rem;
+    line-height: 1;
+    font-weight: 800;
+    color: rgba(199, 217, 251, 0.9);
+}
+
+.finance-card li::after {
+    content: "\2713";
+    position: absolute;
+    right: 0.06rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.03rem;
+    line-height: 1;
+    font-weight: 800;
+    color: var(--tick-color, #8fb4ef);
+}
+
+.finance-card li:last-child {
+    border-bottom: 0;
+}
+
+.finance-grid-maddi .finance-card ul {
+    margin-top: 0.16rem;
+    gap: 0;
+    border-top: 1px solid rgba(173, 198, 238, 0.2);
+}
+
+.finance-grid-maddi .finance-card li {
+    display: block;
+    min-height: 2.7rem;
+    padding: 0.54rem 0.2rem 0.54rem 1.42rem;
+}
+
+.finance-grid-maddi .finance-card li::before {
+    content: "\2713";
+    left: 0.05rem;
+    width: 1.04rem;
+    height: 1.04rem;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    font-size: 0.67rem;
+    font-weight: 800;
+    color: #fff;
+    background: var(--tick-color, #111a2f);
+}
+
+.finance-grid-maddi .finance-card li::after {
+    content: none;
+}
+
+.finance-grid-maddi .finance-card li.is-off::before {
+    content: "\2212";
+    background: #5d6880;
+}
+
+.finance-grid-maddi .finance-card li:nth-child(even) {
+    background: rgba(255, 255, 255, 0.065);
+}
+
+.finance-grid-maddi .feature-name {
+    display: block;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #ecf3ff;
+}
+
+.finance-ayni {
+    --tick-color: #8db0e6;
+    background: linear-gradient(165deg, #24385d, #182846);
+    border-color: #48689e;
+}
+
+.finance-ayni .finance-head {
+    background: linear-gradient(120deg, #39557f, #283f63);
+    color: #e6efff;
+}
+
+.finance-ayni .finance-sub {
+    color: rgba(220, 233, 255, 0.85);
+}
+
+.finance-ayni .finance-price {
+    color: #c8daf8;
+}
+
+.finance-bronz {
+    --tick-color: #d38a62;
+    background: linear-gradient(165deg, #3a2a23, #2a1f1a);
+    border-color: #8a6451;
+}
+
+.finance-bronz .finance-head {
+    background: linear-gradient(120deg, #80604f, #62493d);
+    color: #ffecdf;
+}
+
+.finance-bronz .finance-sub {
+    color: rgba(255, 228, 214, 0.8);
+}
+
+.finance-bronz .finance-price {
+    color: #f7ccb6;
+}
+
+.finance-gumus {
+    --tick-color: #9aa5b4;
+    background: linear-gradient(165deg, #343a44, #252c36);
+    border-color: #7d8796;
+}
+
+.finance-gumus .finance-head {
+    background: linear-gradient(120deg, #b7bec8, #929aa8);
+    color: #1c2432;
+}
+
+.finance-gumus .finance-sub {
+    color: rgba(28, 36, 50, 0.74);
+}
+
+.finance-gumus .finance-price {
+    color: #cfd7e4;
+}
+
+.finance-altin {
+    --tick-color: #d8a43a;
+    background: linear-gradient(165deg, #3b301c, #2b2113);
+    border-color: #9a7c43;
+}
+
+.finance-altin .finance-head {
+    background: linear-gradient(120deg, #8a6d2d, #6a531f);
+    color: #fff2cd;
+}
+
+.finance-altin .finance-sub {
+    color: rgba(255, 242, 205, 0.82);
+}
+
+.finance-altin .finance-price {
+    color: #ffe0a1;
+}
+
+.finance-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(168, 200, 255, 0.52);
+    box-shadow: var(--shadow-strong);
+}
+
+.finance-card:hover::after {
+    opacity: 1;
+    transform: translateX(22%) rotate(8deg);
+}
+
+.finance-ayni-feature {
+    animation: financeCardEnter 0.58s cubic-bezier(0.2, 0.85, 0.2, 1) both;
+}
+
+.finance-grid-maddi .finance-card {
+    animation: financeCardEnter 0.62s cubic-bezier(0.2, 0.85, 0.2, 1) both;
+}
+
+.finance-grid-maddi .finance-card:nth-child(2) {
+    animation-delay: 0.09s;
+}
+
+.finance-grid-maddi .finance-card:nth-child(3) {
+    animation-delay: 0.18s;
+}
+
+@keyframes financeCardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .contact-layout {
@@ -970,11 +1399,13 @@ h2 {
 
 @media (max-width: 640px) {
     .top-nav {
-        padding: 0.5rem 0.56rem;
-        border-radius: 14px;
+        padding: 0.42rem 0.46rem;
+        border-radius: 12px;
     }
 
     .nav-toggle {
+        font-size: 0.8rem;
+        padding: 0.34rem 0.62rem;
         transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -1006,8 +1437,8 @@ h2 {
 
     .nav-actions.open {
         max-height: 360px;
-        margin-top: 0.45rem;
-        padding: 0.45rem;
+        margin-top: 0.35rem;
+        padding: 0.36rem;
         opacity: 1;
         transform: translateY(0);
         pointer-events: auto;
@@ -1072,6 +1503,14 @@ canvas {
     .post-grid {
         grid-template-columns: 1fr;
     }
+
+    .finance-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .finance-ayni-feature {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 640px) {
@@ -1084,15 +1523,32 @@ canvas {
     }
 
     .top-nav {
-        gap: 0.45rem;
+        gap: 0.3rem;
     }
 
     .brand {
-        max-width: 66vw;
-        font-size: 0.92rem;
+        order: 1;
+        max-width: 62vw;
+        font-size: 0.88rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    .mobile-brand-logo {
+        display: block;
+        order: 3;
+        width: clamp(90px, 36vw, 140px);
+        margin: 0.05rem 0 0 0;
+        filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.35));
+    }
+
+    .nav-toggle {
+        order: 2;
+    }
+
+    .nav-actions {
+        order: 4;
     }
 
     .hero-shell,
@@ -1116,6 +1572,10 @@ canvas {
 
     .hero-badge {
         width: 100%;
+    }
+
+    .hero-badge .hero-title-image {
+        display: none;
     }
 
     .countdown-grid {
@@ -1161,6 +1621,18 @@ canvas {
     .step {
         padding: 0.7rem;
     }
+
+    .finance-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .finance-card {
+        min-height: auto;
+    }
+
+    .finance-group-head {
+        margin-top: 0.8rem;
+    }
 }
 
 @media (max-width: 430px) {
@@ -1175,6 +1647,10 @@ canvas {
         padding: 0.72rem;
     }
 
+    .mobile-brand-logo {
+        width: clamp(96px, 40vw, 150px);
+    }
+
     .countdown-title {
         font-size: 0.7rem;
     }
@@ -1185,5 +1661,227 @@ canvas {
 
     .fixture-table {
         min-width: 380px;
+    }
+}
+
+/* Countdown animation */
+@keyframes countdownPop {
+    0% {
+        transform: translateY(8px) scale(0.88);
+        opacity: 0.35;
+    }
+
+    55% {
+        transform: translateY(-2px) scale(1.08);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes countdownItemPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(184, 211, 255, 0.44);
+    }
+
+    100% {
+        box-shadow: 0 0 0 12px rgba(184, 211, 255, 0);
+    }
+}
+
+.countdown-value {
+    will-change: transform, opacity;
+}
+
+.countdown-value.countdown-pop {
+    animation: countdownPop 0.42s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.countdown-item.countdown-item-pulse {
+    animation: countdownItemPulse 0.45s ease;
+}
+
+/* Mobile UX pass */
+@media (max-width: 900px) {
+    .top-nav {
+        top: 0.45rem;
+        padding: 0.48rem 0.56rem;
+        border-radius: 13px;
+    }
+
+    .hero-shell,
+    .page-shell,
+    .panel {
+        border-radius: 15px;
+        padding: 0.92rem;
+    }
+
+    h1 {
+        font-size: clamp(1.7rem, 7.2vw, 2.45rem);
+        line-height: 1.08;
+        margin: 0.58rem 0 0.62rem;
+    }
+
+    .hero-text,
+    .section-text,
+    .hero-list {
+        font-size: 0.95rem;
+        line-height: 1.62;
+    }
+
+    .fixture-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        padding-bottom: 0.2rem;
+    }
+
+    .fixture-tab {
+        flex: 0 0 auto;
+        min-height: 42px;
+    }
+}
+
+@media (max-width: 640px) {
+    body.nav-menu-open {
+        overflow: hidden;
+    }
+
+    .hero {
+        padding: 0.56rem 0.46rem 0.86rem;
+    }
+
+    main {
+        padding: 0 0.46rem 1rem;
+        gap: 0.68rem;
+    }
+
+    .top-nav {
+        gap: 0.34rem;
+    }
+
+    .brand {
+        max-width: 58vw;
+        font-size: 0.9rem;
+    }
+
+    .nav-toggle {
+        min-height: 44px;
+        padding: 0.38rem 0.7rem;
+        font-size: 0.85rem;
+    }
+
+    .nav-actions.open {
+        max-height: 74vh;
+        overflow-y: auto;
+        padding: 0.4rem;
+        border-radius: 11px;
+    }
+
+    .nav-link,
+    .lang-picker {
+        width: 100%;
+        min-height: 44px;
+        text-align: left;
+        font-size: 0.92rem;
+        padding: 0.56rem 0.8rem;
+        border-radius: 10px;
+    }
+
+    .hero-shell {
+        grid-template-columns: 1fr;
+        gap: 0.72rem;
+    }
+
+    .hero-shell.hero-with-video .hero-video-bg::after {
+        background:
+            radial-gradient(circle at 70% 22%, rgba(24, 54, 105, 0.34), transparent 45%),
+            linear-gradient(140deg, rgba(6, 13, 29, 0.78), rgba(9, 20, 44, 0.62));
+    }
+
+    .hero-badge {
+        width: 100%;
+    }
+
+    .hero-list {
+        margin-top: 0.5rem;
+        padding-left: 1rem;
+        gap: 0.34rem;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .stats article {
+        min-height: auto;
+        padding: 0.7rem;
+    }
+
+    .countdown-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .countdown-item {
+        min-height: 64px;
+        padding: 0.44rem 0.32rem;
+    }
+
+    .section-head h2,
+    .panel h2 {
+        font-size: clamp(1.24rem, 6vw, 1.56rem);
+    }
+
+    .contact-form input,
+    .contact-form textarea,
+    .btn {
+        min-height: 44px;
+    }
+
+    .contact-form textarea {
+        min-height: 120px;
+    }
+
+    .fixture-table {
+        min-width: 340px;
+    }
+
+    .fixture-table th,
+    .fixture-table td {
+        font-size: 0.82rem;
+        padding: 0.5rem 0.42rem;
+    }
+
+    .footer {
+        padding: 0.6rem 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .brand {
+        max-width: 54vw;
+        font-size: 0.84rem;
+    }
+
+    .hero-shell,
+    .page-shell,
+    .panel {
+        padding: 0.68rem;
+    }
+
+    .hero-text,
+    .section-text,
+    .hero-list {
+        font-size: 0.92rem;
+    }
+
+    .countdown-label {
+        font-size: 0.64rem;
     }
 }

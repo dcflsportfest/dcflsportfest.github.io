@@ -1,51 +1,78 @@
-<!-- DEPLOY_TEST_20260305 -->
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DCFLSPORTFEST'26 | Ana Sayfa</title>
+    <meta name="description" content="DCFLSPORTFEST'26 resmi sitesi: program, turnuva fikstürleri, sıkça sorulanlar, blog ve iletişim bilgileri.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0a1731">
+    <link rel="canonical" href="https://dcflsportfest.github.io/index.html">
+    <link rel="icon" type="image/png" href="assets/opening-bird-only.png">
+    <meta property="og:locale" content="tr_TR">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DCFLSPORTFEST'26">
+    <meta property="og:title" content="DCFLSPORTFEST'26 | Ana Sayfa">
+    <meta property="og:description" content="Program, branşlar, turnuva fikstürleri ve iletişim detayları tek yerde.">
+    <meta property="og:url" content="https://dcflsportfest.github.io/index.html">
+    <meta property="og:image" content="https://dcflsportfest.github.io/assets/gucunu-kesfet.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DCFLSPORTFEST'26 | Ana Sayfa">
+    <meta name="twitter:description" content="Program, branşlar, turnuva fikstürleri ve iletişim detayları tek yerde.">
+    <meta name="twitter:image" content="https://dcflsportfest.github.io/assets/gucunu-kesfet.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&family=Geist+Mono:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20260322">
 </head>
 <body class="has-splash">
     <div class="splash-screen" data-splash>
-        <img src="assets/opening-bird-only.png" alt="DCFL kuş logosu" class="splash-logo splash-logo-primary">
+        <img src="assets/opening-bird-only.png" alt="DCFL kuş logosu" class="splash-logo splash-logo-primary" fetchpriority="high" decoding="async">
     </div>
     <div class="grid-overlay"></div>
     <div class="noise"></div>
     <div class="corner-logo-stack" aria-hidden="true">
-        <img src="assets/opening-bird-only.png" alt="" class="corner-logo corner-logo-primary">
+        <img src="assets/opening-bird-only.png" alt="" class="corner-logo corner-logo-primary" loading="lazy" decoding="async">
     </div>
 
     <header class="hero" id="top">
         <nav class="top-nav">
             <a href="index.html" class="brand">DCFLSPORTFEST'26</a>
+            <img src="assets/gucunu-kesfet.png" alt="#Gücünü Keşfet" class="mobile-brand-logo" loading="lazy" decoding="async">
             <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-links" data-nav-toggle>Menü</button>
             <div class="nav-actions" id="site-nav-links" data-nav-links>
                 <a href="index.html" class="nav-link active">Ana Sayfa</a>
                 <a href="kurumsal.html" class="nav-link">Hakkımızda</a>
                 <a href="hizmetler.html" class="nav-link">Sıkça Sorulanlar</a>
-                <a href="program.html" class="nav-link">Program</a>
-                <a href="turnuva.html" class="nav-link">Turnuva</a>
+                <a href="program.html" class="nav-link">Program &amp; Turnuva</a>
+                <a href="finans.html" class="nav-link">Finans</a>
                 <a href="blog.html" class="nav-link">Blog</a>
                 <a href="iletisim.html" class="nav-link">İletişim</a>
             </div>
         </nav>
 
-        <div class="hero-shell">
+        <div class="hero-shell hero-with-video">
+            <div class="hero-video-bg" aria-hidden="true">
+                <video class="hero-bg-video" muted playsinline preload="metadata" data-hero-video-a></video>
+                <video class="hero-bg-video" muted playsinline preload="metadata" data-hero-video-b></video>
+            </div>
             <div class="hero-copy">
                 <p class="eyebrow">12-13-14 Mayıs 2026 | Doğan Cüceloğlu Fen Lisesi</p>
-                <h1>Küresel tempoda okul festivali.</h1>
+                <h1>Uluslararası Boyut</h1>
                 <p class="hero-text">
-                    Altaras tarzı sekmeli altyapı ve güçlü akışla Sportfest artık tek sayfa değil,
-                    hakkımızda, sıkça sorulanlar, program, turnuva, blog ve iletişim sekmeleriyle tam bir site yapısında.
+                    DCFLSPORTFEST'26, yalnızca yerel bir organizasyon değildir.
+                </p>
+                <ul class="hero-list">
+                    <li>Birden fazla ülkeden takım ve bireysel sporcu katılımı</li>
+                    <li>Nitelikli okullar ve spor kulüplerinin katılımı</li>
+                    <li>Profesyonel hakemler ve davetli konuşmacılar</li>
+                    <li>Çok dilli iletişim ve tanıtım</li>
+                </ul>
+                <p class="hero-text">
+                    Bu yapı sayesinde etkinlik, sponsor markalar için global görünürlük sağlar.
                 </p>
                 <div class="cta-row">
-                    <a href="hizmetler.html" class="btn btn-primary">Soruları İncele</a>
-                    <a href="iletisim.html" class="btn btn-ghost">Hızlı Başvuru</a>
+                    <a href="program.html" class="btn btn-primary">Program ve Turnuva</a>
                 </div>
                 <div class="stats">
                     <article><h3>10 Adet Branş</h3></article>
@@ -55,7 +82,7 @@
             </div>
 
             <aside class="hero-badge" aria-hidden="true">
-                <img src="assets/gucunu-kesfet.png" alt="#Gücünü Keşfet" class="hero-title-image">
+                <img src="assets/gucunu-kesfet.png" alt="#Gücünü Keşfet" class="hero-title-image" loading="lazy" decoding="async">
                 <div class="countdown-card" data-countdown data-target="2026-05-12T10:00:00+03:00">
                     <p class="countdown-title">SportFeste kalan süre</p>
                     <div class="countdown-grid">
@@ -176,16 +203,34 @@
                 return String(num).padStart(2, "0");
             }
 
+            function animateValue(el, value) {
+                if (!el || el.textContent === value) {
+                    return;
+                }
+
+                el.textContent = value;
+                el.classList.remove("countdown-pop");
+                void el.offsetWidth;
+                el.classList.add("countdown-pop");
+
+                var item = el.closest(".countdown-item");
+                if (item) {
+                    item.classList.remove("countdown-item-pulse");
+                    void item.offsetWidth;
+                    item.classList.add("countdown-item-pulse");
+                }
+            }
+
             function updateCountdown() {
                 var now = Date.now();
                 var diff = target - now;
 
                 if (diff <= 0) {
-                    daysEl.textContent = "0";
-                    hoursEl.textContent = "00";
-                    minutesEl.textContent = "00";
-                    secondsEl.textContent = "00";
-                    noteEl.textContent = "Festival başladı!";
+                    animateValue(daysEl, "0");
+                    animateValue(hoursEl, "00");
+                    animateValue(minutesEl, "00");
+                    animateValue(secondsEl, "00");
+                    noteEl.textContent = countdown.getAttribute("data-ended-text") || "Festival başladı!";
                     return true;
                 }
 
@@ -197,10 +242,10 @@
                 diff %= 60000;
                 var second = Math.floor(diff / 1000);
 
-                daysEl.textContent = String(day);
-                hoursEl.textContent = pad(hour);
-                minutesEl.textContent = pad(minute);
-                secondsEl.textContent = pad(second);
+                animateValue(daysEl, String(day));
+                animateValue(hoursEl, pad(hour));
+                animateValue(minutesEl, pad(minute));
+                animateValue(secondsEl, pad(second));
                 noteEl.textContent = "";
                 return false;
             }
@@ -216,10 +261,126 @@
                 }
             }, 1000);
         })();
+
+        (function () {
+            var videoA = document.querySelector("[data-hero-video-a]");
+            var videoB = document.querySelector("[data-hero-video-b]");
+            if (!videoA || !videoB) {
+                return;
+            }
+
+            var playlist = [
+                "assets/videos/voleybol-2.mp4",
+                "assets/videos/odul-toreni.mp4",
+                "assets/videos/sportfest-25.mp4"
+            ];
+            var videos = [videoA, videoB];
+            var activeSlot = 0;
+            var activeIndex = 0;
+            var isSwitching = false;
+            var nextPrepared = false;
+            var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            var saveDataMode = !!(connection && (connection.saveData || /2g/.test(String(connection.effectiveType || ""))));
+            var prefetchWindow = saveDataMode ? 0.9 : 2.2;
+            var switchWindow = saveDataMode ? 0.12 : 0.38;
+
+            function safePlay(video) {
+                var playPromise = video.play();
+                if (playPromise && typeof playPromise.catch === "function") {
+                    playPromise.catch(function () {
+                        // Autoplay policy may block play until user interaction.
+                    });
+                }
+            }
+
+            function setSource(video, src) {
+                if (video.getAttribute("data-src") === src) {
+                    return;
+                }
+
+                video.setAttribute("data-src", src);
+                video.src = src;
+                video.load();
+            }
+
+            function prepareNext() {
+                var standbySlot = 1 - activeSlot;
+                var nextIndex = (activeIndex + 1) % playlist.length;
+                setSource(videos[standbySlot], playlist[nextIndex]);
+                nextPrepared = true;
+            }
+
+            function crossfadeToNext() {
+                if (isSwitching) {
+                    return;
+                }
+                isSwitching = true;
+
+                if (!nextPrepared) {
+                    prepareNext();
+                }
+
+                var currentVideo = videos[activeSlot];
+                var nextSlot = 1 - activeSlot;
+                var nextVideo = videos[nextSlot];
+
+                safePlay(nextVideo);
+                nextVideo.classList.add("is-active");
+                currentVideo.classList.remove("is-active");
+
+                window.setTimeout(function () {
+                    currentVideo.pause();
+                    currentVideo.currentTime = 0;
+                    activeSlot = nextSlot;
+                    activeIndex = (activeIndex + 1) % playlist.length;
+                    nextPrepared = false;
+                    isSwitching = false;
+                }, 480);
+            }
+
+            videos.forEach(function (video, slot) {
+                video.addEventListener("timeupdate", function () {
+                    if (slot !== activeSlot || isSwitching || !Number.isFinite(video.duration)) {
+                        return;
+                    }
+
+                    var remaining = video.duration - video.currentTime;
+                    if (!nextPrepared && remaining <= prefetchWindow) {
+                        prepareNext();
+                    }
+
+                    if (remaining <= switchWindow) {
+                        crossfadeToNext();
+                    }
+                });
+
+                video.addEventListener("ended", function () {
+                    if (slot === activeSlot) {
+                        crossfadeToNext();
+                    }
+                });
+
+                video.addEventListener("error", function () {
+                    if (slot === activeSlot) {
+                        crossfadeToNext();
+                    }
+                });
+            });
+
+            setSource(videos[activeSlot], playlist[activeIndex]);
+            videos[activeSlot].classList.add("is-active");
+            safePlay(videos[activeSlot]);
+
+            document.addEventListener("visibilitychange", function () {
+                if (document.hidden) {
+                    videos[activeSlot].pause();
+                } else {
+                    safePlay(videos[activeSlot]);
+                }
+            });
+        })();
     </script>
-    <script src="script.js"></script>
+    <script src="script.js?v=20260322"></script>
 </body>
 </html>
-
-
 
