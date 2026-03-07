@@ -840,6 +840,10 @@ h1 {
     align-items: stretch;
 }
 
+.score-results-scroller {
+    margin-top: 0.1rem;
+}
+
 .score-card-result {
     min-height: 100%;
 }
@@ -2487,10 +2491,7 @@ canvas {
         scroll-snap-align: start;
     }
 
-    .score-results-grid {
-        display: flex;
-        flex-wrap: nowrap;
-        gap: 0.7rem;
+    .score-results-scroller {
         overflow-x: auto;
         overflow-y: hidden;
         overscroll-behavior-x: contain;
@@ -2501,6 +2502,14 @@ canvas {
         -webkit-overflow-scrolling: touch;
         touch-action: pan-x;
         scrollbar-width: thin;
+    }
+
+    .score-results-grid {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0.7rem;
+        width: max-content;
+        min-width: 100%;
     }
 
     .score-results-grid .score-card {

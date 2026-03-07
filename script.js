@@ -594,8 +594,10 @@ var renderScoreResults = (function () {
             return [
                 "<article class=\"fixture-panel score-results-branch-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + branch.key + "\">",
                 "    <h3>" + dayUi.resultsTitle(pickText(branch.name, lang)) + "</h3>",
-                "    <div class=\"scoreboard-grid score-results-grid\">",
+                "    <div class=\"score-results-scroller\">",
+                "        <div class=\"scoreboard-grid score-results-grid\">",
                 matches.map(function (match) { return renderResultMatchCard(match); }).join(""),
+                "        </div>",
                 "    </div>",
                 "</article>"
             ].join("");
