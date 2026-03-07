@@ -127,6 +127,115 @@
     </header>
 
     <main>
+        <section class="panel panel-highlight scoreboard-panel" data-scoreboard>
+            <div class="scoreboard-head">
+                <div class="section-head">
+                    <p class="section-kicker" data-scoreboard-kicker>SKOR MERKEZİ</p>
+                    <h2 data-scoreboard-title>Canlı Skor ve Sonuçlar</h2>
+                    <p class="section-text" data-scoreboard-text>Günün canlı karşılaşmalarını ve tamamlanan maç sonuçlarını tek panelden takip et.</p>
+                </div>
+                <div class="scoreboard-controls" role="tablist" aria-label="Skor paneli sekmeleri" data-scoreboard-tabs>
+                    <button type="button" class="scoreboard-tab active" data-score-tab="live" aria-selected="true" aria-controls="scoreboard-live-panel">Canlı</button>
+                    <button type="button" class="scoreboard-tab" data-score-tab="results" aria-selected="false" aria-controls="scoreboard-results-panel">Sonuçlar</button>
+                </div>
+            </div>
+
+            <div class="scoreboard-summary">
+                <article class="score-summary-card">
+                    <p class="score-summary-label" data-score-summary-label>Aktif karşılaşma</p>
+                    <strong class="score-summary-value">4</strong>
+                </article>
+                <article class="score-summary-card">
+                    <p class="score-summary-label" data-score-summary-label>Bugün tamamlanan maç</p>
+                    <strong class="score-summary-value">9</strong>
+                </article>
+                <article class="score-summary-card">
+                    <p class="score-summary-label" data-score-summary-label>Son güncelleme</p>
+                    <strong class="score-summary-value">15:42</strong>
+                </article>
+            </div>
+
+            <div class="scoreboard-view active" id="scoreboard-live-panel" data-score-panel="live">
+                <div class="scoreboard-grid">
+                    <article class="score-card score-card-live">
+                        <div class="score-card-head">
+                            <p class="score-card-branch" data-score-live-branch>Voleybol</p>
+                            <span class="score-card-badge score-card-badge-live" data-score-live-status>Canlı</span>
+                        </div>
+                        <div class="score-card-teams">
+                            <div class="score-card-team is-leading">
+                                <strong>DCFL A</strong>
+                                <span class="score-card-score">2</span>
+                            </div>
+                            <div class="score-card-team">
+                                <strong>Warsaw Falcons</strong>
+                                <span class="score-card-score">1</span>
+                            </div>
+                        </div>
+                        <p class="score-card-meta" data-score-live-meta>Yarı final | Kapalı Spor Salonu | 2. set</p>
+                    </article>
+
+                    <article class="score-card score-card-live">
+                        <div class="score-card-head">
+                            <p class="score-card-branch" data-score-live-branch>Basketbol</p>
+                            <span class="score-card-badge score-card-badge-live" data-score-live-status>Canlı</span>
+                        </div>
+                        <div class="score-card-teams">
+                            <div class="score-card-team">
+                                <strong>Istanbul Stars</strong>
+                                <span class="score-card-score">54</span>
+                            </div>
+                            <div class="score-card-team is-leading">
+                                <strong>Balkan Academy</strong>
+                                <span class="score-card-score">61</span>
+                            </div>
+                        </div>
+                        <p class="score-card-meta" data-score-live-meta>Grup A | Ana Saha | 3. çeyrek</p>
+                    </article>
+
+                    <article class="score-card score-card-live">
+                        <div class="score-card-head">
+                            <p class="score-card-branch" data-score-live-branch>Futbol</p>
+                            <span class="score-card-badge score-card-badge-live" data-score-live-status>67. dakika</span>
+                        </div>
+                        <div class="score-card-teams">
+                            <div class="score-card-team is-leading">
+                                <strong>DCFL Blue</strong>
+                                <span class="score-card-score">1</span>
+                            </div>
+                            <div class="score-card-team">
+                                <strong>Sofia Youth</strong>
+                                <span class="score-card-score">0</span>
+                            </div>
+                        </div>
+                        <p class="score-card-meta" data-score-live-meta>Yarı final | Dış Saha | 67. dakika</p>
+                    </article>
+
+                    <article class="score-card score-card-live">
+                        <div class="score-card-head">
+                            <p class="score-card-branch" data-score-live-branch>PlayStation</p>
+                            <span class="score-card-badge score-card-badge-live" data-score-live-status>Canlı</span>
+                        </div>
+                        <div class="score-card-teams">
+                            <div class="score-card-team">
+                                <strong>Mert K.</strong>
+                                <span class="score-card-score">2</span>
+                            </div>
+                            <div class="score-card-team is-leading">
+                                <strong>Jan Nowak</strong>
+                                <span class="score-card-score">3</span>
+                            </div>
+                        </div>
+                        <p class="score-card-meta" data-score-live-meta>Final | E-spor Alanı | 2. maç</p>
+                    </article>
+                </div>
+            </div>
+
+            <div class="scoreboard-view" id="scoreboard-results-panel" data-score-panel="results" hidden>
+                <div class="score-results-shell" data-score-results></div>
+            </div>
+        </section>
+
         <section class="panel panel-highlight contact-layout">
             <article class="contact-info">
                 <h2>İletişim Formu</h2>

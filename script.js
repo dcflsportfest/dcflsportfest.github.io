@@ -103,12 +103,61 @@
 })();
 
 (function () {
-    var tabGroups = document.querySelectorAll("[data-fixture-tabs]");
+    var scoreboards = document.querySelectorAll("[data-scoreboard]");
+    if (!scoreboards.length) {
+        return;
+    }
+
+    scoreboards.forEach(function (scoreboard) {
+        var tabs = scoreboard.querySelectorAll("[data-score-tab]");
+        var panels = scoreboard.querySelectorAll("[data-score-panel]");
+        if (!tabs.length || !panels.length) {
+            return;
+        }
+
+        function activate(tabKey) {
+            tabs.forEach(function (tab) {
+                var isActive = tab.getAttribute("data-score-tab") === tabKey;
+                tab.classList.toggle("active", isActive);
+                tab.setAttribute("aria-selected", isActive ? "true" : "false");
+            });
+
+            panels.forEach(function (panel) {
+                var isActive = panel.getAttribute("data-score-panel") === tabKey;
+                panel.classList.toggle("active", isActive);
+                panel.hidden = !isActive;
+            });
+        }
+
+        tabs.forEach(function (tab) {
+            tab.setAttribute("role", "tab");
+            tab.addEventListener("click", function () {
+                activate(tab.getAttribute("data-score-tab"));
+            });
+        });
+
+        panels.forEach(function (panel) {
+            panel.setAttribute("role", "tabpanel");
+            panel.hidden = !panel.classList.contains("active");
+        });
+
+        var activeTab = scoreboard.querySelector("[data-score-tab].active");
+        activate(activeTab ? activeTab.getAttribute("data-score-tab") : tabs[0].getAttribute("data-score-tab"));
+    });
+})();
+
+function initializeFixtureTabGroups(root) {
+    var scope = root || document;
+    var tabGroups = scope.querySelectorAll("[data-fixture-tabs]");
     if (!tabGroups.length) {
         return;
     }
 
     tabGroups.forEach(function (group) {
+        if (group.getAttribute("data-fixture-ready") === "true") {
+            return;
+        }
+
         var tabs = group.querySelectorAll("[data-fixture-tab]");
         if (!tabs.length) {
             return;
@@ -148,9 +197,226 @@
             panel.hidden = !panel.classList.contains("active");
         });
 
+        group.setAttribute("data-fixture-ready", "true");
+
         var initiallyActive = group.querySelector("[data-fixture-tab].active");
         activate(initiallyActive ? initiallyActive.getAttribute("data-fixture-tab") : tabs[0].getAttribute("data-fixture-tab"));
     });
+}
+
+var renderScoreResults = (function () {
+    var uiCopy = {
+        tr: {
+            dayTabsAria: "G\u00fcnlere g\u00f6re sonu\u00e7lar",
+            dayCaptions: {
+                "12-mayis": "Bran\u015fa g\u00f6re sonu\u00e7lar",
+                "13-mayis": "Bran\u015fa g\u00f6re sonu\u00e7lar",
+                "14-mayis": "Bran\u015fa g\u00f6re final sonu\u00e7lar\u0131"
+            },
+            resultsTitle: function (branchName) {
+                return branchName + " Sonu\u00e7lar\u0131";
+            }
+        },
+        en: {
+            dayTabsAria: "Results by day",
+            dayCaptions: {
+                "12-mayis": "Results by sports branch",
+                "13-mayis": "Results by sports branch",
+                "14-mayis": "Final results by sports branch"
+            },
+            resultsTitle: function (branchName) {
+                return branchName + " Results";
+            }
+        },
+        pl: {
+            dayTabsAria: "Wyniki wed\u0142ug dni",
+            dayCaptions: {
+                "12-mayis": "Wyniki wed\u0142ug dyscyplin",
+                "13-mayis": "Wyniki wed\u0142ug dyscyplin",
+                "14-mayis": "Wyniki fina\u0142owe wed\u0142ug dyscyplin"
+            },
+            resultsTitle: function (branchName) {
+                return "Wyniki: " + branchName;
+            }
+        }
+    };
+
+    var days = [
+        {
+            key: "12-mayis",
+            label: { tr: "12 May\u0131s", en: "May 12", pl: "12 maja" },
+            fullDate: { tr: "12 May\u0131s 2026", en: "May 12, 2026", pl: "12 maja 2026" },
+            branches: [
+                { key: "voleybol", name: { tr: "Voleybol", en: "Volleyball", pl: "Siatk\u00f3wka" }, status: { tr: "Grup A", en: "Group A", pl: "Grupa A" }, home: "DCFL A", homeScore: "2", away: "Warsaw Falcons", awayScore: "0", winner: "home", meta: { tr: "A\u00e7\u0131l\u0131\u015f g\u00fcn\u00fc | Kapal\u0131 Spor Salonu | Grup ma\u00e7\u0131", en: "Opening day | Indoor hall | Group match", pl: "Dzie\u0144 otwarcia | Hala sportowa | Mecz grupowy" } },
+                { key: "basketbol", name: { tr: "Basketbol", en: "Basketball", pl: "Koszyk\u00f3wka" }, status: { tr: "Grup B", en: "Group B", pl: "Grupa B" }, home: "Istanbul Stars", homeScore: "68", away: "Sofia Hoops", awayScore: "63", winner: "home", meta: { tr: "Ana Saha | Grup etab\u0131 | G\u00fcn sonu skoru", en: "Main court | Group stage | End-of-day score", pl: "Boisko g\u0142\u00f3wne | Etap grupowy | Wynik dnia" } },
+                { key: "futbol", name: { tr: "Futbol", en: "Football", pl: "Pi\u0142ka No\u017cna" }, status: { tr: "Grup C", en: "Group C", pl: "Grupa C" }, home: "DCFL Red", homeScore: "3", away: "Balkan Youth", awayScore: "1", winner: "home", meta: { tr: "D\u0131\u015f Saha | Grup ma\u00e7\u0131 | 90 dakika", en: "Outdoor field | Group match | 90 minutes", pl: "Boisko zewn\u0119trzne | Mecz grupowy | 90 minut" } },
+                { key: "masa-tenisi", name: { tr: "Masa Tenisi", en: "Table Tennis", pl: "Tenis Sto\u0142owy" }, status: { tr: "\u00c7eyrek Final", en: "Quarter-final", pl: "\u0106wier\u0107fina\u0142" }, home: "Elif Kaya", homeScore: "3", away: "Jana Lis", awayScore: "1", winner: "home", meta: { tr: "Salon B | Kad\u0131nlar tablosu", en: "Hall B | Women's bracket", pl: "Hala B | Tabela kobiet" } },
+                { key: "okculuk", name: { tr: "Ok\u00e7uluk", en: "Archery", pl: "\u0141ucznictwo" }, status: { tr: "S\u0131ralama", en: "Ranking", pl: "Ranking" }, home: "DCFL Archers", homeScore: "122", away: "Riga Target", awayScore: "118", winner: "home", meta: { tr: "A\u00e7\u0131k Alan | \u0130lk g\u00fcn s\u0131ralama puan\u0131", en: "Open area | First-day ranking score", pl: "Strefa otwarta | Punkty rankingowe pierwszego dnia" } },
+                { key: "oryantiring", name: { tr: "Oryantiring", en: "Orienteering", pl: "Bieg na Orientacj\u0119" }, status: { tr: "Parkur 1", en: "Course 1", pl: "Trasa 1" }, home: "DCFL Trail", homeScore: "38:14", away: "Sofia Compass", awayScore: "40:02", winner: "home", meta: { tr: "Kamp\u00fcs rotas\u0131 | En iyi derece", en: "Campus route | Best time", pl: "Trasa kampusowa | Najlepszy czas" } },
+                { key: "bahce-satranci", name: { tr: "Bah\u00e7e Satranc\u0131", en: "Garden Chess", pl: "Szachy Ogrodowe" }, status: { tr: "Eleme Turu", en: "Elimination round", pl: "Runda eliminacyjna" }, home: "DCFL White", homeScore: "1", away: "Plovdiv Kings", awayScore: "0", winner: "home", meta: { tr: "Bah\u00e7e Alan\u0131 | A\u00e7\u0131l\u0131\u015f g\u00fcn\u00fc e\u015fle\u015fmesi", en: "Garden area | Opening-day pairing", pl: "Strefa ogrodowa | Para dnia otwarcia" } },
+                { key: "playstation", name: { tr: "PlayStation", en: "PlayStation", pl: "PlayStation" }, status: { tr: "Grup Etab\u0131", en: "Group stage", pl: "Etap grupowy" }, home: "Mert K.", homeScore: "3", away: "Kamil P.", awayScore: "1", winner: "home", meta: { tr: "E-spor Alan\u0131 | \u0130lk ma\u00e7", en: "E-sports area | Opening match", pl: "Strefa e-sportu | Pierwszy mecz" } },
+                { key: "atletizm", name: { tr: "Atletizm", en: "Athletics", pl: "Lekkoatletyka" }, status: { tr: "100m Se\u00e7me", en: "100m qualifying", pl: "Eliminacje 100 m" }, home: "DCFL Sprint", homeScore: "11.52", away: "Varna Track", awayScore: "11.68", winner: "home", meta: { tr: "Ana Pist | G\u00fcn\u00fcn en iyi derecesi", en: "Main track | Best time of the day", pl: "Tor g\u0142\u00f3wny | Najlepszy wynik dnia" } },
+                { key: "bahce-oyunlari", name: { tr: "Bah\u00e7e Oyunlar\u0131", en: "Garden Games", pl: "Gry Ogrodowe" }, status: { tr: "Tak\u0131m Oyunu", en: "Team game", pl: "Gra dru\u017cynowa" }, home: "Tak\u0131m Mavi", homeScore: "21", away: "Tak\u0131m Gold", awayScore: "18", winner: "home", meta: { tr: "Festival Bah\u00e7esi | A\u00e7\u0131l\u0131\u015f g\u00fcn\u00fc puan\u0131", en: "Festival garden | Opening-day score", pl: "Ogr\u00f3d festiwalowy | Wynik dnia otwarcia" } }
+            ]
+        },
+        {
+            key: "13-mayis",
+            label: { tr: "13 May\u0131s", en: "May 13", pl: "13 maja" },
+            fullDate: { tr: "13 May\u0131s 2026", en: "May 13, 2026", pl: "13 maja 2026" },
+            branches: [
+                { key: "voleybol", name: { tr: "Voleybol", en: "Volleyball", pl: "Siatk\u00f3wka" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "DCFL A", homeScore: "2", away: "Skopje Smash", awayScore: "1", winner: "home", meta: { tr: "Kapal\u0131 Spor Salonu | 3 set sonunda", en: "Indoor hall | After 3 sets", pl: "Hala sportowa | Po 3 setach" } },
+                { key: "basketbol", name: { tr: "Basketbol", en: "Basketball", pl: "Koszyk\u00f3wka" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "DCFL Hoops", homeScore: "72", away: "Balkan Academy", awayScore: "75", winner: "away", meta: { tr: "Ana Saha | Son saniye isabeti", en: "Main court | Last-second basket", pl: "Boisko g\u0142\u00f3wne | Rzut w ostatniej sekundzie" } },
+                { key: "futbol", name: { tr: "Futbol", en: "Football", pl: "Pi\u0142ka No\u017cna" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "DCFL Blue", homeScore: "2", away: "Sofia Youth", awayScore: "0", winner: "home", meta: { tr: "D\u0131\u015f Saha | Normal s\u00fcre sonucu", en: "Outdoor field | End of regular time", pl: "Boisko zewn\u0119trzne | Wynik po regulaminowym czasie" } },
+                { key: "masa-tenisi", name: { tr: "Masa Tenisi", en: "Table Tennis", pl: "Tenis Sto\u0142owy" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "DCFL Aylin", homeScore: "3", away: "Skopje Smash", awayScore: "1", winner: "home", meta: { tr: "Salon B | Kad\u0131nlar yar\u0131 finali", en: "Hall B | Women's semi-final", pl: "Hala B | P\u00f3\u0142fina\u0142 kobiet" } },
+                { key: "okculuk", name: { tr: "Ok\u00e7uluk", en: "Archery", pl: "\u0141ucznictwo" }, status: { tr: "Eleme", en: "Elimination", pl: "Eliminacje" }, home: "DCFL Archers", homeScore: "118", away: "Belgrade Youth", awayScore: "121", winner: "away", meta: { tr: "A\u00e7\u0131k Alan | Klasman turu", en: "Open area | Ranking round", pl: "Strefa otwarta | Runda klasyfikacyjna" } },
+                { key: "oryantiring", name: { tr: "Oryantiring", en: "Orienteering", pl: "Bieg na Orientacj\u0119" }, status: { tr: "Parkur 2", en: "Course 2", pl: "Trasa 2" }, home: "DCFL Trail", homeScore: "36:52", away: "Belgrade Map", awayScore: "35:47", winner: "away", meta: { tr: "Kamp\u00fcs d\u0131\u015f parkur | G\u00fcnl\u00fck s\u0131ralama", en: "Outer campus course | Daily ranking", pl: "Zewn\u0119trzna trasa kampusu | Dzienny ranking" } },
+                { key: "bahce-satranci", name: { tr: "Bah\u00e7e Satranc\u0131", en: "Garden Chess", pl: "Szachy Ogrodowe" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "DCFL Black", homeScore: "0", away: "Plovdiv Queens", awayScore: "1", winner: "away", meta: { tr: "Bah\u00e7e Alan\u0131 | Strateji turu", en: "Garden area | Strategy round", pl: "Strefa ogrodowa | Runda strategiczna" } },
+                { key: "playstation", name: { tr: "PlayStation", en: "PlayStation", pl: "PlayStation" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "Ali T.", homeScore: "1", away: "Jan Nowak", awayScore: "2", winner: "away", meta: { tr: "E-spor Alan\u0131 | Eleme tablosu", en: "E-sports area | Elimination bracket", pl: "Strefa e-sportu | Drabinka eliminacyjna" } },
+                { key: "atletizm", name: { tr: "Atletizm", en: "Athletics", pl: "Lekkoatletyka" }, status: { tr: "100m Final", en: "100m final", pl: "Fina\u0142 100 m" }, home: "DCFL Sprint", homeScore: "11.42", away: "Thessaloniki Track", awayScore: "11.58", winner: "home", meta: { tr: "Ana Pist | Final derecesi", en: "Main track | Final time", pl: "Tor g\u0142\u00f3wny | Wynik fina\u0142u" } },
+                { key: "bahce-oyunlari", name: { tr: "Bah\u00e7e Oyunlar\u0131", en: "Garden Games", pl: "Gry Ogrodowe" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "Tak\u0131m Gold", homeScore: "24", away: "Tak\u0131m Forest", awayScore: "19", winner: "home", meta: { tr: "Festival Bah\u00e7esi | G\u00fcn sonu e\u015fle\u015fmesi", en: "Festival garden | End-of-day pairing", pl: "Ogr\u00f3d festiwalowy | Zestawienie dnia" } }
+            ]
+        },
+        {
+            key: "14-mayis",
+            label: { tr: "14 May\u0131s", en: "May 14", pl: "14 maja" },
+            fullDate: { tr: "14 May\u0131s 2026", en: "May 14, 2026", pl: "14 maja 2026" },
+            branches: [
+                { key: "voleybol", name: { tr: "Voleybol", en: "Volleyball", pl: "Siatk\u00f3wka" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "DCFL A", homeScore: "3", away: "Balkan Academy", awayScore: "1", winner: "home", meta: { tr: "Kupa ma\u00e7\u0131 | \u015eampiyonluk kar\u015f\u0131la\u015fmas\u0131", en: "Cup match | Championship game", pl: "Mecz o puchar | Spotkanie o mistrzostwo" } },
+                { key: "basketbol", name: { tr: "Basketbol", en: "Basketball", pl: "Koszyk\u00f3wka" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "DCFL Hoops", homeScore: "81", away: "Balkan Academy", awayScore: "77", winner: "home", meta: { tr: "Ana Saha | \u015eampiyonluk ma\u00e7\u0131", en: "Main court | Championship game", pl: "Boisko g\u0142\u00f3wne | Mecz o mistrzostwo" } },
+                { key: "futbol", name: { tr: "Futbol", en: "Football", pl: "Pi\u0142ka No\u017cna" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "DCFL Blue", homeScore: "1", away: "Belgrade Youth", awayScore: "2", winner: "away", meta: { tr: "D\u0131\u015f Saha | Final skoru", en: "Outdoor field | Final score", pl: "Boisko zewn\u0119trzne | Wynik fina\u0142u" } },
+                { key: "masa-tenisi", name: { tr: "Masa Tenisi", en: "Table Tennis", pl: "Tenis Sto\u0142owy" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "DCFL Aylin", homeScore: "3", away: "Maria Z.", awayScore: "2", winner: "home", meta: { tr: "Salon B | \u015eampiyonluk ma\u00e7\u0131", en: "Hall B | Championship match", pl: "Hala B | Mecz o mistrzostwo" } },
+                { key: "okculuk", name: { tr: "Ok\u00e7uluk", en: "Archery", pl: "\u0141ucznictwo" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "DCFL Archers", homeScore: "127", away: "Belgrade Youth", awayScore: "124", winner: "home", meta: { tr: "A\u00e7\u0131k Alan | Final at\u0131\u015flar\u0131", en: "Open area | Final shots", pl: "Strefa otwarta | Strza\u0142y fina\u0142owe" } },
+                { key: "oryantiring", name: { tr: "Oryantiring", en: "Orienteering", pl: "Bieg na Orientacj\u0119" }, status: { tr: "Final Parkur", en: "Final course", pl: "Trasa fina\u0142owa" }, home: "DCFL Trail", homeScore: "34:08", away: "Sofia Compass", awayScore: "35:21", winner: "home", meta: { tr: "Final rota | En iyi derece", en: "Final route | Best time", pl: "Trasa fina\u0142owa | Najlepszy czas" } },
+                { key: "bahce-satranci", name: { tr: "Bah\u00e7e Satranc\u0131", en: "Garden Chess", pl: "Szachy Ogrodowe" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "DCFL White", homeScore: "1", away: "Plovdiv Queens", awayScore: "0", winner: "home", meta: { tr: "Bah\u00e7e Alan\u0131 | \u015eampiyonluk oyunu", en: "Garden area | Championship game", pl: "Strefa ogrodowa | Partia o mistrzostwo" } },
+                { key: "playstation", name: { tr: "PlayStation", en: "PlayStation", pl: "PlayStation" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "Mert K.", homeScore: "2", away: "Jan Nowak", awayScore: "3", winner: "away", meta: { tr: "E-spor Alan\u0131 | Final serisi", en: "E-sports area | Final series", pl: "Strefa e-sportu | Seria fina\u0142owa" } },
+                { key: "atletizm", name: { tr: "Atletizm", en: "Athletics", pl: "Lekkoatletyka" }, status: { tr: "100m Final", en: "100m final", pl: "Fina\u0142 100 m" }, home: "DCFL Sprint", homeScore: "11.38", away: "Thessaloniki Track", awayScore: "11.44", winner: "home", meta: { tr: "Ana Pist | Madalya yar\u0131\u015f\u0131", en: "Main track | Medal race", pl: "Tor g\u0142\u00f3wny | Wy\u015bcig o medale" } },
+                { key: "bahce-oyunlari", name: { tr: "Bah\u00e7e Oyunlar\u0131", en: "Garden Games", pl: "Gry Ogrodowe" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "Tak\u0131m Gold", homeScore: "26", away: "Tak\u0131m Mavi", awayScore: "22", winner: "home", meta: { tr: "Festival Bah\u00e7esi | Final puan\u0131", en: "Festival garden | Final score", pl: "Ogr\u00f3d festiwalowy | Wynik fina\u0142u" } }
+            ]
+        }
+    ];
+
+    function pickText(value, lang) {
+        if (value && typeof value === "object") {
+            return value[lang] || value.tr || value.en || value.pl || "";
+        }
+        return value || "";
+    }
+
+    function renderBranchCard(branch, lang) {
+        var homeClass = branch.winner === "home" ? " is-leading" : "";
+        var awayClass = branch.winner === "away" ? " is-leading" : "";
+
+        return [
+            "<article class=\"score-card\">",
+            "    <div class=\"score-card-head\">",
+            "        <p class=\"score-card-branch\">" + pickText(branch.name, lang) + "</p>",
+            "        <span class=\"score-card-badge score-card-badge-final\">" + pickText(branch.status, lang) + "</span>",
+            "    </div>",
+            "    <div class=\"score-card-teams\">",
+            "        <div class=\"score-card-team" + homeClass + "\">",
+            "            <strong>" + branch.home + "</strong>",
+            "            <span class=\"score-card-score\">" + branch.homeScore + "</span>",
+            "        </div>",
+            "        <div class=\"score-card-team" + awayClass + "\">",
+            "            <strong>" + branch.away + "</strong>",
+            "            <span class=\"score-card-score\">" + branch.awayScore + "</span>",
+            "        </div>",
+            "    </div>",
+            "    <p class=\"score-card-meta\">" + pickText(branch.meta, lang) + "</p>",
+            "</article>"
+        ].join("");
+    }
+
+    function renderDayPanel(day, lang, dayUi, isActive) {
+        var branchTabs = day.branches.map(function (branch, index) {
+            return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-fixture-tab=\"" + branch.key + "\">" + pickText(branch.name, lang) + "</button>";
+        }).join("");
+
+        var branchPanels = day.branches.map(function (branch, index) {
+            return [
+                "<article class=\"fixture-panel score-results-branch-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + branch.key + "\">",
+                "    <h3>" + dayUi.resultsTitle(pickText(branch.name, lang)) + "</h3>",
+                "    <div class=\"scoreboard-grid score-results-grid\">",
+                "        " + renderBranchCard(branch, lang),
+                "    </div>",
+                "</article>"
+            ].join("");
+        }).join("");
+
+        return [
+            "<section class=\"score-results-day-panel" + (isActive ? " active" : "") + "\" id=\"score-results-" + day.key + "\" data-score-day-panel=\"" + day.key + "\"" + (isActive ? "" : " hidden") + ">",
+            "    <div class=\"score-results-head\">",
+            "        <p class=\"score-results-date\">" + pickText(day.fullDate, lang) + "</p>",
+            "        <p class=\"score-results-caption\">" + dayUi.dayCaptions[day.key] + "</p>",
+            "    </div>",
+            "    <div class=\"fixture-tabs score-results-branch-tabs\" data-fixture-tabs>",
+            "        " + branchTabs,
+            "    </div>",
+            "    <div class=\"fixture-panels\">",
+            "        " + branchPanels,
+            "    </div>",
+            "</section>"
+        ].join("");
+    }
+
+    function activateDay(group, dayKey) {
+        var tabs = group.querySelectorAll("[data-score-day-tab]");
+        var panels = group.querySelectorAll("[data-score-day-panel]");
+
+        tabs.forEach(function (tab) {
+            var isActive = tab.getAttribute("data-score-day-tab") === dayKey;
+            tab.classList.toggle("active", isActive);
+            tab.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+
+        panels.forEach(function (panel) {
+            var isActive = panel.getAttribute("data-score-day-panel") === dayKey;
+            panel.classList.toggle("active", isActive);
+            panel.hidden = !isActive;
+        });
+    }
+
+    return function (lang) {
+        var currentLang = uiCopy[lang] ? lang : "tr";
+        var dayUi = uiCopy[currentLang];
+        var shells = document.querySelectorAll("[data-score-results]");
+        if (!shells.length) {
+            return;
+        }
+
+        shells.forEach(function (shell) {
+            shell.innerHTML = [
+                "<div class=\"fixture-tabs score-results-day-tabs\" role=\"tablist\" aria-label=\"" + dayUi.dayTabsAria + "\">",
+                days.map(function (day, index) {
+                    return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-score-day-tab=\"" + day.key + "\" aria-selected=\"" + (index === 0 ? "true" : "false") + "\" aria-controls=\"score-results-" + day.key + "\">" + pickText(day.label, currentLang) + "</button>";
+                }).join(""),
+                "</div>",
+                "<div class=\"score-results-day-panels\">",
+                days.map(function (day, index) {
+                    return renderDayPanel(day, currentLang, dayUi, index === 0);
+                }).join(""),
+                "</div>"
+            ].join("");
+
+            shell.querySelectorAll("[data-score-day-tab]").forEach(function (tab) {
+                tab.setAttribute("role", "tab");
+                tab.addEventListener("click", function () {
+                    activateDay(shell, tab.getAttribute("data-score-day-tab"));
+                });
+            });
+
+            shell.querySelectorAll("[data-score-day-panel]").forEach(function (panel) {
+                panel.setAttribute("role", "tabpanel");
+            });
+
+            initializeFixtureTabGroups(shell);
+            activateDay(shell, days[0].key);
+        });
+    };
+})();
+
+(function () {
+    initializeFixtureTabGroups(document);
 })();
 
 (function () {
@@ -288,6 +554,25 @@
         });
     }
 
+    function applyScoreboard(copy) {
+        if (!copy || !copy.scoreboard) {
+            return;
+        }
+
+        setText("[data-scoreboard-kicker]", copy.scoreboard.kicker);
+        setText("[data-scoreboard-title]", copy.scoreboard.title);
+        setText("[data-scoreboard-text]", copy.scoreboard.text);
+        setAttr("[data-scoreboard-tabs]", "aria-label", copy.scoreboard.tabAria);
+        setList(".scoreboard-tab", copy.scoreboard.tabs);
+        setList("[data-score-summary-label]", copy.scoreboard.summaryLabels);
+        setList("[data-score-live-branch]", copy.scoreboard.liveBranches);
+        setList("[data-score-live-status]", copy.scoreboard.liveStatuses);
+        setList("[data-score-live-meta]", copy.scoreboard.liveMeta);
+        setList("[data-score-result-branch]", copy.scoreboard.resultBranches);
+        setList("[data-score-result-status]", copy.scoreboard.resultStatuses);
+        setList("[data-score-result-meta]", copy.scoreboard.resultMeta);
+    }
+
     function applyCommon(lang) {
         var copy = common[lang] || common.tr;
         document.documentElement.lang = lang;
@@ -313,7 +598,7 @@
         var copy = {
             tr: {
                 title: "DCFLSPORTFEST'26 | Ana Sayfa",
-                h1: "Uluslararası Spor ve Gençlik Festivali",
+                h1: "Uluslararası Spor ve Gençlik Festivali",
                 hero: [
                     "DCFLSPORTFEST'26, yalnızca yerel bir organizasyon değildir.",
                     "Bu yapı sayesinde etkinlik, sponsor markalar için global görünürlük sağlar."
@@ -325,13 +610,36 @@
                     "Çok dilli iletişim ve tanıtım"
                 ],
                 cta: "Program ve Turnuva",
+                stats: ["10 Adet Branş", "Her Gün 200+ Katılımcı"],
                 sponsorCta: "Sponsor Ol",
                 countdown: "SportFeste kalan süre",
                 countdownLabels: ["Gün", "Saat", "Dakika", "Saniye"],
                 ended: "Festival başladı!",
-                sectionKicker: "FESTIVAL HATLARI",
-                sectionTitle: "Branşlar",
-                branches: ["Voleybol", "Basketbol", "Futbol", "Masa tenisi", "Okçuluk", "Oryantiring", "Bahçe Satrancı", "Playstation Turnuvası", "Atletizm", "Bahçe Oyunları"],
+                scoreboard: {
+                    kicker: "SKOR MERKEZİ",
+                    title: "Canlı Skor ve Sonuçlar",
+                    text: "Günün canlı karşılaşmalarını ve tamamlanan maç sonuçlarını tek panelden takip et.",
+                    tabAria: "Skor paneli sekmeleri",
+                    tabs: ["Canlı", "Sonuçlar"],
+                    summaryLabels: ["Aktif karşılaşma", "Bugün tamamlanan maç", "Son güncelleme"],
+                    liveBranches: ["Voleybol", "Basketbol", "Futbol", "PlayStation"],
+                    liveStatuses: ["Canlı", "Canlı", "67. dakika", "Canlı"],
+                    liveMeta: [
+                        "Yarı final | Kapalı Spor Salonu | 2. set",
+                        "Grup A | Ana Saha | 3. çeyrek",
+                        "Yarı final | Dış Saha | 67. dakika",
+                        "Final | E-spor Alanı | 2. maç"
+                    ],
+                    resultBranches: ["Masa Tenisi", "Okçuluk", "Atletizm", "Bahçe Satrancı"],
+                    resultStatuses: ["Final", "Tamamlandı", "Tamamlandı", "Tamamlandı"],
+                    resultMeta: [
+                        "Kadınlar yarı finali | Salon B",
+                        "Klasman turu | Açık Alan",
+                        "100m finali | Ana Pist",
+                        "Eleme turu | Bahçe Alanı"
+                    ]
+                },
+                branches: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Okçuluk", "Oryantiring", "Bahçe Satrancı", "PlayStation Turnuvası", "Atletizm", "Bahçe Oyunları"],
                 contactTitle: "İletişim Formu",
                 quick: "Hızlı Mesaj",
                 labels: ["Ad Soyad/ Firma Adı", "E-posta", "Konu", "Mesaj"],
@@ -340,7 +648,7 @@
             },
             en: {
                 title: "DCFLSPORTFEST'26 | Home",
-                h1: "International Scale",
+                h1: "International Sports and Youth Festival",
                 hero: [
                     "DCFLSPORTFEST'26 is not only a local organization.",
                     "This structure gives sponsor brands global visibility."
@@ -352,12 +660,35 @@
                     "Multilingual communication and promotion"
                 ],
                 cta: "Program and Tournament",
+                stats: ["10 Sports Branches", "200+ Participants Daily"],
                 sponsorCta: "Become a Sponsor",
-                countdown: "Time left to Sportfest",
+                countdown: "Time Left to Sportfest",
                 countdownLabels: ["Days", "Hours", "Minutes", "Seconds"],
                 ended: "The festival has started!",
-                sectionKicker: "FESTIVAL LINES",
-                sectionTitle: "Sports Branches",
+                scoreboard: {
+                    kicker: "SCORE CENTER",
+                    title: "Live Scores and Results",
+                    text: "Track live matches and completed results from a single panel.",
+                    tabAria: "Score panel tabs",
+                    tabs: ["Live", "Results"],
+                    summaryLabels: ["Active matches", "Finished today", "Last update"],
+                    liveBranches: ["Volleyball", "Basketball", "Football", "PlayStation"],
+                    liveStatuses: ["Live", "Live", "67th minute", "Live"],
+                    liveMeta: [
+                        "Semi-final | Indoor Hall | 2nd set",
+                        "Group A | Main Court | 3rd quarter",
+                        "Semi-final | Outdoor Field | 67th minute",
+                        "Final | E-sports Area | Match 2"
+                    ],
+                    resultBranches: ["Table Tennis", "Archery", "Athletics", "Garden Chess"],
+                    resultStatuses: ["Final", "Completed", "Completed", "Completed"],
+                    resultMeta: [
+                        "Women's semi-final | Hall B",
+                        "Ranking round | Open Area",
+                        "100m final | Main Track",
+                        "Elimination round | Garden Area"
+                    ]
+                },
                 branches: ["Volleyball", "Basketball", "Football", "Table Tennis", "Archery", "Orienteering", "Garden Chess", "PlayStation Tournament", "Athletics", "Garden Games"],
                 contactTitle: "Contact Form",
                 quick: "Quick Message",
@@ -367,27 +698,50 @@
             },
             pl: {
                 title: "DCFLSPORTFEST'26 | Strona glowna",
-                h1: "Wymiar miedzynarodowy",
+                h1: "Miedzynarodowy Festiwal Sportu i Mlodziezy",
                 hero: [
                     "DCFLSPORTFEST'26 to nie tylko lokalna organizacja.",
-                    "Dzieki temu wydarzenie zapewnia sponsorom globalna widocznosc."
+                    "Ta struktura zapewnia sponsorom globalna widocznosc."
                 ],
                 list: [
-                    "Udzial druzyn i zawodnikow indywidualnych z wielu krajow",
+                    "Druzyny i zawodnicy indywidualni z wielu krajow",
                     "Udzial renomowanych szkol i klubow sportowych",
                     "Profesjonalni sedziowie i zaproszeni prelegenci",
                     "Wielojezyczna komunikacja i promocja"
                 ],
                 cta: "Program i Turniej",
-                sponsorCta: "Zostan sponsorem",
+                stats: ["10 Dyscyplin", "200+ Uczestnikow Dziennie"],
+                sponsorCta: "Zostan Sponsorem",
                 countdown: "Czas do Sportfestu",
-                countdownLabels: ["Dni", "Godz", "Min", "Sek"],
+                countdownLabels: ["Dni", "Godz.", "Min.", "Sek."],
                 ended: "Festiwal sie rozpoczal!",
-                sectionKicker: "LINIE FESTIWALU",
-                sectionTitle: "Dyscypliny",
+                scoreboard: {
+                    kicker: "CENTRUM WYNIKOW",
+                    title: "Wyniki na Zywo i Rezultaty",
+                    text: "Sledz mecze na zywo i zakonczone wyniki w jednym panelu.",
+                    tabAria: "Zakladki panelu wynikow",
+                    tabs: ["Na Zywo", "Rezultaty"],
+                    summaryLabels: ["Aktywne mecze", "Zakonczone dzisiaj", "Ostatnia aktualizacja"],
+                    liveBranches: ["Siatkowka", "Koszykowka", "Pilka Nozna", "PlayStation"],
+                    liveStatuses: ["Na Zywo", "Na Zywo", "67. minuta", "Na Zywo"],
+                    liveMeta: [
+                        "Polfinal | Hala sportowa | 2. set",
+                        "Grupa A | Boisko glowne | 3. kwarta",
+                        "Polfinal | Boisko zewnetrzne | 67. minuta",
+                        "Final | Strefa e-sportu | Mecz 2"
+                    ],
+                    resultBranches: ["Tenis Stolowy", "Lucznictwo", "Lekkoatletyka", "Szachy Ogrodowe"],
+                    resultStatuses: ["Final", "Zakonczono", "Zakonczono", "Zakonczono"],
+                    resultMeta: [
+                        "Polfinal kobiet | Hala B",
+                        "Runda klasyfikacyjna | Strefa otwarta",
+                        "Final 100 m | Tor glowny",
+                        "Runda eliminacyjna | Strefa ogrodowa"
+                    ]
+                },
                 branches: ["Siatkowka", "Koszykowka", "Pilka nozna", "Tenis stolowy", "Lucznictwo", "Bieg na orientacje", "Szachy ogrodowe", "Turniej PlayStation", "Lekkoatletyka", "Gry ogrodowe"],
-                contactTitle: "Formularz kontaktowy",
-                quick: "Szybka wiadomosc",
+                contactTitle: "Formularz Kontaktowy",
+                quick: "Szybka Wiadomosc",
                 labels: ["Imie i nazwisko / Firma", "E-mail", "Temat", "Wiadomosc"],
                 placeholders: ["Imie i nazwisko / Firma", "przyklad@mail.com", "Rejestracja druzyny / Sponsoring / Pytanie", "Napisz wiadomosc..."],
                 send: "Wyslij"
@@ -399,14 +753,15 @@
         setList(".hero-copy .hero-text", copy.hero);
         setList(".hero-list li", copy.list);
         setText(".cta-row .btn", copy.cta);
+        setText(".stats-branch-trigger h3", copy.stats[0]);
+        setText(".stats article:nth-child(2) h3", copy.stats[1]);
         setText(".countdown-title", copy.countdown);
         setText(".countdown-cta", copy.sponsorCta);
         setList(".countdown-label", copy.countdownLabels);
         setAttr("[data-countdown]", "data-ended-text", copy.ended);
+        applyScoreboard(copy);
+        renderScoreResults(lang);
         setList(".home-branch-list li", copy.branches);
-        setText("main > .panel .section-head .section-kicker", copy.sectionKicker);
-        setText("main > .panel .section-head h2", copy.sectionTitle);
-        setList(".branch-list li", copy.branches);
         setText(".contact-info h2", copy.contactTitle);
         setText(".contact-form-card h2", copy.quick);
         setText("label[for='home-name']", copy.labels[0]);
@@ -419,7 +774,6 @@
         setAttr("#home-message", "placeholder", copy.placeholders[3]);
         setText(".contact-form-card .btn", copy.send);
     }
-
     function applyProgram(lang) {
         var copy = {
             tr: {
