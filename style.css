@@ -2467,19 +2467,25 @@ canvas {
     .scoreboard-view > .scoreboard-grid,
     .score-results-grid {
         display: flex;
+        flex-wrap: nowrap;
         gap: 0.7rem;
-        overflow-x: auto;
+        overflow-x: scroll;
+        overflow-y: hidden;
         overscroll-behavior-x: contain;
         scroll-snap-type: x mandatory;
+        scroll-padding-left: 0.2rem;
+        padding-right: 18vw;
         padding-bottom: 0.3rem;
         -webkit-overflow-scrolling: touch;
         touch-action: pan-x;
+        scrollbar-width: thin;
     }
 
     .scoreboard-view > .scoreboard-grid .score-card,
     .score-results-grid .score-card {
-        flex: 0 0 84vw;
-        min-width: 84vw;
+        flex: 0 0 76vw;
+        min-width: 76vw;
+        max-width: 76vw;
         scroll-snap-align: start;
     }
 
