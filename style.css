@@ -2488,16 +2488,26 @@ canvas {
     }
 
     .score-results-grid {
-        display: grid;
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-wrap: nowrap;
         gap: 0.7rem;
-        overflow: visible;
-        padding-right: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scroll-padding-left: 0.2rem;
+        padding-right: 18vw;
+        padding-bottom: 0.3rem;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x;
+        scrollbar-width: thin;
     }
 
     .score-results-grid .score-card {
-        min-width: 0;
-        max-width: none;
+        flex: 0 0 76vw;
+        min-width: 76vw;
+        max-width: 76vw;
+        scroll-snap-align: start;
     }
 
     .section-head h2,
