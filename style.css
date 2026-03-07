@@ -854,6 +854,14 @@ h1 {
     cursor: grabbing;
 }
 
+.score-results-carousel {
+    display: block;
+}
+
+.score-results-nav {
+    display: none;
+}
+
 .score-card-result {
     min-height: 100%;
 }
@@ -2512,6 +2520,42 @@ canvas {
         -webkit-overflow-scrolling: touch;
         touch-action: pan-x;
         scrollbar-width: thin;
+    }
+
+    .score-results-carousel {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr) 42px;
+        align-items: center;
+        gap: 0.42rem;
+    }
+
+    .score-results-carousel.is-static {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .score-results-carousel.is-static .score-results-nav {
+        display: none;
+    }
+
+    .score-results-nav {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        min-width: 42px;
+        border: 1px solid rgba(151, 185, 239, 0.22);
+        border-radius: 999px;
+        background: rgba(12, 27, 56, 0.88);
+        color: #f5f9ff;
+        font: inherit;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .score-results-nav:disabled {
+        opacity: 0.34;
+        cursor: default;
     }
 
     .score-results-grid {
