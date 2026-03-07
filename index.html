@@ -164,19 +164,43 @@
     <script>
         (function () {
             var splash = document.querySelector("[data-splash]");
+            var startTime = Date.now();
+            var minVisibleMs = 720;
+            var fadeMs = 320;
+            var maxVisibleMs = 1400;
+            var dismissed = false;
+
             if (!splash) {
                 return;
             }
 
-            window.addEventListener("load", function () {
+            function removeSplash() {
+                if (dismissed) {
+                    return;
+                }
+
+                dismissed = true;
+                document.body.classList.add("splash-done");
+
                 window.setTimeout(function () {
-                    document.body.classList.add("splash-done");
-                    window.setTimeout(function () {
-                        splash.remove();
-                        document.body.classList.remove("has-splash");
-                    }, 650);
-                }, 1450);
-            });
+                    splash.remove();
+                    document.body.classList.remove("has-splash");
+                }, fadeMs);
+            }
+
+            function scheduleRemove() {
+                var elapsed = Date.now() - startTime;
+                var waitTime = Math.max(0, minVisibleMs - elapsed);
+                window.setTimeout(removeSplash, waitTime);
+            }
+
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", scheduleRemove, { once: true });
+            } else {
+                scheduleRemove();
+            }
+
+            window.setTimeout(removeSplash, maxVisibleMs);
         })();
 
         (function () {
