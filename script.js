@@ -204,125 +204,6 @@ function initializeFixtureTabGroups(root) {
     });
 }
 
-function initializeDragScrollers(root) {
-    var scope = root || document;
-    var scrollers = scope.querySelectorAll("[data-drag-scroll]");
-    if (!scrollers.length) {
-        return;
-    }
-
-    scrollers.forEach(function (scroller) {
-        if (scroller.getAttribute("data-drag-ready") === "true") {
-            return;
-        }
-
-        var startX = 0;
-        var startLeft = 0;
-        var isDragging = false;
-
-        function getClientX(event) {
-            if (event.touches && event.touches.length) {
-                return event.touches[0].clientX;
-            }
-            if (event.changedTouches && event.changedTouches.length) {
-                return event.changedTouches[0].clientX;
-            }
-            return event.clientX;
-        }
-
-        function onStart(event) {
-            if (window.innerWidth > 900) {
-                return;
-            }
-            isDragging = true;
-            startX = getClientX(event);
-            startLeft = scroller.scrollLeft;
-            scroller.classList.add("is-dragging");
-        }
-
-        function onMove(event) {
-            if (!isDragging) {
-                return;
-            }
-            var currentX = getClientX(event);
-            var deltaX = currentX - startX;
-            scroller.scrollLeft = startLeft - deltaX;
-            if (event.cancelable) {
-                event.preventDefault();
-            }
-        }
-
-        function onEnd() {
-            if (!isDragging) {
-                return;
-            }
-            isDragging = false;
-            scroller.classList.remove("is-dragging");
-        }
-
-        scroller.addEventListener("touchstart", onStart, { passive: true });
-        scroller.addEventListener("touchmove", onMove, { passive: false });
-        scroller.addEventListener("touchend", onEnd);
-        scroller.addEventListener("touchcancel", onEnd);
-        scroller.addEventListener("mousedown", onStart);
-        window.addEventListener("mousemove", onMove);
-        window.addEventListener("mouseup", onEnd);
-        scroller.setAttribute("data-drag-ready", "true");
-    });
-}
-
-function initializeResultCarousels(root) {
-    var scope = root || document;
-    var carousels = scope.querySelectorAll("[data-results-carousel]");
-    if (!carousels.length) {
-        return;
-    }
-
-    carousels.forEach(function (carousel) {
-        if (carousel.getAttribute("data-carousel-ready") === "true") {
-            return;
-        }
-
-        var scroller = carousel.querySelector(".score-results-scroller");
-        var prev = carousel.querySelector("[data-results-prev]");
-        var next = carousel.querySelector("[data-results-next]");
-        if (!scroller || !prev || !next) {
-            return;
-        }
-
-        function getStep() {
-            var card = scroller.querySelector(".score-card");
-            if (!card) {
-                return scroller.clientWidth;
-            }
-            var style = window.getComputedStyle(scroller.querySelector(".score-results-grid"));
-            var gap = parseFloat(style.columnGap || style.gap || "0") || 0;
-            return card.getBoundingClientRect().width + gap;
-        }
-
-        function syncButtons() {
-            var maxScroll = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
-            var canScroll = maxScroll > 8;
-            carousel.classList.toggle("is-static", !canScroll);
-            prev.disabled = !canScroll || scroller.scrollLeft <= 8;
-            next.disabled = !canScroll || scroller.scrollLeft >= maxScroll - 8;
-        }
-
-        prev.addEventListener("click", function () {
-            scroller.scrollBy({ left: -getStep(), behavior: "smooth" });
-        });
-
-        next.addEventListener("click", function () {
-            scroller.scrollBy({ left: getStep(), behavior: "smooth" });
-        });
-
-        scroller.addEventListener("scroll", syncButtons, { passive: true });
-        window.addEventListener("resize", syncButtons);
-        window.setTimeout(syncButtons, 60);
-        carousel.setAttribute("data-carousel-ready", "true");
-    });
-}
-
 var renderScoreResults = (function () {
     var uiCopy = {
         tr: {
@@ -713,14 +594,8 @@ var renderScoreResults = (function () {
             return [
                 "<article class=\"fixture-panel score-results-branch-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + branch.key + "\">",
                 "    <h3>" + dayUi.resultsTitle(pickText(branch.name, lang)) + "</h3>",
-                "    <div class=\"score-results-carousel\" data-results-carousel>",
-                "        <button type=\"button\" class=\"score-results-nav score-results-nav-prev\" data-results-prev aria-label=\"Onceki maclar\">&lt;</button>",
-                "        <div class=\"score-results-scroller\" data-drag-scroll>",
-                "            <div class=\"scoreboard-grid score-results-grid\">",
+                "    <div class=\"scoreboard-grid score-results-grid\">",
                 matches.map(function (match) { return renderResultMatchCard(match); }).join(""),
-                "            </div>",
-                "        </div>",
-                "        <button type=\"button\" class=\"score-results-nav score-results-nav-next\" data-results-next aria-label=\"Sonraki maclar\">&gt;</button>",
                 "    </div>",
                 "</article>"
             ].join("");
@@ -793,8 +668,6 @@ var renderScoreResults = (function () {
             });
 
             initializeFixtureTabGroups(shell);
-            initializeDragScrollers(shell);
-            initializeResultCarousels(shell);
             activateDay(shell, days[0].key);
         });
     };
@@ -802,8 +675,6 @@ var renderScoreResults = (function () {
 
 (function () {
     initializeFixtureTabGroups(document);
-    initializeDragScrollers(document);
-    initializeResultCarousels(document);
     if (document.querySelector("[data-score-results]")) {
         renderScoreResults((document.documentElement.getAttribute("lang") || "tr").toLowerCase());
     }
