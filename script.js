@@ -1,4 +1,21 @@
 (function () {
+    var cornerLogos = document.querySelectorAll(".corner-logo-stack");
+    if (!cornerLogos.length) {
+        return;
+    }
+
+    function syncCornerLogos() {
+        var hideOnMobile = window.innerWidth <= 900;
+        cornerLogos.forEach(function (logo) {
+            logo.style.display = hideOnMobile ? "none" : "";
+        });
+    }
+
+    syncCornerLogos();
+    window.addEventListener("resize", syncCornerLogos);
+})();
+
+(function () {
     var navToggles = document.querySelectorAll("[data-nav-toggle]");
     if (!navToggles.length) {
         return;
