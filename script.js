@@ -597,54 +597,16 @@ var renderScoreResults = (function () {
     function applyIndex(lang) {
         var copy = {
             tr: {
-                title: "DCFLSPORTFEST'26 | Ana Sayfa",
-                h1: "Uluslararası Spor ve Gençlik Festivali",
-                hero: [
-                    "DCFLSPORTFEST'26, yalnızca yerel bir organizasyon değildir.",
-                    "Bu yapı sayesinde etkinlik, sponsor markalar için global görünürlük sağlar."
-                ],
-                list: [
-                    "Birden fazla ülkeden takım ve bireysel sporcu katılımı",
-                    "Nitelikli okullar ve spor kulüplerinin katılımı",
-                    "Profesyonel hakemler ve davetli konuşmacılar",
-                    "Çok dilli iletişim ve tanıtım"
-                ],
-                cta: "Program ve Turnuva",
-                stats: ["10 Adet Branş", "Her Gün 200+ Katılımcı"],
-                sponsorCta: "Sponsor Ol",
-                countdown: "SportFeste kalan süre",
-                countdownLabels: ["Gün", "Saat", "Dakika", "Saniye"],
-                ended: "Festival başladı!",
-                scoreboard: {
-                    kicker: "SKOR MERKEZİ",
-                    title: "Canlı Skor ve Sonuçlar",
-                    text: "Günün canlı karşılaşmalarını ve tamamlanan maç sonuçlarını tek panelden takip et.",
-                    tabAria: "Skor paneli sekmeleri",
-                    tabs: ["Canlı", "Sonuçlar"],
-                    summaryLabels: ["Aktif karşılaşma", "Bugün tamamlanan maç", "Son güncelleme"],
-                    liveBranches: ["Voleybol", "Basketbol", "Futbol", "PlayStation"],
-                    liveStatuses: ["Canlı", "Canlı", "67. dakika", "Canlı"],
-                    liveMeta: [
-                        "Yarı final | Kapalı Spor Salonu | 2. set",
-                        "Grup A | Ana Saha | 3. çeyrek",
-                        "Yarı final | Dış Saha | 67. dakika",
-                        "Final | E-spor Alanı | 2. maç"
-                    ],
-                    resultBranches: ["Masa Tenisi", "Okçuluk", "Atletizm", "Bahçe Satrancı"],
-                    resultStatuses: ["Final", "Tamamlandı", "Tamamlandı", "Tamamlandı"],
-                    resultMeta: [
-                        "Kadınlar yarı finali | Salon B",
-                        "Klasman turu | Açık Alan",
-                        "100m finali | Ana Pist",
-                        "Eleme turu | Bahçe Alanı"
-                    ]
-                },
-                branches: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Okçuluk", "Oryantiring", "Bahçe Satrancı", "PlayStation Turnuvası", "Atletizm", "Bahçe Oyunları"],
-                contactTitle: "İletişim Formu",
-                quick: "Hızlı Mesaj",
-                labels: ["Ad Soyad/ Firma Adı", "E-posta", "Konu", "Mesaj"],
-                placeholders: ["Ad Soyad/ Firma Adı", "ornek@mail.com", "Takım kaydı / Sponsorluk / Soru", "Mesajını yaz..."],
-                send: "Gönder"
+                title: "Program & Turnuva | DCFLSPORTFEST'26",
+                eyebrow: "PROGRAM & TURNUVA",
+                h1: "12-13-14 Mayıs etkinlik ve fikstür akışı.",
+                hero: "Açılış, günlük etkinlik planı ve branş bazlı 8 takımlı tüm turnuva fikstürlerini tek sayfada takip edebilirsin.",
+                sections: ["OPERASYON AKIŞI", "FESTIVAL HATLARI", "FIKSTUR DETAYLARI"],
+                titles: ["Günlük Program", "Branşlar", "Turnuva Seçim Ekranı"],
+                tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Okçuluk", "Oryantiring", "Bahçe Satrancı", "PlayStation", "Atletizm", "Bahçe Oyunları"],
+                panels: ["Voleybol Fikstürü", "Basketbol Fikstürü", "Futbol Fikstürü", "Masa Tenisi Fikstürü", "Okçuluk Fikstürü", "Oryantiring Fikstürü", "Bahçe Satrancı Fikstürü", "PlayStation Turnuvası Fikstürü", "Atletizm Fikstürü", "Bahçe Oyunları Fikstürü"],
+                headerMap: { "Tarih": "Tarih", "Saat": "Saat", "Eşleşme": "Eşleşme", "Saha": "Saha", "Tur": "Tur", "Alan": "Alan", "Yarış": "Yarış", "Pist": "Pist", "Etap": "Etap" },
+                footer: "Program & Turnuva Sayfası"
             },
             en: {
                 title: "DCFLSPORTFEST'26 | Home",
@@ -779,14 +741,14 @@ var renderScoreResults = (function () {
             tr: {
                 title: "Program & Turnuva | DCFLSPORTFEST'26",
                 eyebrow: "PROGRAM & TURNUVA",
-                h1: "12-13-14 Mayıs etkinlik ve fikstür akışı.",
-                hero: "Açılış, günlük etkinlik planı ve branş bazlı tüm turnuva fikstürlerini tek sayfada takip edebilirsin.",
-                sections: ["OPERASYON AKIŞI", "FESTİVAL HATLARI", "FİKSTÜR DETAYLARI"],
-                titles: ["Günlük Program", "Branşlar", "Turnuva Seçim Ekranı"],
-                tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Okçuluk", "Oryantiring", "Bahçe Satrancı", "PlayStation", "Atletizm", "Bahçe Oyunları"],
-                panels: ["Voleybol Fikstürü", "Basketbol Fikstürü", "Futbol Fikstürü", "Masa Tenisi Fikstürü", "Okçuluk Fikstürü", "Oryantiring Fikstürü", "Bahçe Satrancı Fikstürü", "PlayStation Turnuvası Fikstürü", "Atletizm Fikstürü", "Bahçe Oyunları Fikstürü"],
-                headerMap: { "Tarih": "Tarih", "Saat": "Saat", "Eşleşme": "Eşleşme", "Saha": "Saha", "Tur": "Tur", "Alan": "Alan", "Yarış": "Yarış", "Pist": "Pist", "Etap": "Etap" },
-                footer: "Program & Turnuva Sayfası"
+                h1: "12-13-14 May\u0131s etkinlik ve fikst\u00fcr ak\u0131\u015f\u0131.",
+                hero: "A\u00e7\u0131l\u0131\u015f, g\u00fcnl\u00fck etkinlik plan\u0131 ve bran\u015f bazl\u0131 8 tak\u0131ml\u0131 t\u00fcm turnuva fikst\u00fcrlerini tek sayfada takip edebilirsin.",
+                sections: ["OPERASYON AKI\u015eI", "FESTIVAL HATLARI", "FIKSTUR DETAYLARI"],
+                titles: ["G\u00fcnl\u00fck Program", "Bran\u015flar", "Turnuva Se\u00e7im Ekran\u0131"],
+                tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Ok\u00e7uluk", "Oryantiring", "Bah\u00e7e Satranc\u0131", "PlayStation", "Atletizm", "Bah\u00e7e Oyunlar\u0131"],
+                panels: ["Voleybol Fikst\u00fcr\u00fc", "Basketbol Fikst\u00fcr\u00fc", "Futbol Fikst\u00fcr\u00fc", "Masa Tenisi Fikst\u00fcr\u00fc", "Ok\u00e7uluk Fikst\u00fcr\u00fc", "Oryantiring Fikst\u00fcr\u00fc", "Bah\u00e7e Satranc\u0131 Fikst\u00fcr\u00fc", "PlayStation Turnuvas\u0131 Fikst\u00fcr\u00fc", "Atletizm Fikst\u00fcr\u00fc", "Bah\u00e7e Oyunlar\u0131 Fikst\u00fcr\u00fc"],
+                headerMap: { "Tarih": "Tarih", "Saat": "Saat", "E\u015fle\u015fme": "E\u015fle\u015fme", "Saha": "Saha", "Tur": "Tur", "Alan": "Alan", "Yar\u0131\u015f": "Yar\u0131\u015f", "Pist": "Pist", "Etap": "Etap" },
+                footer: "Program & Turnuva Sayfas\u0131"
             },
             en: {
                 title: "Program & Tournament | DCFLSPORTFEST'26",

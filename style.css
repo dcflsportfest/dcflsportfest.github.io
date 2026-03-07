@@ -1447,6 +1447,174 @@ main {
     letter-spacing: 0.03em;
 }
 
+.fixture-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.85fr) minmax(280px, 0.95fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+.bracket-scroller {
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+}
+
+.bracket-board {
+    min-width: 760px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 1rem;
+    align-items: start;
+}
+
+.bracket-round {
+    display: grid;
+    gap: 0.8rem;
+}
+
+.bracket-round-semifinal {
+    padding-top: 3.8rem;
+}
+
+.bracket-round-final {
+    padding-top: 7.4rem;
+}
+
+.bracket-round-title {
+    margin: 0;
+    color: var(--accent-soft);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.bracket-match {
+    background: linear-gradient(180deg, rgba(15, 27, 57, 0.96), rgba(8, 15, 33, 0.88));
+    border: 1px solid rgba(160, 188, 235, 0.18);
+    border-radius: 16px;
+    padding: 0.8rem 0.85rem;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+}
+
+.bracket-match-placeholder {
+    border-style: dashed;
+    background: linear-gradient(180deg, rgba(14, 25, 51, 0.78), rgba(7, 13, 29, 0.72));
+}
+
+.bracket-match-meta {
+    margin: 0 0 0.7rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.bracket-team-row {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
+    gap: 0.7rem;
+    align-items: center;
+    padding: 0.56rem 0;
+}
+
+.bracket-team-row + .bracket-team-row {
+    border-top: 1px solid rgba(160, 188, 235, 0.14);
+}
+
+.bracket-seed {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    min-height: 2rem;
+    border-radius: 999px;
+    background: rgba(37, 77, 148, 0.34);
+    color: #f7fbff;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.bracket-team-name {
+    font-size: 0.96rem;
+    font-weight: 600;
+    color: #f5f8ff;
+    line-height: 1.35;
+}
+
+.bracket-team-score {
+    min-width: 2.1rem;
+    padding: 0.26rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(163, 192, 235, 0.14);
+    border: 1px solid rgba(163, 192, 235, 0.18);
+    color: #ffffff;
+    font-family: "Geist Mono", monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.02em;
+}
+
+.bracket-note {
+    margin: 0.15rem 0 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+.fixture-schedule {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    padding: 0.1rem 0 0;
+}
+
+.fixture-schedule-kicker {
+    margin: 0;
+    color: var(--accent-soft);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.fixture-schedule-list {
+    display: grid;
+    gap: 0.68rem;
+}
+
+.fixture-schedule-item {
+    border: 1px solid rgba(160, 188, 235, 0.12);
+    border-radius: 14px;
+    background: rgba(8, 15, 33, 0.72);
+    padding: 0.72rem 0.8rem;
+}
+
+.fixture-schedule-time {
+    display: block;
+    margin-bottom: 0.34rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.fixture-schedule-item strong {
+    display: block;
+    color: #f5f8ff;
+    font-size: 0.94rem;
+    font-weight: 700;
+}
+
+.fixture-schedule-item p {
+    margin: 0.34rem 0 0;
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.5;
+}
+
 .footer {
     padding: 0.7rem 1rem 1.2rem;
     text-align: center;
@@ -2000,6 +2168,19 @@ canvas {
         padding: 0.42rem 0.68rem;
     }
 
+    .fixture-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .bracket-board {
+        min-width: 680px;
+    }
+
+    .bracket-round-semifinal,
+    .bracket-round-final {
+        padding-top: 2.2rem;
+    }
+
     .fixture-table {
         min-width: 430px;
     }
@@ -2284,6 +2465,35 @@ canvas {
 
     .fixture-table {
         min-width: 340px;
+    }
+
+    .bracket-board {
+        min-width: 560px;
+        gap: 0.85rem;
+    }
+
+    .bracket-match {
+        padding: 0.72rem 0.75rem;
+        border-radius: 14px;
+    }
+
+    .bracket-round-semifinal,
+    .bracket-round-final {
+        padding-top: 0;
+    }
+
+    .bracket-team-name {
+        font-size: 0.9rem;
+    }
+
+    .bracket-team-score {
+        min-width: 1.9rem;
+        padding: 0.22rem 0.42rem;
+        font-size: 0.78rem;
+    }
+
+    .fixture-schedule-item {
+        padding: 0.68rem 0.72rem;
     }
 
     .fixture-table th,
