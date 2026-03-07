@@ -593,7 +593,7 @@ var renderScoreResults = (function () {
             activateDay(shell, days[0].key);
         });
     };
-});
+})();
 
 (function () {
     initializeFixtureTabGroups(document);
