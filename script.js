@@ -1704,48 +1704,36 @@ var renderScoreResults = (function () {
                 eyebrow: "BLOG",
                 h1: "Sportfest gündeminden notlar.",
                 hero: "Etkinlik hazırlıkları, branş hikayeleri ve organizasyon güncellemeleri.",
-                section: "ÖNE ÇIKANLAR",
-                title2: "Son Yazılar",
-                postMeta: ["03 Mart 2026", "27 Şubat 2026", "18 Şubat 2026"],
-                postTitles: ["Final Gecesi Sahne Planı", "Branş Kontenjan Güncellemesi", "Sponsor İş Birliği Dalgası"],
-                postText: [
-                    "Final akışı, ödül töreni ve kapanış şovunun yeni sahne düzeni açıklandı.",
-                    "Basketbol, voleybol ve atletizm branşlarında ek kontenjanlar açıldı.",
-                    "Yeni iş ortaklıklarıyla etkinlik alanındaki deneyim alanları genişliyor."
-                ],
-                footer: "Blog Sayfası"
+                section: "YAKINDA",
+                title2: "Yakında",
+                postMeta: ["Yakında", "Yakında", "Yakında"],
+                postTitles: ["Yakında", "Yakında", "Yakında"],
+                postText: ["Yakında", "Yakında", "Yakında"],
+                footer: "Yakında"
             },
             en: {
                 title: "Blog | DCFLSPORTFEST'26",
                 eyebrow: "BLOG",
-                h1: "Notes from the Sportfest agenda.",
-                hero: "Event preparations, branch stories and organization updates.",
-                section: "HIGHLIGHTS",
-                title2: "Latest Posts",
-                postMeta: ["March 3, 2026", "February 27, 2026", "February 18, 2026"],
-                postTitles: ["Stage Plan for Final Night", "Branch Quota Update", "Wave of Sponsor Partnerships"],
-                postText: [
-                    "The new stage layout for the finals flow, award ceremony and closing show has been announced.",
-                    "Additional quotas have been opened in basketball, volleyball and athletics.",
-                    "New partnerships are expanding the experience zones across the festival venue."
-                ],
-                footer: "Blog Page"
+                h1: "Coming Soon",
+                hero: "Coming Soon",
+                section: "COMING SOON",
+                title2: "Coming Soon",
+                postMeta: ["Coming Soon", "Coming Soon", "Coming Soon"],
+                postTitles: ["Coming Soon", "Coming Soon", "Coming Soon"],
+                postText: ["Coming Soon", "Coming Soon", "Coming Soon"],
+                footer: "Coming Soon"
             },
             pl: {
                 title: "Blog | DCFLSPORTFEST'26",
                 eyebrow: "BLOG",
-                h1: "Notatki z agendy Sportfest.",
-                hero: "Przygotowania wydarzenia, historie dyscyplin i aktualizacje organizacyjne.",
-                section: "WYROZNIONE",
-                title2: "Najnowsze Wpisy",
-                postMeta: ["3 marca 2026", "27 lutego 2026", "18 lutego 2026"],
-                postTitles: ["Plan sceny na finalowy wieczor", "Aktualizacja limitow dyscyplin", "Fala partnerstw sponsorskich"],
-                postText: [
-                    "Ogloszono nowy uklad sceny dla finalu, ceremonii nagrod i pokazu zamkniecia.",
-                    "Otwarto dodatkowe limity w koszykowce, siatkowce i lekkoatletyce.",
-                    "Nowe partnerstwa rozszerzaja strefy doswiadczen na terenie festiwalu."
-                ],
-                footer: "Strona Blog"
+                h1: "Wkrótce",
+                hero: "Wkrótce",
+                section: "WKRÓTCE",
+                title2: "Wkrótce",
+                postMeta: ["Wkrótce", "Wkrótce", "Wkrótce"],
+                postTitles: ["Wkrótce", "Wkrótce", "Wkrótce"],
+                postText: ["Wkrótce", "Wkrótce", "Wkrótce"],
+                footer: "Wkrótce"
             }
         }[lang] || {};
 
