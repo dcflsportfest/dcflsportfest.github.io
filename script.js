@@ -62,6 +62,30 @@
 })();
 
 (function () {
+    var toggle = document.querySelector("[data-branches-toggle]");
+    var panel = document.querySelector("[data-branches-panel]");
+    if (!toggle || !panel) {
+        return;
+    }
+
+    panel.hidden = false;
+    panel.removeAttribute("hidden");
+
+    function setOpen(isOpen) {
+        toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        panel.classList.toggle("is-open", isOpen);
+        panel.setAttribute("aria-hidden", isOpen ? "false" : "true");
+    }
+
+    toggle.addEventListener("click", function () {
+        var isOpen = toggle.getAttribute("aria-expanded") === "true";
+        setOpen(!isOpen);
+    });
+
+    setOpen(false);
+})();
+
+(function () {
     var tabGroups = document.querySelectorAll("[data-fixture-tabs]");
     if (!tabGroups.length) {
         return;
@@ -132,11 +156,12 @@
             pickerAria: "Dil",
             nav: {
                 "index.html": "Ana Sayfa",
-                "kurumsal.html": "Hakkımızda",
+                "kurumsal.html": "Amacımız",
                 "hizmetler.html": "Sıkça Sorulanlar",
                 "program.html": "Program & Turnuva",
                 "finans.html": "Finans",
                 "blog.html": "Blog",
+                "arsiv.html": "Arşiv",
                 "iletisim.html": "İletişim",
                 "turnuva.html": "Program & Turnuva"
             }
@@ -151,6 +176,7 @@
                 "program.html": "Program & Tournament",
                 "finans.html": "Finance",
                 "blog.html": "Blog",
+                "arsiv.html": "Archive",
                 "iletisim.html": "Contact",
                 "turnuva.html": "Program & Tournament"
             }
@@ -165,6 +191,7 @@
                 "program.html": "Program i Turniej",
                 "finans.html": "Finanse",
                 "blog.html": "Blog",
+                "arsiv.html": "Archiwum",
                 "iletisim.html": "Kontakt",
                 "turnuva.html": "Program i Turniej"
             }
@@ -269,7 +296,7 @@
         var copy = {
             tr: {
                 title: "DCFLSPORTFEST'26 | Ana Sayfa",
-                h1: "Uluslararası Boyut",
+                h1: "Uluslararası Spor ve Gençlik Festivali",
                 hero: [
                     "DCFLSPORTFEST'26, yalnızca yerel bir organizasyon değildir.",
                     "Bu yapı sayesinde etkinlik, sponsor markalar için global görünürlük sağlar."
@@ -281,6 +308,7 @@
                     "Çok dilli iletişim ve tanıtım"
                 ],
                 cta: "Program ve Turnuva",
+                sponsorCta: "Sponsor Ol",
                 countdown: "SportFeste kalan süre",
                 countdownLabels: ["Gün", "Saat", "Dakika", "Saniye"],
                 ended: "Festival başladı!",
@@ -307,6 +335,7 @@
                     "Multilingual communication and promotion"
                 ],
                 cta: "Program and Tournament",
+                sponsorCta: "Become a Sponsor",
                 countdown: "Time left to Sportfest",
                 countdownLabels: ["Days", "Hours", "Minutes", "Seconds"],
                 ended: "The festival has started!",
@@ -333,6 +362,7 @@
                     "Wielojezyczna komunikacja i promocja"
                 ],
                 cta: "Program i Turniej",
+                sponsorCta: "Zostan sponsorem",
                 countdown: "Czas do Sportfestu",
                 countdownLabels: ["Dni", "Godz", "Min", "Sek"],
                 ended: "Festiwal sie rozpoczal!",
@@ -353,8 +383,10 @@
         setList(".hero-list li", copy.list);
         setText(".cta-row .btn", copy.cta);
         setText(".countdown-title", copy.countdown);
+        setText(".countdown-cta", copy.sponsorCta);
         setList(".countdown-label", copy.countdownLabels);
         setAttr("[data-countdown]", "data-ended-text", copy.ended);
+        setList(".home-branch-list li", copy.branches);
         setText("main > .panel .section-head .section-kicker", copy.sectionKicker);
         setText("main > .panel .section-head h2", copy.sectionTitle);
         setList(".branch-list li", copy.branches);
@@ -415,8 +447,14 @@
         setText(".page-shell .eyebrow", copy.eyebrow);
         setText(".page-shell h1", copy.h1);
         setText(".page-shell .hero-text", copy.hero);
-        setList(".section-head .section-kicker", copy.sections);
-        setList(".section-head h2", copy.titles);
+        if (Array.isArray(copy.sections) && copy.sections.length) {
+            setText(".program-overview-program .section-head .section-kicker", copy.sections[0]);
+            setText(".fixture-section .section-head .section-kicker", copy.sections[copy.sections.length - 1]);
+        }
+        if (Array.isArray(copy.titles) && copy.titles.length) {
+            setText(".program-overview-program .section-head h2", copy.titles[0]);
+            setText(".fixture-section .section-head h2", copy.titles[copy.titles.length - 1]);
+        }
         setList(".fixture-tab", copy.tabs);
         setList(".fixture-panel > h3", copy.panels);
         mapText(".fixture-table th", copy.headerMap);
@@ -626,6 +664,21 @@
         setText(".footer p:nth-of-type(2)", copy.footer);
     }
 
+    function applyArsiv(lang) {
+        var copy = {
+            tr: { title: "Arşiv | DCFLSPORTFEST'26", h1: "Etkinlik Arşivi", hero: "Geçmiş yıllara ait duyurular, görseller ve öne çıkan anlar yakında burada yer alacak.", section: "ARŞİV", title2: "Yakında Eklenecek İçerikler", footer: "Arşiv Sayfası" },
+            en: { title: "Archive | DCFLSPORTFEST'26", h1: "Event Archive", hero: "Announcements, visuals and highlights from previous years will be added here soon.", section: "ARCHIVE", title2: "Upcoming Archive Content", footer: "Archive Page" },
+            pl: { title: "Archiwum | DCFLSPORTFEST'26", h1: "Archiwum Wydarzenia", hero: "Wkrotce pojawia sie tu ogloszenia, materialy wizualne i najwazniejsze momenty z poprzednich lat.", section: "ARCHIWUM", title2: "Nadchodzace Materialy", footer: "Strona Archiwum" }
+        }[lang] || {};
+
+        document.title = copy.title || document.title;
+        setText(".page-shell h1", copy.h1);
+        setText(".page-shell .hero-text", copy.hero);
+        setText("main .section-head .section-kicker", copy.section);
+        setText("main .section-head h2", copy.title2);
+        setText(".footer p:nth-of-type(2)", copy.footer);
+    }
+
     function applyIletisim(lang) {
         var copy = {
             tr: { title: "İletişim | DCFLSPORTFEST'26", h1: "Bize ulaş, birlikte planlayalım.", hero: "Takım kaydı, partnerlik veya genel sorular için formu doldurabilirsin.", contact: "İletişim Bilgileri", quick: "Hızlı Mesaj", labels: ["Ad Soyad/ Firma Adı", "E-posta", "Konu", "Mesaj"], placeholders: ["Ad Soyad/ Firma Adı", "ornek@mail.com", "Takım kaydı / Sponsorluk / Soru", "Mesajını yaz..."], send: "Gönder", footer: "İletişim Sayfası" },
@@ -662,16 +715,51 @@
             applyFaq(lang);
         } else if (key === "blog.html") {
             applyBlog(lang);
+        } else if (key === "arsiv.html") {
+            applyArsiv(lang);
         } else if (key === "iletisim.html") {
             applyIletisim(lang);
         }
 
-        applySimplePage(lang, "kurumsal.html", "Hakkımızda | DCFLSPORTFEST'26", "About | DCFLSPORTFEST'26", "O nas | DCFLSPORTFEST'26", "Sınırları kaldıran festival vizyonu.", "A festival vision without borders.", "Wizja festiwalu bez granic.", "Hakkımızda Sayfası", "About Page", "Strona O nas");
+        applySimplePage(lang, "kurumsal.html", "Amacımız | DCFLSPORTFEST'26", "About | DCFLSPORTFEST'26", "O nas | DCFLSPORTFEST'26", "Etkinliğin Amacı", "A festival vision without borders.", "Wizja festiwalu bez granic.", "Amacımız Sayfası", "About Page", "Strona O nas");
+    }
+
+    function placePicker(nav, wrap) {
+        var actions = nav.querySelector("[data-nav-links]");
+        var toggle = nav.querySelector("[data-nav-toggle]");
+        if (!actions || !wrap) {
+            return;
+        }
+
+        if (window.innerWidth <= 640 && toggle) {
+            wrap.setAttribute("data-nav-lang", "");
+            if (wrap.parentElement !== nav || wrap.previousElementSibling !== toggle) {
+                toggle.insertAdjacentElement("afterend", wrap);
+            }
+            return;
+        }
+
+        wrap.removeAttribute("data-nav-lang");
+        if (wrap.parentElement !== actions) {
+            actions.appendChild(wrap);
+        }
     }
 
     function addPicker(nav) {
         var actions = nav.querySelector("[data-nav-links]");
-        if (!actions || actions.querySelector("[data-lang-picker]")) {
+        if (!actions) {
+            return;
+        }
+
+        var existing = nav.querySelector("[data-lang-picker]");
+        if (existing) {
+            var existingWrap = existing.closest(".lang-switch") || existing.parentElement;
+            if (existingWrap) {
+                if (existingWrap.parentElement !== actions) {
+                    actions.appendChild(existingWrap);
+                }
+                placePicker(nav, existingWrap);
+            }
             return;
         }
 
@@ -699,10 +787,22 @@
 
         wrap.appendChild(picker);
         actions.appendChild(wrap);
+        placePicker(nav, wrap);
+    }
+
+    function syncPickerLayout() {
+        navs.forEach(function (nav) {
+            var wrap = nav.querySelector(".lang-switch");
+            if (wrap) {
+                placePicker(nav, wrap);
+            }
+        });
     }
 
     var initialLang = getLang();
     navs.forEach(addPicker);
+    syncPickerLayout();
+    window.addEventListener("resize", syncPickerLayout);
     applyCommon(initialLang);
     applyPage(initialLang);
 })();

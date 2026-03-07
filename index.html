@@ -13,24 +13,22 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="DCFLSPORTFEST'26">
     <meta property="og:title" content="DCFLSPORTFEST'26 | Ana Sayfa">
-    <meta property="og:description" content="Program, branşlar, turnuva fikstürleri ve iletişim detayları tek yerde.">
+    <meta property="og:description" content="Program, turnuva fikstürleri ve iletişim detayları tek yerde.">
     <meta property="og:url" content="https://dcflsportfest.github.io/index.html">
     <meta property="og:image" content="https://dcflsportfest.github.io/assets/gucunu-kesfet.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="DCFLSPORTFEST'26 | Ana Sayfa">
-    <meta name="twitter:description" content="Program, branşlar, turnuva fikstürleri ve iletişim detayları tek yerde.">
+    <meta name="twitter:description" content="Program, turnuva fikstürleri ve iletişim detayları tek yerde.">
     <meta name="twitter:image" content="https://dcflsportfest.github.io/assets/gucunu-kesfet.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&family=Geist+Mono:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20260323">
+    <link rel="stylesheet" href="style.css?v=20260325">
 </head>
 <body class="has-splash">
     <div class="splash-screen" data-splash>
         <img src="assets/opening-bird-only.png" alt="DCFL kuş logosu" class="splash-logo splash-logo-primary" fetchpriority="high" decoding="async">
     </div>
-    <div class="grid-overlay"></div>
-    <div class="noise"></div>
     <div class="corner-logo-stack" aria-hidden="true">
         <img src="assets/opening-bird-only.png" alt="" class="corner-logo corner-logo-primary" loading="lazy" decoding="async">
     </div>
@@ -42,11 +40,12 @@
             <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-links" data-nav-toggle>Menü</button>
             <div class="nav-actions" id="site-nav-links" data-nav-links>
                 <a href="index.html" class="nav-link active">Ana Sayfa</a>
-                <a href="kurumsal.html" class="nav-link">Hakkımızda</a>
+                <a href="kurumsal.html" class="nav-link">Amacımız</a>
                 <a href="hizmetler.html" class="nav-link">Sıkça Sorulanlar</a>
                 <a href="program.html" class="nav-link">Program &amp; Turnuva</a>
                 <a href="finans.html" class="nav-link">Finans</a>
                 <a href="blog.html" class="nav-link">Blog</a>
+                <a href="arsiv.html" class="nav-link">Arşiv</a>
                 <a href="iletisim.html" class="nav-link">İletişim</a>
             </div>
         </nav>
@@ -58,7 +57,7 @@
             </div>
             <div class="hero-copy">
                 <p class="eyebrow">12-13-14 Mayıs 2026 | Doğan Cüceloğlu Fen Lisesi</p>
-                <h1>Uluslararası Boyut</h1>
+                <h1>Uluslararası Spor ve Gençlik&nbsp;Festivali</h1>
                 <p class="hero-text">
                     DCFLSPORTFEST'26, yalnızca yerel bir organizasyon değildir.
                 </p>
@@ -75,9 +74,26 @@
                     <a href="program.html" class="btn btn-primary">Program ve Turnuva</a>
                 </div>
                 <div class="stats">
-                    <article><h3>10 Adet Branş</h3></article>
-                    <article><h3>600+Katılımcı</h3></article>
-                    <article><h3>22+Adet İş Ortağı</h3></article>
+                    <article class="stats-branch-card">
+                        <button type="button" class="stats-branch-trigger" data-branches-toggle aria-expanded="false" aria-controls="home-branches-list">
+                            <h3>10 Adet Branş</h3>
+                        </button>
+                    </article>
+                    <article><h3>Her Gün 200+ Katılımcı</h3></article>
+                </div>
+                <div class="home-branches-panel" id="home-branches-list" data-branches-panel hidden>
+                    <ul class="home-branch-list">
+                        <li>Voleybol</li>
+                        <li>Basketbol</li>
+                        <li>Futbol</li>
+                        <li>Masa Tenisi</li>
+                        <li>Okçuluk</li>
+                        <li>Oryantiring</li>
+                        <li>Bahçe Satrancı</li>
+                        <li>PlayStation Turnuvası</li>
+                        <li>Atletizm</li>
+                        <li>Bahçe Oyunları</li>
+                    </ul>
                 </div>
             </div>
 
@@ -104,31 +120,13 @@
                         </article>
                     </div>
                     <p class="countdown-note" data-countdown-note></p>
+                    <a href="finans.html" class="btn btn-primary countdown-cta">Sponsor Ol</a>
                 </div>
             </aside>
         </div>
     </header>
 
     <main>
-        <section class="panel">
-            <div class="section-head">
-                <p class="section-kicker">FESTIVAL HATLARI</p>
-                <h2>Branşlar</h2>
-            </div>
-            <ul class="branch-list">
-                <li>Voleybol</li>
-                <li>Basketbol</li>
-                <li>Futbol</li>
-                <li>Masa tenisi</li>
-                <li>Okçuluk</li>
-                <li>Oryantiring</li>
-                <li>Bahçe Satrancı</li>
-                <li>Playstation Turnuvası</li>
-                <li>Atletizm</li>
-                <li>Bahçe Oyunları</li>
-            </ul>
-        </section>
-
         <section class="panel panel-highlight contact-layout">
             <article class="contact-info">
                 <h2>İletişim Formu</h2>
@@ -282,6 +280,10 @@
             var nextPrepared = false;
             var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
             var saveDataMode = !!(connection && (connection.saveData || /2g/.test(String(connection.effectiveType || ""))));
+            var reducedMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+            var narrowViewport = !!(window.matchMedia && window.matchMedia("(max-width: 900px)").matches);
+            var lowMemory = typeof navigator.deviceMemory === "number" && navigator.deviceMemory <= 4;
+            var lowPerformanceMode = saveDataMode || reducedMotion || narrowViewport || lowMemory;
             var prefetchWindow = saveDataMode ? 0.9 : 2.2;
             var switchWindow = saveDataMode ? 0.12 : 0.38;
 
@@ -315,6 +317,28 @@
                 video.setAttribute("data-src-alt-tried", "false");
                 video.src = pair[0];
                 video.load();
+            }
+
+            if (lowPerformanceMode) {
+                videos[1].remove();
+                setSource(videos[0], playlist[0]);
+                videos[0].classList.add("is-active");
+                safePlay(videos[0]);
+
+                videos[0].addEventListener("ended", function () {
+                    activeIndex = (activeIndex + 1) % playlist.length;
+                    setSource(videos[0], playlist[activeIndex]);
+                    safePlay(videos[0]);
+                });
+
+                document.addEventListener("visibilitychange", function () {
+                    if (document.hidden) {
+                        videos[0].pause();
+                    } else {
+                        safePlay(videos[0]);
+                    }
+                });
+                return;
             }
 
             function prepareNext() {
@@ -352,11 +376,20 @@
                 }, 480);
             }
 
+            var lastProgressCheck = [0, 0];
             videos.forEach(function (video, slot) {
                 video.addEventListener("timeupdate", function () {
                     if (slot !== activeSlot || isSwitching || !Number.isFinite(video.duration)) {
                         return;
                     }
+
+                    var nowTick = window.performance && typeof window.performance.now === "function"
+                        ? window.performance.now()
+                        : Date.now();
+                    if (nowTick - lastProgressCheck[slot] < 220) {
+                        return;
+                    }
+                    lastProgressCheck[slot] = nowTick;
 
                     var remaining = video.duration - video.currentTime;
                     if (!nextPrepared && remaining <= prefetchWindow) {
@@ -408,3 +441,4 @@
     <script src="script.js?v=20260323"></script>
 </body>
 </html>
+
