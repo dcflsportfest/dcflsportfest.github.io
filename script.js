@@ -127,6 +127,10 @@
                 panel.classList.toggle("active", isActive);
                 panel.hidden = !isActive;
             });
+
+            if (tabKey === "results" && typeof renderScoreResults === "function") {
+                renderScoreResults((document.documentElement.getAttribute("lang") || "tr").toLowerCase());
+            }
         }
 
         tabs.forEach(function (tab) {

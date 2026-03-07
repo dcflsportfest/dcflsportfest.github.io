@@ -786,6 +786,7 @@ h1 {
 .score-results-shell {
     display: grid;
     gap: 0.9rem;
+    min-width: 0;
 }
 
 .score-results-day-tabs {
@@ -794,11 +795,13 @@ h1 {
 
 .score-results-day-panels {
     display: grid;
+    min-width: 0;
 }
 
 .score-results-day-panel {
     display: none;
     gap: 0.8rem;
+    min-width: 0;
 }
 
 .score-results-day-panel.active {
@@ -1424,6 +1427,7 @@ main {
 
 .fixture-panels {
     margin-top: 0.2rem;
+    min-width: 0;
 }
 
 .fixture-panel {
@@ -1432,6 +1436,7 @@ main {
     border: 1px solid var(--line);
     border-radius: 12px;
     padding: 0.9rem;
+    min-width: 0;
 }
 
 .fixture-panel.active {
