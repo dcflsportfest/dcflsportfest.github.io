@@ -1187,7 +1187,7 @@ var renderScoreResults = (function () {
             tr: {
                 title: "Program & Turnuva | DCFLSPORTFEST'26",
                 eyebrow: "PROGRAM & TURNUVA",
-                h1: "12-13-14 May\u0131s etkinlik ve fikst\u00fcr ak\u0131\u015f\u0131.",
+                h1: "Sportfest Etkinlik Ak\u0131\u015f\u0131 ve Turnuva Ak\u0131\u015f\u0131",
                 hero: "A\u00e7\u0131l\u0131\u015f, g\u00fcnl\u00fck etkinlik plan\u0131 ve bran\u015f bazl\u0131 8 tak\u0131ml\u0131 t\u00fcm turnuva fikst\u00fcrlerini tek sayfada takip edebilirsin.",
                 sections: ["OPERASYON AKIŞI", "FESTİVAL HATLARI", "FİKSTÜR DETAYLARI"],
                 titles: ["Günlük Program", "Branşlar", "Turnuva Seçim Ekranı"],
@@ -1220,7 +1220,7 @@ var renderScoreResults = (function () {
             en: {
                 title: "Program & Tournament | DCFLSPORTFEST'26",
                 eyebrow: "PROGRAM & TOURNAMENT",
-                h1: "12-13-14 May event and fixture flow.",
+                h1: "Sportfest Event Flow and Tournament Flow",
                 hero: "Follow the opening, daily schedule and branch-based 8-team brackets on one page.",
                 sections: ["OPERATION FLOW", "FESTIVAL LINES", "FIXTURE DETAILS"],
                 titles: ["Daily Program", "Sports Branches", "Tournament Selection Screen"],
@@ -1277,7 +1277,7 @@ var renderScoreResults = (function () {
             pl: {
                 title: "Program i Turniej | DCFLSPORTFEST'26",
                 eyebrow: "PROGRAM I TURNIEJ",
-                h1: "Harmonogram wydarzenia i terminarzy 12-13-14 maja.",
+                h1: "Przebieg Sportfest i przebieg turnieju",
                 hero: "Na jednej stronie sledzisz otwarcie, plan dnia i drabinki turniejowe z udzialem 8 druzyn.",
                 sections: ["PRZEBIEG OPERACYJNY", "LINIE FESTIWALU", "SZCZEGOLY TERMINARZA"],
                 titles: ["Program Dzienny", "Dyscypliny", "Ekran Wyboru Turnieju"],
