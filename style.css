@@ -727,6 +727,12 @@ h1 {
     border: 1px solid rgba(151, 185, 239, 0.22);
 }
 
+.score-card-badge-pending {
+    color: #f4e8bf;
+    background: rgba(92, 73, 16, 0.32);
+    border: 1px solid rgba(229, 196, 88, 0.26);
+}
+
 .score-card-teams {
     margin-top: 0.85rem;
     display: grid;
@@ -758,6 +764,10 @@ h1 {
     font-size: clamp(1.2rem, 2.1vw, 1.62rem);
     font-weight: 700;
     color: #dbe9ff;
+}
+
+.score-card-result.is-pending .score-card-score {
+    color: rgba(219, 233, 255, 0.72);
 }
 
 .score-card-meta {

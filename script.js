@@ -209,9 +209,9 @@ var renderScoreResults = (function () {
         tr: {
             dayTabsAria: "G\u00fcnlere g\u00f6re sonu\u00e7lar",
             dayCaptions: {
-                "12-mayis": "Bran\u015fa g\u00f6re \u00e7eyrek final sonu\u00e7lar\u0131",
-                "13-mayis": "Bran\u015fa g\u00f6re yar\u0131 final sonu\u00e7lar\u0131",
-                "14-mayis": "Bran\u015fa g\u00f6re final sonu\u00e7lar\u0131"
+                "12-mayis": "Bran\u015fa g\u00f6re \u00e7eyrek final ma\u00e7lar\u0131",
+                "13-mayis": "Bran\u015fa g\u00f6re yar\u0131 final ma\u00e7lar\u0131",
+                "14-mayis": "Bran\u015fa g\u00f6re final ma\u00e7lar\u0131"
             },
             resultsTitle: function (branchName) {
                 return branchName + " Sonu\u00e7lar\u0131";
@@ -220,14 +220,22 @@ var renderScoreResults = (function () {
                 qf: "\u00c7eyrek Final",
                 sf: "Yar\u0131 Final",
                 final: "Final"
+            },
+            statuses: {
+                pending: "Oynanmad\u0131",
+                completed: "Tamamland\u0131"
+            },
+            placeholders: {
+                qfWinner: "\u00c7F {n} Galibi",
+                sfWinner: "YF {n} Galibi"
             }
         },
         en: {
             dayTabsAria: "Results by day",
             dayCaptions: {
-                "12-mayis": "Quarter-final results by branch",
-                "13-mayis": "Semi-final results by branch",
-                "14-mayis": "Final results by branch"
+                "12-mayis": "Quarter-final matches by branch",
+                "13-mayis": "Semi-final matches by branch",
+                "14-mayis": "Final matches by branch"
             },
             resultsTitle: function (branchName) {
                 return branchName + " Results";
@@ -236,14 +244,22 @@ var renderScoreResults = (function () {
                 qf: "Quarter-final",
                 sf: "Semi-final",
                 final: "Final"
+            },
+            statuses: {
+                pending: "Not Played",
+                completed: "Completed"
+            },
+            placeholders: {
+                qfWinner: "QF {n} Winner",
+                sfWinner: "SF {n} Winner"
             }
         },
         pl: {
             dayTabsAria: "Wyniki wedlug dni",
             dayCaptions: {
-                "12-mayis": "Wyniki cwiercfinalow wedlug dyscyplin",
-                "13-mayis": "Wyniki polfinalow wedlug dyscyplin",
-                "14-mayis": "Wyniki finalowe wedlug dyscyplin"
+                "12-mayis": "Mecze cwiercfinalowe wedlug dyscyplin",
+                "13-mayis": "Mecze polfinalowe wedlug dyscyplin",
+                "14-mayis": "Mecze finalowe wedlug dyscyplin"
             },
             resultsTitle: function (branchName) {
                 return "Wyniki: " + branchName;
@@ -252,6 +268,14 @@ var renderScoreResults = (function () {
                 qf: "Cwiercfinal",
                 sf: "Polfinal",
                 final: "Final"
+            },
+            statuses: {
+                pending: "Nie rozegrano",
+                completed: "Zakonczono"
+            },
+            placeholders: {
+                qfWinner: "Zwyciezca CF {n}",
+                sfWinner: "Zwyciezca PF {n}"
             }
         }
     };
@@ -402,11 +426,40 @@ var renderScoreResults = (function () {
         }
     ];
 
+    var publishResults = false;
+
     function pickText(value, lang) {
         if (value && typeof value === "object") {
             return value[lang] || value.tr || value.en || value.pl || "";
         }
         return value || "";
+    }
+
+    function formatTemplate(template, number) {
+        return String(template || "").replace("{n}", String(number));
+    }
+
+    function buildPlaceholderPair(stageKey, lang, index) {
+        var copy = uiCopy[lang] || uiCopy.tr;
+        if (stageKey === "sf") {
+            return [
+                formatTemplate(copy.placeholders.qfWinner, index * 2 + 1),
+                formatTemplate(copy.placeholders.qfWinner, index * 2 + 2)
+            ];
+        }
+
+        if (stageKey === "final") {
+            return [
+                formatTemplate(copy.placeholders.sfWinner, 1),
+                formatTemplate(copy.placeholders.sfWinner, 2)
+            ];
+        }
+
+        return ["", ""];
+    }
+
+    function hasPlayableScore(score) {
+        return publishResults && Array.isArray(score) && score.length === 2 && score[0] != null && score[1] != null;
     }
 
     function scoreToNumber(value) {
@@ -421,6 +474,9 @@ var renderScoreResults = (function () {
     }
 
     function getWinnerKey(score, lowWins) {
+        if (!hasPlayableScore(score)) {
+            return null;
+        }
         var homeValue = scoreToNumber(score[0]);
         var awayValue = scoreToNumber(score[1]);
         if (lowWins) {
@@ -438,20 +494,29 @@ var renderScoreResults = (function () {
     }
 
     function createMatch(day, template, stageKey, index, time, home, away, score, lang) {
-        var winner = getWinnerKey(score, !!template.lowWins);
+        var copy = uiCopy[lang] || uiCopy.tr;
+        var hasScore = hasPlayableScore(score);
+        var winner = hasScore ? getWinnerKey(score, !!template.lowWins) : null;
+        var normalizedScore = hasScore ? score : ["-", "-"];
         return {
             stage: buildStageLabel(stageKey, index, lang),
             time: time,
             home: home,
             away: away,
-            homeScore: score[0],
-            awayScore: score[1],
+            homeScore: normalizedScore[0],
+            awayScore: normalizedScore[1],
             winner: winner,
+            played: hasScore,
+            status: hasScore ? copy.statuses.completed : copy.statuses.pending,
+            badgeClass: hasScore ? "score-card-badge-final" : "score-card-badge-pending",
             meta: pickText(day.fullDate, lang) + " | " + time + " | " + pickText(template.venue, lang)
         };
     }
 
     function getWinnerName(match) {
+        if (!match || !match.winner) {
+            return null;
+        }
         return match.winner === "home" ? match.home : match.away;
     }
 
@@ -464,10 +529,18 @@ var renderScoreResults = (function () {
             return qfMatches;
         }
 
-        var sfPairs = [
+        var sfPairs = template.sf.pairs || [
             [getWinnerName(qfMatches[0]), getWinnerName(qfMatches[1])],
             [getWinnerName(qfMatches[2]), getWinnerName(qfMatches[3])]
         ];
+
+        if (!publishResults || sfPairs.some(function (pair) { return !pair[0] || !pair[1]; })) {
+            sfPairs = [
+                buildPlaceholderPair("sf", lang, 0),
+                buildPlaceholderPair("sf", lang, 1)
+            ];
+        }
+
         var sfMatches = sfPairs.map(function (pair, index) {
             return createMatch(day, template, "sf", index, template.sf.times[index], pair[0], pair[1], template.sf.scores[index], lang);
         });
@@ -476,8 +549,13 @@ var renderScoreResults = (function () {
             return sfMatches;
         }
 
+        var finalPair = template.final.pair || [getWinnerName(sfMatches[0]), getWinnerName(sfMatches[1])];
+        if (!publishResults || !finalPair[0] || !finalPair[1]) {
+            finalPair = buildPlaceholderPair("final", lang, 0);
+        }
+
         return [
-            createMatch(day, template, "final", 0, template.final.time, getWinnerName(sfMatches[0]), getWinnerName(sfMatches[1]), template.final.score, lang)
+            createMatch(day, template, "final", 0, template.final.time, finalPair[0], finalPair[1], template.final.score, lang)
         ];
     }
 
@@ -486,10 +564,10 @@ var renderScoreResults = (function () {
         var awayClass = match.winner === "away" ? " is-leading" : "";
 
         return [
-            "<article class=\"score-card score-card-result\">",
+            "<article class=\"score-card score-card-result" + (match.played ? "" : " is-pending") + "\">",
             "    <div class=\"score-card-head\">",
             "        <p class=\"score-card-branch\">" + match.stage + "</p>",
-            "        <span class=\"score-card-badge score-card-badge-final\">" + match.time + "</span>",
+            "        <span class=\"score-card-badge " + match.badgeClass + "\">" + match.status + "</span>",
             "    </div>",
             "    <div class=\"score-card-teams\">",
             "        <div class=\"score-card-team" + homeClass + "\">",
