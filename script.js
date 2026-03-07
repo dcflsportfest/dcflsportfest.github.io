@@ -150,6 +150,110 @@
     });
 })();
 
+(function () {
+    var output = document.querySelector("[data-last-push-time]");
+    if (!output) {
+        return;
+    }
+
+    var repoApi = "https://api.github.com/repos/dcflsportfest/dcflsportfest.github.io";
+    var cacheKey = "dcfl_repo_push_meta_v1";
+
+    function getLocale() {
+        var lang = (document.documentElement.getAttribute("lang") || "tr").toLowerCase();
+        if (lang === "en") {
+            return "en-GB";
+        }
+        if (lang === "pl") {
+            return "pl-PL";
+        }
+        return "tr-TR";
+    }
+
+    function formatTime(isoString) {
+        var date = new Date(isoString);
+        if (Number.isNaN(date.getTime())) {
+            return null;
+        }
+
+        return new Intl.DateTimeFormat(getLocale(), {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+            timeZone: "Europe/Istanbul"
+        }).format(date);
+    }
+
+    function formatTooltip(isoString) {
+        var date = new Date(isoString);
+        if (Number.isNaN(date.getTime())) {
+            return "";
+        }
+
+        return new Intl.DateTimeFormat(getLocale(), {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+            timeZone: "Europe/Istanbul"
+        }).format(date) + " TSİ";
+    }
+
+    function applyPushTime(isoString) {
+        var formatted = formatTime(isoString);
+        if (!formatted) {
+            return false;
+        }
+
+        output.textContent = formatted;
+        output.setAttribute("datetime", isoString);
+        output.setAttribute("title", formatTooltip(isoString));
+        return true;
+    }
+
+    try {
+        var cachedRaw = window.localStorage.getItem(cacheKey);
+        if (cachedRaw) {
+            var cached = JSON.parse(cachedRaw);
+            if (cached && cached.pushedAt) {
+                applyPushTime(cached.pushedAt);
+            }
+        }
+    } catch (error) {
+        // Ignore localStorage access failures.
+    }
+
+    fetch(repoApi, {
+        headers: {
+            "Accept": "application/vnd.github+json"
+        }
+    }).then(function (response) {
+        if (!response.ok) {
+            throw new Error("GitHub push time request failed");
+        }
+        return response.json();
+    }).then(function (repoData) {
+        if (!repoData || !repoData.pushed_at) {
+            return;
+        }
+
+        applyPushTime(repoData.pushed_at);
+
+        try {
+            window.localStorage.setItem(cacheKey, JSON.stringify({
+                pushedAt: repoData.pushed_at,
+                cachedAt: Date.now()
+            }));
+        } catch (error) {
+            // Ignore localStorage write failures.
+        }
+    }).catch(function () {
+        // Keep the fallback time already rendered in HTML.
+    });
+})();
+
 function initializeFixtureTabGroups(root) {
     var scope = root || document;
     var tabGroups = scope.querySelectorAll("[data-fixture-tabs]");
