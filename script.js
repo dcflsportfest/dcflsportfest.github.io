@@ -209,34 +209,49 @@ var renderScoreResults = (function () {
         tr: {
             dayTabsAria: "G\u00fcnlere g\u00f6re sonu\u00e7lar",
             dayCaptions: {
-                "12-mayis": "Bran\u015fa g\u00f6re sonu\u00e7lar",
-                "13-mayis": "Bran\u015fa g\u00f6re sonu\u00e7lar",
+                "12-mayis": "Bran\u015fa g\u00f6re \u00e7eyrek final sonu\u00e7lar\u0131",
+                "13-mayis": "Bran\u015fa g\u00f6re yar\u0131 final sonu\u00e7lar\u0131",
                 "14-mayis": "Bran\u015fa g\u00f6re final sonu\u00e7lar\u0131"
             },
             resultsTitle: function (branchName) {
                 return branchName + " Sonu\u00e7lar\u0131";
+            },
+            rounds: {
+                qf: "\u00c7eyrek Final",
+                sf: "Yar\u0131 Final",
+                final: "Final"
             }
         },
         en: {
             dayTabsAria: "Results by day",
             dayCaptions: {
-                "12-mayis": "Results by sports branch",
-                "13-mayis": "Results by sports branch",
-                "14-mayis": "Final results by sports branch"
+                "12-mayis": "Quarter-final results by branch",
+                "13-mayis": "Semi-final results by branch",
+                "14-mayis": "Final results by branch"
             },
             resultsTitle: function (branchName) {
                 return branchName + " Results";
+            },
+            rounds: {
+                qf: "Quarter-final",
+                sf: "Semi-final",
+                final: "Final"
             }
         },
         pl: {
-            dayTabsAria: "Wyniki wed\u0142ug dni",
+            dayTabsAria: "Wyniki wedlug dni",
             dayCaptions: {
-                "12-mayis": "Wyniki wed\u0142ug dyscyplin",
-                "13-mayis": "Wyniki wed\u0142ug dyscyplin",
-                "14-mayis": "Wyniki fina\u0142owe wed\u0142ug dyscyplin"
+                "12-mayis": "Wyniki cwiercfinalow wedlug dyscyplin",
+                "13-mayis": "Wyniki polfinalow wedlug dyscyplin",
+                "14-mayis": "Wyniki finalowe wedlug dyscyplin"
             },
             resultsTitle: function (branchName) {
                 return "Wyniki: " + branchName;
+            },
+            rounds: {
+                qf: "Cwiercfinal",
+                sf: "Polfinal",
+                final: "Final"
             }
         }
     };
@@ -244,54 +259,146 @@ var renderScoreResults = (function () {
     var days = [
         {
             key: "12-mayis",
+            stage: "qf",
             label: { tr: "12 May\u0131s", en: "May 12", pl: "12 maja" },
-            fullDate: { tr: "12 May\u0131s 2026", en: "May 12, 2026", pl: "12 maja 2026" },
-            branches: [
-                { key: "voleybol", name: { tr: "Voleybol", en: "Volleyball", pl: "Siatk\u00f3wka" }, status: { tr: "Grup A", en: "Group A", pl: "Grupa A" }, home: "DCFL A", homeScore: "2", away: "Warsaw Falcons", awayScore: "0", winner: "home", meta: { tr: "A\u00e7\u0131l\u0131\u015f g\u00fcn\u00fc | Kapal\u0131 Spor Salonu | Grup ma\u00e7\u0131", en: "Opening day | Indoor hall | Group match", pl: "Dzie\u0144 otwarcia | Hala sportowa | Mecz grupowy" } },
-                { key: "basketbol", name: { tr: "Basketbol", en: "Basketball", pl: "Koszyk\u00f3wka" }, status: { tr: "Grup B", en: "Group B", pl: "Grupa B" }, home: "Istanbul Stars", homeScore: "68", away: "Sofia Hoops", awayScore: "63", winner: "home", meta: { tr: "Ana Saha | Grup etab\u0131 | G\u00fcn sonu skoru", en: "Main court | Group stage | End-of-day score", pl: "Boisko g\u0142\u00f3wne | Etap grupowy | Wynik dnia" } },
-                { key: "futbol", name: { tr: "Futbol", en: "Football", pl: "Pi\u0142ka No\u017cna" }, status: { tr: "Grup C", en: "Group C", pl: "Grupa C" }, home: "DCFL Red", homeScore: "3", away: "Balkan Youth", awayScore: "1", winner: "home", meta: { tr: "D\u0131\u015f Saha | Grup ma\u00e7\u0131 | 90 dakika", en: "Outdoor field | Group match | 90 minutes", pl: "Boisko zewn\u0119trzne | Mecz grupowy | 90 minut" } },
-                { key: "masa-tenisi", name: { tr: "Masa Tenisi", en: "Table Tennis", pl: "Tenis Sto\u0142owy" }, status: { tr: "\u00c7eyrek Final", en: "Quarter-final", pl: "\u0106wier\u0107fina\u0142" }, home: "Elif Kaya", homeScore: "3", away: "Jana Lis", awayScore: "1", winner: "home", meta: { tr: "Salon B | Kad\u0131nlar tablosu", en: "Hall B | Women's bracket", pl: "Hala B | Tabela kobiet" } },
-                { key: "okculuk", name: { tr: "Ok\u00e7uluk", en: "Archery", pl: "\u0141ucznictwo" }, status: { tr: "S\u0131ralama", en: "Ranking", pl: "Ranking" }, home: "DCFL Archers", homeScore: "122", away: "Riga Target", awayScore: "118", winner: "home", meta: { tr: "A\u00e7\u0131k Alan | \u0130lk g\u00fcn s\u0131ralama puan\u0131", en: "Open area | First-day ranking score", pl: "Strefa otwarta | Punkty rankingowe pierwszego dnia" } },
-                { key: "oryantiring", name: { tr: "Oryantiring", en: "Orienteering", pl: "Bieg na Orientacj\u0119" }, status: { tr: "Parkur 1", en: "Course 1", pl: "Trasa 1" }, home: "DCFL Trail", homeScore: "38:14", away: "Sofia Compass", awayScore: "40:02", winner: "home", meta: { tr: "Kamp\u00fcs rotas\u0131 | En iyi derece", en: "Campus route | Best time", pl: "Trasa kampusowa | Najlepszy czas" } },
-                { key: "bahce-satranci", name: { tr: "Bah\u00e7e Satranc\u0131", en: "Garden Chess", pl: "Szachy Ogrodowe" }, status: { tr: "Eleme Turu", en: "Elimination round", pl: "Runda eliminacyjna" }, home: "DCFL White", homeScore: "1", away: "Plovdiv Kings", awayScore: "0", winner: "home", meta: { tr: "Bah\u00e7e Alan\u0131 | A\u00e7\u0131l\u0131\u015f g\u00fcn\u00fc e\u015fle\u015fmesi", en: "Garden area | Opening-day pairing", pl: "Strefa ogrodowa | Para dnia otwarcia" } },
-                { key: "playstation", name: { tr: "PlayStation", en: "PlayStation", pl: "PlayStation" }, status: { tr: "Grup Etab\u0131", en: "Group stage", pl: "Etap grupowy" }, home: "Mert K.", homeScore: "3", away: "Kamil P.", awayScore: "1", winner: "home", meta: { tr: "E-spor Alan\u0131 | \u0130lk ma\u00e7", en: "E-sports area | Opening match", pl: "Strefa e-sportu | Pierwszy mecz" } },
-                { key: "atletizm", name: { tr: "Atletizm", en: "Athletics", pl: "Lekkoatletyka" }, status: { tr: "100m Se\u00e7me", en: "100m qualifying", pl: "Eliminacje 100 m" }, home: "DCFL Sprint", homeScore: "11.52", away: "Varna Track", awayScore: "11.68", winner: "home", meta: { tr: "Ana Pist | G\u00fcn\u00fcn en iyi derecesi", en: "Main track | Best time of the day", pl: "Tor g\u0142\u00f3wny | Najlepszy wynik dnia" } },
-                { key: "bahce-oyunlari", name: { tr: "Bah\u00e7e Oyunlar\u0131", en: "Garden Games", pl: "Gry Ogrodowe" }, status: { tr: "Tak\u0131m Oyunu", en: "Team game", pl: "Gra dru\u017cynowa" }, home: "Tak\u0131m Mavi", homeScore: "21", away: "Tak\u0131m Gold", awayScore: "18", winner: "home", meta: { tr: "Festival Bah\u00e7esi | A\u00e7\u0131l\u0131\u015f g\u00fcn\u00fc puan\u0131", en: "Festival garden | Opening-day score", pl: "Ogr\u00f3d festiwalowy | Wynik dnia otwarcia" } }
-            ]
+            fullDate: { tr: "12 May\u0131s 2026", en: "May 12, 2026", pl: "12 maja 2026" }
         },
         {
             key: "13-mayis",
+            stage: "sf",
             label: { tr: "13 May\u0131s", en: "May 13", pl: "13 maja" },
-            fullDate: { tr: "13 May\u0131s 2026", en: "May 13, 2026", pl: "13 maja 2026" },
-            branches: [
-                { key: "voleybol", name: { tr: "Voleybol", en: "Volleyball", pl: "Siatk\u00f3wka" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "DCFL A", homeScore: "2", away: "Skopje Smash", awayScore: "1", winner: "home", meta: { tr: "Kapal\u0131 Spor Salonu | 3 set sonunda", en: "Indoor hall | After 3 sets", pl: "Hala sportowa | Po 3 setach" } },
-                { key: "basketbol", name: { tr: "Basketbol", en: "Basketball", pl: "Koszyk\u00f3wka" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "DCFL Hoops", homeScore: "72", away: "Balkan Academy", awayScore: "75", winner: "away", meta: { tr: "Ana Saha | Son saniye isabeti", en: "Main court | Last-second basket", pl: "Boisko g\u0142\u00f3wne | Rzut w ostatniej sekundzie" } },
-                { key: "futbol", name: { tr: "Futbol", en: "Football", pl: "Pi\u0142ka No\u017cna" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "DCFL Blue", homeScore: "2", away: "Sofia Youth", awayScore: "0", winner: "home", meta: { tr: "D\u0131\u015f Saha | Normal s\u00fcre sonucu", en: "Outdoor field | End of regular time", pl: "Boisko zewn\u0119trzne | Wynik po regulaminowym czasie" } },
-                { key: "masa-tenisi", name: { tr: "Masa Tenisi", en: "Table Tennis", pl: "Tenis Sto\u0142owy" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "DCFL Aylin", homeScore: "3", away: "Skopje Smash", awayScore: "1", winner: "home", meta: { tr: "Salon B | Kad\u0131nlar yar\u0131 finali", en: "Hall B | Women's semi-final", pl: "Hala B | P\u00f3\u0142fina\u0142 kobiet" } },
-                { key: "okculuk", name: { tr: "Ok\u00e7uluk", en: "Archery", pl: "\u0141ucznictwo" }, status: { tr: "Eleme", en: "Elimination", pl: "Eliminacje" }, home: "DCFL Archers", homeScore: "118", away: "Belgrade Youth", awayScore: "121", winner: "away", meta: { tr: "A\u00e7\u0131k Alan | Klasman turu", en: "Open area | Ranking round", pl: "Strefa otwarta | Runda klasyfikacyjna" } },
-                { key: "oryantiring", name: { tr: "Oryantiring", en: "Orienteering", pl: "Bieg na Orientacj\u0119" }, status: { tr: "Parkur 2", en: "Course 2", pl: "Trasa 2" }, home: "DCFL Trail", homeScore: "36:52", away: "Belgrade Map", awayScore: "35:47", winner: "away", meta: { tr: "Kamp\u00fcs d\u0131\u015f parkur | G\u00fcnl\u00fck s\u0131ralama", en: "Outer campus course | Daily ranking", pl: "Zewn\u0119trzna trasa kampusu | Dzienny ranking" } },
-                { key: "bahce-satranci", name: { tr: "Bah\u00e7e Satranc\u0131", en: "Garden Chess", pl: "Szachy Ogrodowe" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "DCFL Black", homeScore: "0", away: "Plovdiv Queens", awayScore: "1", winner: "away", meta: { tr: "Bah\u00e7e Alan\u0131 | Strateji turu", en: "Garden area | Strategy round", pl: "Strefa ogrodowa | Runda strategiczna" } },
-                { key: "playstation", name: { tr: "PlayStation", en: "PlayStation", pl: "PlayStation" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "Ali T.", homeScore: "1", away: "Jan Nowak", awayScore: "2", winner: "away", meta: { tr: "E-spor Alan\u0131 | Eleme tablosu", en: "E-sports area | Elimination bracket", pl: "Strefa e-sportu | Drabinka eliminacyjna" } },
-                { key: "atletizm", name: { tr: "Atletizm", en: "Athletics", pl: "Lekkoatletyka" }, status: { tr: "100m Final", en: "100m final", pl: "Fina\u0142 100 m" }, home: "DCFL Sprint", homeScore: "11.42", away: "Thessaloniki Track", awayScore: "11.58", winner: "home", meta: { tr: "Ana Pist | Final derecesi", en: "Main track | Final time", pl: "Tor g\u0142\u00f3wny | Wynik fina\u0142u" } },
-                { key: "bahce-oyunlari", name: { tr: "Bah\u00e7e Oyunlar\u0131", en: "Garden Games", pl: "Gry Ogrodowe" }, status: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "P\u00f3\u0142fina\u0142" }, home: "Tak\u0131m Gold", homeScore: "24", away: "Tak\u0131m Forest", awayScore: "19", winner: "home", meta: { tr: "Festival Bah\u00e7esi | G\u00fcn sonu e\u015fle\u015fmesi", en: "Festival garden | End-of-day pairing", pl: "Ogr\u00f3d festiwalowy | Zestawienie dnia" } }
-            ]
+            fullDate: { tr: "13 May\u0131s 2026", en: "May 13, 2026", pl: "13 maja 2026" }
         },
         {
             key: "14-mayis",
+            stage: "final",
             label: { tr: "14 May\u0131s", en: "May 14", pl: "14 maja" },
-            fullDate: { tr: "14 May\u0131s 2026", en: "May 14, 2026", pl: "14 maja 2026" },
-            branches: [
-                { key: "voleybol", name: { tr: "Voleybol", en: "Volleyball", pl: "Siatk\u00f3wka" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "DCFL A", homeScore: "3", away: "Balkan Academy", awayScore: "1", winner: "home", meta: { tr: "Kupa ma\u00e7\u0131 | \u015eampiyonluk kar\u015f\u0131la\u015fmas\u0131", en: "Cup match | Championship game", pl: "Mecz o puchar | Spotkanie o mistrzostwo" } },
-                { key: "basketbol", name: { tr: "Basketbol", en: "Basketball", pl: "Koszyk\u00f3wka" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "DCFL Hoops", homeScore: "81", away: "Balkan Academy", awayScore: "77", winner: "home", meta: { tr: "Ana Saha | \u015eampiyonluk ma\u00e7\u0131", en: "Main court | Championship game", pl: "Boisko g\u0142\u00f3wne | Mecz o mistrzostwo" } },
-                { key: "futbol", name: { tr: "Futbol", en: "Football", pl: "Pi\u0142ka No\u017cna" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "DCFL Blue", homeScore: "1", away: "Belgrade Youth", awayScore: "2", winner: "away", meta: { tr: "D\u0131\u015f Saha | Final skoru", en: "Outdoor field | Final score", pl: "Boisko zewn\u0119trzne | Wynik fina\u0142u" } },
-                { key: "masa-tenisi", name: { tr: "Masa Tenisi", en: "Table Tennis", pl: "Tenis Sto\u0142owy" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "DCFL Aylin", homeScore: "3", away: "Maria Z.", awayScore: "2", winner: "home", meta: { tr: "Salon B | \u015eampiyonluk ma\u00e7\u0131", en: "Hall B | Championship match", pl: "Hala B | Mecz o mistrzostwo" } },
-                { key: "okculuk", name: { tr: "Ok\u00e7uluk", en: "Archery", pl: "\u0141ucznictwo" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "DCFL Archers", homeScore: "127", away: "Belgrade Youth", awayScore: "124", winner: "home", meta: { tr: "A\u00e7\u0131k Alan | Final at\u0131\u015flar\u0131", en: "Open area | Final shots", pl: "Strefa otwarta | Strza\u0142y fina\u0142owe" } },
-                { key: "oryantiring", name: { tr: "Oryantiring", en: "Orienteering", pl: "Bieg na Orientacj\u0119" }, status: { tr: "Final Parkur", en: "Final course", pl: "Trasa fina\u0142owa" }, home: "DCFL Trail", homeScore: "34:08", away: "Sofia Compass", awayScore: "35:21", winner: "home", meta: { tr: "Final rota | En iyi derece", en: "Final route | Best time", pl: "Trasa fina\u0142owa | Najlepszy czas" } },
-                { key: "bahce-satranci", name: { tr: "Bah\u00e7e Satranc\u0131", en: "Garden Chess", pl: "Szachy Ogrodowe" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "DCFL White", homeScore: "1", away: "Plovdiv Queens", awayScore: "0", winner: "home", meta: { tr: "Bah\u00e7e Alan\u0131 | \u015eampiyonluk oyunu", en: "Garden area | Championship game", pl: "Strefa ogrodowa | Partia o mistrzostwo" } },
-                { key: "playstation", name: { tr: "PlayStation", en: "PlayStation", pl: "PlayStation" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "Mert K.", homeScore: "2", away: "Jan Nowak", awayScore: "3", winner: "away", meta: { tr: "E-spor Alan\u0131 | Final serisi", en: "E-sports area | Final series", pl: "Strefa e-sportu | Seria fina\u0142owa" } },
-                { key: "atletizm", name: { tr: "Atletizm", en: "Athletics", pl: "Lekkoatletyka" }, status: { tr: "100m Final", en: "100m final", pl: "Fina\u0142 100 m" }, home: "DCFL Sprint", homeScore: "11.38", away: "Thessaloniki Track", awayScore: "11.44", winner: "home", meta: { tr: "Ana Pist | Madalya yar\u0131\u015f\u0131", en: "Main track | Medal race", pl: "Tor g\u0142\u00f3wny | Wy\u015bcig o medale" } },
-                { key: "bahce-oyunlari", name: { tr: "Bah\u00e7e Oyunlar\u0131", en: "Garden Games", pl: "Gry Ogrodowe" }, status: { tr: "Final", en: "Final", pl: "Fina\u0142" }, home: "Tak\u0131m Gold", homeScore: "26", away: "Tak\u0131m Mavi", awayScore: "22", winner: "home", meta: { tr: "Festival Bah\u00e7esi | Final puan\u0131", en: "Festival garden | Final score", pl: "Ogr\u00f3d festiwalowy | Wynik fina\u0142u" } }
-            ]
+            fullDate: { tr: "14 May\u0131s 2026", en: "May 14, 2026", pl: "14 maja 2026" }
+        }
+    ];
+
+    var branchTemplates = [
+        {
+            key: "voleybol",
+            name: { tr: "Voleybol", en: "Volleyball", pl: "Siatkowka" },
+            venue: { tr: "Kapal\u0131 Spor Salonu", en: "Indoor Hall", pl: "Hala sportowa" },
+            qf: {
+                times: ["10:00", "11:30", "14:00", "15:30"],
+                pairs: [["DCFL A", "Warsaw Falcons"], ["Sofia Spike", "Balkan Ace"], ["Skopje Smash", "Riga Net"], ["Belgrade Block", "Plovdiv Serve"]],
+                scores: [["2", "0"], ["2", "1"], ["2", "1"], ["0", "2"]]
+            },
+            sf: { times: ["11:00", "14:00"], scores: [["2", "1"], ["1", "2"]] },
+            final: { time: "16:00", score: ["3", "1"] }
+        },
+        {
+            key: "basketbol",
+            name: { tr: "Basketbol", en: "Basketball", pl: "Koszykowka" },
+            venue: { tr: "Basketbol Sahas\u0131", en: "Basketball Court", pl: "Boisko do koszykowki" },
+            qf: {
+                times: ["09:30", "11:30", "13:30", "15:30"],
+                pairs: [["DCFL Hoops", "Istanbul Stars"], ["Sofia Hoops", "Balkan Academy"], ["Skopje Drive", "Warsaw Blaze"], ["Riga Court", "Belgrade Titans"]],
+                scores: [["66", "58"], ["63", "71"], ["74", "69"], ["61", "67"]]
+            },
+            sf: { times: ["12:00", "16:00"], scores: [["78", "72"], ["70", "76"]] },
+            final: { time: "17:00", score: ["81", "77"] }
+        },
+        {
+            key: "futbol",
+            name: { tr: "Futbol", en: "Football", pl: "Pilka Nozna" },
+            venue: { tr: "\u00c7im Saha", en: "Grass Field", pl: "Boisko trawiaste" },
+            qf: {
+                times: ["10:30", "12:30", "14:30", "16:30"],
+                pairs: [["DCFL Blue", "Warsaw United"], ["Balkan Youth", "Sofia Youth"], ["DCFL Red", "Belgrade Next"], ["Skopje Juniors", "Plovdiv FC"]],
+                scores: [["2", "0"], ["1", "2"], ["3", "1"], ["2", "1"]]
+            },
+            sf: { times: ["12:30", "15:30"], scores: [["2", "1"], ["1", "0"]] },
+            final: { time: "18:00", score: ["2", "1"] }
+        },
+        {
+            key: "masa-tenisi",
+            name: { tr: "Masa Tenisi", en: "Table Tennis", pl: "Tenis Stolowy" },
+            venue: { tr: "Masa Tenisi Alan\u0131", en: "Table Tennis Zone", pl: "Strefa tenisa stolowego" },
+            qf: {
+                times: ["11:00", "12:00", "15:00", "16:00"],
+                pairs: [["Elif Kaya", "Jana Lis"], ["Aylin Demir", "Maria Z."], ["Kamil W.", "Sofi Petrova"], ["Lina R.", "Deniz A."]],
+                scores: [["3", "1"], ["3", "2"], ["1", "3"], ["3", "0"]]
+            },
+            sf: { times: ["13:00", "15:00"], scores: [["3", "1"], ["2", "3"]] },
+            final: { time: "11:30", score: ["3", "2"] }
+        },
+        {
+            key: "okculuk",
+            name: { tr: "Ok\u00e7uluk", en: "Archery", pl: "Lucznictwo" },
+            venue: { tr: "Ok\u00e7uluk Parkuru", en: "Archery Range", pl: "Tor luczniczy" },
+            qf: {
+                times: ["10:00", "11:00", "13:00", "14:00"],
+                pairs: [["DCFL Archers", "Riga Target"], ["Sofia Arrows", "Belgrade Youth"], ["Skopje Bow", "Warsaw Aim"], ["Plovdiv Range", "Ankara Focus"]],
+                scores: [["122", "118"], ["117", "120"], ["119", "121"], ["123", "119"]]
+            },
+            sf: { times: ["14:30", "16:00"], scores: [["125", "121"], ["120", "124"]] },
+            final: { time: "12:30", score: ["128", "126"] }
+        },
+        {
+            key: "oryantiring",
+            name: { tr: "Oryantiring", en: "Orienteering", pl: "Bieg na Orientacje" },
+            venue: { tr: "Kamp\u00fcs Alan\u0131", en: "Campus Course", pl: "Trasa kampusowa" },
+            lowWins: true,
+            qf: {
+                times: ["09:45", "10:30", "12:45", "13:30"],
+                pairs: [["DCFL Trail", "Sofia Compass"], ["Belgrade Map", "Warsaw Route"], ["Skopje Track", "Riga North"], ["Plovdiv Path", "Izmir Orienteers"]],
+                scores: [["38:14", "40:02"], ["37:44", "38:31"], ["39:10", "37:52"], ["36:58", "37:21"]]
+            },
+            sf: { times: ["10:45", "13:45"], scores: [["35:40", "36:12"], ["36:08", "35:49"]] },
+            final: { time: "10:15", score: ["34:08", "35:21"] }
+        },
+        {
+            key: "bahce-satranci",
+            name: { tr: "Bah\u00e7e Satranc\u0131", en: "Garden Chess", pl: "Szachy Ogrodowe" },
+            venue: { tr: "Bah\u00e7e Satran\u00e7 Alan\u0131", en: "Garden Chess Zone", pl: "Strefa szachow ogrodowych" },
+            qf: {
+                times: ["11:30", "12:30", "16:00", "17:00"],
+                pairs: [["DCFL White", "Warsaw Kings"], ["DCFL Black", "Plovdiv Queens"], ["Sofia Minds", "Riga Masters"], ["Belgrade Strategy", "Skopje Knights"]],
+                scores: [["1", "0"], ["0", "1"], ["1", "0"], ["0", "1"]]
+            },
+            sf: { times: ["12:00", "15:00"], scores: [["1", "0"], ["1", "0"]] },
+            final: { time: "13:30", score: ["1", "0"] }
+        },
+        {
+            key: "playstation",
+            name: { tr: "PlayStation", en: "PlayStation", pl: "PlayStation" },
+            venue: { tr: "E-Spor Alan\u0131", en: "E-Sports Area", pl: "Strefa e-sportu" },
+            qf: {
+                times: ["10:15", "11:15", "14:15", "15:15"],
+                pairs: [["Mert K.", "Jan Nowak"], ["Ali T.", "Kamil P."], ["Sofia G.", "Emre Y."], ["Luka S.", "Ana M."]],
+                scores: [["3", "2"], ["1", "3"], ["2", "3"], ["3", "1"]]
+            },
+            sf: { times: ["15:30", "17:00"], scores: [["2", "3"], ["3", "1"]] },
+            final: { time: "12:00", score: ["2", "3"] }
+        },
+        {
+            key: "atletizm",
+            name: { tr: "Atletizm", en: "Athletics", pl: "Lekkoatletyka" },
+            venue: { tr: "Atletizm Pisti", en: "Athletics Track", pl: "Tor lekkoatletyczny" },
+            lowWins: true,
+            qf: {
+                times: ["09:00", "10:00", "11:15", "12:15"],
+                pairs: [["DCFL Sprint", "Varna Track"], ["Thessaloniki Track", "Warsaw Lane"], ["Sofia Dash", "Belgrade Run"], ["Skopje Fast", "Riga Motion"]],
+                scores: [["11.52", "11.68"], ["11.61", "11.57"], ["11.74", "11.66"], ["11.69", "11.72"]]
+            },
+            sf: { times: ["14:00", "16:30"], scores: [["11.48", "11.54"], ["11.59", "11.53"]] },
+            final: { time: "15:00", score: ["11.38", "11.44"] }
+        },
+        {
+            key: "bahce-oyunlari",
+            name: { tr: "Bah\u00e7e Oyunlar\u0131", en: "Garden Games", pl: "Gry Ogrodowe" },
+            venue: { tr: "Bah\u00e7e Etkinlik Alan\u0131", en: "Garden Activity Zone", pl: "Strefa gier ogrodowych" },
+            qf: {
+                times: ["10:45", "11:45", "13:45", "14:45"],
+                pairs: [["Tak\u0131m Mavi", "Tak\u0131m Gold"], ["Tak\u0131m Forest", "Tak\u0131m Solar"], ["Tak\u0131m Kuzey", "Tak\u0131m Atlas"], ["Tak\u0131m Nova", "Tak\u0131m Lotus"]],
+                scores: [["21", "18"], ["19", "23"], ["24", "20"], ["17", "22"]]
+            },
+            sf: { times: ["16:15", "17:30"], scores: [["26", "21"], ["18", "24"]] },
+            final: { time: "11:45", score: ["27", "25"] }
         }
     ];
 
@@ -302,42 +409,115 @@ var renderScoreResults = (function () {
         return value || "";
     }
 
-    function renderBranchCard(branch, lang) {
-        var homeClass = branch.winner === "home" ? " is-leading" : "";
-        var awayClass = branch.winner === "away" ? " is-leading" : "";
+    function scoreToNumber(value) {
+        if (typeof value !== "string") {
+            return Number(value) || 0;
+        }
+        if (/^\d+:\d+$/.test(value)) {
+            var parts = value.split(":");
+            return Number(parts[0]) * 60 + Number(parts[1]);
+        }
+        return Number(value);
+    }
+
+    function getWinnerKey(score, lowWins) {
+        var homeValue = scoreToNumber(score[0]);
+        var awayValue = scoreToNumber(score[1]);
+        if (lowWins) {
+            return homeValue <= awayValue ? "home" : "away";
+        }
+        return homeValue >= awayValue ? "home" : "away";
+    }
+
+    function buildStageLabel(stageKey, index, lang) {
+        var copy = uiCopy[lang] || uiCopy.tr;
+        if (stageKey === "final") {
+            return copy.rounds.final;
+        }
+        return copy.rounds[stageKey] + " " + String(index + 1);
+    }
+
+    function createMatch(day, template, stageKey, index, time, home, away, score, lang) {
+        var winner = getWinnerKey(score, !!template.lowWins);
+        return {
+            stage: buildStageLabel(stageKey, index, lang),
+            time: time,
+            home: home,
+            away: away,
+            homeScore: score[0],
+            awayScore: score[1],
+            winner: winner,
+            meta: pickText(day.fullDate, lang) + " | " + time + " | " + pickText(template.venue, lang)
+        };
+    }
+
+    function getWinnerName(match) {
+        return match.winner === "home" ? match.home : match.away;
+    }
+
+    function buildMatchesForBranch(template, day, lang) {
+        var qfMatches = template.qf.pairs.map(function (pair, index) {
+            return createMatch(day, template, "qf", index, template.qf.times[index], pair[0], pair[1], template.qf.scores[index], lang);
+        });
+
+        if (day.stage === "qf") {
+            return qfMatches;
+        }
+
+        var sfPairs = [
+            [getWinnerName(qfMatches[0]), getWinnerName(qfMatches[1])],
+            [getWinnerName(qfMatches[2]), getWinnerName(qfMatches[3])]
+        ];
+        var sfMatches = sfPairs.map(function (pair, index) {
+            return createMatch(day, template, "sf", index, template.sf.times[index], pair[0], pair[1], template.sf.scores[index], lang);
+        });
+
+        if (day.stage === "sf") {
+            return sfMatches;
+        }
 
         return [
-            "<article class=\"score-card\">",
+            createMatch(day, template, "final", 0, template.final.time, getWinnerName(sfMatches[0]), getWinnerName(sfMatches[1]), template.final.score, lang)
+        ];
+    }
+
+    function renderResultMatchCard(match) {
+        var homeClass = match.winner === "home" ? " is-leading" : "";
+        var awayClass = match.winner === "away" ? " is-leading" : "";
+
+        return [
+            "<article class=\"score-card score-card-result\">",
             "    <div class=\"score-card-head\">",
-            "        <p class=\"score-card-branch\">" + pickText(branch.name, lang) + "</p>",
-            "        <span class=\"score-card-badge score-card-badge-final\">" + pickText(branch.status, lang) + "</span>",
+            "        <p class=\"score-card-branch\">" + match.stage + "</p>",
+            "        <span class=\"score-card-badge score-card-badge-final\">" + match.time + "</span>",
             "    </div>",
             "    <div class=\"score-card-teams\">",
             "        <div class=\"score-card-team" + homeClass + "\">",
-            "            <strong>" + branch.home + "</strong>",
-            "            <span class=\"score-card-score\">" + branch.homeScore + "</span>",
+            "            <strong>" + match.home + "</strong>",
+            "            <span class=\"score-card-score\">" + match.homeScore + "</span>",
             "        </div>",
             "        <div class=\"score-card-team" + awayClass + "\">",
-            "            <strong>" + branch.away + "</strong>",
-            "            <span class=\"score-card-score\">" + branch.awayScore + "</span>",
+            "            <strong>" + match.away + "</strong>",
+            "            <span class=\"score-card-score\">" + match.awayScore + "</span>",
             "        </div>",
             "    </div>",
-            "    <p class=\"score-card-meta\">" + pickText(branch.meta, lang) + "</p>",
+            "    <p class=\"score-card-meta\">" + match.meta + "</p>",
             "</article>"
         ].join("");
     }
 
     function renderDayPanel(day, lang, dayUi, isActive) {
-        var branchTabs = day.branches.map(function (branch, index) {
+        var branchTabs = branchTemplates.map(function (branch, index) {
             return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-fixture-tab=\"" + branch.key + "\">" + pickText(branch.name, lang) + "</button>";
         }).join("");
 
-        var branchPanels = day.branches.map(function (branch, index) {
+        var branchPanels = branchTemplates.map(function (branch, index) {
+            var matches = buildMatchesForBranch(branch, day, lang);
             return [
                 "<article class=\"fixture-panel score-results-branch-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + branch.key + "\">",
                 "    <h3>" + dayUi.resultsTitle(pickText(branch.name, lang)) + "</h3>",
                 "    <div class=\"scoreboard-grid score-results-grid\">",
-                "        " + renderBranchCard(branch, lang),
+                matches.map(function (match) { return renderResultMatchCard(match); }).join(""),
                 "    </div>",
                 "</article>"
             ].join("");
@@ -413,7 +593,7 @@ var renderScoreResults = (function () {
             activateDay(shell, days[0].key);
         });
     };
-})();
+});
 
 (function () {
     initializeFixtureTabGroups(document);
@@ -435,17 +615,17 @@ var renderScoreResults = (function () {
 
     var common = {
         tr: {
-            menu: "Menü",
+            menu: "Men\u00fc",
             pickerAria: "Dil",
             nav: {
                 "index.html": "Ana Sayfa",
-                "kurumsal.html": "Amacımız",
-                "hizmetler.html": "Sıkça Sorulanlar",
+                "kurumsal.html": "Amac\u0131m\u0131z",
+                "hizmetler.html": "S\u0131k\u00e7a Sorulanlar",
                 "program.html": "Program & Turnuva",
                 "finans.html": "Finans",
                 "blog.html": "Blog",
-                "arsiv.html": "Arşiv",
-                "iletisim.html": "İletişim",
+                "arsiv.html": "Ar\u015fiv",
+                "iletisim.html": "\u0130leti\u015fim",
                 "turnuva.html": "Program & Turnuva"
             }
         },
@@ -454,7 +634,7 @@ var renderScoreResults = (function () {
             pickerAria: "Language",
             nav: {
                 "index.html": "Home",
-                "kurumsal.html": "About",
+                "kurumsal.html": "Purpose",
                 "hizmetler.html": "FAQ",
                 "program.html": "Program & Tournament",
                 "finans.html": "Finance",
@@ -469,7 +649,7 @@ var renderScoreResults = (function () {
             pickerAria: "Jezyk",
             nav: {
                 "index.html": "Strona glowna",
-                "kurumsal.html": "O nas",
+                "kurumsal.html": "Cel",
                 "hizmetler.html": "FAQ",
                 "program.html": "Program i Turniej",
                 "finans.html": "Finanse",
@@ -554,6 +734,25 @@ var renderScoreResults = (function () {
         });
     }
 
+    function replaceText(selector, replacements) {
+        if (!replacements || typeof replacements !== "object") {
+            return;
+        }
+        document.querySelectorAll(selector).forEach(function (node) {
+            var base = node.getAttribute("data-i18n-base");
+            if (!base) {
+                base = node.textContent.trim();
+                node.setAttribute("data-i18n-base", base);
+            }
+
+            var next = base;
+            Object.keys(replacements).forEach(function (key) {
+                next = next.split(key).join(replacements[key]);
+            });
+            node.textContent = next;
+        });
+    }
+
     function applyScoreboard(copy) {
         if (!copy || !copy.scoreboard) {
             return;
@@ -597,16 +796,59 @@ var renderScoreResults = (function () {
     function applyIndex(lang) {
         var copy = {
             tr: {
-                title: "Program & Turnuva | DCFLSPORTFEST'26",
-                eyebrow: "PROGRAM & TURNUVA",
-                h1: "12-13-14 Mayıs etkinlik ve fikstür akışı.",
-                hero: "Açılış, günlük etkinlik planı ve branş bazlı 8 takımlı tüm turnuva fikstürlerini tek sayfada takip edebilirsin.",
-                sections: ["OPERASYON AKIŞI", "FESTIVAL HATLARI", "FIKSTUR DETAYLARI"],
-                titles: ["Günlük Program", "Branşlar", "Turnuva Seçim Ekranı"],
-                tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Okçuluk", "Oryantiring", "Bahçe Satrancı", "PlayStation", "Atletizm", "Bahçe Oyunları"],
-                panels: ["Voleybol Fikstürü", "Basketbol Fikstürü", "Futbol Fikstürü", "Masa Tenisi Fikstürü", "Okçuluk Fikstürü", "Oryantiring Fikstürü", "Bahçe Satrancı Fikstürü", "PlayStation Turnuvası Fikstürü", "Atletizm Fikstürü", "Bahçe Oyunları Fikstürü"],
-                headerMap: { "Tarih": "Tarih", "Saat": "Saat", "Eşleşme": "Eşleşme", "Saha": "Saha", "Tur": "Tur", "Alan": "Alan", "Yarış": "Yarış", "Pist": "Pist", "Etap": "Etap" },
-                footer: "Program & Turnuva Sayfası"
+                title: "DCFLSPORTFEST'26 | Ana Sayfa",
+                h1: "Uluslararas\u0131 Spor ve\u00a0Gen\u00e7lik\u00a0Festivali",
+                hero: [
+                    "DCFLSPORTFEST'26, yaln\u0131zca yerel bir organizasyon de\u011fildir.",
+                    "Bu yap\u0131 sayesinde etkinlik, sponsor markalar i\u00e7in global g\u00f6r\u00fcn\u00fcrl\u00fck sa\u011flar."
+                ],
+                list: [
+                    "Birden fazla \u00fclkeden tak\u0131m ve bireysel sporcu kat\u0131l\u0131m\u0131",
+                    "Nitelikli okullar ve spor kul\u00fcplerinin kat\u0131l\u0131m\u0131",
+                    "Profesyonel hakemler ve davetli konu\u015fmac\u0131lar",
+                    "\u00c7ok dilli ileti\u015fim ve tan\u0131t\u0131m"
+                ],
+                cta: "Program ve Turnuva",
+                stats: ["10 Adet Bran\u015f", "Her G\u00fcn 200+ Kat\u0131l\u0131mc\u0131"],
+                sponsorCta: "Sponsor Ol",
+                countdown: "SportFeste kalan s\u00fcre",
+                countdownLabels: ["G\u00fcn", "Saat", "Dakika", "Saniye"],
+                ended: "Festival ba\u015flad\u0131!",
+                scoreboard: {
+                    kicker: "SKOR MERKEZI",
+                    title: "Canl\u0131 Skor ve Sonu\u00e7lar",
+                    text: "G\u00fcn\u00fcn canl\u0131 kar\u015f\u0131la\u015fmalar\u0131n\u0131 ve tamamlanan ma\u00e7 sonu\u00e7lar\u0131n\u0131 tek panelden takip et.",
+                    tabAria: "Skor paneli sekmeleri",
+                    tabs: ["Canl\u0131", "Sonu\u00e7lar"],
+                    summaryLabels: ["Aktif kar\u015f\u0131la\u015fma", "Bug\u00fcn tamamlanan ma\u00e7", "Son g\u00fcncelleme"],
+                    liveBranches: ["Voleybol", "Basketbol", "Futbol", "PlayStation"],
+                    liveStatuses: ["Canl\u0131", "Canl\u0131", "67. dakika", "Canl\u0131"],
+                    liveMeta: [
+                        "Yar\u0131 final | Kapal\u0131 Spor Salonu | 2. set",
+                        "Grup A | Ana Saha | 3. \u00e7eyrek",
+                        "Yar\u0131 final | D\u0131\u015f Saha | 67. dakika",
+                        "Final | E-spor Alan\u0131 | 2. ma\u00e7"
+                    ],
+                    resultBranches: ["Masa Tenisi", "Ok\u00e7uluk", "Atletizm", "Bah\u00e7e Satranc\u0131"],
+                    resultStatuses: ["Final", "Tamamland\u0131", "Tamamland\u0131", "Tamamland\u0131"],
+                    resultMeta: [
+                        "Kad\u0131nlar yar\u0131 finali | Salon B",
+                        "Klasman turu | A\u00e7\u0131k Alan",
+                        "100m finali | Ana Pist",
+                        "Eleme turu | Bah\u00e7e Alan\u0131"
+                    ]
+                },
+                branches: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Ok\u00e7uluk", "Oryantiring", "Bah\u00e7e Satranc\u0131", "PlayStation Turnuvas\u0131", "Atletizm", "Bah\u00e7e Oyunlar\u0131"],
+                contactTitle: "\u0130leti\u015fim Formu",
+                contactDetails: [
+                    "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
+                    "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
+                    "<strong>Tarih:</strong> 12-13-14 Mayis 2026"
+                ],
+                quick: "H\u0131zl\u0131 Mesaj",
+                labels: ["Ad Soyad/ Firma Ad\u0131", "E-posta", "Konu", "Mesaj"],
+                placeholders: ["Ad Soyad/ Firma Ad\u0131", "ornek@mail.com", "Tak\u0131m kayd\u0131 / Sponsorluk / Soru", "Mesaj\u0131n\u0131 yaz..."],
+                send: "G\u00f6nder"
             },
             en: {
                 title: "DCFLSPORTFEST'26 | Home",
@@ -653,6 +895,11 @@ var renderScoreResults = (function () {
                 },
                 branches: ["Volleyball", "Basketball", "Football", "Table Tennis", "Archery", "Orienteering", "Garden Chess", "PlayStation Tournament", "Athletics", "Garden Games"],
                 contactTitle: "Contact Form",
+                contactDetails: [
+                    "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
+                    "<strong>Location:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
+                    "<strong>Date:</strong> May 12-14, 2026"
+                ],
                 quick: "Quick Message",
                 labels: ["Name / Company Name", "E-mail", "Subject", "Message"],
                 placeholders: ["Name / Company Name", "example@mail.com", "Team registration / Sponsorship / Question", "Write your message..."],
@@ -703,6 +950,11 @@ var renderScoreResults = (function () {
                 },
                 branches: ["Siatkowka", "Koszykowka", "Pilka nozna", "Tenis stolowy", "Lucznictwo", "Bieg na orientacje", "Szachy ogrodowe", "Turniej PlayStation", "Lekkoatletyka", "Gry ogrodowe"],
                 contactTitle: "Formularz Kontaktowy",
+                contactDetails: [
+                    "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
+                    "<strong>Lokalizacja:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
+                    "<strong>Data:</strong> 12-14 maja 2026"
+                ],
                 quick: "Szybka Wiadomosc",
                 labels: ["Imie i nazwisko / Firma", "E-mail", "Temat", "Wiadomosc"],
                 placeholders: ["Imie i nazwisko / Firma", "przyklad@mail.com", "Rejestracja druzyny / Sponsoring / Pytanie", "Napisz wiadomosc..."],
@@ -725,6 +977,11 @@ var renderScoreResults = (function () {
         renderScoreResults(lang);
         setList(".home-branch-list li", copy.branches);
         setText(".contact-info h2", copy.contactTitle);
+        if (Array.isArray(copy.contactDetails)) {
+            setHTML(".contact-info .section-text:nth-of-type(1)", copy.contactDetails[0]);
+            setHTML(".contact-info .section-text:nth-of-type(2)", copy.contactDetails[1]);
+            setHTML(".contact-info .section-text:nth-of-type(3)", copy.contactDetails[2]);
+        }
         setText(".contact-form-card h2", copy.quick);
         setText("label[for='home-name']", copy.labels[0]);
         setText("label[for='home-email']", copy.labels[1]);
@@ -743,35 +1000,146 @@ var renderScoreResults = (function () {
                 eyebrow: "PROGRAM & TURNUVA",
                 h1: "12-13-14 May\u0131s etkinlik ve fikst\u00fcr ak\u0131\u015f\u0131.",
                 hero: "A\u00e7\u0131l\u0131\u015f, g\u00fcnl\u00fck etkinlik plan\u0131 ve bran\u015f bazl\u0131 8 tak\u0131ml\u0131 t\u00fcm turnuva fikst\u00fcrlerini tek sayfada takip edebilirsin.",
-                sections: ["OPERASYON AKI\u015eI", "FESTIVAL HATLARI", "FIKSTUR DETAYLARI"],
-                titles: ["G\u00fcnl\u00fck Program", "Bran\u015flar", "Turnuva Se\u00e7im Ekran\u0131"],
-                tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Ok\u00e7uluk", "Oryantiring", "Bah\u00e7e Satranc\u0131", "PlayStation", "Atletizm", "Bah\u00e7e Oyunlar\u0131"],
-                panels: ["Voleybol Fikst\u00fcr\u00fc", "Basketbol Fikst\u00fcr\u00fc", "Futbol Fikst\u00fcr\u00fc", "Masa Tenisi Fikst\u00fcr\u00fc", "Ok\u00e7uluk Fikst\u00fcr\u00fc", "Oryantiring Fikst\u00fcr\u00fc", "Bah\u00e7e Satranc\u0131 Fikst\u00fcr\u00fc", "PlayStation Turnuvas\u0131 Fikst\u00fcr\u00fc", "Atletizm Fikst\u00fcr\u00fc", "Bah\u00e7e Oyunlar\u0131 Fikst\u00fcr\u00fc"],
-                headerMap: { "Tarih": "Tarih", "Saat": "Saat", "E\u015fle\u015fme": "E\u015fle\u015fme", "Saha": "Saha", "Tur": "Tur", "Alan": "Alan", "Yar\u0131\u015f": "Yar\u0131\u015f", "Pist": "Pist", "Etap": "Etap" },
-                footer: "Program & Turnuva Sayfas\u0131"
+                sections: ["OPERASYON AKISI", "FESTIVAL HATLARI", "FIKSTUR DETAYLARI"],
+                titles: ["Gunluk Program", "Branslar", "Turnuva Secim Ekrani"],
+                tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Okculuk", "Oryantiring", "Bahce Satranci", "PlayStation", "Atletizm", "Bahce Oyunlari"],
+                panels: ["Voleybol Fiksturu", "Basketbol Fiksturu", "Futbol Fiksturu", "Masa Tenisi Fiksturu", "Okculuk Fiksturu", "Oryantiring Fiksturu", "Bahce Satranci Fiksturu", "PlayStation Turnuvasi Fiksturu", "Atletizm Fiksturu", "Bahce Oyunlari Fiksturu"],
+                timelineTitles: [
+                    "12 Mayis | Ceyrek Finaller ve Acilis",
+                    "13 Mayis | Yari Finaller ve Yan Etkinlikler",
+                    "14 Mayis | Final ve Odul Toreni"
+                ],
+                timelineText: [
+                    "8 takim ile baslayan turnuva eslesmeleri ve acilis seremonisi ayni gun baslar.",
+                    "Ceyrek final galipleri yari finalde bulusur; gun boyunca yan etkinlik akisi devam eder.",
+                    "Her bransta sampiyonluk maci oynanir, ardindan kupa seremonisi ve kapanis yapilir."
+                ],
+                headerMap: {
+                    "Tarih": "Tarih",
+                    "Saat": "Saat",
+                    "E\u015fle\u015fme": "E\u015fle\u015fme",
+                    "Saha": "Saha",
+                    "Tur": "Tur",
+                    "Alan": "Alan",
+                    "Yar\u0131\u015f": "Yar\u0131\u015f",
+                    "Pist": "Pist",
+                    "Etap": "Etap"
+                },
+                detailMap: {},
+                footer: "Program & Turnuva Sayfasi"
             },
             en: {
                 title: "Program & Tournament | DCFLSPORTFEST'26",
                 eyebrow: "PROGRAM & TOURNAMENT",
                 h1: "12-13-14 May event and fixture flow.",
-                hero: "Follow opening, daily schedule and all branch-based fixtures on one page.",
+                hero: "Follow the opening, daily schedule and branch-based 8-team brackets on one page.",
                 sections: ["OPERATION FLOW", "FESTIVAL LINES", "FIXTURE DETAILS"],
                 titles: ["Daily Program", "Sports Branches", "Tournament Selection Screen"],
                 tabs: ["Volleyball", "Basketball", "Football", "Table Tennis", "Archery", "Orienteering", "Garden Chess", "PlayStation", "Athletics", "Garden Games"],
                 panels: ["Volleyball Fixture", "Basketball Fixture", "Football Fixture", "Table Tennis Fixture", "Archery Fixture", "Orienteering Fixture", "Garden Chess Fixture", "PlayStation Tournament Fixture", "Athletics Fixture", "Garden Games Fixture"],
-                headerMap: { "Tarih": "Date", "Saat": "Time", "Eşleşme": "Match", "Saha": "Court", "Tur": "Round", "Alan": "Area", "Yarış": "Race", "Pist": "Track", "Etap": "Stage" },
+                timelineTitles: [
+                    "May 12 | Quarter-finals and Opening",
+                    "May 13 | Semi-finals and Side Events",
+                    "May 14 | Final and Award Ceremony"
+                ],
+                timelineText: [
+                    "The 8-team tournament bracket starts on the same day as the opening ceremony.",
+                    "Quarter-final winners meet in the semi-finals while side activities continue throughout the day.",
+                    "Each branch plays its championship match, followed by the cup ceremony and closing."
+                ],
+                headerMap: {
+                    "Tarih": "Date",
+                    "Saat": "Time",
+                    "E\u015fle\u015fme": "Match",
+                    "Saha": "Court",
+                    "Tur": "Round",
+                    "Alan": "Area",
+                    "Yar\u0131\u015f": "Race",
+                    "Pist": "Track",
+                    "Etap": "Stage"
+                },
+                detailMap: {
+                    "\u00c7eyrek Final": "Quarter-final",
+                    "Yar\u0131 Final": "Semi-final",
+                    "Ma\u00e7 Ak\u0131\u015f\u0131": "Match Flow",
+                    "12 May\u0131s": "May 12",
+                    "13 May\u0131s": "May 13",
+                    "14 May\u0131s": "May 14",
+                    "Kapal\u0131 Spor Salonu": "Indoor Hall",
+                    "Ana Saha": "Main Court",
+                    "D\u0131\u015f Saha": "Outdoor Field",
+                    "Salon B": "Hall B",
+                    "A\u00e7\u0131k Alan": "Open Area",
+                    "Kamp\u00fcs Rotas\u0131": "Campus Route",
+                    "Bah\u00e7e Alan\u0131": "Garden Area",
+                    "E-spor Alan\u0131": "E-sports Area",
+                    "Festival Bah\u00e7esi": "Festival Garden",
+                    "Ana Pist": "Main Track",
+                    "\u00c7F 1 Galibi": "QF 1 Winner",
+                    "\u00c7F 2 Galibi": "QF 2 Winner",
+                    "\u00c7F 3 Galibi": "QF 3 Winner",
+                    "\u00c7F 4 Galibi": "QF 4 Winner",
+                    "YF 1 Galibi": "SF 1 Winner",
+                    "YF 2 Galibi": "SF 2 Winner",
+                    "8 tak\u0131ml\u0131 e\u015fle\u015fme yap\u0131s\u0131 12-13-14 May\u0131s ak\u0131\u015f\u0131na g\u00f6re ilerler.": "The 8-team bracket advances according to the May 12-13-14 festival flow."
+                },
                 footer: "Program & Tournament Page"
             },
             pl: {
                 title: "Program i Turniej | DCFLSPORTFEST'26",
                 eyebrow: "PROGRAM I TURNIEJ",
                 h1: "Harmonogram wydarzenia i terminarzy 12-13-14 maja.",
-                hero: "Na jednej stronie sledzisz otwarcie, plan dnia i wszystkie terminarze turniejowe.",
+                hero: "Na jednej stronie sledzisz otwarcie, plan dnia i drabinki turniejowe z udzialem 8 druzyn.",
                 sections: ["PRZEBIEG OPERACYJNY", "LINIE FESTIWALU", "SZCZEGOLY TERMINARZA"],
                 titles: ["Program Dzienny", "Dyscypliny", "Ekran Wyboru Turnieju"],
                 tabs: ["Siatkowka", "Koszykowka", "Pilka nozna", "Tenis stolowy", "Lucznictwo", "Bieg na orientacje", "Szachy ogrodowe", "PlayStation", "Lekkoatletyka", "Gry ogrodowe"],
                 panels: ["Terminarz siatkowki", "Terminarz koszykowki", "Terminarz pilki noznej", "Terminarz tenisa stolowego", "Terminarz lucznictwa", "Terminarz biegu na orientacje", "Terminarz szachow ogrodowych", "Terminarz turnieju PlayStation", "Terminarz lekkoatletyki", "Terminarz gier ogrodowych"],
-                headerMap: { "Tarih": "Data", "Saat": "Godz.", "Eşleşme": "Mecz", "Saha": "Boisko", "Tur": "Runda", "Alan": "Strefa", "Yarış": "Bieg", "Pist": "Tor", "Etap": "Etap" },
+                timelineTitles: [
+                    "12 maja | Cwiercfinaly i Otwarcie",
+                    "13 maja | Polfinaly i Wydarzenia Towarzyszace",
+                    "14 maja | Final i Ceremonia Nagrod"
+                ],
+                timelineText: [
+                    "Drabinka turnieju z udzialem 8 druzyn rusza tego samego dnia co ceremonia otwarcia.",
+                    "Zwyciezcy cwiercfinalow spotykaja sie w polfinalach, a wydarzenia towarzyszace trwaja przez caly dzien.",
+                    "Kazda dyscyplina rozgrywa mecz mistrzowski, po czym odbywa sie ceremonia pucharowa i zamkniecie."
+                ],
+                headerMap: {
+                    "Tarih": "Data",
+                    "Saat": "Godz.",
+                    "E\u015fle\u015fme": "Mecz",
+                    "Saha": "Boisko",
+                    "Tur": "Runda",
+                    "Alan": "Strefa",
+                    "Yar\u0131\u015f": "Bieg",
+                    "Pist": "Tor",
+                    "Etap": "Etap"
+                },
+                detailMap: {
+                    "\u00c7eyrek Final": "Cwiercfinal",
+                    "Yar\u0131 Final": "Polfinal",
+                    "Ma\u00e7 Ak\u0131\u015f\u0131": "Przebieg meczow",
+                    "12 May\u0131s": "12 maja",
+                    "13 May\u0131s": "13 maja",
+                    "14 May\u0131s": "14 maja",
+                    "Kapal\u0131 Spor Salonu": "Hala sportowa",
+                    "Ana Saha": "Boisko glowne",
+                    "D\u0131\u015f Saha": "Boisko zewnetrzne",
+                    "Salon B": "Hala B",
+                    "A\u00e7\u0131k Alan": "Strefa otwarta",
+                    "Kamp\u00fcs Rotas\u0131": "Trasa kampusowa",
+                    "Bah\u00e7e Alan\u0131": "Strefa ogrodowa",
+                    "E-spor Alan\u0131": "Strefa e-sportu",
+                    "Festival Bah\u00e7esi": "Ogrod festiwalowy",
+                    "Ana Pist": "Tor glowny",
+                    "\u00c7F 1 Galibi": "Zwyciezca CF 1",
+                    "\u00c7F 2 Galibi": "Zwyciezca CF 2",
+                    "\u00c7F 3 Galibi": "Zwyciezca CF 3",
+                    "\u00c7F 4 Galibi": "Zwyciezca CF 4",
+                    "YF 1 Galibi": "Zwyciezca PF 1",
+                    "YF 2 Galibi": "Zwyciezca PF 2",
+                    "8 tak\u0131ml\u0131 e\u015fle\u015fme yap\u0131s\u0131 12-13-14 May\u0131s ak\u0131\u015f\u0131na g\u00f6re ilerler.": "Drabinka 8 druzyn rozwija sie zgodnie z harmonogramem 12-13-14 maja."
+                },
                 footer: "Strona Program i Turniej"
             }
         }[lang] || {};
@@ -788,9 +1156,19 @@ var renderScoreResults = (function () {
             setText(".program-overview-program .section-head h2", copy.titles[0]);
             setText(".fixture-section .section-head h2", copy.titles[copy.titles.length - 1]);
         }
+        setList(".timeline h3", copy.timelineTitles);
+        setList(".timeline .step p", copy.timelineText);
         setList(".fixture-tab", copy.tabs);
         setList(".fixture-panel > h3", copy.panels);
         mapText(".fixture-table th", copy.headerMap);
+        replaceText(".bracket-round-title", copy.detailMap);
+        replaceText(".bracket-match-meta", copy.detailMap);
+        replaceText(".bracket-team-name", copy.detailMap);
+        replaceText(".fixture-schedule-kicker", copy.detailMap);
+        replaceText(".fixture-schedule-time", copy.detailMap);
+        replaceText(".fixture-schedule-item strong", copy.detailMap);
+        replaceText(".fixture-schedule-item p", copy.detailMap);
+        replaceText(".bracket-note", copy.detailMap);
         setText(".footer p:nth-of-type(2)", copy.footer);
     }
 
@@ -798,42 +1176,66 @@ var renderScoreResults = (function () {
         var copy = {
             tr: {
                 title: "Finans | DCFLSPORTFEST'26",
-                h1: "Sponsorluk Paketlerini Karşılaştırın",
-                hero: "Ayni sponsorluğu ayrı bir blokta, maddi sponsorluk paketlerini ise kolay karşılaştırmalı kart düzeninde inceleyebilirsin.",
-                section: "FİNANS",
-                sectionTitle: "Sponsorluk Paketlerini Karşılaştırın",
-                group: "MADDİ SPONSORLUK PAKETLERİ",
+                eyebrow: "SPONSORLUK DERECELERI",
+                h1: "Sponsorluk Paketlerini Karsilastirin",
+                hero: "Ayni sponsorlugu ayri bir blokta, maddi sponsorluk paketlerini ise kolay karsilastirmali kart duzeninde inceleyebilirsin.",
+                section: "FINANS",
+                sectionTitle: "Sponsorluk Paketlerini Karsilastirin",
+                group: "MADDI SPONSORLUK PAKETLERI",
                 groupTitle: "Maddi Sponsorluk Paketleri",
-                footer: "Finans Sayfası",
-                contact: "İletişim",
-                quick: "Hızlı Mesaj",
-                send: "Gönder"
+                contact: "Iletisim",
+                contactDetails: [
+                    "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
+                    "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
+                    "<strong>Not:</strong> Sponsorluk detay dosyasi ve teklif gonderimi icin iletisime gecebilirsin."
+                ],
+                quick: "Hizli Mesaj",
+                labels: ["Ad Soyad / Firma Adi", "E-posta", "Konu", "Mesaj"],
+                placeholders: ["Ad Soyad / Firma Adi", "ornek@mail.com", "Sponsorluk Paketi / Dosya Talebi", "Mesajini yaz..."],
+                send: "Gonder",
+                footer: "Finans Sayfasi"
             },
             en: {
                 title: "Finance | DCFLSPORTFEST'26",
+                eyebrow: "SPONSORSHIP TIERS",
                 h1: "Compare Sponsorship Packages",
                 hero: "Review in-kind sponsorship in a dedicated block and compare financial packages side by side.",
                 section: "FINANCE",
                 sectionTitle: "Compare Sponsorship Packages",
                 group: "FINANCIAL SPONSORSHIP PACKAGES",
                 groupTitle: "Financial Sponsorship Packages",
-                footer: "Finance Page",
                 contact: "Contact",
+                contactDetails: [
+                    "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
+                    "<strong>Location:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
+                    "<strong>Note:</strong> Contact us for the sponsorship file and proposal process."
+                ],
                 quick: "Quick Message",
-                send: "Send"
+                labels: ["Name / Company Name", "E-mail", "Subject", "Message"],
+                placeholders: ["Name / Company Name", "example@mail.com", "Sponsorship Package / File Request", "Write your message..."],
+                send: "Send",
+                footer: "Finance Page"
             },
             pl: {
                 title: "Finanse | DCFLSPORTFEST'26",
+                eyebrow: "POZIOMY SPONSORINGU",
                 h1: "Porownaj pakiety sponsorskie",
                 hero: "Sponsorstwo rzeczowe sprawdzisz osobno, a pakiety finansowe porownasz obok siebie.",
                 section: "FINANSE",
                 sectionTitle: "Porownaj pakiety sponsorskie",
                 group: "PAKIETY SPONSORINGU FINANSOWEGO",
                 groupTitle: "Pakiety Sponsoringu Finansowego",
-                footer: "Strona Finanse",
                 contact: "Kontakt",
-                quick: "Szybka wiadomosc",
-                send: "Wyslij"
+                contactDetails: [
+                    "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
+                    "<strong>Lokalizacja:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
+                    "<strong>Notatka:</strong> Skontaktuj sie z nami, aby otrzymac plik sponsorski i wyslac propozycje."
+                ],
+                quick: "Szybka Wiadomosc",
+                labels: ["Imie i nazwisko / Firma", "E-mail", "Temat", "Wiadomosc"],
+                placeholders: ["Imie i nazwisko / Firma", "przyklad@mail.com", "Pakiet sponsorski / Prosba o plik", "Napisz wiadomosc..."],
+                send: "Wyslij",
+                footer: "Strona Finanse"
             }
         }[lang] || {};
 
@@ -841,38 +1243,55 @@ var renderScoreResults = (function () {
             en: {
                 "Ayni Sponsorluk": "In-Kind Sponsorship",
                 "Bronz Sponsorluk": "Bronze Sponsorship",
-                "Gümüş Sponsorluk": "Silver Sponsorship",
-                "Altın Sponsorluk": "Gold Sponsorship",
-                "Destek niteliğine göre özel görünürlük.": "Custom visibility based on support type.",
-                "Temel görünürlük ve resmi teşekkür paketi.": "Core visibility and official appreciation package.",
-                "Daha fazla görünürlük ve sahne teşekkürü.": "Higher visibility and stage appreciation.",
-                "Maksimum görünürlük ve premium haklar.": "Maximum visibility and premium rights.",
-                "Açılışta özel teşekkür": "Special thanks during opening",
-                "Açılışta isimle teşekkür": "Name mention during opening",
-                "Stant açma hakkı": "Right to open a stand",
-                "Firmaya özel teşekkür belgesi": "Custom certificate of appreciation",
-                "Firmaya özel teşekkür plaketi": "Custom appreciation plaque",
-                "Medyada yapılan toplu teşekkür paylaşımında logosu bulunur.": "Logo placement in collective media thank-you post."
+                "G\u00fcm\u00fc\u015f Sponsorluk": "Silver Sponsorship",
+                "Alt\u0131n Sponsorluk": "Gold Sponsorship",
+                "Destek niteli\u011fine g\u00f6re \u00f6zel g\u00f6r\u00fcn\u00fcrl\u00fck.": "Custom visibility based on support type.",
+                "Temel g\u00f6r\u00fcn\u00fcrl\u00fck ve resmi te\u015fekk\u00fcr paketi.": "Core visibility and official appreciation package.",
+                "Daha fazla g\u00f6r\u00fcn\u00fcrl\u00fck ve sahne te\u015fekk\u00fcr\u00fc.": "Higher visibility and stage appreciation.",
+                "Maksimum g\u00f6r\u00fcn\u00fcrl\u00fck ve premium haklar.": "Maximum visibility and premium rights.",
+                "De\u011fer: Destek i\u00e7eri\u011fine g\u00f6re": "Value: Based on support content",
+                "Ayni sponsor ba\u015fl\u0131\u011f\u0131 alt\u0131nda logo payla\u015f\u0131m\u0131": "Logo placement under the in-kind sponsorship title",
+                "Tan\u0131t\u0131m hakk\u0131 destek kapsam\u0131na g\u00f6re belirlenir": "Promotion rights are defined by the support scope",
+                "Etkinlik boyunca sosyal medya te\u015fekk\u00fcr\u00fc": "Social media appreciation throughout the event",
+                "Kuruma \u00f6zel te\u015fekk\u00fcr iletimi": "Dedicated appreciation message for the institution",
+                "Etkinlik afi\u015flerinde logo g\u00f6r\u00fcn\u00fcrl\u00fc\u011f\u00fc (K\u00fc\u00e7\u00fck Boy)": "Logo visibility on event posters (Small size)",
+                "Etkinlik afi\u015flerinde logo g\u00f6r\u00fcn\u00fcrl\u00fc\u011f\u00fc (Orta Boy)": "Logo visibility on event posters (Medium size)",
+                "Etkinlik afi\u015flerinde logo g\u00f6r\u00fcn\u00fcrl\u00fc\u011f\u00fc (B\u00fcy\u00fck Boy)": "Logo visibility on event posters (Large size)",
+                "Firmaya \u00f6zel te\u015fekk\u00fcr belgesi": "Custom certificate of appreciation",
+                "Medyada yap\u0131lan toplu te\u015fekk\u00fcr payla\u015f\u0131m\u0131nda logosu bulunur.": "Logo placement in the collective media thank-you post.",
+                "A\u00e7\u0131l\u0131\u015fta isimle te\u015fekk\u00fcr": "Name mention during the opening",
+                "A\u00e7\u0131l\u0131\u015fta \u00f6zel te\u015fekk\u00fcr": "Special thanks during the opening",
+                "Stant a\u00e7ma hakk\u0131": "Right to open a stand",
+                "Firmaya \u00f6zel te\u015fekk\u00fcr plaketi": "Custom appreciation plaque"
             },
             pl: {
                 "Ayni Sponsorluk": "Sponsorstwo rzeczowe",
                 "Bronz Sponsorluk": "Sponsorstwo brazowe",
-                "Gümüş Sponsorluk": "Sponsorstwo srebrne",
-                "Altın Sponsorluk": "Sponsorstwo zlote",
-                "Destek niteliğine göre özel görünürlük.": "Widocznosc dopasowana do rodzaju wsparcia.",
-                "Temel görünürlük ve resmi teşekkür paketi.": "Podstawowa widocznosc i oficjalny pakiet podziekowan.",
-                "Daha fazla görünürlük ve sahne teşekkürü.": "Wieksza widocznosc i podziekowanie na scenie.",
-                "Maksimum görünürlük ve premium haklar.": "Maksymalna widocznosc i prawa premium.",
-                "Açılışta özel teşekkür": "Specjalne podziekowanie podczas otwarcia",
-                "Açılışta isimle teşekkür": "Podziekowanie z nazwa podczas otwarcia",
-                "Stant açma hakkı": "Prawo do otwarcia stoiska",
-                "Firmaya özel teşekkür belgesi": "Dedykowany certyfikat podziekowania",
-                "Firmaya özel teşekkür plaketi": "Dedykowana plakieta podziekowania",
-                "Medyada yapılan toplu teşekkür paylaşımında logosu bulunur.": "Logo w zbiorczym wpisie podziekowan w mediach."
+                "G\u00fcm\u00fc\u015f Sponsorluk": "Sponsorstwo srebrne",
+                "Alt\u0131n Sponsorluk": "Sponsorstwo zlote",
+                "Destek niteli\u011fine g\u00f6re \u00f6zel g\u00f6r\u00fcn\u00fcrl\u00fck.": "Widocznosc dopasowana do rodzaju wsparcia.",
+                "Temel g\u00f6r\u00fcn\u00fcrl\u00fck ve resmi te\u015fekk\u00fcr paketi.": "Podstawowa widocznosc i oficjalny pakiet podziekowan.",
+                "Daha fazla g\u00f6r\u00fcn\u00fcrl\u00fck ve sahne te\u015fekk\u00fcr\u00fc.": "Wieksza widocznosc i podziekowanie na scenie.",
+                "Maksimum g\u00f6r\u00fcn\u00fcrl\u00fck ve premium haklar.": "Maksymalna widocznosc i prawa premium.",
+                "De\u011fer: Destek i\u00e7eri\u011fine g\u00f6re": "Wartosc: Wedlug zakresu wsparcia",
+                "Ayni sponsor ba\u015fl\u0131\u011f\u0131 alt\u0131nda logo payla\u015f\u0131m\u0131": "Publikacja logo w ramach sponsorstwa rzeczowego",
+                "Tan\u0131t\u0131m hakk\u0131 destek kapsam\u0131na g\u00f6re belirlenir": "Zakres praw promocyjnych zalezy od rodzaju wsparcia",
+                "Etkinlik boyunca sosyal medya te\u015fekk\u00fcr\u00fc": "Podziekowanie w mediach spolecznosciowych przez cale wydarzenie",
+                "Kuruma \u00f6zel te\u015fekk\u00fcr iletimi": "Dedykowane podziekowanie dla instytucji",
+                "Etkinlik afi\u015flerinde logo g\u00f6r\u00fcn\u00fcrl\u00fc\u011f\u00fc (K\u00fc\u00e7\u00fck Boy)": "Widocznosc logo na plakatach wydarzenia (maly rozmiar)",
+                "Etkinlik afi\u015flerinde logo g\u00f6r\u00fcn\u00fcrl\u00fc\u011f\u00fc (Orta Boy)": "Widocznosc logo na plakatach wydarzenia (sredni rozmiar)",
+                "Etkinlik afi\u015flerinde logo g\u00f6r\u00fcn\u00fcrl\u00fc\u011f\u00fc (B\u00fcy\u00fck Boy)": "Widocznosc logo na plakatach wydarzenia (duzy rozmiar)",
+                "Firmaya \u00f6zel te\u015fekk\u00fcr belgesi": "Dedykowany certyfikat podziekowania",
+                "Medyada yap\u0131lan toplu te\u015fekk\u00fcr payla\u015f\u0131m\u0131nda logosu bulunur.": "Logo w zbiorczym wpisie z podziekowaniem w mediach.",
+                "A\u00e7\u0131l\u0131\u015fta isimle te\u015fekk\u00fcr": "Podziekowanie z nazwa podczas otwarcia",
+                "A\u00e7\u0131l\u0131\u015fta \u00f6zel te\u015fekk\u00fcr": "Specjalne podziekowanie podczas otwarcia",
+                "Stant a\u00e7ma hakk\u0131": "Prawo do otwarcia stoiska",
+                "Firmaya \u00f6zel te\u015fekk\u00fcr plaketi": "Dedykowana plakieta podziekowania"
             }
         }[lang] || {};
 
         document.title = copy.title || document.title;
+        setText(".page-shell .eyebrow", copy.eyebrow);
         setText(".page-shell h1", copy.h1);
         setText(".page-shell .hero-text", copy.hero);
         setText("main .section-head .section-kicker", copy.section);
@@ -880,149 +1299,408 @@ var renderScoreResults = (function () {
         setText(".finance-group-head .section-kicker", copy.group);
         setText(".finance-group-head h3", copy.groupTitle);
         setText(".contact-info h2", copy.contact);
+        if (Array.isArray(copy.contactDetails)) {
+            setHTML(".contact-info .section-text:nth-of-type(1)", copy.contactDetails[0]);
+            setHTML(".contact-info .section-text:nth-of-type(2)", copy.contactDetails[1]);
+            setHTML(".contact-info .section-text:nth-of-type(3)", copy.contactDetails[2]);
+        }
         setText(".contact-form-card h2", copy.quick);
+        setText("label[for='finans-name']", copy.labels[0]);
+        setText("label[for='finans-email']", copy.labels[1]);
+        setText("label[for='finans-topic']", copy.labels[2]);
+        setText("label[for='finans-message']", copy.labels[3]);
+        setAttr("#finans-name", "placeholder", copy.placeholders[0]);
+        setAttr("#finans-email", "placeholder", copy.placeholders[1]);
+        setAttr("#finans-topic", "placeholder", copy.placeholders[2]);
+        setAttr("#finans-message", "placeholder", copy.placeholders[3]);
         setText(".contact-form-card .btn", copy.send);
         setText(".footer p:nth-of-type(2)", copy.footer);
 
-        if (lang === "en") {
-            setHTML(".contact-info .section-text:nth-of-type(1)", "<strong>E-mail:</strong> dcflsportfest2020@gmail.com");
-            setHTML(".contact-info .section-text:nth-of-type(2)", "<strong>Location:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul");
-            setHTML(".contact-info .section-text:nth-of-type(3)", "<strong>Note:</strong> Contact us for sponsorship file and proposal process.");
-            setText("label[for='finans-name']", "Name / Company Name");
-            setText("label[for='finans-email']", "E-mail");
-            setText("label[for='finans-topic']", "Subject");
-            setText("label[for='finans-message']", "Message");
-            setAttr("#finans-name", "placeholder", "Name / Company Name");
-            setAttr("#finans-email", "placeholder", "example@mail.com");
-            setAttr("#finans-topic", "placeholder", "Sponsorship Package / File Request");
-            setAttr("#finans-message", "placeholder", "Write your message...");
-        } else if (lang === "pl") {
-            setHTML(".contact-info .section-text:nth-of-type(1)", "<strong>E-mail:</strong> dcflsportfest2020@gmail.com");
-            setHTML(".contact-info .section-text:nth-of-type(2)", "<strong>Lokalizacja:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul");
-            setHTML(".contact-info .section-text:nth-of-type(3)", "<strong>Notatka:</strong> Skontaktuj sie z nami, aby otrzymac plik sponsorki i zlozyc oferte.");
-            setText("label[for='finans-name']", "Imie i nazwisko / Firma");
-            setText("label[for='finans-email']", "E-mail");
-            setText("label[for='finans-topic']", "Temat");
-            setText("label[for='finans-message']", "Wiadomosc");
-            setAttr("#finans-name", "placeholder", "Imie i nazwisko / Firma");
-            setAttr("#finans-email", "placeholder", "przyklad@mail.com");
-            setAttr("#finans-topic", "placeholder", "Pakiet sponsorski / Prosba o plik");
-            setAttr("#finans-message", "placeholder", "Napisz wiadomosc...");
-        } else {
-            setHTML(".contact-info .section-text:nth-of-type(1)", "<strong>E-posta:</strong> dcflsportfest2020@gmail.com");
-            setHTML(".contact-info .section-text:nth-of-type(2)", "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Küçükçekmece / İstanbul");
-            setHTML(".contact-info .section-text:nth-of-type(3)", "<strong>Not:</strong> Sponsorluk detay dosyası ve teklif gönderimi için iletişime geçebilirsin.");
-            setText("label[for='finans-name']", "Ad Soyad / Firma Adı");
-            setText("label[for='finans-email']", "E-posta");
-            setText("label[for='finans-topic']", "Konu");
-            setText("label[for='finans-message']", "Mesaj");
-            setAttr("#finans-name", "placeholder", "Ad Soyad / Firma Adı");
-            setAttr("#finans-email", "placeholder", "ornek@mail.com");
-            setAttr("#finans-topic", "placeholder", "Sponsorluk Paketi / Dosya Talebi");
-            setAttr("#finans-message", "placeholder", "Mesajını yaz...");
-        }
-
         mapText(".finance-card h3", map);
         mapText(".finance-sub", map);
+        mapText(".finance-price", map);
+        mapText(".finance-ayni .finance-body li", map);
         mapText(".feature-name", map);
     }
 
-    function applySimplePage(lang, file, trTitle, enTitle, plTitle, trH1, enH1, plH1, trFooter, enFooter, plFooter) {
-        if (pageKey() !== file) {
-            return;
-        }
-        if (lang === "en") {
-            document.title = enTitle;
-            setText(".page-shell h1", enH1);
-            setText(".footer p:nth-of-type(2)", enFooter);
-        } else if (lang === "pl") {
-            document.title = plTitle;
-            setText(".page-shell h1", plH1);
-            setText(".footer p:nth-of-type(2)", plFooter);
-        } else {
-            document.title = trTitle;
-            setText(".page-shell h1", trH1);
-            setText(".footer p:nth-of-type(2)", trFooter);
-        }
+    function applyKurumsal(lang) {
+        var copy = {
+            tr: {
+                title: "Etkinligin Amaci | DCFLSPORTFEST'26",
+                eyebrow: "AMACIMIZ",
+                h1: "Etkinligin Amaci",
+                hero: [
+                    "DCFLSPORTFEST'26, cok boyutlu bir spor ve genclik deneyimi sunmayi amaclayan uluslararasi bir organizasyondur.",
+                    "Etkinlikteki temel amaclarimiz:",
+                    "Bu sayede DCFLSPORTFEST'26, yalnizca bir etkinlik degil; sureklilik vadeder."
+                ],
+                heroList: [
+                    "Uluslararasi spor kulturunu gencler arasinda yayginlastirmak",
+                    "Genc sporculara kendilerini ifade edebilecekleri ve gorunurluk kazanabilecekleri bir platform sunmak",
+                    "Markalar ile genc hedef kitle arasinda guclu ve kalici bir bag olusturmak",
+                    "Spor, eglence ve deneyimi tek bir festival catisi altinda birlestirmek",
+                    "Uluslararasi is birliklerinin ve yeni projelerin onunu acmak"
+                ],
+                section: "VIZYON VE MISYON",
+                sectionTitle: "Temel Yaklasimimiz",
+                tileTitles: ["Vizyon", "Misyon"],
+                tileParagraphs: [
+                    "DCFLSPORTFEST'26'yi; farkli ulkelerden genc sporcularin, kuluplerin ve spor markalarinin her yil bir araya geldigi, uluslararasi olcekte taninan, surdurulebilir ve prestijli bir spor festivali haline getirmeyi hedefliyoruz.",
+                    "Uzun vadede DCFLSPORTFEST'26'nin asagidaki niteliklere sahip bir etkinlik olmasini amacliyoruz:",
+                    "DCFLSPORTFEST'26'nin misyonu, sporu yalnizca bir yarisma alani olarak degil; iletisim, gelisim ve kulturel etkilesim araci olarak konumlandirmaktir.",
+                    "Bu dogrultuda oncelikli hedeflerimiz:"
+                ],
+                tileList: [
+                    "Avrupa, Orta Dogu ve Balkanlar'dan duzenli katilimci ceken.",
+                    "Genclik ve spor alaninda referans gosterilen.",
+                    "Markalar icin stratejik bir iletisim ve deneyim platformu olan.",
+                    "Genclerin spor yoluyla uluslararasi deneyim kazanmasini saglamak.",
+                    "Farkli kulturlerden gelen katilimcilar arasinda kalici baglar kurmak.",
+                    "Markalara, genc hedef kitle ile dogrudan ve sahici temas kurabilecekleri alanlar sunmak.",
+                    "Sporun egitici, birlestirici ve ilham verici gucunu gorunur kilmak."
+                ],
+                footer: "Amacimiz Sayfasi"
+            },
+            en: {
+                title: "Purpose of the Event | DCFLSPORTFEST'26",
+                eyebrow: "PURPOSE",
+                h1: "Purpose of the Event",
+                hero: [
+                    "DCFLSPORTFEST'26 is an international organization designed to deliver a multi-dimensional sports and youth experience.",
+                    "Our core objectives:",
+                    "In this way, DCFLSPORTFEST'26 promises continuity, not just a single event."
+                ],
+                heroList: [
+                    "To spread international sports culture among young people",
+                    "To provide young athletes with a platform where they can express themselves and gain visibility",
+                    "To build a strong and lasting bond between brands and the young target audience",
+                    "To unite sport, entertainment and experience under a single festival roof",
+                    "To open the way for international collaborations and new projects"
+                ],
+                section: "VISION AND MISSION",
+                sectionTitle: "Our Core Approach",
+                tileTitles: ["Vision", "Mission"],
+                tileParagraphs: [
+                    "We aim to turn DCFLSPORTFEST'26 into a sustainable and prestigious sports festival that brings together young athletes, clubs and sports brands from different countries every year.",
+                    "In the long term, we want DCFLSPORTFEST'26 to become an event with the following qualities:",
+                    "The mission of DCFLSPORTFEST'26 is to position sport not only as a competition arena, but also as a tool for communication, development and cultural exchange.",
+                    "In line with this mission, our priority goals are:"
+                ],
+                tileList: [
+                    "Attracting regular participants from Europe, the Middle East and the Balkans.",
+                    "Being recognized as a reference point in youth and sports.",
+                    "Becoming a strategic communication and experience platform for brands.",
+                    "Enabling young people to gain international experience through sport.",
+                    "Building lasting bonds among participants from different cultures.",
+                    "Giving brands spaces where they can make direct and authentic contact with a young audience.",
+                    "Making the educational, unifying and inspiring power of sport visible."
+                ],
+                footer: "Purpose Page"
+            },
+            pl: {
+                title: "Cel Wydarzenia | DCFLSPORTFEST'26",
+                eyebrow: "CEL",
+                h1: "Cel Wydarzenia",
+                hero: [
+                    "DCFLSPORTFEST'26 to miedzynarodowa organizacja, ktora ma dostarczac wielowymiarowe doswiadczenie sportowe i mlodziezowe.",
+                    "Nasze glowne cele:",
+                    "Dzieki temu DCFLSPORTFEST'26 obiecuje ciaglosc, a nie tylko jednorazowe wydarzenie."
+                ],
+                heroList: [
+                    "Upowszechniac miedzynarodowa kulture sportu wsrod mlodziezy",
+                    "Zapewniac mlodym sportowcom platforme do wyrazania siebie i zdobywania widocznosci",
+                    "Budowac silna i trwala wiez miedzy markami a mloda grupa docelowa",
+                    "Laczyc sport, rozrywke i doswiadczenie pod jednym szyldem festiwalu",
+                    "Otwierac droge dla miedzynarodowej wspolpracy i nowych projektow"
+                ],
+                section: "WIZJA I MISJA",
+                sectionTitle: "Nasze Glowne Podejscie",
+                tileTitles: ["Wizja", "Misja"],
+                tileParagraphs: [
+                    "Naszym celem jest przeksztalcenie DCFLSPORTFEST'26 w zrownowazony i prestizowy festiwal sportowy, ktory co roku laczy mlodych sportowcow, kluby i marki sportowe z roznych krajow.",
+                    "W dluzszej perspektywie chcemy, aby DCFLSPORTFEST'26 mial nastepujace cechy:",
+                    "Misja DCFLSPORTFEST'26 polega na tym, by postrzegac sport nie tylko jako przestrzen rywalizacji, ale takze jako narzedzie komunikacji, rozwoju i wymiany kulturowej.",
+                    "W tym kierunku nasze priorytetowe cele to:"
+                ],
+                tileList: [
+                    "Regularnie przyciagac uczestnikow z Europy, Bliskiego Wschodu i Balkanow.",
+                    "Byc uznawanym za punkt odniesienia w obszarze mlodziezy i sportu.",
+                    "Stac sie strategiczna platforma komunikacji i doswiadczenia dla marek.",
+                    "Umozliwiac mlodym ludziom zdobywanie miedzynarodowego doswiadczenia poprzez sport.",
+                    "Budowac trwale relacje miedzy uczestnikami z roznych kultur.",
+                    "Tworzyc dla marek przestrzenie do bezposredniego i autentycznego kontaktu z mloda grupa odbiorcow.",
+                    "Pokazywac edukacyjna, integrujaca i inspirujaca sile sportu."
+                ],
+                footer: "Strona Celu"
+            }
+        }[lang] || {};
+
+        document.title = copy.title || document.title;
+        setText(".page-shell .eyebrow", copy.eyebrow);
+        setText(".page-shell h1", copy.h1);
+        setList(".page-shell .hero-text", copy.hero);
+        setList(".page-shell .hero-list li", copy.heroList);
+        setText("main .section-head .section-kicker", copy.section);
+        setText("main .section-head h2", copy.sectionTitle);
+        setList(".feature-grid .tile h3", copy.tileTitles);
+        setList(".feature-grid .tile p", copy.tileParagraphs);
+        setList(".feature-grid .tile ul li", copy.tileList);
+        setText(".footer p:nth-of-type(2)", copy.footer);
     }
 
     function applyFaq(lang) {
         var copy = {
             tr: {
-                title: "Sıkça Sorulanlar | DCFLSPORTFEST'26",
-                h1: "Merak edilen soruların net cevapları.",
-                hero: "Katılım, kayıt, kontenjan ve sponsorluk süreçleriyle ilgili en çok sorulan soruları burada bulabilirsin.",
-                section: "SIKÇA SORULANLAR",
-                title2: "Hızlı Cevaplar",
-                footer: "Sıkça Sorulanlar Sayfası"
+                title: "Sikca Sorulanlar | DCFLSPORTFEST'26",
+                eyebrow: "SIKCA SORULANLAR",
+                h1: "Merak edilen sorularin net cevaplari.",
+                hero: "Katilim, kayit, kontenjan ve sponsorluk surecleriyle ilgili en cok sorulan sorulari burada bulabilirsin.",
+                section: "SIKCA SORULANLAR",
+                title2: "Hizli Cevaplar",
+                cardsTitle: ["Kayit nasil yapilir?", "Branslara katilim siniri var mi?", "Sponsor basvurusu nasil olur?"],
+                cardsText: [
+                    "Iletisim sekmesindeki form uzerinden takim veya bireysel basvuru alinir.",
+                    "Her brans icin kontenjan vardir. Erken basvuru onceligi uygulanir.",
+                    "Iletisim sekmesinden sponsorluk konusu secilerek teklif gonderilebilir."
+                ],
+                footer: "Sikca Sorulanlar Sayfasi"
             },
             en: {
                 title: "FAQ | DCFLSPORTFEST'26",
+                eyebrow: "FAQ",
                 h1: "Clear answers to common questions.",
                 hero: "Find the most frequently asked questions about registration, quotas and sponsorship.",
                 section: "FAQ",
                 title2: "Quick Answers",
+                cardsTitle: ["How do I register?", "Is there a participation limit for branches?", "How does sponsorship application work?"],
+                cardsText: [
+                    "Team or individual applications are collected through the form on the contact page.",
+                    "Each branch has a quota. Early applications are prioritized.",
+                    "You can send a proposal by selecting the sponsorship topic from the contact page."
+                ],
                 footer: "FAQ Page"
             },
             pl: {
                 title: "FAQ | DCFLSPORTFEST'26",
+                eyebrow: "FAQ",
                 h1: "Jasne odpowiedzi na najczestsze pytania.",
                 hero: "Znajdziesz tu najczestsze pytania o rejestracje, limity i sponsoring.",
                 section: "FAQ",
-                title2: "Szybkie odpowiedzi",
+                title2: "Szybkie Odpowiedzi",
+                cardsTitle: ["Jak sie zarejestrowac?", "Czy istnieje limit uczestnikow w dyscyplinach?", "Jak dziala zgloszenie sponsorskie?"],
+                cardsText: [
+                    "Zgloszenia druzynowe i indywidualne przyjmowane sa przez formularz na stronie kontaktowej.",
+                    "Kazda dyscyplina ma limit miejsc. Wczesniejsze zgloszenia maja pierwszenstwo.",
+                    "Mozesz wyslac propozycje, wybierajac temat sponsoringu na stronie kontaktowej."
+                ],
                 footer: "Strona FAQ"
             }
         }[lang] || {};
 
         document.title = copy.title || document.title;
+        setText(".page-shell .eyebrow", copy.eyebrow);
         setText(".page-shell h1", copy.h1);
         setText(".page-shell .hero-text", copy.hero);
         setText("main .section-head .section-kicker", copy.section);
         setText("main .section-head h2", copy.title2);
+        setList(".faq-card h3", copy.cardsTitle);
+        setList(".faq-card p", copy.cardsText);
         setText(".footer p:nth-of-type(2)", copy.footer);
     }
 
     function applyBlog(lang) {
         var copy = {
-            tr: { title: "Blog | DCFLSPORTFEST'26", h1: "Sportfest gündeminden notlar.", hero: "Etkinlik hazırlıkları, branş hikayeleri ve organizasyon güncellemeleri.", section: "ÖNE ÇIKANLAR", title2: "Son Yazılar", footer: "Blog Sayfası" },
-            en: { title: "Blog | DCFLSPORTFEST'26", h1: "Notes from the Sportfest agenda.", hero: "Event preparations, branch stories and organization updates.", section: "HIGHLIGHTS", title2: "Latest Posts", footer: "Blog Page" },
-            pl: { title: "Blog | DCFLSPORTFEST'26", h1: "Notatki z agendy Sportfest.", hero: "Przygotowania wydarzenia, historie dyscyplin i aktualizacje organizacyjne.", section: "WYROZNIONE", title2: "Najnowsze wpisy", footer: "Strona Blog" }
+            tr: {
+                title: "Blog | DCFLSPORTFEST'26",
+                eyebrow: "BLOG",
+                h1: "Sportfest gundeminden notlar.",
+                hero: "Etkinlik hazirliklari, brans hikayeleri ve organizasyon guncellemeleri.",
+                section: "ONE CIKANLAR",
+                title2: "Son Yazilar",
+                postMeta: ["03 Mart 2026", "27 Subat 2026", "18 Subat 2026"],
+                postTitles: ["Final Gecesi Sahne Plani", "Brans Kontenjan Guncellemesi", "Sponsor Is Birligi Dalgasi"],
+                postText: [
+                    "Final akisi, odul toreni ve kapanis sovunun yeni sahne duzeni aciklandi.",
+                    "Basketbol, voleybol ve atletizm branslarinda ek kontenjanlar acildi.",
+                    "Yeni is ortakliklariyla etkinlik alanindaki deneyim alanlari genisliyor."
+                ],
+                footer: "Blog Sayfasi"
+            },
+            en: {
+                title: "Blog | DCFLSPORTFEST'26",
+                eyebrow: "BLOG",
+                h1: "Notes from the Sportfest agenda.",
+                hero: "Event preparations, branch stories and organization updates.",
+                section: "HIGHLIGHTS",
+                title2: "Latest Posts",
+                postMeta: ["March 3, 2026", "February 27, 2026", "February 18, 2026"],
+                postTitles: ["Stage Plan for Final Night", "Branch Quota Update", "Wave of Sponsor Partnerships"],
+                postText: [
+                    "The new stage layout for the finals flow, award ceremony and closing show has been announced.",
+                    "Additional quotas have been opened in basketball, volleyball and athletics.",
+                    "New partnerships are expanding the experience zones across the festival venue."
+                ],
+                footer: "Blog Page"
+            },
+            pl: {
+                title: "Blog | DCFLSPORTFEST'26",
+                eyebrow: "BLOG",
+                h1: "Notatki z agendy Sportfest.",
+                hero: "Przygotowania wydarzenia, historie dyscyplin i aktualizacje organizacyjne.",
+                section: "WYROZNIONE",
+                title2: "Najnowsze Wpisy",
+                postMeta: ["3 marca 2026", "27 lutego 2026", "18 lutego 2026"],
+                postTitles: ["Plan sceny na finalowy wieczor", "Aktualizacja limitow dyscyplin", "Fala partnerstw sponsorskich"],
+                postText: [
+                    "Ogloszono nowy uklad sceny dla finalu, ceremonii nagrod i pokazu zamkniecia.",
+                    "Otwarto dodatkowe limity w koszykowce, siatkowce i lekkoatletyce.",
+                    "Nowe partnerstwa rozszerzaja strefy doswiadczen na terenie festiwalu."
+                ],
+                footer: "Strona Blog"
+            }
         }[lang] || {};
 
         document.title = copy.title || document.title;
+        setText(".page-shell .eyebrow", copy.eyebrow);
         setText(".page-shell h1", copy.h1);
         setText(".page-shell .hero-text", copy.hero);
         setText("main .section-head .section-kicker", copy.section);
         setText("main .section-head h2", copy.title2);
+        setList(".post-meta", copy.postMeta);
+        setList(".post-card h3", copy.postTitles);
+        setList(".post-card p:not(.post-meta)", copy.postText);
         setText(".footer p:nth-of-type(2)", copy.footer);
     }
 
     function applyArsiv(lang) {
         var copy = {
-            tr: { title: "Arşiv | DCFLSPORTFEST'26", h1: "Etkinlik Arşivi", hero: "Geçmiş yıllara ait duyurular, görseller ve öne çıkan anlar yakında burada yer alacak.", section: "ARŞİV", title2: "Yakında Eklenecek İçerikler", footer: "Arşiv Sayfası" },
-            en: { title: "Archive | DCFLSPORTFEST'26", h1: "Event Archive", hero: "Announcements, visuals and highlights from previous years will be added here soon.", section: "ARCHIVE", title2: "Upcoming Archive Content", footer: "Archive Page" },
-            pl: { title: "Archiwum | DCFLSPORTFEST'26", h1: "Archiwum Wydarzenia", hero: "Wkrotce pojawia sie tu ogloszenia, materialy wizualne i najwazniejsze momenty z poprzednich lat.", section: "ARCHIWUM", title2: "Nadchodzace Materialy", footer: "Strona Archiwum" }
+            tr: {
+                title: "Arsiv | DCFLSPORTFEST'26",
+                eyebrow: "ARSIV",
+                h1: "Etkinlik Arsivi",
+                hero: "Gecmis yillara ait duyurular, gorseller ve one cikan anlar yakinda burada yer alacak.",
+                section: "ARSIV",
+                title2: "Yakinda Eklenecek Icerikler",
+                postMeta: ["Yakinda", "Yakinda", "Yakinda"],
+                postTitles: ["Gecmis Etkinlik Fotograflari", "Turnuva Sonuc Arsivi", "Basin ve Duyuru Kayitlari"],
+                postText: [
+                    "Onceki donem organizasyonlarindan one cikan kareler bu alanda yayinlanacak.",
+                    "Brans bazli gecmis yillarin fikstur ve sonuclari arsiv olarak erisime acilacak.",
+                    "Gecmis duyurular, afisler ve medya icerikleri tek noktadan goruntulenebilecek."
+                ],
+                footer: "Arsiv Sayfasi"
+            },
+            en: {
+                title: "Archive | DCFLSPORTFEST'26",
+                eyebrow: "ARCHIVE",
+                h1: "Event Archive",
+                hero: "Announcements, visuals and highlights from previous years will be added here soon.",
+                section: "ARCHIVE",
+                title2: "Upcoming Archive Content",
+                postMeta: ["Soon", "Soon", "Soon"],
+                postTitles: ["Photos from Past Events", "Tournament Results Archive", "Press and Announcement Records"],
+                postText: [
+                    "Highlight frames from previous editions will be published in this area.",
+                    "Past years' fixtures and results by branch will be available as an archive.",
+                    "Past announcements, posters and media content will be viewable from a single point."
+                ],
+                footer: "Archive Page"
+            },
+            pl: {
+                title: "Archiwum | DCFLSPORTFEST'26",
+                eyebrow: "ARCHIWUM",
+                h1: "Archiwum Wydarzenia",
+                hero: "Wkrotce pojawia sie tu ogloszenia, materialy wizualne i najwazniejsze momenty z poprzednich lat.",
+                section: "ARCHIWUM",
+                title2: "Nadchodzace Materialy",
+                postMeta: ["Wkrotce", "Wkrotce", "Wkrotce"],
+                postTitles: ["Zdjecia z poprzednich wydarzen", "Archiwum wynikow turniejowych", "Materialy prasowe i ogloszenia"],
+                postText: [
+                    "Najciekawsze kadry z poprzednich edycji zostana opublikowane w tej sekcji.",
+                    "Dawne terminarze i wyniki wedlug dyscyplin beda dostepne w archiwum.",
+                    "Wczesniejsze ogloszenia, plakaty i materialy medialne beda widoczne w jednym miejscu."
+                ],
+                footer: "Strona Archiwum"
+            }
         }[lang] || {};
 
         document.title = copy.title || document.title;
+        setText(".page-shell .eyebrow", copy.eyebrow);
         setText(".page-shell h1", copy.h1);
         setText(".page-shell .hero-text", copy.hero);
         setText("main .section-head .section-kicker", copy.section);
         setText("main .section-head h2", copy.title2);
+        setList(".post-meta", copy.postMeta);
+        setList(".post-card h3", copy.postTitles);
+        setList(".post-card p:not(.post-meta)", copy.postText);
         setText(".footer p:nth-of-type(2)", copy.footer);
     }
 
     function applyIletisim(lang) {
         var copy = {
-            tr: { title: "İletişim | DCFLSPORTFEST'26", h1: "Bize ulaş, birlikte planlayalım.", hero: "Takım kaydı, partnerlik veya genel sorular için formu doldurabilirsin.", contact: "İletişim Bilgileri", quick: "Hızlı Mesaj", labels: ["Ad Soyad/ Firma Adı", "E-posta", "Konu", "Mesaj"], placeholders: ["Ad Soyad/ Firma Adı", "ornek@mail.com", "Takım kaydı / Sponsorluk / Soru", "Mesajını yaz..."], send: "Gönder", footer: "İletişim Sayfası" },
-            en: { title: "Contact | DCFLSPORTFEST'26", h1: "Reach us, let's plan together.", hero: "You can fill in the form for team registration, partnership or general questions.", contact: "Contact Details", quick: "Quick Message", labels: ["Name / Company Name", "E-mail", "Subject", "Message"], placeholders: ["Name / Company Name", "example@mail.com", "Team registration / Sponsorship / Question", "Write your message..."], send: "Send", footer: "Contact Page" },
-            pl: { title: "Kontakt | DCFLSPORTFEST'26", h1: "Skontaktuj sie z nami, zaplanujmy to razem.", hero: "Wypelnij formularz w sprawie rejestracji druzyny, partnerstwa lub pytan.", contact: "Dane kontaktowe", quick: "Szybka wiadomosc", labels: ["Imie i nazwisko / Firma", "E-mail", "Temat", "Wiadomosc"], placeholders: ["Imie i nazwisko / Firma", "przyklad@mail.com", "Rejestracja druzyny / Sponsoring / Pytanie", "Napisz wiadomosc..."], send: "Wyslij", footer: "Strona Kontakt" }
+            tr: {
+                title: "Iletisim | DCFLSPORTFEST'26",
+                eyebrow: "ILETISIM",
+                h1: "Bize ulas, birlikte planlayalim.",
+                hero: "Takim kaydi, partnerlik veya genel sorular icin formu doldurabilirsin.",
+                contact: "Iletisim Bilgileri",
+                contactDetails: [
+                    "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
+                    "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
+                    "<strong>Tarih:</strong> 12-13-14 Mayis 2026"
+                ],
+                quick: "Hizli Mesaj",
+                labels: ["Ad Soyad/ Firma Adi", "E-posta", "Konu", "Mesaj"],
+                placeholders: ["Ad Soyad/ Firma Adi", "ornek@mail.com", "Takim kaydi / Sponsorluk / Soru", "Mesajini yaz..."],
+                send: "Gonder",
+                footer: "Iletisim Sayfasi"
+            },
+            en: {
+                title: "Contact | DCFLSPORTFEST'26",
+                eyebrow: "CONTACT",
+                h1: "Reach us, let's plan together.",
+                hero: "You can fill in the form for team registration, partnership or general questions.",
+                contact: "Contact Details",
+                contactDetails: [
+                    "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
+                    "<strong>Location:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
+                    "<strong>Date:</strong> May 12-14, 2026"
+                ],
+                quick: "Quick Message",
+                labels: ["Name / Company Name", "E-mail", "Subject", "Message"],
+                placeholders: ["Name / Company Name", "example@mail.com", "Team registration / Sponsorship / Question", "Write your message..."],
+                send: "Send",
+                footer: "Contact Page"
+            },
+            pl: {
+                title: "Kontakt | DCFLSPORTFEST'26",
+                eyebrow: "KONTAKT",
+                h1: "Skontaktuj sie z nami, zaplanujmy to razem.",
+                hero: "Wypelnij formularz w sprawie rejestracji druzyny, partnerstwa lub pytan.",
+                contact: "Dane Kontaktowe",
+                contactDetails: [
+                    "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
+                    "<strong>Lokalizacja:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
+                    "<strong>Data:</strong> 12-14 maja 2026"
+                ],
+                quick: "Szybka Wiadomosc",
+                labels: ["Imie i nazwisko / Firma", "E-mail", "Temat", "Wiadomosc"],
+                placeholders: ["Imie i nazwisko / Firma", "przyklad@mail.com", "Rejestracja druzyny / Sponsoring / Pytanie", "Napisz wiadomosc..."],
+                send: "Wyslij",
+                footer: "Strona Kontakt"
+            }
         }[lang] || {};
 
         document.title = copy.title || document.title;
+        setText(".page-shell .eyebrow", copy.eyebrow);
         setText(".page-shell h1", copy.h1);
         setText(".page-shell .hero-text", copy.hero);
         setText(".contact-info h2", copy.contact);
+        if (Array.isArray(copy.contactDetails)) {
+            setHTML(".contact-info .section-text:nth-of-type(1)", copy.contactDetails[0]);
+            setHTML(".contact-info .section-text:nth-of-type(2)", copy.contactDetails[1]);
+            setHTML(".contact-info .section-text:nth-of-type(3)", copy.contactDetails[2]);
+        }
         setText(".contact-form-card h2", copy.quick);
         setText("label[for='name']", copy.labels[0]);
         setText("label[for='email']", copy.labels[1]);
@@ -1044,6 +1722,8 @@ var renderScoreResults = (function () {
             applyProgram(lang);
         } else if (key === "finans.html") {
             applyFinans(lang);
+        } else if (key === "kurumsal.html") {
+            applyKurumsal(lang);
         } else if (key === "hizmetler.html") {
             applyFaq(lang);
         } else if (key === "blog.html") {
@@ -1053,8 +1733,6 @@ var renderScoreResults = (function () {
         } else if (key === "iletisim.html") {
             applyIletisim(lang);
         }
-
-        applySimplePage(lang, "kurumsal.html", "Amacımız | DCFLSPORTFEST'26", "About | DCFLSPORTFEST'26", "O nas | DCFLSPORTFEST'26", "Etkinliğin Amacı", "A festival vision without borders.", "Wizja festiwalu bez granic.", "Amacımız Sayfası", "About Page", "Strona O nas");
     }
 
     function placePicker(nav, wrap) {

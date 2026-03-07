@@ -826,6 +826,12 @@ h1 {
 
 .score-results-grid {
     margin-top: 0.1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+}
+
+.score-card-result {
+    min-height: 100%;
 }
 
 @keyframes scoreboardPanelIn {
@@ -2446,6 +2452,23 @@ canvas {
 
     .score-card-badge {
         align-self: flex-start;
+    }
+
+    .scoreboard-view > .scoreboard-grid,
+    .score-results-grid {
+        grid-template-columns: none;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(84vw, 1fr);
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x proximity;
+        padding-bottom: 0.3rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .scoreboard-view > .scoreboard-grid .score-card,
+    .score-results-grid .score-card {
+        scroll-snap-align: start;
     }
 
     .section-head h2,
