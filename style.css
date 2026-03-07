@@ -244,6 +244,10 @@ main,
     border-color: rgba(86, 132, 206, 0.42);
 }
 
+.hero-shell.hero-video-disabled .hero-video-bg {
+    display: none;
+}
+
 .hero-video-bg {
     position: absolute;
     inset: 0;
@@ -842,6 +846,12 @@ h1 {
 
 .score-results-scroller {
     margin-top: 0.1rem;
+    cursor: grab;
+    user-select: none;
+}
+
+.score-results-scroller.is-dragging {
+    cursor: grabbing;
 }
 
 .score-card-result {

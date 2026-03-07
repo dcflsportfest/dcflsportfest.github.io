@@ -23,7 +23,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&family=Geist+Mono:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20260308f">
+    <link rel="stylesheet" href="style.css?v=20260308g">
 </head>
 <body class="has-splash">
     <div class="splash-screen" data-splash>
@@ -396,6 +396,7 @@
         (function () {
             var videoA = document.querySelector("[data-hero-video-a]");
             var videoB = document.querySelector("[data-hero-video-b]");
+            var heroShell = document.querySelector(".hero-shell.hero-with-video");
             if (!videoA || !videoB) {
                 return;
             }
@@ -453,23 +454,14 @@
             }
 
             if (lowPerformanceMode) {
-                videos[1].remove();
-                setSource(videos[0], playlist[0]);
-                videos[0].classList.add("is-active");
-                safePlay(videos[0]);
-
-                videos[0].addEventListener("ended", function () {
-                    activeIndex = (activeIndex + 1) % playlist.length;
-                    setSource(videos[0], playlist[activeIndex]);
-                    safePlay(videos[0]);
-                });
-
-                document.addEventListener("visibilitychange", function () {
-                    if (document.hidden) {
-                        videos[0].pause();
-                    } else {
-                        safePlay(videos[0]);
-                    }
+                if (heroShell) {
+                    heroShell.classList.add("hero-video-disabled");
+                }
+                videos.forEach(function (video) {
+                    video.pause();
+                    video.removeAttribute("src");
+                    video.load();
+                    video.remove();
                 });
                 return;
             }
@@ -571,6 +563,6 @@
             });
         })();
     </script>
-    <script src="script.js?v=20260308f"></script>
+    <script src="script.js?v=20260308g"></script>
 </body>
 </html>

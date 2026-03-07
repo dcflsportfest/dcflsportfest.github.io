@@ -204,6 +204,73 @@ function initializeFixtureTabGroups(root) {
     });
 }
 
+function initializeDragScrollers(root) {
+    var scope = root || document;
+    var scrollers = scope.querySelectorAll("[data-drag-scroll]");
+    if (!scrollers.length) {
+        return;
+    }
+
+    scrollers.forEach(function (scroller) {
+        if (scroller.getAttribute("data-drag-ready") === "true") {
+            return;
+        }
+
+        var startX = 0;
+        var startLeft = 0;
+        var isDragging = false;
+
+        function getClientX(event) {
+            if (event.touches && event.touches.length) {
+                return event.touches[0].clientX;
+            }
+            if (event.changedTouches && event.changedTouches.length) {
+                return event.changedTouches[0].clientX;
+            }
+            return event.clientX;
+        }
+
+        function onStart(event) {
+            if (window.innerWidth > 900) {
+                return;
+            }
+            isDragging = true;
+            startX = getClientX(event);
+            startLeft = scroller.scrollLeft;
+            scroller.classList.add("is-dragging");
+        }
+
+        function onMove(event) {
+            if (!isDragging) {
+                return;
+            }
+            var currentX = getClientX(event);
+            var deltaX = currentX - startX;
+            scroller.scrollLeft = startLeft - deltaX;
+            if (event.cancelable) {
+                event.preventDefault();
+            }
+        }
+
+        function onEnd() {
+            if (!isDragging) {
+                return;
+            }
+            isDragging = false;
+            scroller.classList.remove("is-dragging");
+        }
+
+        scroller.addEventListener("touchstart", onStart, { passive: true });
+        scroller.addEventListener("touchmove", onMove, { passive: false });
+        scroller.addEventListener("touchend", onEnd);
+        scroller.addEventListener("touchcancel", onEnd);
+        scroller.addEventListener("mousedown", onStart);
+        window.addEventListener("mousemove", onMove);
+        window.addEventListener("mouseup", onEnd);
+        scroller.setAttribute("data-drag-ready", "true");
+    });
+}
+
 var renderScoreResults = (function () {
     var uiCopy = {
         tr: {
@@ -594,7 +661,7 @@ var renderScoreResults = (function () {
             return [
                 "<article class=\"fixture-panel score-results-branch-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + branch.key + "\">",
                 "    <h3>" + dayUi.resultsTitle(pickText(branch.name, lang)) + "</h3>",
-                "    <div class=\"score-results-scroller\">",
+                "    <div class=\"score-results-scroller\" data-drag-scroll>",
                 "        <div class=\"scoreboard-grid score-results-grid\">",
                 matches.map(function (match) { return renderResultMatchCard(match); }).join(""),
                 "        </div>",
@@ -670,6 +737,7 @@ var renderScoreResults = (function () {
             });
 
             initializeFixtureTabGroups(shell);
+            initializeDragScrollers(shell);
             activateDay(shell, days[0].key);
         });
     };
@@ -677,6 +745,7 @@ var renderScoreResults = (function () {
 
 (function () {
     initializeFixtureTabGroups(document);
+    initializeDragScrollers(document);
     if (document.querySelector("[data-score-results]")) {
         renderScoreResults((document.documentElement.getAttribute("lang") || "tr").toLowerCase());
     }
