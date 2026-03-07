@@ -312,7 +312,7 @@ var renderScoreResults = (function () {
             venue: { tr: "Kapal\u0131 Spor Salonu", en: "Indoor Hall", pl: "Hala sportowa" },
             qf: {
                 times: ["10:00", "11:30", "14:00", "15:30"],
-                pairs: [["DCFL A", "Warsaw Falcons"], ["Sofia Spike", "Balkan Ace"], ["Skopje Smash", "Riga Net"], ["Belgrade Block", "Plovdiv Serve"]],
+                pairs: [["Tak\u0131m 1", "Tak\u0131m 8"], ["Tak\u0131m 2", "Tak\u0131m 7"], ["Tak\u0131m 3", "Tak\u0131m 6"], ["Tak\u0131m 4", "Tak\u0131m 5"]],
                 scores: [["2", "0"], ["2", "1"], ["2", "1"], ["0", "2"]]
             },
             sf: { times: ["11:00", "14:00"], scores: [["2", "1"], ["1", "2"]] },
@@ -324,7 +324,7 @@ var renderScoreResults = (function () {
             venue: { tr: "Basketbol Sahas\u0131", en: "Basketball Court", pl: "Boisko do koszykowki" },
             qf: {
                 times: ["09:30", "11:30", "13:30", "15:30"],
-                pairs: [["DCFL Hoops", "Istanbul Stars"], ["Sofia Hoops", "Balkan Academy"], ["Skopje Drive", "Warsaw Blaze"], ["Riga Court", "Belgrade Titans"]],
+                pairs: [["Tak\u0131m 1", "Tak\u0131m 8"], ["Tak\u0131m 2", "Tak\u0131m 7"], ["Tak\u0131m 3", "Tak\u0131m 6"], ["Tak\u0131m 4", "Tak\u0131m 5"]],
                 scores: [["66", "58"], ["63", "71"], ["74", "69"], ["61", "67"]]
             },
             sf: { times: ["12:00", "16:00"], scores: [["78", "72"], ["70", "76"]] },
@@ -336,7 +336,7 @@ var renderScoreResults = (function () {
             venue: { tr: "\u00c7im Saha", en: "Grass Field", pl: "Boisko trawiaste" },
             qf: {
                 times: ["10:30", "12:30", "14:30", "16:30"],
-                pairs: [["DCFL Blue", "Warsaw United"], ["Balkan Youth", "Sofia Youth"], ["DCFL Red", "Belgrade Next"], ["Skopje Juniors", "Plovdiv FC"]],
+                pairs: [["Tak\u0131m 1", "Tak\u0131m 8"], ["Tak\u0131m 2", "Tak\u0131m 7"], ["Tak\u0131m 3", "Tak\u0131m 6"], ["Tak\u0131m 4", "Tak\u0131m 5"]],
                 scores: [["2", "0"], ["1", "2"], ["3", "1"], ["2", "1"]]
             },
             sf: { times: ["12:30", "15:30"], scores: [["2", "1"], ["1", "0"]] },
@@ -348,7 +348,7 @@ var renderScoreResults = (function () {
             venue: { tr: "Masa Tenisi Alan\u0131", en: "Table Tennis Zone", pl: "Strefa tenisa stolowego" },
             qf: {
                 times: ["11:00", "12:00", "15:00", "16:00"],
-                pairs: [["Elif Kaya", "Jana Lis"], ["Aylin Demir", "Maria Z."], ["Kamil W.", "Sofi Petrova"], ["Lina R.", "Deniz A."]],
+                pairs: [["Tak\u0131m 1", "Tak\u0131m 8"], ["Tak\u0131m 2", "Tak\u0131m 7"], ["Tak\u0131m 3", "Tak\u0131m 6"], ["Tak\u0131m 4", "Tak\u0131m 5"]],
                 scores: [["3", "1"], ["3", "2"], ["1", "3"], ["3", "0"]]
             },
             sf: { times: ["13:00", "15:00"], scores: [["3", "1"], ["2", "3"]] },
@@ -360,7 +360,7 @@ var renderScoreResults = (function () {
             venue: { tr: "Ok\u00e7uluk Parkuru", en: "Archery Range", pl: "Tor luczniczy" },
             qf: {
                 times: ["10:00", "11:00", "13:00", "14:00"],
-                pairs: [["DCFL Archers", "Riga Target"], ["Sofia Arrows", "Belgrade Youth"], ["Skopje Bow", "Warsaw Aim"], ["Plovdiv Range", "Ankara Focus"]],
+                pairs: [["Tak\u0131m 1", "Tak\u0131m 8"], ["Tak\u0131m 2", "Tak\u0131m 7"], ["Tak\u0131m 3", "Tak\u0131m 6"], ["Tak\u0131m 4", "Tak\u0131m 5"]],
                 scores: [["122", "118"], ["117", "120"], ["119", "121"], ["123", "119"]]
             },
             sf: { times: ["14:30", "16:00"], scores: [["125", "121"], ["120", "124"]] },
@@ -373,7 +373,7 @@ var renderScoreResults = (function () {
             lowWins: true,
             qf: {
                 times: ["09:45", "10:30", "12:45", "13:30"],
-                pairs: [["DCFL Trail", "Sofia Compass"], ["Belgrade Map", "Warsaw Route"], ["Skopje Track", "Riga North"], ["Plovdiv Path", "Izmir Orienteers"]],
+                pairs: [["Tak\u0131m 1", "Tak\u0131m 8"], ["Tak\u0131m 2", "Tak\u0131m 7"], ["Tak\u0131m 3", "Tak\u0131m 6"], ["Tak\u0131m 4", "Tak\u0131m 5"]],
                 scores: [["38:14", "40:02"], ["37:44", "38:31"], ["39:10", "37:52"], ["36:58", "37:21"]]
             },
             sf: { times: ["10:45", "13:45"], scores: [["35:40", "36:12"], ["36:08", "35:49"]] },
@@ -385,7 +385,7 @@ var renderScoreResults = (function () {
             venue: { tr: "Bah\u00e7e Satran\u00e7 Alan\u0131", en: "Garden Chess Zone", pl: "Strefa szachow ogrodowych" },
             qf: {
                 times: ["11:30", "12:30", "16:00", "17:00"],
-                pairs: [["DCFL White", "Warsaw Kings"], ["DCFL Black", "Plovdiv Queens"], ["Sofia Minds", "Riga Masters"], ["Belgrade Strategy", "Skopje Knights"]],
+                pairs: [["Tak\u0131m 1", "Tak\u0131m 8"], ["Tak\u0131m 2", "Tak\u0131m 7"], ["Tak\u0131m 3", "Tak\u0131m 6"], ["Tak\u0131m 4", "Tak\u0131m 5"]],
                 scores: [["1", "0"], ["0", "1"], ["1", "0"], ["0", "1"]]
             },
             sf: { times: ["12:00", "15:00"], scores: [["1", "0"], ["1", "0"]] },
@@ -397,7 +397,7 @@ var renderScoreResults = (function () {
             venue: { tr: "E-Spor Alan\u0131", en: "E-Sports Area", pl: "Strefa e-sportu" },
             qf: {
                 times: ["10:15", "11:15", "14:15", "15:15"],
-                pairs: [["Mert K.", "Jan Nowak"], ["Ali T.", "Kamil P."], ["Sofia G.", "Emre Y."], ["Luka S.", "Ana M."]],
+                pairs: [["Tak\u0131m 1", "Tak\u0131m 8"], ["Tak\u0131m 2", "Tak\u0131m 7"], ["Tak\u0131m 3", "Tak\u0131m 6"], ["Tak\u0131m 4", "Tak\u0131m 5"]],
                 scores: [["3", "2"], ["1", "3"], ["2", "3"], ["3", "1"]]
             },
             sf: { times: ["15:30", "17:00"], scores: [["2", "3"], ["3", "1"]] },
@@ -410,7 +410,7 @@ var renderScoreResults = (function () {
             lowWins: true,
             qf: {
                 times: ["09:00", "10:00", "11:15", "12:15"],
-                pairs: [["DCFL Sprint", "Varna Track"], ["Thessaloniki Track", "Warsaw Lane"], ["Sofia Dash", "Belgrade Run"], ["Skopje Fast", "Riga Motion"]],
+                pairs: [["Tak\u0131m 1", "Tak\u0131m 8"], ["Tak\u0131m 2", "Tak\u0131m 7"], ["Tak\u0131m 3", "Tak\u0131m 6"], ["Tak\u0131m 4", "Tak\u0131m 5"]],
                 scores: [["11.52", "11.68"], ["11.61", "11.57"], ["11.74", "11.66"], ["11.69", "11.72"]]
             },
             sf: { times: ["14:00", "16:30"], scores: [["11.48", "11.54"], ["11.59", "11.53"]] },
@@ -422,7 +422,7 @@ var renderScoreResults = (function () {
             venue: { tr: "Bah\u00e7e Etkinlik Alan\u0131", en: "Garden Activity Zone", pl: "Strefa gier ogrodowych" },
             qf: {
                 times: ["10:45", "11:45", "13:45", "14:45"],
-                pairs: [["Tak\u0131m Mavi", "Tak\u0131m Gold"], ["Tak\u0131m Forest", "Tak\u0131m Solar"], ["Tak\u0131m Kuzey", "Tak\u0131m Atlas"], ["Tak\u0131m Nova", "Tak\u0131m Lotus"]],
+                pairs: [["Tak\u0131m 1", "Tak\u0131m 8"], ["Tak\u0131m 2", "Tak\u0131m 7"], ["Tak\u0131m 3", "Tak\u0131m 6"], ["Tak\u0131m 4", "Tak\u0131m 5"]],
                 scores: [["21", "18"], ["19", "23"], ["24", "20"], ["17", "22"]]
             },
             sf: { times: ["16:15", "17:30"], scores: [["26", "21"], ["18", "24"]] },
