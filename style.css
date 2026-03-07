@@ -2466,18 +2466,20 @@ canvas {
 
     .scoreboard-view > .scoreboard-grid,
     .score-results-grid {
-        grid-template-columns: none;
-        grid-auto-flow: column;
-        grid-auto-columns: minmax(84vw, 1fr);
+        display: flex;
+        gap: 0.7rem;
         overflow-x: auto;
         overscroll-behavior-x: contain;
-        scroll-snap-type: x proximity;
+        scroll-snap-type: x mandatory;
         padding-bottom: 0.3rem;
         -webkit-overflow-scrolling: touch;
+        touch-action: pan-x;
     }
 
     .scoreboard-view > .scoreboard-grid .score-card,
     .score-results-grid .score-card {
+        flex: 0 0 84vw;
+        min-width: 84vw;
         scroll-snap-align: start;
     }
 
