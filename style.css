@@ -2464,8 +2464,7 @@ canvas {
         align-self: flex-start;
     }
 
-    .scoreboard-view > .scoreboard-grid,
-    .score-results-grid {
+    .scoreboard-view > .scoreboard-grid {
         display: flex;
         flex-wrap: nowrap;
         gap: 0.7rem;
@@ -2481,12 +2480,24 @@ canvas {
         scrollbar-width: thin;
     }
 
-    .scoreboard-view > .scoreboard-grid .score-card,
-    .score-results-grid .score-card {
+    .scoreboard-view > .scoreboard-grid .score-card {
         flex: 0 0 76vw;
         min-width: 76vw;
         max-width: 76vw;
         scroll-snap-align: start;
+    }
+
+    .score-results-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+        overflow: visible;
+        padding-right: 0;
+    }
+
+    .score-results-grid .score-card {
+        min-width: 0;
+        max-width: none;
     }
 
     .section-head h2,
