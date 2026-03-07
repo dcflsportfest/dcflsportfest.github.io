@@ -900,7 +900,7 @@ var renderScoreResults = (function () {
                 countdownLabels: ["G\u00fcn", "Saat", "Dakika", "Saniye"],
                 ended: "Festival ba\u015flad\u0131!",
                 scoreboard: {
-                    kicker: "SKOR MERKEZI",
+                    kicker: "SKOR MERKEZİ",
                     title: "Canl\u0131 Skor ve Sonu\u00e7lar",
                     text: "G\u00fcn\u00fcn canl\u0131 kar\u015f\u0131la\u015fmalar\u0131n\u0131 ve tamamlanan ma\u00e7 sonu\u00e7lar\u0131n\u0131 tek panelden takip et.",
                     tabAria: "Skor paneli sekmeleri",
@@ -927,8 +927,8 @@ var renderScoreResults = (function () {
                 contactTitle: "\u0130leti\u015fim Formu",
                 contactDetails: [
                     "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
-                    "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Tarih:</strong> 12-13-14 Mayis 2026"
+                    "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 K\u00fc\u00e7\u00fck\u00e7ekmece / \u0130stanbul",
+                    "<strong>Tarih:</strong> 12-13-14 May\u0131s 2026"
                 ],
                 quick: "H\u0131zl\u0131 Mesaj",
                 labels: ["Ad Soyad/ Firma Ad\u0131", "E-posta", "Konu", "Mesaj"],
@@ -1085,19 +1085,19 @@ var renderScoreResults = (function () {
                 eyebrow: "PROGRAM & TURNUVA",
                 h1: "12-13-14 May\u0131s etkinlik ve fikst\u00fcr ak\u0131\u015f\u0131.",
                 hero: "A\u00e7\u0131l\u0131\u015f, g\u00fcnl\u00fck etkinlik plan\u0131 ve bran\u015f bazl\u0131 8 tak\u0131ml\u0131 t\u00fcm turnuva fikst\u00fcrlerini tek sayfada takip edebilirsin.",
-                sections: ["OPERASYON AKISI", "FESTIVAL HATLARI", "FIKSTUR DETAYLARI"],
-                titles: ["Gunluk Program", "Branslar", "Turnuva Secim Ekrani"],
-                tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Okculuk", "Oryantiring", "Bahce Satranci", "PlayStation", "Atletizm", "Bahce Oyunlari"],
-                panels: ["Voleybol Fiksturu", "Basketbol Fiksturu", "Futbol Fiksturu", "Masa Tenisi Fiksturu", "Okculuk Fiksturu", "Oryantiring Fiksturu", "Bahce Satranci Fiksturu", "PlayStation Turnuvasi Fiksturu", "Atletizm Fiksturu", "Bahce Oyunlari Fiksturu"],
+                sections: ["OPERASYON AKIŞI", "FESTİVAL HATLARI", "FİKSTÜR DETAYLARI"],
+                titles: ["Günlük Program", "Branşlar", "Turnuva Seçim Ekranı"],
+                tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Okçuluk", "Oryantiring", "Bahçe Satrancı", "PlayStation", "Atletizm", "Bahçe Oyunları"],
+                panels: ["Voleybol Fikstürü", "Basketbol Fikstürü", "Futbol Fikstürü", "Masa Tenisi Fikstürü", "Okçuluk Fikstürü", "Oryantiring Fikstürü", "Bahçe Satrancı Fikstürü", "PlayStation Turnuvası Fikstürü", "Atletizm Fikstürü", "Bahçe Oyunları Fikstürü"],
                 timelineTitles: [
-                    "12 Mayis | Ceyrek Finaller ve Acilis",
-                    "13 Mayis | Yari Finaller ve Yan Etkinlikler",
-                    "14 Mayis | Final ve Odul Toreni"
+                    "12 Mayıs | Çeyrek Finaller ve Açılış",
+                    "13 Mayıs | Yarı Finaller ve Yan Etkinlikler",
+                    "14 Mayıs | Final ve Ödül Töreni"
                 ],
                 timelineText: [
-                    "8 takim ile baslayan turnuva eslesmeleri ve acilis seremonisi ayni gun baslar.",
-                    "Ceyrek final galipleri yari finalde bulusur; gun boyunca yan etkinlik akisi devam eder.",
-                    "Her bransta sampiyonluk maci oynanir, ardindan kupa seremonisi ve kapanis yapilir."
+                    "8 takım ile başlayan turnuva eşleşmeleri ve açılış seremonisi aynı gün başlar.",
+                    "Çeyrek final galipleri yarı finalde buluşur; gün boyunca yan etkinlik akışı devam eder.",
+                    "Her branşta şampiyonluk maçı oynanır, ardından kupa seremonisi ve kapanış yapılır."
                 ],
                 headerMap: {
                     "Tarih": "Tarih",
@@ -1111,7 +1111,7 @@ var renderScoreResults = (function () {
                     "Etap": "Etap"
                 },
                 detailMap: {},
-                footer: "Program & Turnuva Sayfasi"
+                footer: "Program & Turnuva Sayfası"
             },
             en: {
                 title: "Program & Tournament | DCFLSPORTFEST'26",
@@ -1261,24 +1261,24 @@ var renderScoreResults = (function () {
         var copy = {
             tr: {
                 title: "Finans | DCFLSPORTFEST'26",
-                eyebrow: "SPONSORLUK DERECELERI",
-                h1: "Sponsorluk Paketlerini Karsilastirin",
-                hero: "Ayni sponsorlugu ayri bir blokta, maddi sponsorluk paketlerini ise kolay karsilastirmali kart duzeninde inceleyebilirsin.",
-                section: "FINANS",
-                sectionTitle: "Sponsorluk Paketlerini Karsilastirin",
-                group: "MADDI SPONSORLUK PAKETLERI",
+                eyebrow: "SPONSORLUK DERECELERİ",
+                h1: "Sponsorluk Paketlerini Karşılaştırın",
+                hero: "Ayni sponsorluğu ayrı bir blokta, maddi sponsorluk paketlerini ise kolay karşılaştırmalı kart düzeninde inceleyebilirsin.",
+                section: "FİNANS",
+                sectionTitle: "Sponsorluk Paketlerini Karşılaştırın",
+                group: "MADDİ SPONSORLUK PAKETLERİ",
                 groupTitle: "Maddi Sponsorluk Paketleri",
-                contact: "Iletisim",
+                contact: "İletişim",
                 contactDetails: [
                     "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
-                    "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Not:</strong> Sponsorluk detay dosyasi ve teklif gonderimi icin iletisime gecebilirsin."
+                    "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 K\u00fc\u00e7\u00fck\u00e7ekmece / \u0130stanbul",
+                    "<strong>Not:</strong> Sponsorluk detay dosyası ve teklif gönderimi için iletişime geçebilirsin."
                 ],
-                quick: "Hizli Mesaj",
-                labels: ["Ad Soyad / Firma Adi", "E-posta", "Konu", "Mesaj"],
-                placeholders: ["Ad Soyad / Firma Adi", "ornek@mail.com", "Sponsorluk Paketi / Dosya Talebi", "Mesajini yaz..."],
-                send: "Gonder",
-                footer: "Finans Sayfasi"
+                quick: "Hızlı Mesaj",
+                labels: ["Ad Soyad / Firma Adı", "E-posta", "Konu", "Mesaj"],
+                placeholders: ["Ad Soyad / Firma Adı", "ornek@mail.com", "Sponsorluk Paketi / Dosya Talebi", "Mesajını yaz..."],
+                send: "Gönder",
+                footer: "Finans Sayfası"
             },
             en: {
                 title: "Finance | DCFLSPORTFEST'26",
@@ -1411,40 +1411,40 @@ var renderScoreResults = (function () {
     function applyKurumsal(lang) {
         var copy = {
             tr: {
-                title: "Etkinligin Amaci | DCFLSPORTFEST'26",
+                title: "Etkinliğin Amacı | DCFLSPORTFEST'26",
                 eyebrow: "AMACIMIZ",
-                h1: "Etkinligin Amaci",
+                h1: "Etkinliğin Amacı",
                 hero: [
-                    "DCFLSPORTFEST'26, cok boyutlu bir spor ve genclik deneyimi sunmayi amaclayan uluslararasi bir organizasyondur.",
-                    "Etkinlikteki temel amaclarimiz:",
-                    "Bu sayede DCFLSPORTFEST'26, yalnizca bir etkinlik degil; sureklilik vadeder."
+                    "DCFLSPORTFEST'26, çok boyutlu bir spor ve gençlik deneyimi sunmayı amaçlayan uluslararası bir organizasyondur.",
+                    "Etkinlikteki temel amaçlarımız:",
+                    "Bu sayede DCFLSPORTFEST'26, yalnızca bir etkinlik değil; süreklilik vadeder."
                 ],
                 heroList: [
-                    "Uluslararasi spor kulturunu gencler arasinda yayginlastirmak",
-                    "Genc sporculara kendilerini ifade edebilecekleri ve gorunurluk kazanabilecekleri bir platform sunmak",
-                    "Markalar ile genc hedef kitle arasinda guclu ve kalici bir bag olusturmak",
-                    "Spor, eglence ve deneyimi tek bir festival catisi altinda birlestirmek",
-                    "Uluslararasi is birliklerinin ve yeni projelerin onunu acmak"
+                    "Uluslararası spor kültürünü gençler arasında yaygınlaştırmak",
+                    "Genç sporculara kendilerini ifade edebilecekleri ve görünürlük kazanabilecekleri bir platform sunmak",
+                    "Markalar ile genç hedef kitle arasında güçlü ve kalıcı bir bağ oluşturmak",
+                    "Spor, eğlence ve deneyimi tek bir festival çatısı altında birleştirmek",
+                    "Uluslararası iş birliklerinin ve yeni projelerin önünü açmak"
                 ],
-                section: "VIZYON VE MISYON",
-                sectionTitle: "Temel Yaklasimimiz",
+                section: "VİZYON VE MİSYON",
+                sectionTitle: "Temel Yaklaşımımız",
                 tileTitles: ["Vizyon", "Misyon"],
                 tileParagraphs: [
-                    "DCFLSPORTFEST'26'yi; farkli ulkelerden genc sporcularin, kuluplerin ve spor markalarinin her yil bir araya geldigi, uluslararasi olcekte taninan, surdurulebilir ve prestijli bir spor festivali haline getirmeyi hedefliyoruz.",
-                    "Uzun vadede DCFLSPORTFEST'26'nin asagidaki niteliklere sahip bir etkinlik olmasini amacliyoruz:",
-                    "DCFLSPORTFEST'26'nin misyonu, sporu yalnizca bir yarisma alani olarak degil; iletisim, gelisim ve kulturel etkilesim araci olarak konumlandirmaktir.",
-                    "Bu dogrultuda oncelikli hedeflerimiz:"
+                    "DCFLSPORTFEST'26'yı; farklı ülkelerden genç sporcuların, kulüplerin ve spor markalarının her yıl bir araya geldiği, uluslararası ölçekte tanınan, sürdürülebilir ve prestijli bir spor festivali haline getirmeyi hedefliyoruz.",
+                    "Uzun vadede DCFLSPORTFEST'26'nın aşağıdaki niteliklere sahip bir etkinlik olmasını amaçlıyoruz:",
+                    "DCFLSPORTFEST'26'nın misyonu, sporu yalnızca bir yarışma alanı olarak değil; iletişim, gelişim ve kültürel etkileşim aracı olarak konumlandırmaktır.",
+                    "Bu doğrultuda öncelikli hedeflerimiz:"
                 ],
                 tileList: [
-                    "Avrupa, Orta Dogu ve Balkanlar'dan duzenli katilimci ceken.",
-                    "Genclik ve spor alaninda referans gosterilen.",
-                    "Markalar icin stratejik bir iletisim ve deneyim platformu olan.",
-                    "Genclerin spor yoluyla uluslararasi deneyim kazanmasini saglamak.",
-                    "Farkli kulturlerden gelen katilimcilar arasinda kalici baglar kurmak.",
-                    "Markalara, genc hedef kitle ile dogrudan ve sahici temas kurabilecekleri alanlar sunmak.",
-                    "Sporun egitici, birlestirici ve ilham verici gucunu gorunur kilmak."
+                    "Avrupa, Orta Doğu ve Balkanlar'dan düzenli katılımcı çeken.",
+                    "Gençlik ve spor alanında referans gösterilen.",
+                    "Markalar için stratejik bir iletişim ve deneyim platformu olan.",
+                    "Gençlerin spor yoluyla uluslararası deneyim kazanmasını sağlamak.",
+                    "Farklı kültürlerden gelen katılımcılar arasında kalıcı bağlar kurmak.",
+                    "Markalara, genç hedef kitle ile doğrudan ve sahici temas kurabilecekleri alanlar sunmak.",
+                    "Sporun eğitici, birleştirici ve ilham verici gücünü görünür kılmak."
                 ],
-                footer: "Amacimiz Sayfasi"
+                footer: "Amacımız Sayfası"
             },
             en: {
                 title: "Purpose of the Event | DCFLSPORTFEST'26",
@@ -1536,19 +1536,19 @@ var renderScoreResults = (function () {
     function applyFaq(lang) {
         var copy = {
             tr: {
-                title: "Sikca Sorulanlar | DCFLSPORTFEST'26",
-                eyebrow: "SIKCA SORULANLAR",
-                h1: "Merak edilen sorularin net cevaplari.",
-                hero: "Katilim, kayit, kontenjan ve sponsorluk surecleriyle ilgili en cok sorulan sorulari burada bulabilirsin.",
-                section: "SIKCA SORULANLAR",
-                title2: "Hizli Cevaplar",
-                cardsTitle: ["Kayit nasil yapilir?", "Branslara katilim siniri var mi?", "Sponsor basvurusu nasil olur?"],
+                title: "Sıkça Sorulanlar | DCFLSPORTFEST'26",
+                eyebrow: "SIKÇA SORULANLAR",
+                h1: "Merak edilen soruların net cevapları.",
+                hero: "Katılım, kayıt, kontenjan ve sponsorluk süreçleriyle ilgili en çok sorulan soruları burada bulabilirsin.",
+                section: "SIKÇA SORULANLAR",
+                title2: "Hızlı Cevaplar",
+                cardsTitle: ["Kayıt nasıl yapılır?", "Branşlara katılım sınırı var mı?", "Sponsor başvurusu nasıl olur?"],
                 cardsText: [
-                    "Iletisim sekmesindeki form uzerinden takim veya bireysel basvuru alinir.",
-                    "Her brans icin kontenjan vardir. Erken basvuru onceligi uygulanir.",
-                    "Iletisim sekmesinden sponsorluk konusu secilerek teklif gonderilebilir."
+                    "İletişim sekmesindeki form üzerinden takım veya bireysel başvuru alınır.",
+                    "Her branş için kontenjan vardır. Erken başvuru önceliği uygulanır.",
+                    "İletişim sekmesinden sponsorluk konusu seçilerek teklif gönderilebilir."
                 ],
-                footer: "Sikca Sorulanlar Sayfasi"
+                footer: "Sıkça Sorulanlar Sayfası"
             },
             en: {
                 title: "FAQ | DCFLSPORTFEST'26",
@@ -1598,18 +1598,18 @@ var renderScoreResults = (function () {
             tr: {
                 title: "Blog | DCFLSPORTFEST'26",
                 eyebrow: "BLOG",
-                h1: "Sportfest gundeminden notlar.",
-                hero: "Etkinlik hazirliklari, brans hikayeleri ve organizasyon guncellemeleri.",
-                section: "ONE CIKANLAR",
-                title2: "Son Yazilar",
-                postMeta: ["03 Mart 2026", "27 Subat 2026", "18 Subat 2026"],
-                postTitles: ["Final Gecesi Sahne Plani", "Brans Kontenjan Guncellemesi", "Sponsor Is Birligi Dalgasi"],
+                h1: "Sportfest gündeminden notlar.",
+                hero: "Etkinlik hazırlıkları, branş hikayeleri ve organizasyon güncellemeleri.",
+                section: "ÖNE ÇIKANLAR",
+                title2: "Son Yazılar",
+                postMeta: ["03 Mart 2026", "27 Şubat 2026", "18 Şubat 2026"],
+                postTitles: ["Final Gecesi Sahne Planı", "Branş Kontenjan Güncellemesi", "Sponsor İş Birliği Dalgası"],
                 postText: [
-                    "Final akisi, odul toreni ve kapanis sovunun yeni sahne duzeni aciklandi.",
-                    "Basketbol, voleybol ve atletizm branslarinda ek kontenjanlar acildi.",
-                    "Yeni is ortakliklariyla etkinlik alanindaki deneyim alanlari genisliyor."
+                    "Final akışı, ödül töreni ve kapanış şovunun yeni sahne düzeni açıklandı.",
+                    "Basketbol, voleybol ve atletizm branşlarında ek kontenjanlar açıldı.",
+                    "Yeni iş ortaklıklarıyla etkinlik alanındaki deneyim alanları genişliyor."
                 ],
-                footer: "Blog Sayfasi"
+                footer: "Blog Sayfası"
             },
             en: {
                 title: "Blog | DCFLSPORTFEST'26",
@@ -1660,20 +1660,20 @@ var renderScoreResults = (function () {
     function applyArsiv(lang) {
         var copy = {
             tr: {
-                title: "Arsiv | DCFLSPORTFEST'26",
-                eyebrow: "ARSIV",
-                h1: "Etkinlik Arsivi",
-                hero: "Gecmis yillara ait duyurular, gorseller ve one cikan anlar yakinda burada yer alacak.",
-                section: "ARSIV",
-                title2: "Yakinda Eklenecek Icerikler",
-                postMeta: ["Yakinda", "Yakinda", "Yakinda"],
-                postTitles: ["Gecmis Etkinlik Fotograflari", "Turnuva Sonuc Arsivi", "Basin ve Duyuru Kayitlari"],
+                title: "Arşiv | DCFLSPORTFEST'26",
+                eyebrow: "ARŞİV",
+                h1: "Etkinlik Arşivi",
+                hero: "Geçmiş yıllara ait duyurular, görseller ve öne çıkan anlar yakında burada yer alacak.",
+                section: "ARŞİV",
+                title2: "Yakında Eklenecek İçerikler",
+                postMeta: ["Yakında", "Yakında", "Yakında"],
+                postTitles: ["Geçmiş Etkinlik Fotoğrafları", "Turnuva Sonuç Arşivi", "Basın ve Duyuru Kayıtları"],
                 postText: [
-                    "Onceki donem organizasyonlarindan one cikan kareler bu alanda yayinlanacak.",
-                    "Brans bazli gecmis yillarin fikstur ve sonuclari arsiv olarak erisime acilacak.",
-                    "Gecmis duyurular, afisler ve medya icerikleri tek noktadan goruntulenebilecek."
+                    "Önceki dönem organizasyonlarından öne çıkan kareler bu alanda yayınlanacak.",
+                    "Branş bazlı geçmiş yılların fikstür ve sonuçları arşiv olarak erişime açılacak.",
+                    "Geçmiş duyurular, afişler ve medya içerikleri tek noktadan görüntülenebilecek."
                 ],
-                footer: "Arsiv Sayfasi"
+                footer: "Arşiv Sayfası"
             },
             en: {
                 title: "Archive | DCFLSPORTFEST'26",
@@ -1724,21 +1724,21 @@ var renderScoreResults = (function () {
     function applyIletisim(lang) {
         var copy = {
             tr: {
-                title: "Iletisim | DCFLSPORTFEST'26",
-                eyebrow: "ILETISIM",
-                h1: "Bize ulas, birlikte planlayalim.",
-                hero: "Takim kaydi, partnerlik veya genel sorular icin formu doldurabilirsin.",
-                contact: "Iletisim Bilgileri",
+                title: "İletişim | DCFLSPORTFEST'26",
+                eyebrow: "İLETİŞİM",
+                h1: "Bize ulaş, birlikte planlayalım.",
+                hero: "Takım kaydı, partnerlik veya genel sorular için formu doldurabilirsin.",
+                contact: "İletişim Bilgileri",
                 contactDetails: [
                     "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
-                    "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Tarih:</strong> 12-13-14 Mayis 2026"
+                    "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 K\u00fc\u00e7\u00fck\u00e7ekmece / \u0130stanbul",
+                    "<strong>Tarih:</strong> 12-13-14 May\u0131s 2026"
                 ],
-                quick: "Hizli Mesaj",
-                labels: ["Ad Soyad/ Firma Adi", "E-posta", "Konu", "Mesaj"],
-                placeholders: ["Ad Soyad/ Firma Adi", "ornek@mail.com", "Takim kaydi / Sponsorluk / Soru", "Mesajini yaz..."],
-                send: "Gonder",
-                footer: "Iletisim Sayfasi"
+                quick: "Hızlı Mesaj",
+                labels: ["Ad Soyad/ Firma Adı", "E-posta", "Konu", "Mesaj"],
+                placeholders: ["Ad Soyad/ Firma Adı", "ornek@mail.com", "Takım kaydı / Sponsorluk / Soru", "Mesajını yaz..."],
+                send: "Gönder",
+                footer: "İletişim Sayfası"
             },
             en: {
                 title: "Contact | DCFLSPORTFEST'26",
