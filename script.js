@@ -180,7 +180,7 @@ function initializeFixtureTabGroups(root) {
             panels.forEach(function (panel) {
                 var isActive = panel.getAttribute("data-fixture-panel") === branch;
                 panel.classList.toggle("active", isActive);
-                panel.hidden = !isActive;
+                panel.setAttribute("aria-hidden", isActive ? "false" : "true");
             });
         }
 
@@ -194,7 +194,7 @@ function initializeFixtureTabGroups(root) {
 
         panels.forEach(function (panel) {
             panel.setAttribute("role", "tabpanel");
-            panel.hidden = !panel.classList.contains("active");
+            panel.setAttribute("aria-hidden", panel.classList.contains("active") ? "false" : "true");
         });
 
         group.setAttribute("data-fixture-ready", "true");
@@ -524,7 +524,7 @@ var renderScoreResults = (function () {
         }).join("");
 
         return [
-            "<section class=\"score-results-day-panel" + (isActive ? " active" : "") + "\" id=\"score-results-" + day.key + "\" data-score-day-panel=\"" + day.key + "\"" + (isActive ? "" : " hidden") + ">",
+            "<section class=\"score-results-day-panel" + (isActive ? " active" : "") + "\" id=\"score-results-" + day.key + "\" data-score-day-panel=\"" + day.key + "\" aria-hidden=\"" + (isActive ? "false" : "true") + "\">",
             "    <div class=\"score-results-head\">",
             "        <p class=\"score-results-date\">" + pickText(day.fullDate, lang) + "</p>",
             "        <p class=\"score-results-caption\">" + dayUi.dayCaptions[day.key] + "</p>",
@@ -552,7 +552,7 @@ var renderScoreResults = (function () {
         panels.forEach(function (panel) {
             var isActive = panel.getAttribute("data-score-day-panel") === dayKey;
             panel.classList.toggle("active", isActive);
-            panel.hidden = !isActive;
+            panel.setAttribute("aria-hidden", isActive ? "false" : "true");
         });
     }
 
@@ -597,6 +597,9 @@ var renderScoreResults = (function () {
 
 (function () {
     initializeFixtureTabGroups(document);
+    if (document.querySelector("[data-score-results]")) {
+        renderScoreResults((document.documentElement.getAttribute("lang") || "tr").toLowerCase());
+    }
 })();
 
 (function () {

@@ -783,12 +783,12 @@ h1 {
 }
 
 .score-results-day-panel {
-    display: grid;
+    display: none;
     gap: 0.8rem;
 }
 
-.score-results-day-panel[hidden] {
-    display: none;
+.score-results-day-panel.active {
+    display: grid;
 }
 
 .score-results-head {
