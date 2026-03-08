@@ -1212,7 +1212,7 @@ var renderScoreResults = (function () {
                     "\u00c7ok dilli ileti\u015fim ve tan\u0131t\u0131m"
                 ],
                 cta: "Program ve Turnuva",
-                stats: ["10 Adet Bran\u015f", "Her G\u00fcn 200+ Kat\u0131l\u0131mc\u0131", "8 Farkl\u0131 Okuldan Kat\u0131l\u0131mc\u0131"],
+                stats: ["10 Adet Bran\u015f", "8+ Farkl\u0131 Okullardan Kat\u0131l\u0131mc\u0131lar", "Her G\u00fcn 200+ Kat\u0131l\u0131mc\u0131"],
                 sponsorCta: "Sponsor Ol",
                 countdown: "SportFeste kalan s\u00fcre",
                 countdownLabels: ["G\u00fcn", "Saat", "Dakika", "Saniye"],
@@ -1267,7 +1267,7 @@ var renderScoreResults = (function () {
                     "Multilingual communication and promotion"
                 ],
                 cta: "Program and Tournament",
-                stats: ["10 Sports Branches", "200+ Participants Daily", "Participants from 8 Different Schools"],
+                stats: ["10 Sports Branches", "Participants from 8+ Different Schools", "200+ Participants Daily"],
                 sponsorCta: "Become a Sponsor",
                 countdown: "Time Left to Sportfest",
                 countdownLabels: ["Days", "Hours", "Minutes", "Seconds"],
@@ -1322,7 +1322,7 @@ var renderScoreResults = (function () {
                     "Wielojezyczna komunikacja i promocja"
                 ],
                 cta: "Program i Turniej",
-                stats: ["10 Dyscyplin", "200+ Uczestnikow Dziennie", "Uczestnicy z 8 Roznych Szkol"],
+                stats: ["10 Dyscyplin", "Uczestnicy z 8+ Roznych Szkol", "200+ Uczestnikow Dziennie"],
                 sponsorCta: "Zostan Sponsorem",
                 countdown: "Czas do Sportfestu",
                 countdownLabels: ["Dni", "Godz.", "Min.", "Sek."],
