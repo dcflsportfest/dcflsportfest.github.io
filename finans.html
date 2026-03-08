@@ -23,7 +23,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&family=Geist+Mono:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20260308l">
+    <link rel="stylesheet" href="style.css?v=20260309d">
 </head>
 <body class="finance-page">
     <div class="corner-logo-stack" aria-hidden="true">
@@ -136,7 +136,7 @@
 
             <article class="contact-form-card">
                 <h2>H&#305;zl&#305; Mesaj</h2>
-                <form class="contact-form" action="mailto:dcflsportfest2020@gmail.com" method="post" enctype="text/plain">
+                <form class="contact-form" data-contact-form novalidate>
                     <label for="finans-name">Ad Soyad / Firma Ad&#305;</label>
                     <input id="finans-name" name="name" type="text" placeholder="Ad Soyad / Firma Ad&#305;" required>
 
@@ -151,6 +151,7 @@
 
                     <button type="submit" class="btn btn-primary">G&#246;nder</button>
                 </form>
+                <p class="contact-form-status" data-contact-form-status aria-live="polite">Mesaj&#305;n do&#287;rudan g&#252;venli form kanal&#305;yla iletilir.</p>
             </article>
         </section>
     </main>
@@ -159,6 +160,9 @@
         <p>DCFLSPORTFEST'26</p>
         <p>Finans Sayfas&#305;</p>
     </footer>
-    <script src="script.js?v=20260308l"></script>
+    <script src="supabase-config.js?v=20260309d"></script>
+    <script src="supabase-bridge.js?v=20260309d"></script>
+    <script src="site-data.js?v=20260309d"></script>
+    <script src="script.js?v=20260309d"></script>
 </body>
 </html>
