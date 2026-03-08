@@ -555,6 +555,10 @@
     }
 
     function collectFormData() {
+        if (activeCountInput) {
+            syncLiveMatchCount(activeCountInput.value);
+        }
+
         return {
             summary: {
                 completedToday: completedInput.value.trim()
@@ -566,6 +570,14 @@
     }
 
     if (activeCountInput) {
+        activeCountInput.addEventListener("input", function () {
+            if (!canEditContent()) {
+                return;
+            }
+
+            syncLiveMatchCount(activeCountInput.value);
+        });
+
         activeCountInput.addEventListener("change", function () {
             if (!canEditContent()) {
                 setMessage("Canlı kart sayısını değiştirmek için önce yetkili admin olarak giriş yap.", "warning");
