@@ -190,6 +190,7 @@ function renderLiveScoreboard() {
     }
 
     if (!state.liveMatches.length) {
+        liveGrid.classList.add("scoreboard-grid-empty");
         liveGrid.innerHTML = [
             "<article class=\"score-card score-card-empty\">",
             "    <div class=\"score-card-head\">",
@@ -205,6 +206,7 @@ function renderLiveScoreboard() {
         return;
     }
 
+    liveGrid.classList.remove("scoreboard-grid-empty");
     liveGrid.innerHTML = state.liveMatches.map(function (match) {
         var homeValue = asNumber(match.homeScore);
         var awayValue = asNumber(match.awayScore);
@@ -2208,3 +2210,4 @@ var renderScoreResults = (function () {
     applyCommon(initialLang);
     applyPage(initialLang);
 })();
+

@@ -791,9 +791,29 @@ h1 {
     padding: 1.4rem;
 }
 
+.scoreboard-grid.scoreboard-grid-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+}
+
 .score-card-empty .score-card-head {
     width: 100%;
     justify-content: center;
+}
+
+.scoreboard-grid-empty .score-card-empty {
+    width: min(100%, 42rem);
+    min-height: auto;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+.scoreboard-grid-empty .score-card-empty .score-card-head {
+    display: none;
 }
 
 .score-card-empty-text {
