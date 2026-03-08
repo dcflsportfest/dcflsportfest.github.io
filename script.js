@@ -248,6 +248,8 @@ function renderLiveScoreboard() {
 
     var repoApi = "https://api.github.com/repos/dcflsportfest/dcflsportfest.github.io";
     var cacheKey = "dcfl_repo_push_meta_v1";
+    var cachedFallbackPushAt = null;
+    var isShowingAdminUpdate = false;
 
     function getLocale() {
         var lang = (document.documentElement.getAttribute("lang") || "tr").toLowerCase();
@@ -291,7 +293,7 @@ function renderLiveScoreboard() {
         }).format(date) + " TSİ";
     }
 
-    function applyPushTime(isoString) {
+    function applyTime(isoString) {
         var formatted = formatTime(isoString);
         if (!formatted) {
             return false;
@@ -303,12 +305,55 @@ function renderLiveScoreboard() {
         return true;
     }
 
+    function readAdminUpdatedAt(detail) {
+        if (detail && detail.updatedAt) {
+            return detail.updatedAt;
+        }
+
+        if (window.DCFLSiteData && typeof window.DCFLSiteData.getLastUpdatedAt === "function") {
+            return window.DCFLSiteData.getLastUpdatedAt();
+        }
+
+        return null;
+    }
+
+    function applyAdminUpdatedAt(detail) {
+        var updatedAt = readAdminUpdatedAt(detail);
+        if (!updatedAt) {
+            isShowingAdminUpdate = false;
+            if (cachedFallbackPushAt) {
+                applyTime(cachedFallbackPushAt);
+            }
+            return false;
+        }
+
+        var applied = applyTime(updatedAt);
+        if (applied) {
+            isShowingAdminUpdate = true;
+        }
+        return applied;
+    }
+
+    function applyFallbackPushTime(isoString) {
+        cachedFallbackPushAt = isoString || cachedFallbackPushAt;
+        if (isShowingAdminUpdate || !cachedFallbackPushAt) {
+            return false;
+        }
+        return applyTime(cachedFallbackPushAt);
+    }
+
+    window.addEventListener("dcfl-site-data-updated", function (event) {
+        applyAdminUpdatedAt(event && event.detail ? event.detail : null);
+    });
+
+    applyAdminUpdatedAt();
+
     try {
         var cachedRaw = window.localStorage.getItem(cacheKey);
         if (cachedRaw) {
             var cached = JSON.parse(cachedRaw);
             if (cached && cached.pushedAt) {
-                applyPushTime(cached.pushedAt);
+                applyFallbackPushTime(cached.pushedAt);
             }
         }
     } catch (error) {
@@ -329,7 +374,7 @@ function renderLiveScoreboard() {
             return;
         }
 
-        applyPushTime(repoData.pushed_at);
+        applyFallbackPushTime(repoData.pushed_at);
 
         try {
             window.localStorage.setItem(cacheKey, JSON.stringify({

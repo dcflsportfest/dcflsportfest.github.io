@@ -1,5 +1,6 @@
 (function (window) {
     var STORAGE_KEY = "dcfl_admin_site_data_v2";
+    var META_STORAGE_KEY = "dcfl_admin_site_meta_v1";
     var EVENT_NAME = "dcfl-site-data-updated";
 
     function clone(value) {
@@ -32,9 +33,39 @@
     function dispatchUpdate(source) {
         window.dispatchEvent(new CustomEvent(EVENT_NAME, {
             detail: {
-                source: source || "local"
+                source: source || "local",
+                updatedAt: cachedMeta.updatedAt || null
             }
         }));
+    }
+
+    function readMeta() {
+        try {
+            var raw = window.localStorage.getItem(META_STORAGE_KEY);
+            if (!raw) {
+                return {
+                    updatedAt: null
+                };
+            }
+
+            var parsed = JSON.parse(raw);
+            return {
+                updatedAt: parsed && parsed.updatedAt ? String(parsed.updatedAt) : null
+            };
+        } catch (error) {
+            return {
+                updatedAt: null
+            };
+        }
+    }
+
+    function writeMeta(updatedAt) {
+        cachedMeta.updatedAt = updatedAt ? String(updatedAt) : null;
+        try {
+            window.localStorage.setItem(META_STORAGE_KEY, JSON.stringify(cachedMeta));
+        } catch (error) {
+            // Ignore storage failures.
+        }
     }
 
     function createLiveMatchTemplate(index, seed) {
@@ -300,10 +331,12 @@
     }
 
     var cachedData = readLocalData();
+    var cachedMeta = readMeta();
 
     function writeLocalData(nextData) {
         var sanitized = sanitizeData(nextData);
         cachedData = sanitized;
+        writeMeta(new Date().toISOString());
         try {
             window.localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
         } catch (error) {
@@ -315,6 +348,7 @@
 
     function clearLocalData() {
         cachedData = getDefaultData();
+        writeMeta(null);
         try {
             window.localStorage.removeItem(STORAGE_KEY);
         } catch (error) {
@@ -345,6 +379,7 @@
                 return null;
             }
             cachedData = sanitizeData(remote.payload);
+            writeMeta(remote.updated_at || null);
             try {
                 window.localStorage.setItem(STORAGE_KEY, JSON.stringify(cachedData));
             } catch (error) {
@@ -372,6 +407,7 @@
 
         var saved = await bridge.saveSiteState(sanitized);
         cachedData = sanitizeData(saved && saved.payload ? saved.payload : sanitized);
+        writeMeta(saved && saved.updated_at ? saved.updated_at : new Date().toISOString());
         try {
             window.localStorage.setItem(STORAGE_KEY, JSON.stringify(cachedData));
         } catch (error) {
@@ -390,6 +426,9 @@
         },
         getCachedData: function () {
             return clone(cachedData);
+        },
+        getLastUpdatedAt: function () {
+            return cachedMeta.updatedAt || null;
         },
         getLocalData: function () {
             return readLocalData();
