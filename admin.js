@@ -120,7 +120,7 @@
         ].join("");
     }
 
-    function renderBranchCard(template) {
+    function renderBranchCard(template, index) {
         var qfCards = template.qf.times.map(function (time, index) {
             var pair = getPair(template, "qf", index);
             var score = template.qf.scores[index] || ["", ""];
@@ -137,7 +137,7 @@
         var finalScore = template.final.score || ["", ""];
 
         return [
-            "<article class=\"admin-branch-card\" data-branch-key=\"" + template.key + "\">",
+            "<article class=\"fixture-panel admin-branch-card" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + template.key + "\" data-branch-key=\"" + template.key + "\">",
             "    <div class=\"admin-card-head\">",
             "        <h3>" + escapeHTML(template.name.tr || template.key) + "</h3>",
             "        <p>" + escapeHTML(template.venue.tr || "") + "</p>",
@@ -160,11 +160,28 @@
         ].join("");
     }
 
+    function renderBranchTabs(templates) {
+        return templates.map(function (template, index) {
+            return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-fixture-tab=\"" + template.key + "\">" + escapeHTML(template.name.tr || template.key) + "</button>";
+        }).join("");
+    }
+
     function render() {
         completedInput.value = state.summary && state.summary.completedToday != null ? state.summary.completedToday : "9";
         publishToggle.checked = !!state.publishResults;
         liveMount.innerHTML = state.liveMatches.map(renderLiveCard).join("");
-        branchMount.innerHTML = state.branchTemplates.map(renderBranchCard).join("");
+        branchMount.innerHTML = [
+            "<div class=\"fixture-tabs admin-branch-tabs\" data-fixture-tabs>",
+            renderBranchTabs(state.branchTemplates),
+            "</div>",
+            "<div class=\"fixture-panels admin-branch-panels\">",
+            state.branchTemplates.map(renderBranchCard).join(""),
+            "</div>"
+        ].join("");
+
+        if (typeof initializeFixtureTabGroups === "function") {
+            initializeFixtureTabGroups(branchMount);
+        }
     }
 
     function setRemoteStatus(configured, session) {

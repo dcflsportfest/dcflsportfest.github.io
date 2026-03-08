@@ -3375,6 +3375,7 @@ h1 {
     margin-top: 0.95rem;
     display: grid;
     gap: 0.9rem;
+    min-width: 0;
 }
 
 .admin-live-grid {
@@ -3411,6 +3412,21 @@ h1 {
 
 .admin-stage-group + .admin-stage-group {
     margin-top: 1rem;
+}
+
+.admin-branch-tabs {
+    margin-bottom: 0.15rem;
+}
+
+.admin-branch-panels {
+    margin-top: 0;
+}
+
+.admin-branch-card.fixture-panel {
+    border-color: rgba(168, 197, 245, 0.18);
+    border-radius: 18px;
+    padding: 1rem;
+    background: linear-gradient(160deg, rgba(10, 22, 46, 0.88), rgba(14, 31, 63, 0.8));
 }
 
 .admin-match-grid {
