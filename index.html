@@ -143,11 +143,11 @@
             <div class="scoreboard-summary">
                 <article class="score-summary-card">
                     <p class="score-summary-label" data-score-summary-label>Aktif kar&#351;&#305;la&#351;ma</p>
-                    <strong class="score-summary-value">4</strong>
+                    <strong class="score-summary-value" data-score-summary-active>4</strong>
                 </article>
                 <article class="score-summary-card">
                     <p class="score-summary-label" data-score-summary-label>Bug&#252;n tamamlanan ma&#231;</p>
-                    <strong class="score-summary-value">9</strong>
+                    <strong class="score-summary-value" data-score-summary-completed>9</strong>
                 </article>
                 <article class="score-summary-card">
                     <p class="score-summary-label" data-score-summary-label>Son g&#252;ncelleme</p>
@@ -156,7 +156,7 @@
             </div>
 
             <div class="scoreboard-view active" id="scoreboard-live-panel" data-score-panel="live">
-                <div class="scoreboard-grid">
+                <div class="scoreboard-grid" data-live-score-grid>
                     <article class="score-card score-card-live">
                         <div class="score-card-head">
                             <p class="score-card-branch" data-score-live-branch>Voleybol</p>
@@ -536,6 +536,9 @@
             });
         })();
     </script>
-    <script src="script.js?v=20260308o"></script>
+    <script src="supabase-config.js?v=20260308r"></script>
+    <script src="supabase-bridge.js?v=20260308r"></script>
+    <script src="site-data.js?v=20260308r"></script>
+    <script src="script.js?v=20260308r"></script>
 </body>
 </html>

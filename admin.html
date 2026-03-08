@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | DCFLSPORTFEST'26</title>
+    <meta name="description" content="DCFLSPORTFEST'26 yerel admin paneli: canli skorlar ve turnuva sonuclari yonetimi.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0a1731">
+    <link rel="icon" type="image/png" href="assets/opening-bird-only.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&family=Geist+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20260308q">
+</head>
+<body>
+    <header class="hero">
+        <nav class="top-nav">
+            <a href="index.html" class="brand">DCFLSPORTFEST'26</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-links" data-nav-toggle>Men&#252;</button>
+            <div class="nav-actions" id="site-nav-links" data-nav-links>
+                <a href="index.html" class="nav-link">Ana Sayfa</a>
+                <a href="kurumsal.html" class="nav-link">Amac&#305;m&#305;z</a>
+                <a href="program.html" class="nav-link">Program &amp; Turnuva</a>
+                <a href="finans.html" class="nav-link">Finans</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="arsiv.html" class="nav-link">Ar&#351;iv</a>
+                <a href="iletisim.html" class="nav-link">&#304;leti&#351;im</a>
+                <a href="hizmetler.html" class="nav-link">S&#305;k&#231;a Sorulanlar</a>
+            </div>
+        </nav>
+
+        <div class="page-shell admin-page-shell" data-admin-page>
+            <p class="eyebrow">ADMIN PANEL</p>
+            <h1>Skor ve Sonu&#231; Y&#246;netimi</h1>
+            <p class="hero-text">Bu panel ayni tarayicida canli skor ve turnuva sonuc verisini yonetir. GitHub Pages uzerinde gercek, guvenli admin icin backend gerekir.</p>
+        </div>
+    </header>
+
+    <main class="admin-main" data-admin-page>
+        <section class="panel admin-remote-panel">
+            <div class="section-head">
+                <p class="section-kicker">SUPABASE</p>
+                <h2>Gercek Online Admin</h2>
+            </div>
+            <div class="admin-grid admin-grid-compact">
+                <div class="admin-status-card">
+                    <p class="admin-status-label">Baglanti Durumu</p>
+                    <strong data-admin-connection-status>Baglanti kontrol ediliyor</strong>
+                    <p class="admin-status-note" data-admin-connection-note>Supabase ayarlari yoksa panel yerel modda calisir.</p>
+                </div>
+                <div class="admin-status-card">
+                    <p class="admin-status-label">Admin Oturumu</p>
+                    <strong data-admin-auth-status>Kapali</strong>
+                    <p class="admin-status-note" data-admin-auth-note>Kaydet butonu uzak veritabanina yazmak icin oturum ister.</p>
+                </div>
+            </div>
+            <form class="admin-login-form" data-admin-login-form>
+                <div class="admin-grid admin-grid-compact">
+                    <label class="admin-field">
+                        <span>E-posta</span>
+                        <input type="email" placeholder="admin@mail.com" data-admin-email>
+                    </label>
+                    <label class="admin-field">
+                        <span>Sifre</span>
+                        <input type="password" placeholder="********" data-admin-password>
+                    </label>
+                </div>
+                <div class="admin-toolbar">
+                    <button type="submit" class="btn btn-primary" data-admin-login>Giris Yap</button>
+                    <button type="button" class="btn btn-ghost" data-admin-logout>Cikis Yap</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel admin-note-panel">
+            <div class="section-head">
+                <p class="section-kicker">ONEMLI</p>
+                <h2>Bu surum yerel calisir</h2>
+            </div>
+            <p class="section-text">Buradaki kaydet islemi veriyi sadece bu tarayicinin localStorage alanina yazar. Tum ziyaretcilerin ayni veriyi gormesi icin backend veya CMS gerekir.</p>
+            <p class="section-text">Yine de bu panel ile veri duzenini oturtabilir, JSON disa aktarabilir ve daha sonra gercek sisteme tasiyabiliriz.</p>
+        </section>
+
+        <section class="panel admin-toolbar-panel">
+            <div class="section-head">
+                <p class="section-kicker">YONETIM</p>
+                <h2>Hizli Islemler</h2>
+            </div>
+            <div class="admin-toolbar">
+                <button type="button" class="btn btn-primary" data-admin-save>Kaydet</button>
+                <button type="button" class="btn btn-ghost" data-admin-reset>Kayitli Veriyi Yukle</button>
+                <button type="button" class="btn btn-ghost" data-admin-defaults>Varsayilana Don</button>
+                <button type="button" class="btn btn-ghost" data-admin-export>JSON Disa Aktar</button>
+                <button type="button" class="btn btn-ghost" data-admin-import-trigger>JSON Ice Aktar</button>
+                <a href="index.html" class="btn btn-ghost">Ana Sayfayi Ac</a>
+            </div>
+            <input type="file" accept="application/json" hidden data-admin-import-input>
+            <p class="admin-message" data-admin-message>Hazir.</p>
+        </section>
+
+        <section class="panel admin-summary-panel">
+            <div class="section-head">
+                <p class="section-kicker">OZET</p>
+                <h2>Skor Merkezi Kartlari</h2>
+            </div>
+            <div class="admin-grid admin-grid-compact">
+                <label class="admin-field">
+                    <span>Bugun tamamlanan mac</span>
+                    <input type="text" value="9" data-admin-completed-today>
+                </label>
+                <label class="admin-toggle">
+                    <span>Sonuclari yayina ac</span>
+                    <input type="checkbox" data-admin-publish-results>
+                </label>
+            </div>
+        </section>
+
+        <section class="panel admin-live-panel">
+            <div class="section-head">
+                <p class="section-kicker">CANLI SKORLAR</p>
+                <h2>Canli Mac Kartlari</h2>
+            </div>
+            <div class="admin-live-grid" data-admin-live-matches></div>
+        </section>
+
+        <section class="panel admin-results-panel">
+            <div class="section-head">
+                <p class="section-kicker">TURNUVA SONUCLARI</p>
+                <h2>Brans Bazli Mac Girisi</h2>
+            </div>
+            <div class="admin-branch-grid" data-admin-branches></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>DCFLSPORTFEST'26</p>
+        <p>Admin Panel</p>
+    </footer>
+
+    <script src="supabase-config.js?v=20260308r"></script>
+    <script src="supabase-bridge.js?v=20260308r"></script>
+    <script src="site-data.js?v=20260308r"></script>
+    <script src="script.js?v=20260308r"></script>
+    <script src="admin.js?v=20260308r"></script>
+</body>
+</html>

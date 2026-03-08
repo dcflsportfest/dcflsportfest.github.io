@@ -150,6 +150,91 @@
     });
 })();
 
+function renderLiveScoreboard() {
+    var liveGrid = document.querySelector("[data-live-score-grid]");
+    if (!liveGrid) {
+        return;
+    }
+
+    var state = window.DCFLSiteData && typeof window.DCFLSiteData.getData === "function"
+        ? window.DCFLSiteData.getData()
+        : null;
+    if (!state || !Array.isArray(state.liveMatches) || !state.liveMatches.length) {
+        return;
+    }
+
+    function escapeHTML(value) {
+        return String(value == null ? "" : value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    function asNumber(value) {
+        var normalized = String(value == null ? "" : value).replace(",", ".");
+        var number = Number(normalized);
+        return Number.isFinite(number) ? number : null;
+    }
+
+    liveGrid.innerHTML = state.liveMatches.map(function (match) {
+        var homeValue = asNumber(match.homeScore);
+        var awayValue = asNumber(match.awayScore);
+        var homeLeading = homeValue != null && awayValue != null && homeValue > awayValue;
+        var awayLeading = homeValue != null && awayValue != null && awayValue > homeValue;
+
+        return [
+            "<article class=\"score-card score-card-live\">",
+            "    <div class=\"score-card-head\">",
+            "        <p class=\"score-card-branch\">" + escapeHTML(match.branch) + "</p>",
+            "        <span class=\"score-card-badge score-card-badge-live\">" + escapeHTML(match.status) + "</span>",
+            "    </div>",
+            "    <div class=\"score-card-teams\">",
+            "        <div class=\"score-card-team" + (homeLeading ? " is-leading" : "") + "\">",
+            "            <strong>" + escapeHTML(match.home) + "</strong>",
+            "            <span class=\"score-card-score\">" + escapeHTML(match.homeScore) + "</span>",
+            "        </div>",
+            "        <div class=\"score-card-team" + (awayLeading ? " is-leading" : "") + "\">",
+            "            <strong>" + escapeHTML(match.away) + "</strong>",
+            "            <span class=\"score-card-score\">" + escapeHTML(match.awayScore) + "</span>",
+            "        </div>",
+            "    </div>",
+            "    <p class=\"score-card-meta\">" + escapeHTML(match.meta) + "</p>",
+            "</article>"
+        ].join("");
+    }).join("");
+
+    var activeSummary = document.querySelector("[data-score-summary-active]");
+    if (activeSummary) {
+        activeSummary.textContent = String(state.liveMatches.length);
+    }
+
+    var completedSummary = document.querySelector("[data-score-summary-completed]");
+    if (completedSummary) {
+        completedSummary.textContent = String((state.summary && state.summary.completedToday) || "0");
+    }
+}
+
+(function () {
+    renderLiveScoreboard();
+})();
+
+(function () {
+    if (!window.DCFLSiteData || typeof window.DCFLSiteData.loadData !== "function") {
+        return;
+    }
+
+    window.DCFLSiteData.loadData();
+
+    window.addEventListener("dcfl-site-data-updated", function () {
+        renderLiveScoreboard();
+        if (typeof renderScoreResults === "function") {
+            renderScoreResults((document.documentElement.getAttribute("lang") || "tr").toLowerCase());
+        }
+    });
+})();
+
 (function () {
     var output = document.querySelector("[data-last-push-time]");
     if (!output) {
@@ -534,7 +619,16 @@ var renderScoreResults = (function () {
         }
     ];
 
-    var publishResults = false;
+    function getScoreData() {
+        if (window.DCFLSiteData && typeof window.DCFLSiteData.getData === "function") {
+            return window.DCFLSiteData.getData();
+        }
+
+        return {
+            publishResults: false,
+            branchTemplates: branchTemplates
+        };
+    }
 
     function pickText(value, lang) {
         if (value && typeof value === "object") {
@@ -566,7 +660,7 @@ var renderScoreResults = (function () {
         return ["", ""];
     }
 
-    function hasPlayableScore(score) {
+    function hasPlayableScore(score, publishResults) {
         return publishResults && Array.isArray(score) && score.length === 2 && score[0] != null && score[1] != null;
     }
 
@@ -581,8 +675,8 @@ var renderScoreResults = (function () {
         return Number(value);
     }
 
-    function getWinnerKey(score, lowWins) {
-        if (!hasPlayableScore(score)) {
+    function getWinnerKey(score, lowWins, publishResults) {
+        if (!hasPlayableScore(score, publishResults)) {
             return null;
         }
         var homeValue = scoreToNumber(score[0]);
@@ -601,10 +695,10 @@ var renderScoreResults = (function () {
         return copy.rounds[stageKey] + " " + String(index + 1);
     }
 
-    function createMatch(day, template, stageKey, index, time, home, away, score, lang) {
+    function createMatch(day, template, stageKey, index, time, home, away, score, lang, publishResults) {
         var copy = uiCopy[lang] || uiCopy.tr;
-        var hasScore = hasPlayableScore(score);
-        var winner = hasScore ? getWinnerKey(score, !!template.lowWins) : null;
+        var hasScore = hasPlayableScore(score, publishResults);
+        var winner = hasScore ? getWinnerKey(score, !!template.lowWins, publishResults) : null;
         var normalizedScore = hasScore ? score : ["-", "-"];
         return {
             stage: buildStageLabel(stageKey, index, lang),
@@ -628,9 +722,9 @@ var renderScoreResults = (function () {
         return match.winner === "home" ? match.home : match.away;
     }
 
-    function buildMatchesForBranch(template, day, lang) {
+    function buildMatchesForBranch(template, day, lang, publishResults) {
         var qfMatches = template.qf.pairs.map(function (pair, index) {
-            return createMatch(day, template, "qf", index, template.qf.times[index], pair[0], pair[1], template.qf.scores[index], lang);
+            return createMatch(day, template, "qf", index, template.qf.times[index], pair[0], pair[1], template.qf.scores[index], lang, publishResults);
         });
 
         if (day.stage === "qf") {
@@ -650,7 +744,7 @@ var renderScoreResults = (function () {
         }
 
         var sfMatches = sfPairs.map(function (pair, index) {
-            return createMatch(day, template, "sf", index, template.sf.times[index], pair[0], pair[1], template.sf.scores[index], lang);
+            return createMatch(day, template, "sf", index, template.sf.times[index], pair[0], pair[1], template.sf.scores[index], lang, publishResults);
         });
 
         if (day.stage === "sf") {
@@ -663,7 +757,7 @@ var renderScoreResults = (function () {
         }
 
         return [
-            createMatch(day, template, "final", 0, template.final.time, finalPair[0], finalPair[1], template.final.score, lang)
+            createMatch(day, template, "final", 0, template.final.time, finalPair[0], finalPair[1], template.final.score, lang, publishResults)
         ];
     }
 
@@ -692,13 +786,13 @@ var renderScoreResults = (function () {
         ].join("");
     }
 
-    function renderDayPanel(day, lang, dayUi, isActive) {
-        var branchTabs = branchTemplates.map(function (branch, index) {
+    function renderDayPanel(day, lang, dayUi, isActive, templates, publishResults) {
+        var branchTabs = templates.map(function (branch, index) {
             return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-fixture-tab=\"" + branch.key + "\">" + pickText(branch.name, lang) + "</button>";
         }).join("");
 
-        var branchPanels = branchTemplates.map(function (branch, index) {
-            var matches = buildMatchesForBranch(branch, day, lang);
+        var branchPanels = templates.map(function (branch, index) {
+            var matches = buildMatchesForBranch(branch, day, lang, publishResults);
             return [
                 "<article class=\"fixture-panel score-results-branch-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + branch.key + "\">",
                 "    <h3>" + dayUi.resultsTitle(pickText(branch.name, lang)) + "</h3>",
@@ -745,6 +839,9 @@ var renderScoreResults = (function () {
     return function (lang) {
         var currentLang = uiCopy[lang] ? lang : "tr";
         var dayUi = uiCopy[currentLang];
+        var state = getScoreData();
+        var templates = Array.isArray(state.branchTemplates) && state.branchTemplates.length ? state.branchTemplates : branchTemplates;
+        var publishResults = !!state.publishResults;
         var shells = document.querySelectorAll("[data-score-results]");
         if (!shells.length) {
             return;
@@ -759,7 +856,7 @@ var renderScoreResults = (function () {
                 "</div>",
                 "<div class=\"score-results-day-panels\">",
                 days.map(function (day, index) {
-                    return renderDayPanel(day, currentLang, dayUi, index === 0);
+                    return renderDayPanel(day, currentLang, dayUi, index === 0, templates, publishResults);
                 }).join(""),
                 "</div>"
             ].join("");
@@ -1163,6 +1260,7 @@ var renderScoreResults = (function () {
         setList(".countdown-label", copy.countdownLabels);
         setAttr("[data-countdown]", "data-ended-text", copy.ended);
         applyScoreboard(copy);
+        renderLiveScoreboard();
         renderScoreResults(lang);
         setList(".home-branch-list li", copy.branches);
         setText(".contact-info h2", copy.contactTitle);
