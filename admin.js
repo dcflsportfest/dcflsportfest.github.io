@@ -31,6 +31,7 @@
     var adminAccessTitle = document.querySelector("[data-admin-access-title]");
     var adminAccessNote = document.querySelector("[data-admin-access-note]");
     var adminUsersMount = document.querySelector("[data-admin-users]");
+    var submissionsMount = document.querySelector("[data-admin-submissions]");
     var defaultTemplates = api.getDefaultData().branchTemplates.reduce(function (map, template) {
         map[template.key] = template;
         return map;
@@ -345,6 +346,75 @@
         }).join("") + "</div>";
     }
 
+    function formatSubmissionTime(value) {
+        var date = new Date(value);
+        if (Number.isNaN(date.getTime())) {
+            return "-";
+        }
+
+        return new Intl.DateTimeFormat("tr-TR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+            timeZone: "Europe/Istanbul"
+        }).format(date);
+    }
+
+    function renderContactSubmissions(items) {
+        if (!submissionsMount) {
+            return;
+        }
+
+        if (!accessState.configured) {
+            submissionsMount.innerHTML = [
+                "<article class=\"admin-submission-card admin-submission-card-empty\">",
+                "    <strong>Supabase devre dışı</strong>",
+                "    <p>İletişim mesajları yalnızca online modda toplanır.</p>",
+                "</article>"
+            ].join("");
+            return;
+        }
+
+        if (!accessState.session || !accessState.isAdmin) {
+            submissionsMount.innerHTML = [
+                "<article class=\"admin-submission-card admin-submission-card-empty\">",
+                "    <strong>Yetkili giriş gerekli</strong>",
+                "    <p>İletişim mesajlarını görmek için admin olarak oturum açmalısın.</p>",
+                "</article>"
+            ].join("");
+            return;
+        }
+
+        if (!Array.isArray(items) || !items.length) {
+            submissionsMount.innerHTML = [
+                "<article class=\"admin-submission-card admin-submission-card-empty\">",
+                "    <strong>Henüz mesaj yok</strong>",
+                "    <p>Yeni form gönderimleri burada listelenecek.</p>",
+                "</article>"
+            ].join("");
+            return;
+        }
+
+        submissionsMount.innerHTML = items.map(function (item) {
+            return [
+                "<article class=\"admin-submission-card\">",
+                "    <div class=\"admin-card-head\">",
+                "        <h3>" + escapeHTML(item.name || "-") + "</h3>",
+                "        <p>" + escapeHTML(formatSubmissionTime(item.created_at)) + "</p>",
+                "    </div>",
+                "    <div class=\"admin-submission-meta\">",
+                "        <p><strong>E-posta:</strong> " + escapeHTML(item.email || "-") + "</p>",
+                "        <p><strong>Konu:</strong> " + escapeHTML(item.topic || "-") + "</p>",
+                "    </div>",
+                "    <div class=\"admin-submission-message\">" + escapeHTML(item.message || "-").replace(/\\n/g, "<br>") + "</div>",
+                "</article>"
+            ].join("");
+        }).join("");
+    }
+
     function setRemoteStatus(configured, session, isAdmin) {
         if (connectionStatus) {
             connectionStatus.textContent = configured ? "Supabase Haz\u0131r" : "Yerel Mod";
@@ -407,6 +477,31 @@
             isAdmin: isAdmin,
             users: users
         };
+    }
+
+    async function refreshContactSubmissions() {
+        if (!submissionsMount) {
+            return [];
+        }
+
+        if (!(accessState.configured && accessState.session && accessState.isAdmin && bridge && bridge.fetchContactSubmissions)) {
+            renderContactSubmissions([]);
+            return [];
+        }
+
+        try {
+            var submissions = await bridge.fetchContactSubmissions();
+            renderContactSubmissions(submissions);
+            return submissions;
+        } catch (error) {
+            submissionsMount.innerHTML = [
+                "<article class=\"admin-submission-card admin-submission-card-empty\">",
+                "    <strong>Mesajlar yüklenemedi</strong>",
+                "    <p>" + escapeHTML(error && error.message ? error.message : "Bilinmeyen hata") + "</p>",
+                "</article>"
+            ].join("");
+            return [];
+        }
     }
 
     function collectLiveMatches() {
@@ -579,6 +674,7 @@
                 passwordInput.value = "";
                 await refreshRemoteStatus();
                 await loadBestAvailableData();
+                await refreshContactSubmissions();
                 setMessage("Admin oturumu a\u00e7\u0131ld\u0131.", "success");
             } catch (error) {
                 setMessage("Giri\u015f ba\u015far\u0131s\u0131z: " + (error && error.message ? error.message : "Bilinmeyen hata"), "error");
@@ -595,6 +691,7 @@
             try {
                 await bridge.signOut();
                 await refreshRemoteStatus();
+                await refreshContactSubmissions();
                 setMessage("Admin oturumu kapat\u0131ld\u0131.", "info");
             } catch (error) {
                 setMessage("\u00c7\u0131k\u0131\u015f ba\u015far\u0131s\u0131z: " + (error && error.message ? error.message : "Bilinmeyen hata"), "error");
@@ -604,6 +701,7 @@
 
     window.addEventListener("dcfl-auth-changed", function () {
         refreshRemoteStatus();
+        refreshContactSubmissions();
     });
 
     (async function init() {
@@ -611,6 +709,7 @@
         applyEditorPermissions();
         await refreshRemoteStatus();
         await loadBestAvailableData();
+        await refreshContactSubmissions();
         setMessage("Panel haz\u0131r.", "info");
     })();
 })();

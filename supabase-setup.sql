@@ -10,6 +10,15 @@ create table if not exists public.admin_users (
     created_at timestamptz not null default timezone('utc', now())
 );
 
+create table if not exists public.contact_submissions (
+    id bigint generated always as identity primary key,
+    name text not null,
+    email text not null,
+    topic text not null,
+    message text not null,
+    created_at timestamptz not null default timezone('utc', now())
+);
+
 alter table public.admin_users
     drop column if exists can_manage_admins;
 
@@ -39,6 +48,7 @@ $$;
 
 alter table public.site_state enable row level security;
 alter table public.admin_users enable row level security;
+alter table public.contact_submissions enable row level security;
 
 grant execute on function public.normalized_auth_email() to anon, authenticated;
 grant execute on function public.is_admin() to anon, authenticated;
@@ -85,3 +95,22 @@ using (public.is_admin());
 
 drop policy if exists "Bootstrap or admin insert admin users" on public.admin_users;
 drop policy if exists "Admin delete admin users" on public.admin_users;
+
+drop policy if exists "Public insert contact submissions" on public.contact_submissions;
+create policy "Public insert contact submissions"
+on public.contact_submissions
+for insert
+to anon, authenticated
+with check (
+    length(trim(name)) > 1
+    and position('@' in email) > 1
+    and length(trim(topic)) > 1
+    and length(trim(message)) > 5
+);
+
+drop policy if exists "Admin read contact submissions" on public.contact_submissions;
+create policy "Admin read contact submissions"
+on public.contact_submissions
+for select
+to authenticated
+using (public.is_admin());

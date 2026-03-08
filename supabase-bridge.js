@@ -159,6 +159,49 @@
         return Array.isArray(result.data) ? result.data : [];
     }
 
+    async function submitContactSubmission(payload) {
+        var client = await getClient();
+        if (!client) {
+            throw new Error("Supabase config missing");
+        }
+
+        var result = await client
+            .from(config.contactTable || "contact_submissions")
+            .insert({
+                name: String(payload && payload.name ? payload.name : "").trim(),
+                email: String(payload && payload.email ? payload.email : "").trim(),
+                topic: String(payload && payload.topic ? payload.topic : "").trim(),
+                message: String(payload && payload.message ? payload.message : "").trim()
+            })
+            .select("id, name, email, topic, message, created_at")
+            .single();
+
+        if (result.error) {
+            throw result.error;
+        }
+
+        return result.data;
+    }
+
+    async function fetchContactSubmissions() {
+        var client = await getClient();
+        if (!client) {
+            return [];
+        }
+
+        var result = await client
+            .from(config.contactTable || "contact_submissions")
+            .select("id, name, email, topic, message, created_at")
+            .order("created_at", { ascending: false })
+            .limit(100);
+
+        if (result.error) {
+            throw result.error;
+        }
+
+        return Array.isArray(result.data) ? result.data : [];
+    }
+
     window.DCFLSupabaseBridge = {
         isConfigured: function () {
             return isConfigured;
@@ -171,6 +214,8 @@
         signIn: signIn,
         signOut: signOut,
         fetchAdminUsers: fetchAdminUsers,
+        submitContactSubmission: submitContactSubmission,
+        fetchContactSubmissions: fetchContactSubmissions,
         fetchSiteState: fetchSiteState,
         saveSiteState: saveSiteState
     };

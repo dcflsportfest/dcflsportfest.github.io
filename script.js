@@ -226,6 +226,55 @@ function renderLiveScoreboard() {
 })();
 
 (function () {
+    var form = document.querySelector("[data-contact-form]");
+    var status = document.querySelector("[data-contact-form-status]");
+    var bridge = window.DCFLSupabaseBridge || null;
+
+    if (!form) {
+        return;
+    }
+
+    function setStatus(text, tone) {
+        if (!status) {
+            return;
+        }
+        status.textContent = text;
+        status.setAttribute("data-tone", tone || "info");
+    }
+
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        if (!bridge || !bridge.isConfigured || !bridge.isConfigured() || !bridge.submitContactSubmission) {
+            setStatus("Form servisi ge\u00e7ici olarak haz\u0131r de\u011fil. L\u00fctfen do\u011frudan dcflsportfest2020@gmail.com adresine yaz.", "error");
+            return;
+        }
+
+        var formData = new FormData(form);
+        var payload = {
+            name: String(formData.get("name") || "").trim(),
+            email: String(formData.get("email") || "").trim(),
+            topic: String(formData.get("topic") || "").trim(),
+            message: String(formData.get("message") || "").trim()
+        };
+
+        if (!payload.name || !payload.email || !payload.topic || !payload.message) {
+            setStatus("L\u00fctfen t\u00fcm alanlar\u0131 doldur.", "warning");
+            return;
+        }
+
+        try {
+            setStatus("Mesaj g\u00f6nderiliyor...", "info");
+            await bridge.submitContactSubmission(payload);
+            form.reset();
+            setStatus("Mesaj\u0131n g\u00f6nderildi. En k\u0131sa s\u00fcrede d\u00f6n\u00fc\u015f sa\u011flanacak.", "success");
+        } catch (error) {
+            setStatus("Mesaj g\u00f6nderilemedi: " + (error && error.message ? error.message : "Bilinmeyen hata"), "error");
+        }
+    });
+})();
+
+(function () {
     if (!window.DCFLSiteData || typeof window.DCFLSiteData.loadData !== "function") {
         return;
     }
