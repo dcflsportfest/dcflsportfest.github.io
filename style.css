@@ -783,6 +783,24 @@ h1 {
     line-height: 1.5;
 }
 
+.score-card-empty {
+    display: grid;
+    place-items: center;
+    min-height: 220px;
+    text-align: center;
+}
+
+.score-card-empty .score-card-head {
+    width: 100%;
+    justify-content: center;
+}
+
+.score-card-empty-text {
+    max-width: 24rem;
+    font-size: 1rem;
+    color: #eef4ff;
+}
+
 .score-results-shell {
     display: grid;
     gap: 0.9rem;

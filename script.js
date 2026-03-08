@@ -189,6 +189,22 @@ function renderLiveScoreboard() {
         return Number.isFinite(number) ? number : null;
     }
 
+    if (!state.liveMatches.length) {
+        liveGrid.innerHTML = [
+            "<article class=\"score-card score-card-empty\">",
+            "    <div class=\"score-card-head\">",
+            "        <p class=\"score-card-branch\">Canlı Skor</p>",
+            "    </div>",
+            "    <p class=\"score-card-meta score-card-empty-text\">Şu an aktif bir karşılaşma yok.</p>",
+            "</article>"
+        ].join("");
+
+        if (activeSummary) {
+            activeSummary.textContent = "0";
+        }
+        return;
+    }
+
     liveGrid.innerHTML = state.liveMatches.map(function (match) {
         var homeValue = asNumber(match.homeScore);
         var awayValue = asNumber(match.awayScore);
