@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
     var page = document.querySelector("[data-admin-page]");
     if (!page || !window.DCFLSiteData) {
         return;
@@ -88,16 +88,16 @@
         return [
             "<article class=\"admin-card\" data-admin-live-card data-live-index=\"" + index + "\">",
             "    <div class=\"admin-card-head\">",
-            "        <h3>Canli Kart " + String(index + 1) + "</h3>",
+            "        <h3>Canl\u0131 Kart " + String(index + 1) + "</h3>",
             "    </div>",
             "    <div class=\"admin-grid\">",
-            renderField("Brans", "branch", match.branch),
+            renderField("Bran\u015f", "branch", match.branch),
             renderField("Durum", "status", match.status),
-            renderField("Takim 1", "home", match.home),
-            renderField("Takim 1 Skor", "homeScore", match.homeScore),
-            renderField("Takim 2", "away", match.away),
-            renderField("Takim 2 Skor", "awayScore", match.awayScore),
-            renderField("Alt Aciklama", "meta", match.meta),
+            renderField("Tak\u0131m 1", "home", match.home),
+            renderField("Tak\u0131m 1 Skor", "homeScore", match.homeScore),
+            renderField("Tak\u0131m 2", "away", match.away),
+            renderField("Tak\u0131m 2 Skor", "awayScore", match.awayScore),
+            renderField("Alt A\u00e7\u0131klama", "meta", match.meta),
             "</div>",
             "</article>"
         ].join("");
@@ -124,13 +124,13 @@
         var qfCards = template.qf.times.map(function (time, index) {
             var pair = getPair(template, "qf", index);
             var score = template.qf.scores[index] || ["", ""];
-            return renderMatchCard("Ceyrek Final " + String(index + 1), "qf", index, time, pair[0], pair[1], score[0], score[1]);
+            return renderMatchCard("\u00c7eyrek Final " + String(index + 1), "qf", index, time, pair[0], pair[1], score[0], score[1]);
         }).join("");
 
         var sfCards = template.sf.times.map(function (time, index) {
             var pair = getPair(template, "sf", index);
             var score = template.sf.scores[index] || ["", ""];
-            return renderMatchCard("Yari Final " + String(index + 1), "sf", index, time, pair[0], pair[1], score[0], score[1]);
+            return renderMatchCard("Yar\u0131 Final " + String(index + 1), "sf", index, time, pair[0], pair[1], score[0], score[1]);
         }).join("");
 
         var finalPair = getPair(template, "final", 0);
@@ -143,11 +143,11 @@
             "        <p>" + escapeHTML(template.venue.tr || "") + "</p>",
             "    </div>",
             "    <div class=\"admin-stage-group\">",
-            "        <h4>Ceyrek Final</h4>",
+            "        <h4>\u00c7eyrek Final</h4>",
             "        <div class=\"admin-match-grid\">" + qfCards + "</div>",
             "    </div>",
             "    <div class=\"admin-stage-group\">",
-            "        <h4>Yari Final</h4>",
+            "        <h4>Yar\u0131 Final</h4>",
             "        <div class=\"admin-match-grid\">" + sfCards + "</div>",
             "    </div>",
             "    <div class=\"admin-stage-group\">",
@@ -186,20 +186,20 @@
 
     function setRemoteStatus(configured, session) {
         if (connectionStatus) {
-            connectionStatus.textContent = configured ? "Supabase Hazir" : "Yerel Mod";
+            connectionStatus.textContent = configured ? "Supabase Haz\u0131r" : "Yerel Mod";
         }
         if (connectionNote) {
             connectionNote.textContent = configured
-                ? "Canli veri Supabase uzerinden okunabilir ve yazilabilir."
-                : "supabase-config.js bos. Panel sadece bu tarayicida kayit yapar.";
+                ? "Canl\u0131 veri Supabase \u00fczerinden okunabilir ve yaz\u0131labilir."
+                : "supabase-config.js bo\u015f. Panel sadece bu taray\u0131c\u0131da kay\u0131t yapar.";
         }
         if (authStatus) {
-            authStatus.textContent = session && session.user ? "Acik" : "Kapali";
+            authStatus.textContent = session && session.user ? "A\u00e7\u0131k" : "Kapal\u0131";
         }
         if (authNote) {
             authNote.textContent = session && session.user
-                ? (session.user.email || "Admin kullanicisi")
-                : "Uzak kayit icin admin girisi gerekli.";
+                ? (session.user.email || "Admin kullan\u0131c\u0131s\u0131")
+                : "Uzak kay\u0131t i\u00e7in admin giri\u015fi gerekli.";
         }
         if (loginButton) {
             loginButton.disabled = !configured;
@@ -291,27 +291,27 @@
             var remoteStatus = await refreshRemoteStatus();
             if (remoteStatus.configured && remoteStatus.session && remoteStatus.session.user) {
                 state = await api.saveDataRemote(nextState);
-                setMessage("Supabase uzerine kaydedildi. Herkes yeni veriyi gorebilir.", "success");
+                setMessage("Supabase \u00fczerine kaydedildi. Herkes yeni veriyi g\u00f6rebilir.", "success");
             } else {
                 state = api.saveData(nextState);
-                setMessage("Yerel kaydedildi. Online yayin icin Supabase girisi gerekiyor.", "warning");
+                setMessage("Yerel kaydedildi. Online yay\u0131n i\u00e7in Supabase giri\u015fi gerekiyor.", "warning");
             }
             render();
         } catch (error) {
-            setMessage("Kayit basarisiz: " + (error && error.message ? error.message : "Bilinmeyen hata"), "error");
+            setMessage("Kay\u0131t ba\u015far\u0131s\u0131z: " + (error && error.message ? error.message : "Bilinmeyen hata"), "error");
         }
     });
 
     resetButton.addEventListener("click", async function () {
         await loadBestAvailableData();
-        setMessage("Veri yeniden yüklendi.", "info");
+        setMessage("Veri yeniden y\u00fcklendi.", "info");
     });
 
     defaultsButton.addEventListener("click", function () {
         api.clearData();
         state = api.getDefaultData();
         render();
-        setMessage("Varsayilan veri geri yuklendi. Istersen sonra yeniden kaydet.", "warning");
+        setMessage("Varsay\u0131lan veri geri y\u00fcklendi. \u0130stersen sonra yeniden kaydet.", "warning");
     });
 
     exportButton.addEventListener("click", function () {
@@ -324,7 +324,7 @@
         link.click();
         link.remove();
         URL.revokeObjectURL(url);
-        setMessage("JSON disa aktarildi.", "success");
+        setMessage("JSON d\u0131\u015fa aktar\u0131ld\u0131.", "success");
     });
 
     importTrigger.addEventListener("click", function () {
@@ -343,9 +343,9 @@
                 var imported = JSON.parse(String(reader.result || "{}"));
                 state = api.saveData(imported);
                 render();
-                setMessage("JSON ice aktarildi. Kaydet dersen aktif veri olur.", "success");
+                setMessage("JSON i\u00e7e aktar\u0131ld\u0131. Kaydet dersen aktif veri olur.", "success");
             } catch (error) {
-                setMessage("JSON okunamadi. Dosya formati hatali.", "error");
+                setMessage("JSON okunamad\u0131. Dosya format\u0131 hatal\u0131.", "error");
             }
         };
         reader.readAsText(file);
@@ -356,7 +356,7 @@
             event.preventDefault();
 
             if (!bridge || !bridge.isConfigured || !bridge.isConfigured()) {
-                setMessage("Supabase ayarlari eksik. Once supabase-config.js doldurulmalı.", "error");
+                setMessage("Supabase ayarlar\u0131 eksik. \u00d6nce supabase-config.js doldurulmal\u0131.", "error");
                 return;
             }
 
@@ -365,9 +365,9 @@
                 passwordInput.value = "";
                 await refreshRemoteStatus();
                 await loadBestAvailableData();
-                setMessage("Admin oturumu acildi.", "success");
+                setMessage("Admin oturumu a\u00e7\u0131ld\u0131.", "success");
             } catch (error) {
-                setMessage("Giris basarisiz: " + (error && error.message ? error.message : "Bilinmeyen hata"), "error");
+                setMessage("Giri\u015f ba\u015far\u0131s\u0131z: " + (error && error.message ? error.message : "Bilinmeyen hata"), "error");
             }
         });
     }
@@ -381,9 +381,9 @@
             try {
                 await bridge.signOut();
                 await refreshRemoteStatus();
-                setMessage("Admin oturumu kapatildi.", "info");
+                setMessage("Admin oturumu kapat\u0131ld\u0131.", "info");
             } catch (error) {
-                setMessage("Cikis basarisiz: " + (error && error.message ? error.message : "Bilinmeyen hata"), "error");
+                setMessage("\u00c7\u0131k\u0131\u015f ba\u015far\u0131s\u0131z: " + (error && error.message ? error.message : "Bilinmeyen hata"), "error");
             }
         });
     }
@@ -396,6 +396,7 @@
         render();
         await refreshRemoteStatus();
         await loadBestAvailableData();
-        setMessage("Panel hazir.", "info");
+        setMessage("Panel haz\u0131r.", "info");
     })();
 })();
+
