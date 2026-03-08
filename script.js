@@ -152,6 +152,8 @@
 
 function renderLiveScoreboard() {
     var liveGrid = document.querySelector("[data-live-score-grid]");
+    var activeSummary = document.querySelector("[data-score-summary-active]");
+    var completedSummary = document.querySelector("[data-score-summary-completed]");
     if (!liveGrid) {
         return;
     }
@@ -159,7 +161,16 @@ function renderLiveScoreboard() {
     var state = window.DCFLSiteData && typeof window.DCFLSiteData.getData === "function"
         ? window.DCFLSiteData.getData()
         : null;
-    if (!state || !Array.isArray(state.liveMatches) || !state.liveMatches.length) {
+
+    if (completedSummary) {
+        completedSummary.textContent = String((state && state.summary && state.summary.completedToday) || "0");
+    }
+
+    if (!state || !Array.isArray(state.liveMatches)) {
+        liveGrid.innerHTML = "";
+        if (activeSummary) {
+            activeSummary.textContent = "0";
+        }
         return;
     }
 
@@ -205,14 +216,8 @@ function renderLiveScoreboard() {
         ].join("");
     }).join("");
 
-    var activeSummary = document.querySelector("[data-score-summary-active]");
     if (activeSummary) {
         activeSummary.textContent = String(state.liveMatches.length);
-    }
-
-    var completedSummary = document.querySelector("[data-score-summary-completed]");
-    if (completedSummary) {
-        completedSummary.textContent = String((state.summary && state.summary.completedToday) || "0");
     }
 }
 

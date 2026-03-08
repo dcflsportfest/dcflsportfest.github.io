@@ -6,8 +6,10 @@
 
     var api = window.DCFLSiteData;
     var bridge = window.DCFLSupabaseBridge || null;
+    var adminMain = document.querySelector("main[data-admin-page]");
     var liveMount = document.querySelector("[data-admin-live-matches]");
     var branchMount = document.querySelector("[data-admin-branches]");
+    var activeCountInput = document.querySelector("[data-admin-active-count]");
     var completedInput = document.querySelector("[data-admin-completed-today]");
     var publishToggle = document.querySelector("[data-admin-publish-results]");
     var saveButton = document.querySelector("[data-admin-save]");
@@ -26,11 +28,20 @@
     var passwordInput = document.querySelector("[data-admin-password]");
     var loginButton = document.querySelector("[data-admin-login]");
     var logoutButton = document.querySelector("[data-admin-logout]");
+    var adminAccessTitle = document.querySelector("[data-admin-access-title]");
+    var adminAccessNote = document.querySelector("[data-admin-access-note]");
+    var adminUsersMount = document.querySelector("[data-admin-users]");
     var defaultTemplates = api.getDefaultData().branchTemplates.reduce(function (map, template) {
         map[template.key] = template;
         return map;
     }, {});
     var state = api.getData();
+    var accessState = {
+        configured: false,
+        session: null,
+        isAdmin: false,
+        users: []
+    };
 
     function clone(value) {
         return JSON.parse(JSON.stringify(value));
@@ -43,6 +54,10 @@
             .replace(/>/g, "&gt;")
             .replace(/\"/g, "&quot;")
             .replace(/'/g, "&#39;");
+    }
+
+    function normalizeEmail(value) {
+        return String(value || "").trim().toLowerCase();
     }
 
     function setMessage(text, tone) {
@@ -167,6 +182,9 @@
     }
 
     function render() {
+        if (activeCountInput) {
+            activeCountInput.value = String(Array.isArray(state.liveMatches) ? state.liveMatches.length : 0);
+        }
         completedInput.value = state.summary && state.summary.completedToday != null ? state.summary.completedToday : "9";
         publishToggle.checked = !!state.publishResults;
         liveMount.innerHTML = state.liveMatches.map(renderLiveCard).join("");
@@ -182,24 +200,171 @@
         if (typeof initializeFixtureTabGroups === "function") {
             initializeFixtureTabGroups(branchMount);
         }
+
+        applyEditorPermissions();
     }
 
-    function setRemoteStatus(configured, session) {
+    function syncLiveMatchCount(nextCount) {
+        var safeCount = Math.max(0, Math.floor(Number(nextCount) || 0));
+        var current = Array.isArray(state.liveMatches) ? state.liveMatches.slice() : [];
+
+        if (safeCount === current.length) {
+            return;
+        }
+
+        if (safeCount < current.length) {
+            state.liveMatches = current.slice(0, safeCount);
+            render();
+            return;
+        }
+
+        while (current.length < safeCount) {
+            current.push(api.createLiveMatchTemplate(current.length));
+        }
+
+        state.liveMatches = current;
+        render();
+    }
+
+    function canEditContent() {
+        return !!(accessState.session && accessState.session.user && accessState.isAdmin);
+    }
+
+    function applyEditorPermissions() {
+        var editable = canEditContent();
+        var scope = adminMain || document;
+
+        if (adminMain) {
+            adminMain.setAttribute("data-edit-locked", editable ? "false" : "true");
+        }
+
+        Array.from(scope.querySelectorAll("[data-field], [data-admin-completed-today], [data-admin-publish-results]")).forEach(function (input) {
+            input.disabled = !editable;
+        });
+
+        if (activeCountInput) {
+            activeCountInput.disabled = !editable;
+        }
+
+        if (saveButton) {
+            saveButton.disabled = !editable;
+        }
+        if (defaultsButton) {
+            defaultsButton.disabled = !editable;
+        }
+        if (importTrigger) {
+            importTrigger.disabled = !editable;
+        }
+        if (importInput) {
+            importInput.disabled = !editable;
+        }
+    }
+
+    function renderAdminAccess() {
+        if (!adminUsersMount) {
+            return;
+        }
+
+        var session = accessState.session;
+        var sessionEmail = normalizeEmail(session && session.user ? session.user.email : "");
+
+        if (adminAccessTitle) {
+            adminAccessTitle.textContent = !accessState.configured
+                ? "Yerel mod"
+                : !session
+                    ? "Giriş gerekli"
+                    : accessState.isAdmin
+                        ? "Yetkili admin"
+                        : "Yetki bekleniyor";
+        }
+
+        if (adminAccessNote) {
+            adminAccessNote.textContent = !accessState.configured
+                ? "Supabase kapalıysa admin listesi yüklenmez."
+                : !session
+                    ? "Admin listesi için önce giriş yap."
+                    : accessState.isAdmin
+                        ? "Bu hesap skor ve sonuç güncelleyebilir. Admin listesi Supabase içinden yönetilir."
+                        : "Bu hesap giriş yaptı ama admin listesinde değil. E-postayı Supabase admin_users tablosuna eklemelisin.";
+        }
+
+        applyEditorPermissions();
+
+        if (!accessState.configured) {
+            adminUsersMount.innerHTML = [
+                "<article class=\"admin-user-row admin-user-row-empty\">",
+                "    <div class=\"admin-user-meta\">",
+                "        <strong>Supabase devre dışı</strong>",
+                "        <p>Bu bölüm yalnızca online admin modunda çalışır.</p>",
+                "    </div>",
+                "</article>"
+            ].join("");
+            return;
+        }
+
+        if (!session) {
+            adminUsersMount.innerHTML = [
+                "<article class=\"admin-user-row admin-user-row-empty\">",
+                "    <div class=\"admin-user-meta\">",
+                "        <strong>Giriş yap</strong>",
+                "        <p>Admin listesini görüntülemek ve düzenlemek için oturum açmalısın.</p>",
+                "    </div>",
+                "</article>"
+            ].join("");
+            return;
+        }
+
+        if (!accessState.users.length) {
+            adminUsersMount.innerHTML = [
+                "<article class=\"admin-user-row admin-user-row-empty\">",
+                "    <div class=\"admin-user-meta\">",
+                "        <strong>Admin listesi boş</strong>",
+                "        <p>İlk giriş yapan hesap otomatik olarak ilk admin olabilir. Gerekirse sayfayı yenileyip tekrar giriş yap.</p>",
+                "    </div>",
+                "</article>"
+            ].join("");
+            return;
+        }
+
+        adminUsersMount.innerHTML = "<div class=\"admin-user-list\">" + accessState.users.map(function (item) {
+            var email = normalizeEmail(item.email);
+            var isCurrent = email === sessionEmail;
+
+            return [
+                "<article class=\"admin-user-row\">",
+                "    <div class=\"admin-user-meta\">",
+                "        <strong>" + escapeHTML(email) + "</strong>",
+                "        <p>" + (isCurrent ? "Bu oturum şu an bu hesapla açık." : "Yetkili admin hesabı.") + "</p>",
+                "    </div>",
+                "    <div class=\"admin-user-actions\">",
+                "        <span class=\"admin-user-badge\">Admin</span>",
+                isCurrent ? "        <span class=\"admin-user-badge\">Aktif</span>" : "",
+                "    </div>",
+                "</article>"
+            ].join("");
+        }).join("") + "</div>";
+    }
+
+    function setRemoteStatus(configured, session, isAdmin) {
         if (connectionStatus) {
             connectionStatus.textContent = configured ? "Supabase Haz\u0131r" : "Yerel Mod";
         }
         if (connectionNote) {
             connectionNote.textContent = configured
-                ? "Canl\u0131 veri Supabase \u00fczerinden okunabilir ve yaz\u0131labilir."
+                ? "Canl\u0131 veri Supabase \u00fczerinden okunabilir ve yaz\u0131labilir. Admin listesi e-posta bazl\u0131 y\u00f6netilir."
                 : "supabase-config.js bo\u015f. Panel sadece bu taray\u0131c\u0131da kay\u0131t yapar.";
         }
         if (authStatus) {
-            authStatus.textContent = session && session.user ? "A\u00e7\u0131k" : "Kapal\u0131";
+            authStatus.textContent = session && session.user
+                ? (isAdmin ? "A\u00e7\u0131k / Admin" : "A\u00e7\u0131k / Yetkisiz")
+                : "Kapal\u0131";
         }
         if (authNote) {
-            authNote.textContent = session && session.user
-                ? (session.user.email || "Admin kullan\u0131c\u0131s\u0131")
-                : "Uzak kay\u0131t i\u00e7in admin giri\u015fi gerekli.";
+            authNote.textContent = !session || !session.user
+                ? "Uzak kay\u0131t i\u00e7in admin giri\u015fi gerekli."
+                : isAdmin
+                    ? (session.user.email || "Admin kullan\u0131c\u0131s\u0131")
+                    : "Bu hesap oturum a\u00e7t\u0131, ancak admin listesinde de\u011fil.";
         }
         if (loginButton) {
             loginButton.disabled = !configured;
@@ -212,10 +377,35 @@
     async function refreshRemoteStatus() {
         var configured = !!(bridge && bridge.isConfigured && bridge.isConfigured());
         var session = configured ? await bridge.getSession() : null;
-        setRemoteStatus(configured, session);
+        var users = [];
+        var isAdmin = false;
+
+        if (configured && session && session.user && bridge && bridge.fetchAdminUsers) {
+            try {
+                users = await bridge.fetchAdminUsers();
+            } catch (error) {
+                users = [];
+            }
+        }
+
+        isAdmin = !!(session && session.user && users.some(function (item) {
+            return normalizeEmail(item.email) === normalizeEmail(session.user.email);
+        }));
+
+        accessState = {
+            configured: configured,
+            session: session,
+            isAdmin: isAdmin,
+            users: users
+        };
+
+        setRemoteStatus(configured, session, isAdmin);
+        renderAdminAccess();
         return {
             configured: configured,
-            session: session
+            session: session,
+            isAdmin: isAdmin,
+            users: users
         };
     }
 
@@ -280,6 +470,18 @@
         };
     }
 
+    if (activeCountInput) {
+        activeCountInput.addEventListener("change", function () {
+            if (!canEditContent()) {
+                setMessage("Canlı kart sayısını değiştirmek için önce yetkili admin olarak giriş yap.", "warning");
+                activeCountInput.value = String(Array.isArray(state.liveMatches) ? state.liveMatches.length : 0);
+                return;
+            }
+
+            syncLiveMatchCount(activeCountInput.value);
+        });
+    }
+
     async function loadBestAvailableData() {
         state = await api.loadData();
         render();
@@ -290,11 +492,15 @@
         try {
             var remoteStatus = await refreshRemoteStatus();
             if (remoteStatus.configured && remoteStatus.session && remoteStatus.session.user) {
+                if (!remoteStatus.isAdmin) {
+                    throw new Error("Bu hesap admin listesinde olmadığı için online kaydetme yetkisine sahip değil");
+                }
                 state = await api.saveDataRemote(nextState);
                 setMessage("Supabase \u00fczerine kaydedildi. Herkes yeni veriyi g\u00f6rebilir.", "success");
+            } else if (remoteStatus.configured) {
+                throw new Error("D\u00fczenleme i\u00e7in \u00f6nce yetkili admin olarak giri\u015f yapmal\u0131s\u0131n");
             } else {
-                state = api.saveData(nextState);
-                setMessage("Yerel kaydedildi. Online yay\u0131n i\u00e7in Supabase giri\u015fi gerekiyor.", "warning");
+                throw new Error("Supabase ba\u011flant\u0131s\u0131 olmadan admin panel kilitli kal\u0131r. \u00d6nce ba\u011flant\u0131y\u0131 d\u00fczelt ve admin giri\u015fi yap.");
             }
             render();
         } catch (error) {
@@ -308,6 +514,10 @@
     });
 
     defaultsButton.addEventListener("click", function () {
+        if (!canEditContent()) {
+            setMessage("Varsay\u0131lana d\u00f6nmek i\u00e7in \u00f6nce yetkili admin olarak giri\u015f yap.", "warning");
+            return;
+        }
         api.clearData();
         state = api.getDefaultData();
         render();
@@ -328,6 +538,10 @@
     });
 
     importTrigger.addEventListener("click", function () {
+        if (!canEditContent()) {
+            setMessage("JSON i\u00e7e aktarmak i\u00e7in \u00f6nce yetkili admin olarak giri\u015f yap.", "warning");
+            return;
+        }
         importInput.click();
     });
 
@@ -394,6 +608,7 @@
 
     (async function init() {
         render();
+        applyEditorPermissions();
         await refreshRemoteStatus();
         await loadBestAvailableData();
         setMessage("Panel haz\u0131r.", "info");

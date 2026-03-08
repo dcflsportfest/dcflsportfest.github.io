@@ -1,44 +1,71 @@
-# Supabase Setup
+﻿# Supabase Setup
 
-Bu proje statik GitHub Pages uzerinde calisiyor. Gercek online admin icin tarayicidan erisilebilen bir backend gerekiyor. Bu surum Supabase ile buna hazirlandi.
+Bu proje statik GitHub Pages üzerinde çalışıyor. Gerçek online admin için tarayıcıdan erişilebilen bir backend gerekiyor. Bu sürüm Supabase ile buna hazırlandı.
 
-## 1. Proje olustur
+## 1. Proje oluştur
 
-1. Supabase'te yeni bir proje olustur.
-2. `Authentication > Users` altindan admin kullanicisi ekle.
-3. `SQL Editor` icinde [supabase-setup.sql](./supabase-setup.sql) dosyasini calistir.
+1. Supabase'te yeni bir proje oluştur.
+2. `Authentication > Users` altından giriş yapacak kullanıcıları ekle.
+3. `SQL Editor` içinde [supabase-setup.sql](./supabase-setup.sql) dosyasını çalıştır.
 
-## 2. Config dosyasini doldur
+## 2. Config dosyasını doldur
 
-1. [supabase-config.js](./supabase-config.js) dosyasini ac.
-2. `url` alanina proje URL'ini gir.
-3. `publishableKey` alanina public publishable key'i gir.
+1. [supabase-config.js](./supabase-config.js) dosyasını aç.
+2. `url` alanına proje URL'ini gir.
+3. `publishableKey` alanına public publishable key'i gir.
 
 Not:
-- `publishableKey` tarayiciya gidebilir. Bu normaldir.
-- `service_role` anahtarini kesinlikle bu siteye koyma.
+- `publishableKey` tarayıcıya gidebilir. Bu normaldir.
+- `service_role` anahtarını kesinlikle bu siteye koyma.
 
-## 3. Admin girisi
+## 3. Admin yetkisini nasıl verirsin?
 
-1. `admin.html` sayfasini ac.
-2. Admin e-posta ve sifre ile giris yap.
-3. Veriyi duzenle ve `Kaydet` butonuna bas.
+Bu sürümde admin yetkisi panelden verilmez.
 
-Kayit sonrasi:
-- Ana sayfa public olarak Supabase'ten veriyi ceker.
-- Tum ziyaretciler ayni skoru ve sonuclari gorur.
+Admin yapmak istediğin e-postayı Supabase içinde `admin_users` tablosuna eklersin.
 
-## 4. Ilk kayit
+Örnek SQL:
 
-Tabloda ilk satir yoksa problem degil.
-Ilk `Kaydet` islemi `key = main` satirini olusturur ve `owner_id` alanina giris yapan kullaniciyi yazar.
+```sql
+insert into public.admin_users (email)
+values ('hazretitaylansahin@gmail.com')
+on conflict (email) do nothing;
+```
 
-## 5. Sorun cikarsa
+Giriş yapabilmesi için aynı e-postanın `Authentication > Users` altında da kullanıcı olarak bulunması gerekir.
 
-- `Baglanti Durumu` hala `Yerel Mod` ise:
-  - `supabase-config.js` bos olabilir
-  - `url` veya `publishableKey` yanlis olabilir
-- `Kaydet` calisiyor ama online veriye yazmiyorsa:
-  - admin oturumu acik olmayabilir
-  - SQL policy uygulanmamis olabilir
-  - tablo adi degismis olabilir
+## 4. Admin panel ne yapar?
+
+- giriş yapan kullanıcının admin listesinde olup olmadığını kontrol eder
+- admin ise skor ve sonuçları güncellemesine izin verir
+- admin değilse paneli kilitler
+- admin listesini sadece görüntüler
+
+## 5. Veri akışı
+
+- `Kaydet` online veriyi Supabase'e yazar
+- Ana sayfa public olarak Supabase'ten veriyi çeker
+- Tüm ziyaretçiler aynı skorları ve sonuçları görür
+- Panel aynı zamanda tarayıcıda yerel bir kopya da tutmaz; girişsiz düzenleme kapalıdır
+
+## 6. JSON Dışa Aktar ne yapar?
+
+`JSON Dışa Aktar`, paneldeki mevcut veriyi `dcfl-admin-data.json` dosyası olarak indirir.
+
+Bunu şunlar için kullanırsın:
+- yedek almak
+- başka cihaza aynı veriyi taşımak
+- toplu değişiklikten önce güvenli kopya almak
+
+## 7. Sorun çıkarsa
+
+- `Bağlantı Durumu` hâlâ `Yerel Mod` ise:
+  - `supabase-config.js` boş olabilir
+  - `url` veya `publishableKey` yanlış olabilir
+- Giriş yapıyor ama düzenleyemiyorsa:
+  - e-posta `admin_users` tablosunda olmayabilir
+  - SQL policy uygulanmamış olabilir
+- Giriş yapamıyorsa:
+  - kullanıcı `Authentication > Users` içinde olmayabilir
+  - şifre yanlış olabilir
+  - e-posta doğrulama ayarları sorunlu olabilir

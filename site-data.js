@@ -37,6 +37,22 @@
         }));
     }
 
+    function createLiveMatchTemplate(index, seed) {
+        var safeIndex = Math.max(0, Number(index) || 0);
+        var source = seed && typeof seed === "object" ? seed : {};
+        var teamStart = safeIndex * 2 + 1;
+
+        return {
+            branch: asText(source.branch, "Bran\u015f " + String(safeIndex + 1)),
+            status: asText(source.status, "Canl\u0131"),
+            home: asText(source.home, "Tak\u0131m " + String(teamStart)),
+            homeScore: asText(source.homeScore, "0"),
+            away: asText(source.away, "Tak\u0131m " + String(teamStart + 1)),
+            awayScore: asText(source.awayScore, "0"),
+            meta: asText(source.meta, "Aktif kar\u015f\u0131la\u015fma")
+        };
+    }
+
     var defaultData = {
         summary: {
             completedToday: "9"
@@ -206,8 +222,8 @@
         ]
     };
 
-    function sanitizeLiveMatch(match, fallback) {
-        return {
+    function sanitizeLiveMatch(match, fallback, index) {
+        return createLiveMatchTemplate(index, {
             branch: asText(match && match.branch, fallback.branch),
             status: asText(match && match.status, fallback.status),
             home: asText(match && match.home, fallback.home),
@@ -215,7 +231,7 @@
             away: asText(match && match.away, fallback.away),
             awayScore: asText(match && match.awayScore, fallback.awayScore),
             meta: asText(match && match.meta, fallback.meta)
-        };
+        });
     }
 
     function sanitizeTemplate(template, fallback) {
@@ -248,9 +264,10 @@
         defaults.summary.completedToday = asText(source.summary && source.summary.completedToday, defaults.summary.completedToday);
         defaults.publishResults = !!source.publishResults;
 
-        if (Array.isArray(source.liveMatches) && source.liveMatches.length) {
-            defaults.liveMatches = defaults.liveMatches.map(function (fallback, index) {
-                return sanitizeLiveMatch(source.liveMatches[index], fallback);
+        if (Array.isArray(source.liveMatches)) {
+            defaults.liveMatches = source.liveMatches.map(function (match, index) {
+                var fallback = defaults.liveMatches[index] || createLiveMatchTemplate(index, defaults.liveMatches[index % defaults.liveMatches.length]);
+                return sanitizeLiveMatch(match, fallback, index);
             });
         }
 
@@ -384,6 +401,10 @@
         clearData: clearLocalData,
         sanitizeData: sanitizeData,
         isRemoteConfigured: isRemoteConfigured
+    };
+
+    api.createLiveMatchTemplate = function (index) {
+        return createLiveMatchTemplate(index, defaultData.liveMatches[index % defaultData.liveMatches.length]);
     };
 
     window.DCFLSiteData = api;

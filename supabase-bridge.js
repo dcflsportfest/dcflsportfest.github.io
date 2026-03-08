@@ -4,6 +4,11 @@
     var isConfigured = !!(config.url && publicKey);
     var clientPromise = null;
     var authListenerAttached = false;
+    var adminTable = config.adminTable || "admin_users";
+
+    function normalizeEmail(value) {
+        return String(value || "").trim().toLowerCase();
+    }
 
     function dispatchAuthChange(session) {
         window.dispatchEvent(new CustomEvent("dcfl-auth-changed", {
@@ -136,6 +141,24 @@
         return result.data;
     }
 
+    async function fetchAdminUsers() {
+        var client = await getClient();
+        if (!client) {
+            return [];
+        }
+
+        var result = await client
+            .from(adminTable)
+            .select("email, created_at")
+            .order("created_at", { ascending: true });
+
+        if (result.error) {
+            throw result.error;
+        }
+
+        return Array.isArray(result.data) ? result.data : [];
+    }
+
     window.DCFLSupabaseBridge = {
         isConfigured: function () {
             return isConfigured;
@@ -147,6 +170,7 @@
         getSession: getSession,
         signIn: signIn,
         signOut: signOut,
+        fetchAdminUsers: fetchAdminUsers,
         fetchSiteState: fetchSiteState,
         saveSiteState: saveSiteState
     };

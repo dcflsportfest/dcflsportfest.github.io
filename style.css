@@ -3264,8 +3264,16 @@ h1 {
     margin-top: 0.6rem;
 }
 
+.admin-access-note {
+    margin-top: 0.95rem;
+}
+
 .admin-login-form {
     margin-top: 0.95rem;
+}
+
+.admin-add-user-form {
+    margin-top: 1rem;
 }
 
 .admin-toolbar {
@@ -3382,6 +3390,78 @@ h1 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.admin-user-list-wrap {
+    margin-top: 0.95rem;
+}
+
+.admin-user-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.admin-user-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    border: 1px solid rgba(168, 197, 245, 0.18);
+    border-radius: 16px;
+    padding: 0.9rem 1rem;
+    background: linear-gradient(160deg, rgba(10, 22, 46, 0.82), rgba(14, 31, 63, 0.74));
+}
+
+.admin-user-row-empty {
+    justify-content: flex-start;
+}
+
+.admin-user-meta {
+    min-width: 0;
+}
+
+.admin-user-meta strong,
+.admin-user-meta p {
+    display: block;
+}
+
+.admin-user-meta strong {
+    color: #f4f8ff;
+    word-break: break-word;
+}
+
+.admin-user-meta p {
+    margin: 0.28rem 0 0;
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.45;
+}
+
+.admin-user-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-shrink: 0;
+}
+
+.admin-user-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0.42rem 0.7rem;
+    border: 1px solid rgba(132, 180, 255, 0.28);
+    border-radius: 999px;
+    background: rgba(19, 43, 88, 0.72);
+    color: #d7e8ff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.admin-remove-btn {
+    min-height: 34px;
+    padding: 0.42rem 0.78rem;
+}
+
 .admin-card,
 .admin-branch-card {
     border: 1px solid rgba(168, 197, 245, 0.18);
@@ -3442,6 +3522,42 @@ h1 {
     background: rgba(7, 15, 34, 0.58);
 }
 
+.admin-main[data-edit-locked="true"] .admin-toolbar-panel,
+.admin-main[data-edit-locked="true"] .admin-summary-panel,
+.admin-main[data-edit-locked="true"] .admin-live-panel,
+.admin-main[data-edit-locked="true"] .admin-results-panel {
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-main[data-edit-locked="true"] .admin-toolbar-panel > *,
+.admin-main[data-edit-locked="true"] .admin-summary-panel > *,
+.admin-main[data-edit-locked="true"] .admin-live-panel > *,
+.admin-main[data-edit-locked="true"] .admin-results-panel > * {
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.42;
+}
+
+.admin-main[data-edit-locked="true"] .admin-toolbar-panel::after,
+.admin-main[data-edit-locked="true"] .admin-summary-panel::after,
+.admin-main[data-edit-locked="true"] .admin-live-panel::after,
+.admin-main[data-edit-locked="true"] .admin-results-panel::after {
+    content: "Önce admin girişi yap";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background: linear-gradient(160deg, rgba(5, 12, 28, 0.88), rgba(10, 21, 45, 0.9));
+    color: #f4f8ff;
+    font-size: 0.96rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-align: center;
+    z-index: 2;
+}
+
 @media (max-width: 900px) {
     .corner-logo-stack {
         display: none !important;
@@ -3451,5 +3567,16 @@ h1 {
     .admin-grid-compact,
     .admin-live-grid {
         grid-template-columns: 1fr;
+    }
+
+    .admin-user-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-user-actions {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
     }
 }
