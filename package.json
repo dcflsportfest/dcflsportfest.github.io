@@ -5,7 +5,9 @@
   "main": "script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "live-server --open=index.html --port=5500"
+    "dev": "live-server --open=index.html --port=5500",
+    "build": "node build.mjs",
+    "preview": "npm run build && live-server dist --open=index.html --port=4173"
   },
   "keywords": [],
   "author": "",
