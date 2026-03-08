@@ -165,13 +165,36 @@
             throw new Error("Supabase config missing");
         }
 
+        var normalizedPayload = {
+            name: String(payload && payload.name ? payload.name : "").trim(),
+            email: String(payload && payload.email ? payload.email : "").trim(),
+            topic: String(payload && payload.topic ? payload.topic : "").trim(),
+            message: String(payload && payload.message ? payload.message : "").trim()
+        };
+
+        if (config.contactFunction && client.functions && typeof client.functions.invoke === "function") {
+            var functionResult = await client.functions.invoke(config.contactFunction, {
+                body: normalizedPayload
+            });
+
+            if (functionResult.error) {
+                throw functionResult.error;
+            }
+
+            if (functionResult.data && functionResult.data.submission) {
+                return functionResult.data.submission;
+            }
+
+            return functionResult.data || null;
+        }
+
         var result = await client
             .from(config.contactTable || "contact_submissions")
             .insert({
-                name: String(payload && payload.name ? payload.name : "").trim(),
-                email: String(payload && payload.email ? payload.email : "").trim(),
-                topic: String(payload && payload.topic ? payload.topic : "").trim(),
-                message: String(payload && payload.message ? payload.message : "").trim()
+                name: normalizedPayload.name,
+                email: normalizedPayload.email,
+                topic: normalizedPayload.topic,
+                message: normalizedPayload.message
             })
             .select("id, name, email, topic, message, created_at")
             .single();

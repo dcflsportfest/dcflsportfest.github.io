@@ -13,6 +13,7 @@ Bu proje statik GitHub Pages üzerinde çalışıyor. Gerçek online admin için
 1. [supabase-config.js](./supabase-config.js) dosyasını aç.
 2. `url` alanına proje URL'ini gir.
 3. `publishableKey` alanına public publishable key'i gir.
+4. İletişim formundan mail bildirimi istiyorsan `contactFunction` alanına `contact-submit` yaz.
 
 Not:
 - `publishableKey` tarayıcıya gidebilir. Bu normaldir.
@@ -69,3 +70,49 @@ Bunu şunlar için kullanırsın:
   - kullanıcı `Authentication > Users` içinde olmayabilir
   - şifre yanlış olabilir
   - e-posta doğrulama ayarları sorunlu olabilir
+
+## 8. İletişim formundan e-posta bildirimi
+
+Varsayılan durumda form kayıtları `contact_submissions` tablosuna düşer ve admin panelden okunur. Mesajın ayrıca e-posta olarak gelmesini istiyorsan Supabase Edge Function kur.
+
+### Gerekli secret'lar
+
+Supabase project secret olarak şunları gir:
+
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `RESEND_API_KEY`
+- `RESEND_FROM_EMAIL`
+- `RESEND_TO_EMAIL`
+
+### Function deploy
+
+`supabase/functions/contact-submit/index.ts` dosyasını deploy et.
+
+Örnek CLI akışı:
+
+```bash
+supabase login
+supabase link --project-ref YOUR_PROJECT_REF
+supabase secrets set SUPABASE_URL=https://YOUR_PROJECT_ID.supabase.co
+supabase secrets set SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
+supabase secrets set RESEND_API_KEY=YOUR_RESEND_API_KEY
+supabase secrets set RESEND_FROM_EMAIL=verified@yourdomain.com
+supabase secrets set RESEND_TO_EMAIL=dcflsportfest2020@gmail.com
+supabase functions deploy contact-submit
+```
+
+### Frontend config
+
+[supabase-config.js](./supabase-config.js) içine şu alanı ekle:
+
+```js
+contactFunction: "contact-submit",
+```
+
+Bu alan eklendiğinde form:
+- önce Edge Function'a gider
+- kayıt veritabanına yazılır
+- sonra Resend ile e-posta bildirimi gönderilir
+
+Function deploy edilmezse form yine veritabanına kayıt düşürmeye devam eder, ama e-posta gelmez.
