@@ -2424,5 +2424,15 @@ var renderProgramFixtures = (function () {
     window.addEventListener("resize", syncPickerLayout);
     applyCommon(initialLang);
     applyPage(initialLang);
+
+    if (pageKey() === "program.html" && window.DCFLSiteData && typeof window.DCFLSiteData.loadData === "function") {
+        window.DCFLSiteData.loadData().then(function () {
+            if (typeof renderProgramFixtures === "function") {
+                renderProgramFixtures(getLang());
+            }
+        }).catch(function () {
+            // Program page can continue with fallback fixture data.
+        });
+    }
 })();
 
