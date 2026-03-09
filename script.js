@@ -7,6 +7,26 @@ function escapeHTML(value) {
         .replace(/'/g, "&#39;");
 }
 
+function pickLocalizedText(value, lang) {
+    if (value && typeof value === "object") {
+        return value[lang] || value.tr || value.en || value.pl || "";
+    }
+    return value || "";
+}
+
+function getSharedSiteState() {
+    if (window.DCFLSiteData && typeof window.DCFLSiteData.getData === "function") {
+        return window.DCFLSiteData.getData();
+    }
+    if (window.DCFLSiteData && typeof window.DCFLSiteData.getDefaultData === "function") {
+        return window.DCFLSiteData.getDefaultData();
+    }
+    return {
+        publishResults: false,
+        branchTemplates: []
+    };
+}
+
 (function () {
     var cornerLogos = document.querySelectorAll(".corner-logo-stack");
     if (!cornerLogos.length) {
@@ -1130,7 +1150,7 @@ var renderProgramFixtures = (function () {
 
     function renderFixturePanel(template, index, lang) {
         var langCopy = copy[lang] || copy.tr;
-        var venue = pickText(template.venue, lang);
+        var venue = pickLocalizedText(template.venue, lang);
         var qfMatches = template.qf.times.map(function (time, matchIndex) {
             var pair = getTemplatePair(template, "qf", lang, matchIndex);
             return {
@@ -1161,7 +1181,7 @@ var renderProgramFixtures = (function () {
 
         return [
             "<article class=\"fixture-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + template.key + "\">",
-            "    <h3>" + escapeHTML(pickText(template.name, lang)) + " " + langCopy.fixtureSuffix + "</h3>",
+            "    <h3>" + escapeHTML(pickLocalizedText(template.name, lang)) + " " + langCopy.fixtureSuffix + "</h3>",
             "    <div class=\"fixture-layout\">",
             "        <div class=\"bracket-scroller\">",
             "            <div class=\"bracket-board\">",
@@ -1197,8 +1217,8 @@ var renderProgramFixtures = (function () {
 
     return function (lang) {
         var currentLang = copy[lang] ? lang : "tr";
-        var state = getScoreData();
-        var templates = Array.isArray(state.branchTemplates) && state.branchTemplates.length ? state.branchTemplates : branchTemplates;
+        var state = getSharedSiteState();
+        var templates = Array.isArray(state.branchTemplates) && state.branchTemplates.length ? state.branchTemplates : [];
         var section = document.querySelector(".fixture-section");
         if (!section) {
             return;
@@ -1213,7 +1233,7 @@ var renderProgramFixtures = (function () {
             head.outerHTML,
             "<div class=\"fixture-tabs\" data-fixture-tabs role=\"tablist\" aria-label=\"" + copy[currentLang].tabsAria + "\">",
             templates.map(function (template, index) {
-                return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-fixture-tab=\"" + template.key + "\">" + escapeHTML(pickText(template.name, currentLang)) + "</button>";
+                return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-fixture-tab=\"" + template.key + "\">" + escapeHTML(pickLocalizedText(template.name, currentLang)) + "</button>";
             }).join(""),
             "</div>",
             "<div class=\"fixture-panels\">",
