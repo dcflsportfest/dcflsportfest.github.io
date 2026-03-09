@@ -1,3 +1,12 @@
+function escapeHTML(value) {
+    return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
 (function () {
     var cornerLogos = document.querySelectorAll(".corner-logo-stack");
     if (!cornerLogos.length) {
@@ -172,15 +181,6 @@ function renderLiveScoreboard() {
             activeSummary.textContent = "0";
         }
         return;
-    }
-
-    function escapeHTML(value) {
-        return String(value == null ? "" : value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/\"/g, "&quot;")
-            .replace(/'/g, "&#39;");
     }
 
     function asNumber(value) {
