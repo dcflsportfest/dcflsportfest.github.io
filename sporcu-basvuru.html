@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sporcu Başvuru | DCFL Sportfest 2026</title>
+    <meta name="description" content="DCFL Sportfest 2026 sporcu başvuru sayfası: takım ve bireysel sporcu başvurularını güvenli form üzerinden iletin.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0a1731">
+    <link rel="canonical" href="https://dcflsportfest.com/sporcu-basvuru.html">
+    <link rel="icon" type="image/png" href="assets/opening-bird-only.png">
+    <meta property="og:locale" content="tr_TR">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DCFL Sportfest 2026">
+    <meta property="og:title" content="Sporcu Başvuru | DCFL Sportfest 2026">
+    <meta property="og:description" content="DCFL Sportfest 2026 sporcu başvuru formu ile takım ve bireysel katılım talebinizi iletin.">
+    <meta property="og:url" content="https://dcflsportfest.com/sporcu-basvuru.html">
+    <meta property="og:image" content="https://dcflsportfest.com/assets/gucunu-kesfet.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sporcu Başvuru | DCFL Sportfest 2026">
+    <meta name="twitter:description" content="DCFL Sportfest 2026 sporcu başvuru formu ile takım ve bireysel katılım talebinizi iletin.">
+    <meta name="twitter:image" content="https://dcflsportfest.com/assets/gucunu-kesfet.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&family=Geist+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20260309i">
+</head>
+<body>
+    <div class="corner-logo-stack" aria-hidden="true">
+        <img src="assets/opening-bird-only.png" alt="" class="corner-logo corner-logo-primary" loading="lazy" decoding="async">
+    </div>
+
+    <header class="hero">
+        <nav class="top-nav">
+            <a href="index.html" class="brand">DCFLSPORTFEST'26</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-links" data-nav-toggle>Menü</button>
+            <div class="nav-actions" id="site-nav-links" data-nav-links>
+                <a href="index.html" class="nav-link">Ana Sayfa</a>
+                <a href="kurumsal.html" class="nav-link">Amacımız</a>
+                <a href="program.html" class="nav-link">Program &amp; Turnuva</a>
+                <a href="finans.html" class="nav-link">Finans</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="arsiv.html" class="nav-link">Arşiv</a>
+                <a href="iletisim.html" class="nav-link">İletişim</a>
+                <a href="hizmetler.html" class="nav-link">Sıkça Sorulanlar</a>
+            </div>
+        </nav>
+
+        <div class="page-shell">
+            <p class="eyebrow">SPORCU BAŞVURU</p>
+            <h1>Başvurunu ilet, değerlendirmeye alalım.</h1>
+            <p class="hero-text">Takım veya bireysel sporcu başvurularını güvenli form üzerinden gönderebilirsin.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="panel panel-highlight contact-layout">
+            <article class="contact-info">
+                <h2>Başvuru Bilgileri</h2>
+                <p class="section-text"><strong>E-posta:</strong> dcflsportfest2020@gmail.com</p>
+                <p class="section-text"><strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Küçükçekmece / İstanbul</p>
+                <p class="section-text"><strong>Not:</strong> Branş, yaş grubu, takım adı ve iletişim bilgilerini mesaj alanında belirt.</p>
+            </article>
+
+            <article class="contact-form-card">
+                <h2>Sporcu Başvuru Formu</h2>
+                <form class="contact-form" data-contact-form novalidate>
+                    <label for="athlete-name">Ad Soyad / Takım Adı</label>
+                    <input id="athlete-name" name="name" type="text" placeholder="Ad Soyad / Takım Adı" required>
+
+                    <label for="athlete-email">E-posta</label>
+                    <input id="athlete-email" name="email" type="email" placeholder="ornek@mail.com" required>
+
+                    <label for="athlete-topic">Konu</label>
+                    <input id="athlete-topic" name="topic" type="text" value="Sporcu Başvurusu" required>
+
+                    <label for="athlete-message">Başvuru Detayı</label>
+                    <textarea id="athlete-message" name="message" rows="6" placeholder="Branş, yaş grubu, takım adı ve diğer başvuru detaylarını yaz..." required></textarea>
+
+                    <button type="submit" class="btn btn-primary">Başvuruyu Gönder</button>
+                </form>
+                <p class="contact-form-status" data-contact-form-status aria-live="polite">Başvurun güvenli form kanalıyla iletilir.</p>
+            </article>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>DCFLSPORTFEST'26</p>
+        <p>Sporcu Başvuru Sayfası</p>
+    </footer>
+    <script src="supabase-config.js?v=20260309i"></script>
+    <script src="supabase-bridge.js?v=20260309i"></script>
+    <script src="site-data.js?v=20260309i"></script>
+    <script src="script.js?v=20260309i"></script>
+</body>
+</html>

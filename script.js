@@ -1245,6 +1245,7 @@ var renderProgramFixtures = (function () {
                 "finans.html": "Finans",
                 "blog.html": "Blog",
                 "arsiv.html": "Ar\u015fiv",
+                "sporcu-basvuru.html": "Sporcu Ba\u015fvuru",
                 "iletisim.html": "\u0130leti\u015fim",
                 "turnuva.html": "Program & Turnuva"
             }
@@ -1260,6 +1261,7 @@ var renderProgramFixtures = (function () {
                 "finans.html": "Finance",
                 "blog.html": "Blog",
                 "arsiv.html": "Archive",
+                "sporcu-basvuru.html": "Athlete Application",
                 "iletisim.html": "Contact",
                 "turnuva.html": "Program & Tournament"
             }
@@ -1275,6 +1277,7 @@ var renderProgramFixtures = (function () {
                 "finans.html": "Finanse",
                 "blog.html": "Blog",
                 "arsiv.html": "Archiwum",
+                "sporcu-basvuru.html": "Zgloszenie Zawodnika",
                 "iletisim.html": "Kontakt",
                 "turnuva.html": "Program i Turniej"
             }
@@ -1430,7 +1433,7 @@ var renderProgramFixtures = (function () {
                 ],
                 cta: "Program ve Turnuva",
                 stats: ["10 Adet Bran\u015f", "8+ Farkl\u0131 Okullardan Kat\u0131l\u0131mc\u0131lar", "Her G\u00fcn 200+ Kat\u0131l\u0131mc\u0131"],
-                sponsorCta: "Sponsor Ol",
+                sponsorCta: "Sporcu Başvurusu Yap",
                 countdown: "SportFeste kalan s\u00fcre",
                 countdownLabels: ["G\u00fcn", "Saat", "Dakika", "Saniye"],
                 ended: "Festival ba\u015flad\u0131!",
@@ -1485,7 +1488,7 @@ var renderProgramFixtures = (function () {
                 ],
                 cta: "Program and Tournament",
                 stats: ["10 Sports Branches", "Participants from 8+ Different Schools", "200+ Participants Daily"],
-                sponsorCta: "Become a Sponsor",
+                sponsorCta: "Apply as an Athlete",
                 countdown: "Time Left to Sportfest",
                 countdownLabels: ["Days", "Hours", "Minutes", "Seconds"],
                 ended: "The festival has started!",
@@ -1540,7 +1543,7 @@ var renderProgramFixtures = (function () {
                 ],
                 cta: "Program i Turniej",
                 stats: ["10 Dyscyplin", "Uczestnicy z 8+ Roznych Szkol", "200+ Uczestnikow Dziennie"],
-                sponsorCta: "Zostan Sponsorem",
+                sponsorCta: "Zloz Wniosek Zawodnika",
                 countdown: "Czas do Sportfestu",
                 countdownLabels: ["Dni", "Godz.", "Min.", "Sek."],
                 ended: "Festiwal sie rozpoczal!",
@@ -2120,6 +2123,89 @@ var renderProgramFixtures = (function () {
         setText(".footer p:nth-of-type(2)", copy.footer);
     }
 
+    function applySporcuBasvuru(lang) {
+        var copy = {
+            tr: {
+                title: "Sporcu Ba\u015fvuru | DCFLSPORTFEST'26",
+                eyebrow: "SPORCU BA\u015eVURU",
+                h1: "Ba\u015fvurunu ilet, de\u011ferlendirmeye alal\u0131m.",
+                hero: "Tak\u0131m veya bireysel sporcu ba\u015fvurular\u0131n\u0131 g\u00fcvenli form \u00fczerinden g\u00f6nderebilirsin.",
+                infoTitle: "Ba\u015fvuru Bilgileri",
+                infoDetails: [
+                    "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
+                    "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 K\u00fc\u00e7\u00fck\u00e7ekmece / \u0130stanbul",
+                    "<strong>Not:</strong> Bran\u015f, ya\u015f grubu, tak\u0131m ad\u0131 ve ileti\u015fim bilgilerini mesaj alan\u0131nda belirt."
+                ],
+                formTitle: "Sporcu Ba\u015fvuru Formu",
+                labels: ["Ad Soyad / Tak\u0131m Ad\u0131", "E-posta", "Konu", "Ba\u015fvuru Detay\u0131"],
+                placeholders: ["Ad Soyad / Tak\u0131m Ad\u0131", "ornek@mail.com", "Sporcu Ba\u015fvurusu", "Bran\u015f, ya\u015f grubu, tak\u0131m ad\u0131 ve di\u011fer ba\u015fvuru detaylar\u0131n\u0131 yaz..."],
+                send: "Ba\u015fvuruyu G\u00f6nder",
+                status: "Ba\u015fvurun g\u00fcvenli form kanal\u0131yla iletilir.",
+                footer: "Sporcu Ba\u015fvuru Sayfas\u0131"
+            },
+            en: {
+                title: "Athlete Application | DCFLSPORTFEST'26",
+                eyebrow: "ATHLETE APPLICATION",
+                h1: "Submit your application for review.",
+                hero: "You can send team or individual athlete applications through the secure form.",
+                infoTitle: "Application Details",
+                infoDetails: [
+                    "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
+                    "<strong>Location:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
+                    "<strong>Note:</strong> Include branch, age group, team name and contact details in the message."
+                ],
+                formTitle: "Athlete Application Form",
+                labels: ["Full Name / Team Name", "E-mail", "Subject", "Application Details"],
+                placeholders: ["Full Name / Team Name", "example@mail.com", "Athlete Application", "Write branch, age group, team name and other application details..."],
+                send: "Submit Application",
+                status: "Your application is sent through the secure form channel.",
+                footer: "Athlete Application Page"
+            },
+            pl: {
+                title: "Zgloszenie Zawodnika | DCFLSPORTFEST'26",
+                eyebrow: "ZGLOSZENIE ZAWODNIKA",
+                h1: "Przeslij zgloszenie do oceny.",
+                hero: "Mozesz wyslac zgloszenia druzynowe lub indywidualne przez bezpieczny formularz.",
+                infoTitle: "Informacje o Zgloszeniu",
+                infoDetails: [
+                    "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
+                    "<strong>Lokalizacja:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
+                    "<strong>Notatka:</strong> W wiadomosci podaj dyscypline, grupe wiekowa, nazwe druzyny i dane kontaktowe."
+                ],
+                formTitle: "Formularz Zgloszenia Zawodnika",
+                labels: ["Imie i nazwisko / Nazwa druzyny", "E-mail", "Temat", "Szczegoly Zgloszenia"],
+                placeholders: ["Imie i nazwisko / Nazwa druzyny", "przyklad@mail.com", "Zgloszenie Zawodnika", "Podaj dyscypline, grupe wiekowa, nazwe druzyny i inne szczegoly..."],
+                send: "Wyslij Zgloszenie",
+                status: "Zgloszenie zostanie wyslane przez bezpieczny formularz.",
+                footer: "Strona Zgloszenia Zawodnika"
+            }
+        }[lang] || {};
+
+        document.title = copy.title || document.title;
+        setText(".page-shell .eyebrow", copy.eyebrow);
+        setText(".page-shell h1", copy.h1);
+        setText(".page-shell .hero-text", copy.hero);
+        setText(".contact-info h2", copy.infoTitle);
+        if (Array.isArray(copy.infoDetails)) {
+            setHTML(".contact-info .section-text:nth-of-type(1)", copy.infoDetails[0]);
+            setHTML(".contact-info .section-text:nth-of-type(2)", copy.infoDetails[1]);
+            setHTML(".contact-info .section-text:nth-of-type(3)", copy.infoDetails[2]);
+        }
+        setText(".contact-form-card h2", copy.formTitle);
+        setText("label[for='athlete-name']", copy.labels[0]);
+        setText("label[for='athlete-email']", copy.labels[1]);
+        setText("label[for='athlete-topic']", copy.labels[2]);
+        setText("label[for='athlete-message']", copy.labels[3]);
+        setAttr("#athlete-name", "placeholder", copy.placeholders[0]);
+        setAttr("#athlete-email", "placeholder", copy.placeholders[1]);
+        setAttr("#athlete-topic", "value", copy.placeholders[2]);
+        setAttr("#athlete-topic", "placeholder", copy.placeholders[2]);
+        setAttr("#athlete-message", "placeholder", copy.placeholders[3]);
+        setText(".contact-form-card .btn", copy.send);
+        setText(".contact-form-status", copy.status);
+        setText(".footer p:nth-of-type(2)", copy.footer);
+    }
+
     function applyBlog(lang) {
         var copy = {
             tr: {
@@ -2330,6 +2416,8 @@ var renderProgramFixtures = (function () {
             applyBlog(lang);
         } else if (key === "arsiv.html") {
             applyArsiv(lang);
+        } else if (key === "sporcu-basvuru.html") {
+            applySporcuBasvuru(lang);
         } else if (key === "iletisim.html") {
             applyIletisim(lang);
         }
