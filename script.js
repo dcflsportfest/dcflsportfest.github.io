@@ -304,6 +304,9 @@ function renderLiveScoreboard() {
         if (typeof renderScoreResults === "function") {
             renderScoreResults((document.documentElement.getAttribute("lang") || "tr").toLowerCase());
         }
+        if (typeof renderProgramFixtures === "function") {
+            renderProgramFixtures((document.documentElement.getAttribute("lang") || "tr").toLowerCase());
+        }
     });
 })();
 
@@ -1002,6 +1005,228 @@ var renderScoreResults = (function () {
     }
 })();
 
+var renderProgramFixtures = (function () {
+    var copy = {
+        tr: {
+            tabsAria: "Bransa gore fikstur secimi",
+            fixtureSuffix: "Fiksturu",
+            rounds: {
+                qf: "Ceyrek Final",
+                sf: "Yari Final",
+                final: "Final"
+            },
+            scheduleKicker: "Mac Akisi",
+            note: "8 takimli eslesme yapisi 12-13-14 Mayis akisina gore ilerler.",
+            placeholders: {
+                qfWinner: "CF {n} Galibi",
+                sfWinner: "YF {n} Galibi"
+            },
+            dates: {
+                qf: "12 Mayis",
+                sf: "13 Mayis",
+                final: "14 Mayis"
+            }
+        },
+        en: {
+            tabsAria: "Fixture selection by branch",
+            fixtureSuffix: "Fixtures",
+            rounds: {
+                qf: "Quarter-final",
+                sf: "Semi-final",
+                final: "Final"
+            },
+            scheduleKicker: "Match Flow",
+            note: "The 8-team bracket progresses according to the May 12-13-14 schedule.",
+            placeholders: {
+                qfWinner: "QF {n} Winner",
+                sfWinner: "SF {n} Winner"
+            },
+            dates: {
+                qf: "May 12",
+                sf: "May 13",
+                final: "May 14"
+            }
+        },
+        pl: {
+            tabsAria: "Wybor terminarza wedlug dyscyplin",
+            fixtureSuffix: "Terminarz",
+            rounds: {
+                qf: "Cwiercfinal",
+                sf: "Polfinal",
+                final: "Final"
+            },
+            scheduleKicker: "Przebieg Meczow",
+            note: "Drabinka 8 druzyn rozwija sie zgodnie z harmonogramem 12-13-14 maja.",
+            placeholders: {
+                qfWinner: "Zwyciezca CF {n}",
+                sfWinner: "Zwyciezca PF {n}"
+            },
+            dates: {
+                qf: "12 maja",
+                sf: "13 maja",
+                final: "14 maja"
+            }
+        }
+    };
+
+    function formatTemplate(template, number) {
+        return String(template || "").replace("{n}", String(number));
+    }
+
+    function getTemplatePair(template, stageKey, lang, index) {
+        var langCopy = copy[lang] || copy.tr;
+        if (stageKey === "qf") {
+            return (template.qf.pairs && template.qf.pairs[index]) || ["", ""];
+        }
+        if (stageKey === "sf") {
+            return (template.sf.pairs && template.sf.pairs[index]) || [
+                formatTemplate(langCopy.placeholders.qfWinner, index * 2 + 1),
+                formatTemplate(langCopy.placeholders.qfWinner, index * 2 + 2)
+            ];
+        }
+        return (template.final.pair && template.final.pair.length === 2 && template.final.pair) || [
+            formatTemplate(langCopy.placeholders.sfWinner, 1),
+            formatTemplate(langCopy.placeholders.sfWinner, 2)
+        ];
+    }
+
+    function isPlaceholderPair(pair, stageKey, lang) {
+        var langCopy = copy[lang] || copy.tr;
+        if (!Array.isArray(pair) || pair.length !== 2) {
+            return false;
+        }
+        if (stageKey === "qf") {
+            return false;
+        }
+        if (stageKey === "sf") {
+            return pair[0] === formatTemplate(langCopy.placeholders.qfWinner, 1)
+                || pair[0] === formatTemplate(langCopy.placeholders.qfWinner, 3)
+                || /Winner|Galibi|Zwyciezca/.test(pair[0]);
+        }
+        return /Winner|Galibi|Zwyciezca/.test(pair[0]) || /Winner|Galibi|Zwyciezca/.test(pair[1]);
+    }
+
+    function renderBracketMatch(stageKey, label, dateLabel, time, pair, score, lang, seedA, seedB) {
+        var placeholder = isPlaceholderPair(pair, stageKey, lang);
+        var safeScore = Array.isArray(score) && score.length === 2 ? score : ["-", "-"];
+        return [
+            "<article class=\"bracket-match" + (placeholder ? " bracket-match-placeholder" : "") + "\">",
+            "    <p class=\"bracket-match-meta\">" + dateLabel + " &#183; " + time + "</p>",
+            "    <div class=\"bracket-team-row\"><span class=\"bracket-seed\">" + seedA + "</span><span class=\"bracket-team-name\">" + escapeHTML(pair[0]) + "</span><span class=\"bracket-team-score\">" + escapeHTML(safeScore[0] || "-") + "</span></div>",
+            "    <div class=\"bracket-team-row\"><span class=\"bracket-seed\">" + seedB + "</span><span class=\"bracket-team-name\">" + escapeHTML(pair[1]) + "</span><span class=\"bracket-team-score\">" + escapeHTML(safeScore[1] || "-") + "</span></div>",
+            "</article>"
+        ].join("");
+    }
+
+    function renderScheduleItem(dateLabel, time, stageLabel, pair, venue) {
+        return [
+            "<article class=\"fixture-schedule-item\">",
+            "    <span class=\"fixture-schedule-time\">" + dateLabel + " &#183; " + time + "</span>",
+            "    <strong>" + stageLabel + "</strong>",
+            "    <p>" + escapeHTML(pair[0]) + " vs " + escapeHTML(pair[1]) + " &#183; " + escapeHTML(venue) + "</p>",
+            "</article>"
+        ].join("");
+    }
+
+    function renderFixturePanel(template, index, lang) {
+        var langCopy = copy[lang] || copy.tr;
+        var venue = pickText(template.venue, lang);
+        var qfMatches = template.qf.times.map(function (time, matchIndex) {
+            var pair = getTemplatePair(template, "qf", lang, matchIndex);
+            return {
+                pair: pair,
+                time: time,
+                score: (template.qf.scores && template.qf.scores[matchIndex]) || ["-", "-"]
+            };
+        });
+        var sfMatches = template.sf.times.map(function (time, matchIndex) {
+            var pair = getTemplatePair(template, "sf", lang, matchIndex);
+            return {
+                pair: pair,
+                time: time,
+                score: (template.sf.scores && template.sf.scores[matchIndex]) || ["-", "-"]
+            };
+        });
+        var finalPair = getTemplatePair(template, "final", lang, 0);
+        var finalScore = (template.final && template.final.score) || ["-", "-"];
+
+        var scheduleItems = [];
+        qfMatches.forEach(function (match, matchIndex) {
+            scheduleItems.push(renderScheduleItem(langCopy.dates.qf, match.time, langCopy.rounds.qf + " " + String(matchIndex + 1), match.pair, venue));
+        });
+        sfMatches.forEach(function (match, matchIndex) {
+            scheduleItems.push(renderScheduleItem(langCopy.dates.sf, match.time, langCopy.rounds.sf + " " + String(matchIndex + 1), match.pair, venue));
+        });
+        scheduleItems.push(renderScheduleItem(langCopy.dates.final, template.final.time, langCopy.rounds.final, finalPair, venue));
+
+        return [
+            "<article class=\"fixture-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + template.key + "\">",
+            "    <h3>" + escapeHTML(pickText(template.name, lang)) + " " + langCopy.fixtureSuffix + "</h3>",
+            "    <div class=\"fixture-layout\">",
+            "        <div class=\"bracket-scroller\">",
+            "            <div class=\"bracket-board\">",
+            "                <section class=\"bracket-round\">",
+            "                    <p class=\"bracket-round-title\">" + langCopy.rounds.qf + "</p>",
+            qfMatches.map(function (match, matchIndex) {
+                return renderBracketMatch("qf", langCopy.rounds.qf, langCopy.dates.qf, match.time, match.pair, match.score, lang, matchIndex + 1, 8 - matchIndex);
+            }).join(""),
+            "                </section>",
+            "                <section class=\"bracket-round bracket-round-semifinal\">",
+            "                    <p class=\"bracket-round-title\">" + langCopy.rounds.sf + "</p>",
+            sfMatches.map(function (match, matchIndex) {
+                return renderBracketMatch("sf", langCopy.rounds.sf, langCopy.dates.sf, match.time, match.pair, match.score, lang, "YF" + String(matchIndex + 1), "YF" + String(matchIndex + 1));
+            }).join(""),
+            "                </section>",
+            "                <section class=\"bracket-round bracket-round-final\">",
+            "                    <p class=\"bracket-round-title\">" + langCopy.rounds.final + "</p>",
+            renderBracketMatch("final", langCopy.rounds.final, langCopy.dates.final, template.final.time, finalPair, finalScore, lang, "F1", "F2"),
+            "                    <p class=\"bracket-note\">" + langCopy.note + "</p>",
+            "                </section>",
+            "            </div>",
+            "        </div>",
+            "        <aside class=\"fixture-schedule\">",
+            "            <p class=\"fixture-schedule-kicker\">" + langCopy.scheduleKicker + "</p>",
+            "            <div class=\"fixture-schedule-list\">",
+            scheduleItems.join(""),
+            "            </div>",
+            "        </aside>",
+            "    </div>",
+            "</article>"
+        ].join("");
+    }
+
+    return function (lang) {
+        var currentLang = copy[lang] ? lang : "tr";
+        var state = getScoreData();
+        var templates = Array.isArray(state.branchTemplates) && state.branchTemplates.length ? state.branchTemplates : branchTemplates;
+        var section = document.querySelector(".fixture-section");
+        if (!section) {
+            return;
+        }
+
+        var head = section.querySelector(".section-head");
+        if (!head) {
+            return;
+        }
+
+        section.innerHTML = [
+            head.outerHTML,
+            "<div class=\"fixture-tabs\" data-fixture-tabs role=\"tablist\" aria-label=\"" + copy[currentLang].tabsAria + "\">",
+            templates.map(function (template, index) {
+                return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-fixture-tab=\"" + template.key + "\">" + escapeHTML(pickText(template.name, currentLang)) + "</button>";
+            }).join(""),
+            "</div>",
+            "<div class=\"fixture-panels\">",
+            templates.map(function (template, index) {
+                return renderFixturePanel(template, index, currentLang);
+            }).join(""),
+            "</div>"
+        ].join("");
+
+        initializeFixtureTabGroups(section);
+    };
+})();
+
 (function () {
     var navs = document.querySelectorAll(".top-nav");
     if (!navs.length) {
@@ -1549,6 +1774,7 @@ var renderScoreResults = (function () {
             }
         }[lang] || {};
 
+        renderProgramFixtures(lang);
         document.title = copy.title || document.title;
         setText(".page-shell .eyebrow", copy.eyebrow);
         setText(".page-shell h1", copy.h1);
@@ -1563,17 +1789,6 @@ var renderScoreResults = (function () {
         }
         setList(".timeline h3", copy.timelineTitles);
         setList(".timeline .step p", copy.timelineText);
-        setList(".fixture-tab", copy.tabs);
-        setList(".fixture-panel > h3", copy.panels);
-        mapText(".fixture-table th", copy.headerMap);
-        replaceText(".bracket-round-title", copy.detailMap);
-        replaceText(".bracket-match-meta", copy.detailMap);
-        replaceText(".bracket-team-name", copy.detailMap);
-        replaceText(".fixture-schedule-kicker", copy.detailMap);
-        replaceText(".fixture-schedule-time", copy.detailMap);
-        replaceText(".fixture-schedule-item strong", copy.detailMap);
-        replaceText(".fixture-schedule-item p", copy.detailMap);
-        replaceText(".bracket-note", copy.detailMap);
         setText(".footer p:nth-of-type(2)", copy.footer);
     }
 
