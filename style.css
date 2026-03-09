@@ -831,7 +831,10 @@ h1 {
 }
 
 .score-results-day-tabs {
+    display: flex;
     align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
 }
 
 .score-results-day-panels {
@@ -841,7 +844,7 @@ h1 {
 }
 
 .score-results-day-panel {
-    display: grid;
+    display: none;
     gap: 0.8rem;
     min-width: 0;
     padding: 0.9rem;
