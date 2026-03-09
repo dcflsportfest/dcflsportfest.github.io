@@ -3737,4 +3737,120 @@ h1 {
         justify-content: flex-start;
         flex-wrap: wrap;
     }
+
+    .admin-main {
+        gap: 0.9rem;
+    }
+
+    .admin-toolbar {
+        gap: 0.65rem;
+    }
+
+    .admin-toolbar .btn,
+    .admin-toolbar a.btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .admin-content-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.55rem;
+    }
+
+    .admin-content-tabs .fixture-tab {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .admin-card-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-results-match-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 640px) {
+    .admin-page-shell {
+        padding-inline: 1rem;
+    }
+
+    .admin-main {
+        padding-inline: 0.75rem;
+        gap: 0.8rem;
+    }
+
+    .admin-main .panel {
+        padding: 0.9rem;
+        border-radius: 16px;
+    }
+
+    .admin-login-form .admin-grid,
+    .admin-summary-panel .admin-grid,
+    .admin-toolbar {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-content-tabs {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .admin-field input,
+    .admin-toggle input {
+        min-height: 44px;
+    }
+
+    .admin-branch-card.fixture-panel,
+    .admin-card,
+    .admin-branch-card,
+    .admin-match-card,
+    .admin-submission-card,
+    .admin-status-card {
+        padding: 0.85rem;
+        border-radius: 14px;
+    }
+
+    .admin-match-grid,
+    .admin-live-grid,
+    .admin-branch-grid,
+    .admin-submission-list {
+        gap: 0.75rem;
+    }
+
+    .admin-user-row {
+        padding: 0.8rem 0.85rem;
+    }
+
+    .admin-message {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 430px) {
+    .admin-content-tabs {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-grid,
+    .admin-grid-compact {
+        gap: 0.7rem;
+    }
+
+    .admin-main .panel {
+        padding: 0.8rem;
+    }
+
+    .admin-card-head h3,
+    .admin-card-head h4,
+    .admin-stage-group h4 {
+        font-size: 0.98rem;
+    }
+
+    .admin-status-card strong {
+        font-size: 0.96rem;
+    }
 }
