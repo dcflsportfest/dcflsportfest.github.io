@@ -401,7 +401,7 @@ function renderLiveScoreboard() {
             minute: "2-digit",
             hour12: false,
             timeZone: "Europe/Istanbul"
-        }).format(date) + " TSÄ°";
+        }).format(date) + " TS\u0130";
     }
 
     function applyTime(isoString) {
@@ -1495,12 +1495,12 @@ var renderProgramFixtures = (function () {
                 ],
                 cta: "Program ve Turnuva",
                 stats: ["10 Adet Bran\u015f", "8+ Farkl\u0131 Okullardan Kat\u0131l\u0131mc\u0131lar", "Her G\u00fcn 200+ Kat\u0131l\u0131mc\u0131"],
-                sponsorCta: "Sporcu BaÅŸvurusu Yap",
+                sponsorCta: "Sporcu Ba\u015fvurusu Yap",
                 countdown: "SportFeste kalan s\u00fcre",
                 countdownLabels: ["G\u00fcn", "Saat", "Dakika", "Saniye"],
                 ended: "Festival ba\u015flad\u0131!",
                 scoreboard: {
-                    kicker: "SKOR MERKEZÄ°",
+                    kicker: "SKOR MERKEZ\u0130",
                     title: "Canl\u0131 Skor ve Sonu\u00e7lar",
                     text: "G\u00fcn\u00fcn canl\u0131 kar\u015f\u0131la\u015fmalar\u0131n\u0131 ve tamamlanan ma\u00e7 sonu\u00e7lar\u0131n\u0131 tek panelden takip et.",
                     tabAria: "Skor paneli sekmeleri",
@@ -1687,19 +1687,19 @@ var renderProgramFixtures = (function () {
                 eyebrow: "PROGRAM & TURNUVA",
                 h1: "Sportfest Etkinlik Ak\u0131\u015f\u0131\u00a0ve\u00a0Turnuva\u00a0Ak\u0131\u015f\u0131",
                 hero: "A\u00e7\u0131l\u0131\u015f, g\u00fcnl\u00fck etkinlik plan\u0131 ve bran\u015f bazl\u0131 8 tak\u0131ml\u0131 t\u00fcm turnuva fikst\u00fcrlerini tek sayfada takip edebilirsin.",
-                sections: ["OPERASYON AKIÅI", "FESTÄ°VAL HATLARI", "FÄ°KSTÃœR DETAYLARI"],
-                titles: ["GÃ¼nlÃ¼k Program", "BranÅŸlar", "Turnuva SeÃ§im EkranÄ±"],
-                tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "OkÃ§uluk", "Oryantiring", "BahÃ§e SatrancÄ±", "PlayStation", "Atletizm", "BahÃ§e OyunlarÄ±"],
-                panels: ["Voleybol FikstÃ¼rÃ¼", "Basketbol FikstÃ¼rÃ¼", "Futbol FikstÃ¼rÃ¼", "Masa Tenisi FikstÃ¼rÃ¼", "OkÃ§uluk FikstÃ¼rÃ¼", "Oryantiring FikstÃ¼rÃ¼", "BahÃ§e SatrancÄ± FikstÃ¼rÃ¼", "PlayStation TurnuvasÄ± FikstÃ¼rÃ¼", "Atletizm FikstÃ¼rÃ¼", "BahÃ§e OyunlarÄ± FikstÃ¼rÃ¼"],
+                sections: ["OPERASYON AKI\u015eI", "FEST\u0130VAL HATLARI", "F\u0130KST\u00dcR DETAYLARI"],
+                titles: ["G\u00fcnl\u00fck Program", "Bran\u015flar", "Turnuva Se\u00e7im Ekran\u0131"],
+                tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Ok\u00e7uluk", "Oryantiring", "Bah\u00e7e Satranc\u0131", "PlayStation", "Atletizm", "Bah\u00e7e Oyunlar\u0131"],
+                panels: ["Voleybol Fikst\u00fcr\u00fc", "Basketbol Fikst\u00fcr\u00fc", "Futbol Fikst\u00fcr\u00fc", "Masa Tenisi Fikst\u00fcr\u00fc", "Ok\u00e7uluk Fikst\u00fcr\u00fc", "Oryantiring Fikst\u00fcr\u00fc", "Bah\u00e7e Satranc\u0131 Fikst\u00fcr\u00fc", "PlayStation Turnuvas\u0131 Fikst\u00fcr\u00fc", "Atletizm Fikst\u00fcr\u00fc", "Bah\u00e7e Oyunlar\u0131 Fikst\u00fcr\u00fc"],
                 timelineTitles: [
-                    "12 MayÄ±s | Ã‡eyrek Finaller ve AÃ§Ä±lÄ±ÅŸ",
-                    "13 MayÄ±s | YarÄ± Finaller ve Yan Etkinlikler",
-                    "14 MayÄ±s | Final ve Ã–dÃ¼l TÃ¶reni"
+                    "12 May\u0131s | \u00c7eyrek Finaller ve A\u00e7\u0131l\u0131\u015f",
+                    "13 May\u0131s | Yar\u0131 Finaller ve Yan Etkinlikler",
+                    "14 May\u0131s | Final ve \u00d6d\u00fcl T\u00f6reni"
                 ],
                 timelineText: [
-                    "8 takÄ±m ile baÅŸlayan turnuva eÅŸleÅŸmeleri ve aÃ§Ä±lÄ±ÅŸ seremonisi aynÄ± gÃ¼n baÅŸlar.",
-                    "Ã‡eyrek final galipleri yarÄ± finalde buluÅŸur; gÃ¼n boyunca yan etkinlik akÄ±ÅŸÄ± devam eder.",
-                    "Her branÅŸta ÅŸampiyonluk maÃ§Ä± oynanÄ±r, ardÄ±ndan kupa seremonisi ve kapanÄ±ÅŸ yapÄ±lÄ±r."
+                    "8 tak\u0131m ile ba\u015flayan turnuva e\u015fle\u015fmeleri ve a\u00e7\u0131l\u0131\u015f seremonisi ayn\u0131 g\u00fcn ba\u015flar.",
+                    "\u00c7eyrek final galipleri yar\u0131 finalde bulu\u015fur; g\u00fcn boyunca yan etkinlik ak\u0131\u015f\u0131 devam eder.",
+                    "Her bran\u015fta \u015fampiyonluk ma\u00e7\u0131 oynan\u0131r, ard\u0131ndan kupa seremonisi ve kapan\u0131\u015f yap\u0131l\u0131r."
                 ],
                 headerMap: {
                     "Tarih": "Tarih",
@@ -1713,7 +1713,7 @@ var renderProgramFixtures = (function () {
                     "Etap": "Etap"
                 },
                 detailMap: {},
-                footer: "Program & Turnuva SayfasÄ±"
+                footer: "Program & Turnuva Sayfas\u0131"
             },
             en: {
                 title: "Program & Tournament | DCFLSPORTFEST'26",
@@ -1853,24 +1853,24 @@ var renderProgramFixtures = (function () {
         var copy = {
             tr: {
                 title: "Finans | DCFLSPORTFEST'26",
-                eyebrow: "SPONSORLUK DERECELERÄ°",
-                h1: "Sponsorluk Paketlerini KarÅŸÄ±laÅŸtÄ±rÄ±n",
-                hero: "Ayni sponsorluÄŸu ayrÄ± bir blokta, maddi sponsorluk paketlerini ise kolay karÅŸÄ±laÅŸtÄ±rmalÄ± kart dÃ¼zeninde inceleyebilirsin.",
-                section: "FÄ°NANS",
-                sectionTitle: "Sponsorluk Paketlerini KarÅŸÄ±laÅŸtÄ±rÄ±n",
-                group: "MADDÄ° SPONSORLUK PAKETLERÄ°",
+                eyebrow: "SPONSORLUK DERECELER\u0130",
+                h1: "Sponsorluk Paketlerini Kar\u015f\u0131la\u015ft\u0131r\u0131n",
+                hero: "Ayni sponsorlu\u011fu ayr\u0131 bir blokta, maddi sponsorluk paketlerini ise kolay kar\u015f\u0131la\u015ft\u0131rmal\u0131 kart d\u00fczeninde inceleyebilirsin.",
+                section: "F\u0130NANS",
+                sectionTitle: "Sponsorluk Paketlerini Kar\u015f\u0131la\u015ft\u0131r\u0131n",
+                group: "MADD\u0130 SPONSORLUK PAKETLER\u0130",
                 groupTitle: "Maddi Sponsorluk Paketleri",
-                contact: "Ä°letiÅŸim",
+                contact: "\u0130leti\u015fim",
                 contactDetails: [
                     "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 K\u00fc\u00e7\u00fck\u00e7ekmece / \u0130stanbul",
-                    "<strong>Not:</strong> Sponsorluk detay dosyasÄ± ve teklif gÃ¶nderimi iÃ§in iletiÅŸime geÃ§ebilirsin."
+                    "<strong>Not:</strong> Sponsorluk detay dosyas\u0131 ve teklif g\u00f6nderimi i\u00e7in ileti\u015fime ge\u00e7ebilirsin."
                 ],
-                quick: "HÄ±zlÄ± Mesaj",
-                labels: ["Ad Soyad / Firma AdÄ±", "E-posta", "Konu", "Mesaj"],
-                placeholders: ["Ad Soyad / Firma AdÄ±", "ornek@mail.com", "Sponsorluk Paketi / Dosya Talebi", "MesajÄ±nÄ± yaz..."],
-                send: "GÃ¶nder",
-                footer: "Finans SayfasÄ±"
+                quick: "H\u0131zl\u0131 Mesaj",
+                labels: ["Ad Soyad / Firma Ad\u0131", "E-posta", "Konu", "Mesaj"],
+                placeholders: ["Ad Soyad / Firma Ad\u0131", "ornek@mail.com", "Sponsorluk Paketi / Dosya Talebi", "Mesaj\u0131n\u0131 yaz..."],
+                send: "G\u00f6nder",
+                footer: "Finans Sayfas\u0131"
             },
             en: {
                 title: "Finance | DCFLSPORTFEST'26",
@@ -2003,40 +2003,40 @@ var renderProgramFixtures = (function () {
     function applyKurumsal(lang) {
         var copy = {
             tr: {
-                title: "EtkinliÄŸin AmacÄ± | DCFLSPORTFEST'26",
+                title: "Etkinli\u011fin Amac\u0131 | DCFLSPORTFEST'26",
                 eyebrow: "AMACIMIZ",
-                h1: "EtkinliÄŸin AmacÄ±",
+                h1: "Etkinli\u011fin Amac\u0131",
                 hero: [
-                    "DCFLSPORTFEST'26, Ã§ok boyutlu bir spor ve genÃ§lik deneyimi sunmayÄ± amaÃ§layan uluslararasÄ± bir organizasyondur.",
-                    "Etkinlikteki temel amaÃ§larÄ±mÄ±z:",
-                    "Bu sayede DCFLSPORTFEST'26, yalnÄ±zca bir etkinlik deÄŸil; sÃ¼reklilik vadeder."
+                    "DCFLSPORTFEST'26, \u00e7ok boyutlu bir spor ve gen\u00e7lik deneyimi sunmay\u0131 ama\u00e7layan uluslararas\u0131 bir organizasyondur.",
+                    "Etkinlikteki temel ama\u00e7lar\u0131m\u0131z:",
+                    "Bu sayede DCFLSPORTFEST'26, yaln\u0131zca bir etkinlik de\u011fil; s\u00fcreklilik vadeder."
                 ],
                 heroList: [
-                    "UluslararasÄ± spor kÃ¼ltÃ¼rÃ¼nÃ¼ genÃ§ler arasÄ±nda yaygÄ±nlaÅŸtÄ±rmak",
-                    "GenÃ§ sporculara kendilerini ifade edebilecekleri ve gÃ¶rÃ¼nÃ¼rlÃ¼k kazanabilecekleri bir platform sunmak",
-                    "Markalar ile genÃ§ hedef kitle arasÄ±nda gÃ¼Ã§lÃ¼ ve kalÄ±cÄ± bir baÄŸ oluÅŸturmak",
-                    "Spor, eÄŸlence ve deneyimi tek bir festival Ã§atÄ±sÄ± altÄ±nda birleÅŸtirmek",
-                    "UluslararasÄ± iÅŸ birliklerinin ve yeni projelerin Ã¶nÃ¼nÃ¼ aÃ§mak"
+                    "Uluslararas\u0131 spor k\u00fclt\u00fcr\u00fcn\u00fc gen\u00e7ler aras\u0131nda yayg\u0131nla\u015ft\u0131rmak",
+                    "Gen\u00e7 sporculara kendilerini ifade edebilecekleri ve g\u00f6r\u00fcn\u00fcrl\u00fck kazanabilecekleri bir platform sunmak",
+                    "Markalar ile gen\u00e7 hedef kitle aras\u0131nda g\u00fc\u00e7l\u00fc ve kal\u0131c\u0131 bir ba\u011f olu\u015fturmak",
+                    "Spor, e\u011flence ve deneyimi tek bir festival \u00e7at\u0131s\u0131 alt\u0131nda birle\u015ftirmek",
+                    "Uluslararas\u0131 i\u015f birliklerinin ve yeni projelerin \u00f6n\u00fcn\u00fc a\u00e7mak"
                 ],
-                section: "VÄ°ZYON VE MÄ°SYON",
-                sectionTitle: "Temel YaklaÅŸÄ±mÄ±mÄ±z",
+                section: "V\u0130ZYON VE M\u0130SYON",
+                sectionTitle: "Temel Yakla\u015f\u0131m\u0131m\u0131z",
                 tileTitles: ["Vizyon", "Misyon"],
                 tileParagraphs: [
-                    "DCFLSPORTFEST'26'yÄ±; farklÄ± Ã¼lkelerden genÃ§ sporcularÄ±n, kulÃ¼plerin ve spor markalarÄ±nÄ±n her yÄ±l bir araya geldiÄŸi, uluslararasÄ± Ã¶lÃ§ekte tanÄ±nan, sÃ¼rdÃ¼rÃ¼lebilir ve prestijli bir spor festivali haline getirmeyi hedefliyoruz.",
-                    "Uzun vadede DCFLSPORTFEST'26'nÄ±n aÅŸaÄŸÄ±daki niteliklere sahip bir etkinlik olmasÄ±nÄ± amaÃ§lÄ±yoruz:",
-                    "DCFLSPORTFEST'26'nÄ±n misyonu, sporu yalnÄ±zca bir yarÄ±ÅŸma alanÄ± olarak deÄŸil; iletiÅŸim, geliÅŸim ve kÃ¼ltÃ¼rel etkileÅŸim aracÄ± olarak konumlandÄ±rmaktÄ±r.",
-                    "Bu doÄŸrultuda Ã¶ncelikli hedeflerimiz:"
+                    "DCFLSPORTFEST'26'y\u0131; farkl\u0131 \u00fclkelerden gen\u00e7 sporcular\u0131n, kul\u00fcplerin ve spor markalar\u0131n\u0131n her y\u0131l bir araya geldi\u011fi, uluslararas\u0131 \u00f6l\u00e7ekte tan\u0131nan, s\u00fcrd\u00fcr\u00fclebilir ve prestijli bir spor festivali haline getirmeyi hedefliyoruz.",
+                    "Uzun vadede DCFLSPORTFEST'26'n\u0131n a\u015fa\u011f\u0131daki niteliklere sahip bir etkinlik olmas\u0131n\u0131 ama\u00e7l\u0131yoruz:",
+                    "DCFLSPORTFEST'26'n\u0131n misyonu, sporu yaln\u0131zca bir yar\u0131\u015fma alan\u0131 olarak de\u011fil; ileti\u015fim, geli\u015fim ve k\u00fclt\u00fcrel etkile\u015fim arac\u0131 olarak konumland\u0131rmakt\u0131r.",
+                    "Bu do\u011frultuda \u00f6ncelikli hedeflerimiz:"
                 ],
                 tileList: [
-                    "Avrupa, Orta DoÄŸu ve Balkanlar'dan dÃ¼zenli katÄ±lÄ±mcÄ± Ã§eken.",
-                    "GenÃ§lik ve spor alanÄ±nda referans gÃ¶sterilen.",
-                    "Markalar iÃ§in stratejik bir iletiÅŸim ve deneyim platformu olan.",
-                    "GenÃ§lerin spor yoluyla uluslararasÄ± deneyim kazanmasÄ±nÄ± saÄŸlamak.",
-                    "FarklÄ± kÃ¼ltÃ¼rlerden gelen katÄ±lÄ±mcÄ±lar arasÄ±nda kalÄ±cÄ± baÄŸlar kurmak.",
-                    "Markalara, genÃ§ hedef kitle ile doÄŸrudan ve sahici temas kurabilecekleri alanlar sunmak.",
-                    "Sporun eÄŸitici, birleÅŸtirici ve ilham verici gÃ¼cÃ¼nÃ¼ gÃ¶rÃ¼nÃ¼r kÄ±lmak."
+                    "Avrupa, Orta Do\u011fu ve Balkanlar'dan d\u00fczenli kat\u0131l\u0131mc\u0131 \u00e7eken.",
+                    "Gen\u00e7lik ve spor alan\u0131nda referans g\u00f6sterilen.",
+                    "Markalar i\u00e7in stratejik bir ileti\u015fim ve deneyim platformu olan.",
+                    "Gen\u00e7lerin spor yoluyla uluslararas\u0131 deneyim kazanmas\u0131n\u0131 sa\u011flamak.",
+                    "Farkl\u0131 k\u00fclt\u00fcrlerden gelen kat\u0131l\u0131mc\u0131lar aras\u0131nda kal\u0131c\u0131 ba\u011flar kurmak.",
+                    "Markalara, gen\u00e7 hedef kitle ile do\u011frudan ve sahici temas kurabilecekleri alanlar sunmak.",
+                    "Sporun e\u011fitici, birle\u015ftirici ve ilham verici g\u00fcc\u00fcn\u00fc g\u00f6r\u00fcn\u00fcr k\u0131lmak."
                 ],
-                footer: "AmacÄ±mÄ±z SayfasÄ±"
+                footer: "Amac\u0131m\u0131z Sayfas\u0131"
             },
             en: {
                 title: "Purpose of the Event | DCFLSPORTFEST'26",
@@ -2128,19 +2128,19 @@ var renderProgramFixtures = (function () {
     function applyFaq(lang) {
         var copy = {
             tr: {
-                title: "SÄ±kÃ§a Sorulanlar | DCFLSPORTFEST'26",
-                eyebrow: "SIKÃ‡A SORULANLAR",
-                h1: "Merak edilen sorularÄ±n net cevaplarÄ±.",
-                hero: "KatÄ±lÄ±m, kayÄ±t, kontenjan ve sponsorluk sÃ¼reÃ§leriyle ilgili en Ã§ok sorulan sorularÄ± burada bulabilirsin.",
-                section: "SIKÃ‡A SORULANLAR",
-                title2: "HÄ±zlÄ± Cevaplar",
-                cardsTitle: ["KayÄ±t nasÄ±l yapÄ±lÄ±r?", "BranÅŸlara katÄ±lÄ±m sÄ±nÄ±rÄ± var mÄ±?", "Sponsor baÅŸvurusu nasÄ±l olur?"],
+                title: "S\u0131k\u00e7a Sorulanlar | DCFLSPORTFEST'26",
+                eyebrow: "SIK\u00c7A SORULANLAR",
+                h1: "Merak edilen sorular\u0131n net cevaplar\u0131.",
+                hero: "Kat\u0131l\u0131m, kay\u0131t, kontenjan ve sponsorluk s\u00fcre\u00e7leriyle ilgili en \u00e7ok sorulan sorular\u0131 burada bulabilirsin.",
+                section: "SIK\u00c7A SORULANLAR",
+                title2: "H\u0131zl\u0131 Cevaplar",
+                cardsTitle: ["Kay\u0131t nas\u0131l yap\u0131l\u0131r?", "Bran\u015flara kat\u0131l\u0131m s\u0131n\u0131r\u0131 var m\u0131?", "Sponsor ba\u015fvurusu nas\u0131l olur?"],
                 cardsText: [
-                    "Ä°letiÅŸim sekmesindeki form Ã¼zerinden takÄ±m veya bireysel baÅŸvuru alÄ±nÄ±r.",
-                    "Her branÅŸ iÃ§in kontenjan vardÄ±r. Erken baÅŸvuru Ã¶nceliÄŸi uygulanÄ±r.",
-                    "Ä°letiÅŸim sekmesinden sponsorluk konusu seÃ§ilerek teklif gÃ¶nderilebilir."
+                    "\u0130leti\u015fim sekmesindeki form \u00fczerinden tak\u0131m veya bireysel ba\u015fvuru al\u0131n\u0131r.",
+                    "Her bran\u015f i\u00e7in kontenjan vard\u0131r. Erken ba\u015fvuru \u00f6nceli\u011fi uygulan\u0131r.",
+                    "\u0130leti\u015fim sekmesinden sponsorluk konusu se\u00e7ilerek teklif g\u00f6nderilebilir."
                 ],
-                footer: "SÄ±kÃ§a Sorulanlar SayfasÄ±"
+                footer: "S\u0131k\u00e7a Sorulanlar Sayfas\u0131"
             },
             en: {
                 title: "FAQ | DCFLSPORTFEST'26",
@@ -2326,14 +2326,14 @@ var renderProgramFixtures = (function () {
             tr: {
                 title: "Blog | DCFLSPORTFEST'26",
                 eyebrow: "BLOG",
-                h1: "Sportfest gÃ¼ndeminden notlar.",
-                hero: "Etkinlik hazÄ±rlÄ±klarÄ±, branÅŸ hikayeleri ve organizasyon gÃ¼ncellemeleri.",
+                h1: "Sportfest g\u00fcndeminden notlar.",
+                hero: "Etkinlik haz\u0131rl\u0131klar\u0131, bran\u015f hikayeleri ve organizasyon g\u00fcncellemeleri.",
                 section: "YAKINDA",
-                title2: "YakÄ±nda",
-                postMeta: ["YakÄ±nda", "YakÄ±nda", "YakÄ±nda"],
-                postTitles: ["YakÄ±nda", "YakÄ±nda", "YakÄ±nda"],
-                postText: ["YakÄ±nda", "YakÄ±nda", "YakÄ±nda"],
-                footer: "YakÄ±nda"
+                title2: "Yak\u0131nda",
+                postMeta: ["Yak\u0131nda", "Yak\u0131nda", "Yak\u0131nda"],
+                postTitles: ["Yak\u0131nda", "Yak\u0131nda", "Yak\u0131nda"],
+                postText: ["Yak\u0131nda", "Yak\u0131nda", "Yak\u0131nda"],
+                footer: "Yak\u0131nda"
             },
             en: {
                 title: "Blog | DCFLSPORTFEST'26",
@@ -2350,14 +2350,14 @@ var renderProgramFixtures = (function () {
             pl: {
                 title: "Blog | DCFLSPORTFEST'26",
                 eyebrow: "BLOG",
-                h1: "WkrÃ³tce",
-                hero: "WkrÃ³tce",
-                section: "WKRÃ“TCE",
-                title2: "WkrÃ³tce",
-                postMeta: ["WkrÃ³tce", "WkrÃ³tce", "WkrÃ³tce"],
-                postTitles: ["WkrÃ³tce", "WkrÃ³tce", "WkrÃ³tce"],
-                postText: ["WkrÃ³tce", "WkrÃ³tce", "WkrÃ³tce"],
-                footer: "WkrÃ³tce"
+                h1: "Wkr\u00f3tce",
+                hero: "Wkr\u00f3tce",
+                section: "WKR\u00d3TCE",
+                title2: "Wkr\u00f3tce",
+                postMeta: ["Wkr\u00f3tce", "Wkr\u00f3tce", "Wkr\u00f3tce"],
+                postTitles: ["Wkr\u00f3tce", "Wkr\u00f3tce", "Wkr\u00f3tce"],
+                postText: ["Wkr\u00f3tce", "Wkr\u00f3tce", "Wkr\u00f3tce"],
+                footer: "Wkr\u00f3tce"
             }
         }[lang] || {};
 
@@ -2376,20 +2376,20 @@ var renderProgramFixtures = (function () {
     function applyArsiv(lang) {
         var copy = {
             tr: {
-                title: "ArÅŸiv | DCFLSPORTFEST'26",
-                eyebrow: "ARÅÄ°V",
-                h1: "Etkinlik ArÅŸivi",
-                hero: "GeÃ§miÅŸ yÄ±llara ait duyurular, gÃ¶rseller ve Ã¶ne Ã§Ä±kan anlar yakÄ±nda burada yer alacak.",
-                section: "ARÅÄ°V",
-                title2: "YakÄ±nda Eklenecek Ä°Ã§erikler",
-                postMeta: ["YakÄ±nda", "YakÄ±nda", "YakÄ±nda"],
-                postTitles: ["GeÃ§miÅŸ Etkinlik FotoÄŸraflarÄ±", "Turnuva SonuÃ§ ArÅŸivi", "BasÄ±n ve Duyuru KayÄ±tlarÄ±"],
+                title: "Ar\u015fiv | DCFLSPORTFEST'26",
+                eyebrow: "AR\u015e\u0130V",
+                h1: "Etkinlik Ar\u015fivi",
+                hero: "Ge\u00e7mi\u015f y\u0131llara ait duyurular, g\u00f6rseller ve \u00f6ne \u00e7\u0131kan anlar yak\u0131nda burada yer alacak.",
+                section: "AR\u015e\u0130V",
+                title2: "Yak\u0131nda Eklenecek \u0130\u00e7erikler",
+                postMeta: ["Yak\u0131nda", "Yak\u0131nda", "Yak\u0131nda"],
+                postTitles: ["Ge\u00e7mi\u015f Etkinlik Foto\u011fraflar\u0131", "Turnuva Sonu\u00e7 Ar\u015fivi", "Bas\u0131n ve Duyuru Kay\u0131tlar\u0131"],
                 postText: [
-                    "Ã–nceki dÃ¶nem organizasyonlarÄ±ndan Ã¶ne Ã§Ä±kan kareler bu alanda yayÄ±nlanacak.",
-                    "BranÅŸ bazlÄ± geÃ§miÅŸ yÄ±llarÄ±n fikstÃ¼r ve sonuÃ§larÄ± arÅŸiv olarak eriÅŸime aÃ§Ä±lacak.",
-                    "GeÃ§miÅŸ duyurular, afiÅŸler ve medya iÃ§erikleri tek noktadan gÃ¶rÃ¼ntÃ¼lenebilecek."
+                    "\u00d6nceki d\u00f6nem organizasyonlar\u0131ndan \u00f6ne \u00e7\u0131kan kareler bu alanda yay\u0131nlanacak.",
+                    "Bran\u015f bazl\u0131 ge\u00e7mi\u015f y\u0131llar\u0131n fikst\u00fcr ve sonu\u00e7lar\u0131 ar\u015fiv olarak eri\u015fime a\u00e7\u0131lacak.",
+                    "Ge\u00e7mi\u015f duyurular, afi\u015fler ve medya i\u00e7erikleri tek noktadan g\u00f6r\u00fcnt\u00fclenebilecek."
                 ],
-                footer: "ArÅŸiv SayfasÄ±"
+                footer: "Ar\u015fiv Sayfas\u0131"
             },
             en: {
                 title: "Archive | DCFLSPORTFEST'26",
@@ -2440,21 +2440,21 @@ var renderProgramFixtures = (function () {
     function applyIletisim(lang) {
         var copy = {
             tr: {
-                title: "Ä°letiÅŸim | DCFLSPORTFEST'26",
-                eyebrow: "Ä°LETÄ°ÅÄ°M",
-                h1: "Bize ulaÅŸ, birlikte planlayalÄ±m.",
-                hero: "TakÄ±m kaydÄ±, partnerlik veya genel sorular iÃ§in formu doldurabilirsin.",
-                contact: "Ä°letiÅŸim Bilgileri",
+                title: "\u0130leti\u015fim | DCFLSPORTFEST'26",
+                eyebrow: "\u0130LET\u0130\u015e\u0130M",
+                h1: "Bize ula\u015f, birlikte planlayal\u0131m.",
+                hero: "Tak\u0131m kayd\u0131, partnerlik veya genel sorular i\u00e7in formu doldurabilirsin.",
+                contact: "\u0130leti\u015fim Bilgileri",
                 contactDetails: [
                     "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 K\u00fc\u00e7\u00fck\u00e7ekmece / \u0130stanbul",
                     "<strong>Tarih:</strong> 12-13-14 May\u0131s 2026"
                 ],
-                quick: "HÄ±zlÄ± Mesaj",
-                labels: ["Ad Soyad/ Firma AdÄ±", "E-posta", "Konu", "Mesaj"],
-                placeholders: ["Ad Soyad/ Firma AdÄ±", "ornek@mail.com", "TakÄ±m kaydÄ± / Sponsorluk / Soru", "MesajÄ±nÄ± yaz..."],
-                send: "GÃ¶nder",
-                footer: "Ä°letiÅŸim SayfasÄ±"
+                quick: "H\u0131zl\u0131 Mesaj",
+                labels: ["Ad Soyad/ Firma Ad\u0131", "E-posta", "Konu", "Mesaj"],
+                placeholders: ["Ad Soyad/ Firma Ad\u0131", "ornek@mail.com", "Tak\u0131m kayd\u0131 / Sponsorluk / Soru", "Mesaj\u0131n\u0131 yaz..."],
+                send: "G\u00f6nder",
+                footer: "\u0130leti\u015fim Sayfas\u0131"
             },
             en: {
                 title: "Contact | DCFLSPORTFEST'26",
