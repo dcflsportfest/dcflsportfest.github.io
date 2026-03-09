@@ -6,8 +6,8 @@ const corsHeaders = {
     "Access-Control-Allow-Methods": "POST, OPTIONS"
 };
 
-const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
-const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const projectUrl = Deno.env.get("PROJECT_URL") ?? "";
+const serviceRoleKey = Deno.env.get("SERVICE_ROLE_KEY") ?? "";
 const resendApiKey = Deno.env.get("RESEND_API_KEY") ?? "";
 const resendFromEmail = Deno.env.get("RESEND_FROM_EMAIL") ?? "";
 const resendToEmail = Deno.env.get("RESEND_TO_EMAIL") ?? "";
@@ -45,11 +45,11 @@ function isValidEmail(value: string) {
 }
 
 async function insertSubmission(payload: { name: string; email: string; topic: string; message: string }) {
-    if (!supabaseUrl || !serviceRoleKey) {
+    if (!projectUrl || !serviceRoleKey) {
         throw new Error("Supabase service configuration missing");
     }
 
-    const response = await fetch(`${supabaseUrl}/rest/v1/contact_submissions`, {
+    const response = await fetch(`${projectUrl}/rest/v1/contact_submissions`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

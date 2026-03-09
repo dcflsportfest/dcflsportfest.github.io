@@ -79,8 +79,8 @@ Varsayılan durumda form kayıtları `contact_submissions` tablosuna düşer ve 
 
 Supabase project secret olarak şunları gir:
 
-- `SUPABASE_URL`
-- `SUPABASE_SERVICE_ROLE_KEY`
+- `PROJECT_URL`
+- `SERVICE_ROLE_KEY`
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
 - `RESEND_TO_EMAIL`
@@ -94,8 +94,8 @@ Supabase project secret olarak şunları gir:
 ```bash
 supabase login
 supabase link --project-ref YOUR_PROJECT_REF
-supabase secrets set SUPABASE_URL=https://YOUR_PROJECT_ID.supabase.co
-supabase secrets set SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
+supabase secrets set PROJECT_URL=https://YOUR_PROJECT_ID.supabase.co
+supabase secrets set SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
 supabase secrets set RESEND_API_KEY=YOUR_RESEND_API_KEY
 supabase secrets set RESEND_FROM_EMAIL=verified@yourdomain.com
 supabase secrets set RESEND_TO_EMAIL=dcflsportfest2020@gmail.com
