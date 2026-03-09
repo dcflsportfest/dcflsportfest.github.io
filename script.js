@@ -296,6 +296,27 @@ function renderLiveScoreboard() {
             message: String(formData.get("message") || "").trim()
         };
 
+        if (form.hasAttribute("data-athlete-application")) {
+            var teacherName = String(formData.get("teacher_name") || "").trim();
+            var teacherPhone = String(formData.get("teacher_phone") || "").trim();
+            var studentCount = String(formData.get("student_count") || "").trim();
+            var extraMessage = [
+                "Ad Soyad / Okul Adi: " + payload.name,
+                "Katilim Saglanan Brans: " + payload.topic,
+                "Sorumlu Beden Ogretmeni: " + teacherName,
+                "Sorumlu Beden Ogretmeni Telefon Numarasi: " + teacherPhone,
+                "Sorumlu Beden Ogretmeni E-Posta: " + payload.email,
+                "Gelecek Sporcu Ogrenci Sayisi: " + studentCount
+            ];
+
+            if (payload.message) {
+                extraMessage.push("Ek Notlar: " + payload.message);
+            }
+
+            payload.topic = "Sporcu Basvurusu | " + payload.topic;
+            payload.message = extraMessage.join("\n");
+        }
+
         if (!payload.name || !payload.email || !payload.topic || !payload.message) {
             setStatus("L\u00fctfen t\u00fcm alanlar\u0131 doldur.", "warning");
             return;
@@ -2184,11 +2205,27 @@ var renderProgramFixtures = (function () {
                 infoDetails: [
                     "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 K\u00fc\u00e7\u00fck\u00e7ekmece / \u0130stanbul",
-                    "<strong>Not:</strong> Bran\u015f, ya\u015f grubu, tak\u0131m ad\u0131 ve ileti\u015fim bilgilerini mesaj alan\u0131nda belirt."
+                    "<strong>Not:</strong> Bran\u015f, okul ve sorumlu \u00f6\u011fretmen bilgilerini eksiksiz gir."
                 ],
                 formTitle: "Sporcu Ba\u015fvuru Formu",
-                labels: ["Ad Soyad / Tak\u0131m Ad\u0131", "E-posta", "Konu", "Ba\u015fvuru Detay\u0131"],
-                placeholders: ["Ad Soyad / Tak\u0131m Ad\u0131", "ornek@mail.com", "Sporcu Ba\u015fvurusu", "Bran\u015f, ya\u015f grubu, tak\u0131m ad\u0131 ve di\u011fer ba\u015fvuru detaylar\u0131n\u0131 yaz..."],
+                labels: [
+                    "Ad Soyad / Okul Ad\u0131",
+                    "Kat\u0131l\u0131m Sa\u011flanan Bran\u015f",
+                    "Sorumlu Beden \u00d6\u011fretmeni",
+                    "Sorumlu Beden \u00d6\u011fretmeni Telefon Numaras\u0131",
+                    "Sorumlu Beden \u00d6\u011fretmeni E-Posta",
+                    "Gelecek Sporcu \u00d6\u011frenci Say\u0131s\u0131",
+                    "Ek Notlar"
+                ],
+                placeholders: [
+                    "Ad Soyad / Okul Ad\u0131",
+                    "Kat\u0131l\u0131m Sa\u011flanan Bran\u015f",
+                    "Sorumlu Beden \u00d6\u011fretmeni",
+                    "05xx xxx xx xx",
+                    "ornek@mail.com",
+                    "0",
+                    "Eklemek istedi\u011fin notlar\u0131 yaz..."
+                ],
                 send: "Ba\u015fvuruyu G\u00f6nder",
                 status: "Ba\u015fvurun g\u00fcvenli form kanal\u0131yla iletilir.",
                 footer: "Sporcu Ba\u015fvuru Sayfas\u0131"
@@ -2202,11 +2239,27 @@ var renderProgramFixtures = (function () {
                 infoDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Location:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Note:</strong> Include branch, age group, team name and contact details in the message."
+                    "<strong>Note:</strong> Fill in the branch, school and responsible teacher details completely."
                 ],
                 formTitle: "Athlete Application Form",
-                labels: ["Full Name / Team Name", "E-mail", "Subject", "Application Details"],
-                placeholders: ["Full Name / Team Name", "example@mail.com", "Athlete Application", "Write branch, age group, team name and other application details..."],
+                labels: [
+                    "Full Name / School Name",
+                    "Participating Branch",
+                    "Responsible PE Teacher",
+                    "Responsible PE Teacher Phone Number",
+                    "Responsible PE Teacher E-mail",
+                    "Number of Athlete Students Attending",
+                    "Additional Notes"
+                ],
+                placeholders: [
+                    "Full Name / School Name",
+                    "Participating Branch",
+                    "Responsible PE Teacher",
+                    "+90 5xx xxx xx xx",
+                    "example@mail.com",
+                    "0",
+                    "Write any additional notes..."
+                ],
                 send: "Submit Application",
                 status: "Your application is sent through the secure form channel.",
                 footer: "Athlete Application Page"
@@ -2220,11 +2273,27 @@ var renderProgramFixtures = (function () {
                 infoDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Lokalizacja:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Notatka:</strong> W wiadomosci podaj dyscypline, grupe wiekowa, nazwe druzyny i dane kontaktowe."
+                    "<strong>Notatka:</strong> Wypelnij komplet informacji o dyscyplinie, szkole i nauczycielu odpowiedzialnym."
                 ],
                 formTitle: "Formularz Zgloszenia Zawodnika",
-                labels: ["Imie i nazwisko / Nazwa druzyny", "E-mail", "Temat", "Szczegoly Zgloszenia"],
-                placeholders: ["Imie i nazwisko / Nazwa druzyny", "przyklad@mail.com", "Zgloszenie Zawodnika", "Podaj dyscypline, grupe wiekowa, nazwe druzyny i inne szczegoly..."],
+                labels: [
+                    "Imie i nazwisko / Nazwa szkoly",
+                    "Dyscyplina",
+                    "Nauczyciel WF odpowiedzialny",
+                    "Telefon nauczyciela WF odpowiedzialnego",
+                    "E-mail nauczyciela WF odpowiedzialnego",
+                    "Liczba uczniow-sportowcow",
+                    "Dodatkowe notatki"
+                ],
+                placeholders: [
+                    "Imie i nazwisko / Nazwa szkoly",
+                    "Dyscyplina",
+                    "Nauczyciel WF odpowiedzialny",
+                    "+48 ...",
+                    "przyklad@mail.com",
+                    "0",
+                    "Wpisz dodatkowe notatki..."
+                ],
                 send: "Wyslij Zgloszenie",
                 status: "Zgloszenie zostanie wyslane przez bezpieczny formularz.",
                 footer: "Strona Zgloszenia Zawodnika"
@@ -2243,14 +2312,19 @@ var renderProgramFixtures = (function () {
         }
         setText(".contact-form-card h2", copy.formTitle);
         setText("label[for='athlete-name']", copy.labels[0]);
-        setText("label[for='athlete-email']", copy.labels[1]);
-        setText("label[for='athlete-topic']", copy.labels[2]);
-        setText("label[for='athlete-message']", copy.labels[3]);
+        setText("label[for='athlete-topic']", copy.labels[1]);
+        setText("label[for='athlete-teacher-name']", copy.labels[2]);
+        setText("label[for='athlete-teacher-phone']", copy.labels[3]);
+        setText("label[for='athlete-email']", copy.labels[4]);
+        setText("label[for='athlete-student-count']", copy.labels[5]);
+        setText("label[for='athlete-message']", copy.labels[6]);
         setAttr("#athlete-name", "placeholder", copy.placeholders[0]);
-        setAttr("#athlete-email", "placeholder", copy.placeholders[1]);
-        setAttr("#athlete-topic", "value", copy.placeholders[2]);
-        setAttr("#athlete-topic", "placeholder", copy.placeholders[2]);
-        setAttr("#athlete-message", "placeholder", copy.placeholders[3]);
+        setAttr("#athlete-topic", "placeholder", copy.placeholders[1]);
+        setAttr("#athlete-teacher-name", "placeholder", copy.placeholders[2]);
+        setAttr("#athlete-teacher-phone", "placeholder", copy.placeholders[3]);
+        setAttr("#athlete-email", "placeholder", copy.placeholders[4]);
+        setAttr("#athlete-student-count", "placeholder", copy.placeholders[5]);
+        setAttr("#athlete-message", "placeholder", copy.placeholders[6]);
         setText(".contact-form-card .btn", copy.send);
         setText(".contact-form-status", copy.status);
         setText(".footer p:nth-of-type(2)", copy.footer);

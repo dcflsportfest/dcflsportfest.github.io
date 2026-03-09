@@ -48,46 +48,55 @@
         </nav>
 
         <div class="page-shell">
-            <p class="eyebrow">SPORCU BAÅVURU</p>
-            <h1>BaÅŸvurunu ilet, deÄŸerlendirmeye alalÄ±m.</h1>
-            <p class="hero-text">TakÄ±m veya bireysel sporcu baÅŸvurularÄ±nÄ± gÃ¼venli form Ã¼zerinden gÃ¶nderebilirsin.</p>
+            <p class="eyebrow">SPORCU BA&#350;VURU</p>
+            <h1>Ba&#351;vurunu ilet, de&#287;erlendirmeye alal&#305;m.</h1>
+            <p class="hero-text">Tak&#305;m veya bireysel sporcu ba&#351;vurular&#305;n&#305; g&#252;venli form &#252;zerinden g&#246;nderebilirsin.</p>
         </div>
     </header>
 
     <main>
         <section class="panel panel-highlight contact-layout">
             <article class="contact-info">
-                <h2>BaÅŸvuru Bilgileri</h2>
+                <h2>Ba&#351;vuru Bilgileri</h2>
                 <p class="section-text"><strong>E-posta:</strong> dcflsportfest2020@gmail.com</p>
-                <p class="section-text"><strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 KÃ¼Ã§Ã¼kÃ§ekmece / Ä°stanbul</p>
-                <p class="section-text"><strong>Not:</strong> BranÅŸ, yaÅŸ grubu, takÄ±m adÄ± ve iletiÅŸim bilgilerini mesaj alanÄ±nda belirt.</p>
+                <p class="section-text"><strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 K&#252;&#231;&#252;k&#231;ekmece / &#304;stanbul</p>
+                <p class="section-text"><strong>Not:</strong> Bran&#351;, okul ve sorumlu &#246;&#287;retmen bilgilerini eksiksiz gir.</p>
             </article>
 
             <article class="contact-form-card">
-                <h2>Sporcu BaÅŸvuru Formu</h2>
-                <form class="contact-form" data-contact-form novalidate>
-                    <label for="athlete-name">Ad Soyad / TakÄ±m AdÄ±</label>
-                    <input id="athlete-name" name="name" type="text" placeholder="Ad Soyad / TakÄ±m AdÄ±" required>
+                <h2>Sporcu Ba&#351;vuru Formu</h2>
+                <form class="contact-form" data-contact-form data-athlete-application novalidate>
+                    <label for="athlete-name">Ad Soyad / Okul Ad&#305;</label>
+                    <input id="athlete-name" name="name" type="text" placeholder="Ad Soyad / Okul Ad&#305;" required>
 
-                    <label for="athlete-email">E-posta</label>
+                    <label for="athlete-topic">Kat&#305;l&#305;m Sa&#287;lanan Bran&#351;</label>
+                    <input id="athlete-topic" name="topic" type="text" placeholder="Kat&#305;l&#305;m Sa&#287;lanan Bran&#351;" required>
+
+                    <label for="athlete-teacher-name">Sorumlu Beden &#214;&#287;retmeni</label>
+                    <input id="athlete-teacher-name" name="teacher_name" type="text" placeholder="Sorumlu Beden &#214;&#287;retmeni" required>
+
+                    <label for="athlete-teacher-phone">Sorumlu Beden &#214;&#287;retmeni Telefon Numaras&#305;</label>
+                    <input id="athlete-teacher-phone" name="teacher_phone" type="tel" placeholder="05xx xxx xx xx" required>
+
+                    <label for="athlete-email">Sorumlu Beden &#214;&#287;retmeni E-Posta</label>
                     <input id="athlete-email" name="email" type="email" placeholder="ornek@mail.com" required>
 
-                    <label for="athlete-topic">Konu</label>
-                    <input id="athlete-topic" name="topic" type="text" value="Sporcu BaÅŸvurusu" required>
+                    <label for="athlete-student-count">Gelecek Sporcu &#214;&#287;renci Say&#305;s&#305;</label>
+                    <input id="athlete-student-count" name="student_count" type="number" min="1" step="1" placeholder="0" required>
 
-                    <label for="athlete-message">BaÅŸvuru DetayÄ±</label>
-                    <textarea id="athlete-message" name="message" rows="6" placeholder="BranÅŸ, yaÅŸ grubu, takÄ±m adÄ± ve diÄŸer baÅŸvuru detaylarÄ±nÄ± yaz..." required></textarea>
+                    <label for="athlete-message">Ek Notlar</label>
+                    <textarea id="athlete-message" name="message" rows="5" placeholder="Eklemek istedi&#287;in notlar&#305; yaz..."></textarea>
 
-                    <button type="submit" class="btn btn-primary">BaÅŸvuruyu GÃ¶nder</button>
+                    <button type="submit" class="btn btn-primary">Ba&#351;vuruyu G&#246;nder</button>
                 </form>
-                <p class="contact-form-status" data-contact-form-status aria-live="polite">BaÅŸvurun gÃ¼venli form kanalÄ±yla iletilir.</p>
+                <p class="contact-form-status" data-contact-form-status aria-live="polite">Ba&#351;vurun g&#252;venli form kanal&#305;yla iletilir.</p>
             </article>
         </section>
     </main>
 
     <footer class="footer">
         <p>DCFLSPORTFEST'26</p>
-        <p>Sporcu BaÅŸvuru SayfasÄ±</p>
+        <p>Sporcu Ba&#351;vuru Sayfas&#305;</p>
     </footer>
     <script src="supabase-config.js?v=20260309i"></script>
     <script src="supabase-bridge.js?v=20260309i"></script>
