@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&family=Geist+Mono:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20260309e">
+    <link rel="stylesheet" href="style.css?v=20260309f">
 </head>
 <body>
     <header class="hero">
@@ -135,7 +135,16 @@
             </div>
         </section>
 
-        <section class="panel admin-live-panel">
+        <section class="panel admin-content-tabs-panel">
+            <div class="fixture-tabs admin-content-tabs" data-admin-content-tabs>
+                <button type="button" class="fixture-tab active" data-admin-content-tab="live">Canl&#305; Skorlar</button>
+                <button type="button" class="fixture-tab" data-admin-content-tab="fixture">Fikst&#252;r</button>
+                <button type="button" class="fixture-tab" data-admin-content-tab="results">Sonu&#231;lar</button>
+                <button type="button" class="fixture-tab" data-admin-content-tab="messages">Mesajlar</button>
+            </div>
+        </section>
+
+        <section class="panel admin-live-panel active" data-admin-content-panel="live">
             <div class="section-head">
                 <p class="section-kicker">CANLI SKORLAR</p>
                 <h2>Canl&#305; Ma&#231; Kartlar&#305;</h2>
@@ -143,15 +152,23 @@
             <div class="admin-live-grid" data-admin-live-matches></div>
         </section>
 
-        <section class="panel admin-results-panel">
+        <section class="panel admin-fixture-panel" data-admin-content-panel="fixture" hidden>
             <div class="section-head">
-                <p class="section-kicker">TURNUVA SONU&#199;LARI</p>
-                <h2>Bran&#351; Bazl&#305; Ma&#231; Giri&#351;i</h2>
+                <p class="section-kicker">F&#304;KST&#220;R</p>
+                <h2>Bran&#351; Bazl&#305; Fikst&#252;r Giri&#351;i</h2>
             </div>
-            <div class="admin-branch-grid" data-admin-branches></div>
+            <div class="admin-branch-grid" data-admin-fixtures></div>
         </section>
 
-        <section class="panel admin-submissions-panel">
+        <section class="panel admin-results-panel" data-admin-content-panel="results" hidden>
+            <div class="section-head">
+                <p class="section-kicker">TURNUVA SONU&#199;LARI</p>
+                <h2>Bran&#351; Bazl&#305; Sonu&#231; Giri&#351;i</h2>
+            </div>
+            <div class="admin-branch-grid" data-admin-results></div>
+        </section>
+
+        <section class="panel admin-submissions-panel" data-admin-content-panel="messages" hidden>
             <div class="section-head">
                 <p class="section-kicker">BA&#350;VURULAR</p>
                 <h2>&#304;leti&#351;im Formu Mesajlar&#305;</h2>
@@ -166,10 +183,10 @@
         <p>Admin Panel</p>
     </footer>
 
-    <script src="supabase-config.js?v=20260309e"></script>
-    <script src="supabase-bridge.js?v=20260309e"></script>
-    <script src="site-data.js?v=20260309e"></script>
-    <script src="script.js?v=20260309e"></script>
-    <script src="admin.js?v=20260309e"></script>
+    <script src="supabase-config.js?v=20260309f"></script>
+    <script src="supabase-bridge.js?v=20260309f"></script>
+    <script src="site-data.js?v=20260309f"></script>
+    <script src="script.js?v=20260309f"></script>
+    <script src="admin.js?v=20260309f"></script>
 </body>
 </html>

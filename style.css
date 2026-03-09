@@ -3622,9 +3622,40 @@ h1 {
     background: rgba(7, 15, 34, 0.58);
 }
 
+.admin-content-tabs-panel {
+    padding-top: 0.95rem;
+    padding-bottom: 0.95rem;
+}
+
+.admin-content-tabs {
+    margin: 0;
+}
+
+.admin-results-match-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid rgba(168, 197, 245, 0.14);
+    border-radius: 12px;
+    background: rgba(9, 19, 41, 0.62);
+    color: #e8f1ff;
+}
+
+.admin-results-match-head span {
+    color: var(--muted);
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
 .admin-main[data-edit-locked="true"] .admin-toolbar-panel,
 .admin-main[data-edit-locked="true"] .admin-summary-panel,
 .admin-main[data-edit-locked="true"] .admin-live-panel,
+.admin-main[data-edit-locked="true"] .admin-fixture-panel,
 .admin-main[data-edit-locked="true"] .admin-results-panel {
     position: relative;
     overflow: hidden;
@@ -3633,6 +3664,7 @@ h1 {
 .admin-main[data-edit-locked="true"] .admin-toolbar-panel > *,
 .admin-main[data-edit-locked="true"] .admin-summary-panel > *,
 .admin-main[data-edit-locked="true"] .admin-live-panel > *,
+.admin-main[data-edit-locked="true"] .admin-fixture-panel > *,
 .admin-main[data-edit-locked="true"] .admin-results-panel > * {
     pointer-events: none;
     user-select: none;
@@ -3642,6 +3674,7 @@ h1 {
 .admin-main[data-edit-locked="true"] .admin-toolbar-panel::after,
 .admin-main[data-edit-locked="true"] .admin-summary-panel::after,
 .admin-main[data-edit-locked="true"] .admin-live-panel::after,
+.admin-main[data-edit-locked="true"] .admin-fixture-panel::after,
 .admin-main[data-edit-locked="true"] .admin-results-panel::after {
     content: "Önce admin girişi yap";
     position: absolute;

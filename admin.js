@@ -8,7 +8,8 @@
     var bridge = window.DCFLSupabaseBridge || null;
     var adminMain = document.querySelector("main[data-admin-page]");
     var liveMount = document.querySelector("[data-admin-live-matches]");
-    var branchMount = document.querySelector("[data-admin-branches]");
+    var fixtureMount = document.querySelector("[data-admin-fixtures]");
+    var resultsMount = document.querySelector("[data-admin-results]");
     var activeCountInput = document.querySelector("[data-admin-active-count]");
     var completedInput = document.querySelector("[data-admin-completed-today]");
     var publishToggle = document.querySelector("[data-admin-publish-results]");
@@ -32,6 +33,8 @@
     var adminAccessNote = document.querySelector("[data-admin-access-note]");
     var adminUsersMount = document.querySelector("[data-admin-users]");
     var submissionsMount = document.querySelector("[data-admin-submissions]");
+    var contentTabButtons = Array.from(document.querySelectorAll("[data-admin-content-tab]"));
+    var contentPanels = Array.from(document.querySelectorAll("[data-admin-content-panel]"));
     var defaultTemplates = api.getDefaultData().branchTemplates.reduce(function (map, template) {
         map[template.key] = template;
         return map;
@@ -136,6 +139,40 @@
         ].join("");
     }
 
+    function renderFixtureMatchCard(stageLabel, stageKey, index, time, home, away) {
+        return [
+            "<article class=\"admin-match-card\" data-stage-key=\"" + stageKey + "\" data-match-index=\"" + index + "\">",
+            "    <div class=\"admin-card-head\">",
+            "        <h4>" + stageLabel + "</h4>",
+            "    </div>",
+            "    <div class=\"admin-grid admin-grid-compact\">",
+            renderField("Saat", "time", time),
+            renderField("Ev Sahibi", "home", home),
+            renderField("Deplasman", "away", away),
+            "    </div>",
+            "</article>"
+        ].join("");
+    }
+
+    function renderResultMatchCard(stageLabel, stageKey, index, home, away, homeScore, awayScore) {
+        return [
+            "<article class=\"admin-match-card admin-match-card-results\" data-stage-key=\"" + stageKey + "\" data-match-index=\"" + index + "\">",
+            "    <div class=\"admin-card-head\">",
+            "        <h4>" + stageLabel + "</h4>",
+            "    </div>",
+            "    <div class=\"admin-results-match-head\">",
+            "        <strong>" + escapeHTML(home) + "</strong>",
+            "        <span>vs</span>",
+            "        <strong>" + escapeHTML(away) + "</strong>",
+            "    </div>",
+            "    <div class=\"admin-grid admin-grid-compact\">",
+            renderField("Ev Skor", "homeScore", homeScore),
+            renderField("Dep. Skor", "awayScore", awayScore),
+            "    </div>",
+            "</article>"
+        ].join("");
+    }
+
     function renderBranchCard(template, index) {
         var qfCards = template.qf.times.map(function (time, index) {
             var pair = getPair(template, "qf", index);
@@ -176,6 +213,83 @@
         ].join("");
     }
 
+    function renderFixtureBranchCard(template, index) {
+        var qfCards = template.qf.times.map(function (time, fixtureIndex) {
+            var pair = getPair(template, "qf", fixtureIndex);
+            return renderFixtureMatchCard("\u00c7eyrek Final " + String(fixtureIndex + 1), "qf", fixtureIndex, time, pair[0], pair[1]);
+        }).join("");
+
+        var sfCards = template.sf.times.map(function (time, fixtureIndex) {
+            var pair = getPair(template, "sf", fixtureIndex);
+            return renderFixtureMatchCard("Yar\u0131 Final " + String(fixtureIndex + 1), "sf", fixtureIndex, time, pair[0], pair[1]);
+        }).join("");
+
+        var finalPair = getPair(template, "final", 0);
+
+        return [
+            "<article class=\"fixture-panel admin-branch-card" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + template.key + "\" data-fixture-branch-key=\"" + template.key + "\">",
+            "    <div class=\"admin-card-head\">",
+            "        <h3>" + escapeHTML(template.name.tr || template.key) + "</h3>",
+            "        <p>" + escapeHTML(template.venue.tr || "") + "</p>",
+            "    </div>",
+            "    <div class=\"admin-stage-group\">",
+            "        <h4>\u00c7eyrek Final</h4>",
+            "        <div class=\"admin-match-grid\">" + qfCards + "</div>",
+            "    </div>",
+            "    <div class=\"admin-stage-group\">",
+            "        <h4>Yar\u0131 Final</h4>",
+            "        <div class=\"admin-match-grid\">" + sfCards + "</div>",
+            "    </div>",
+            "    <div class=\"admin-stage-group\">",
+            "        <h4>Final</h4>",
+            "        <div class=\"admin-match-grid\">",
+            renderFixtureMatchCard("Final", "final", 0, template.final.time, finalPair[0], finalPair[1]),
+            "        </div>",
+            "    </div>",
+            "</article>"
+        ].join("");
+    }
+
+    function renderResultsBranchCard(template, index) {
+        var qfCards = template.qf.times.map(function (_time, resultIndex) {
+            var pair = getPair(template, "qf", resultIndex);
+            var score = template.qf.scores[resultIndex] || ["", ""];
+            return renderResultMatchCard("\u00c7eyrek Final " + String(resultIndex + 1), "qf", resultIndex, pair[0], pair[1], score[0], score[1]);
+        }).join("");
+
+        var sfCards = template.sf.times.map(function (_time, resultIndex) {
+            var pair = getPair(template, "sf", resultIndex);
+            var score = template.sf.scores[resultIndex] || ["", ""];
+            return renderResultMatchCard("Yar\u0131 Final " + String(resultIndex + 1), "sf", resultIndex, pair[0], pair[1], score[0], score[1]);
+        }).join("");
+
+        var finalPair = getPair(template, "final", 0);
+        var finalScore = template.final.score || ["", ""];
+
+        return [
+            "<article class=\"fixture-panel admin-branch-card" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + template.key + "\" data-results-branch-key=\"" + template.key + "\">",
+            "    <div class=\"admin-card-head\">",
+            "        <h3>" + escapeHTML(template.name.tr || template.key) + "</h3>",
+            "        <p>" + escapeHTML(template.venue.tr || "") + "</p>",
+            "    </div>",
+            "    <div class=\"admin-stage-group\">",
+            "        <h4>\u00c7eyrek Final</h4>",
+            "        <div class=\"admin-match-grid\">" + qfCards + "</div>",
+            "    </div>",
+            "    <div class=\"admin-stage-group\">",
+            "        <h4>Yar\u0131 Final</h4>",
+            "        <div class=\"admin-match-grid\">" + sfCards + "</div>",
+            "    </div>",
+            "    <div class=\"admin-stage-group\">",
+            "        <h4>Final</h4>",
+            "        <div class=\"admin-match-grid\">",
+            renderResultMatchCard("Final", "final", 0, finalPair[0], finalPair[1], finalScore[0], finalScore[1]),
+            "        </div>",
+            "    </div>",
+            "</article>"
+        ].join("");
+    }
+
     function renderBranchTabs(templates) {
         return templates.map(function (template, index) {
             return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-fixture-tab=\"" + template.key + "\">" + escapeHTML(template.name.tr || template.key) + "</button>";
@@ -189,20 +303,42 @@
         completedInput.value = state.summary && state.summary.completedToday != null ? state.summary.completedToday : "9";
         publishToggle.checked = !!state.publishResults;
         liveMount.innerHTML = state.liveMatches.map(renderLiveCard).join("");
-        branchMount.innerHTML = [
+        fixtureMount.innerHTML = [
             "<div class=\"fixture-tabs admin-branch-tabs\" data-fixture-tabs>",
             renderBranchTabs(state.branchTemplates),
             "</div>",
             "<div class=\"fixture-panels admin-branch-panels\">",
-            state.branchTemplates.map(renderBranchCard).join(""),
+            state.branchTemplates.map(renderFixtureBranchCard).join(""),
+            "</div>"
+        ].join("");
+        resultsMount.innerHTML = [
+            "<div class=\"fixture-tabs admin-branch-tabs\" data-fixture-tabs>",
+            renderBranchTabs(state.branchTemplates),
+            "</div>",
+            "<div class=\"fixture-panels admin-branch-panels\">",
+            state.branchTemplates.map(renderResultsBranchCard).join(""),
             "</div>"
         ].join("");
 
         if (typeof initializeFixtureTabGroups === "function") {
-            initializeFixtureTabGroups(branchMount);
+            initializeFixtureTabGroups(fixtureMount);
+            initializeFixtureTabGroups(resultsMount);
         }
 
         applyEditorPermissions();
+    }
+
+    function setActiveContentTab(key) {
+        contentTabButtons.forEach(function (button) {
+            var isActive = button.getAttribute("data-admin-content-tab") === key;
+            button.classList.toggle("active", isActive);
+        });
+
+        contentPanels.forEach(function (panel) {
+            var isActive = panel.getAttribute("data-admin-content-panel") === key;
+            panel.hidden = !isActive;
+            panel.classList.toggle("active", isActive);
+        });
     }
 
     function syncLiveMatchCount(nextCount) {
@@ -530,25 +666,38 @@
         });
     }
 
+    function collectResultStageMatches(branchCard, stageKey) {
+        return Array.from(branchCard.querySelectorAll("[data-stage-key=\"" + stageKey + "\"]")).map(function (card) {
+            return {
+                homeScore: getInputValue(card, "homeScore"),
+                awayScore: getInputValue(card, "awayScore")
+            };
+        });
+    }
+
     function collectBranchTemplates() {
-        return Array.from(document.querySelectorAll("[data-branch-key]")).map(function (branchCard) {
-            var key = branchCard.getAttribute("data-branch-key");
+        return Array.from(document.querySelectorAll("[data-fixture-branch-key]")).map(function (branchCard) {
+            var key = branchCard.getAttribute("data-fixture-branch-key");
+            var resultCard = resultsMount.querySelector("[data-results-branch-key=\"" + key + "\"]");
             var fallback = clone(defaultTemplates[key]);
             var qfMatches = collectStageMatches(branchCard, "qf");
             var sfMatches = collectStageMatches(branchCard, "sf");
             var finalMatch = collectStageMatches(branchCard, "final")[0];
+            var qfScores = resultCard ? collectResultStageMatches(resultCard, "qf") : [];
+            var sfScores = resultCard ? collectResultStageMatches(resultCard, "sf") : [];
+            var finalScore = resultCard ? collectResultStageMatches(resultCard, "final")[0] : null;
 
             fallback.qf.times = qfMatches.map(function (match) { return match.time; });
             fallback.qf.pairs = qfMatches.map(function (match) { return [match.home, match.away]; });
-            fallback.qf.scores = qfMatches.map(function (match) { return [match.homeScore, match.awayScore]; });
+            fallback.qf.scores = qfScores.map(function (match) { return [match.homeScore, match.awayScore]; });
 
             fallback.sf.times = sfMatches.map(function (match) { return match.time; });
             fallback.sf.pairs = sfMatches.map(function (match) { return [match.home, match.away]; });
-            fallback.sf.scores = sfMatches.map(function (match) { return [match.homeScore, match.awayScore]; });
+            fallback.sf.scores = sfScores.map(function (match) { return [match.homeScore, match.awayScore]; });
 
             fallback.final.time = finalMatch.time;
             fallback.final.pair = [finalMatch.home, finalMatch.away];
-            fallback.final.score = [finalMatch.homeScore, finalMatch.awayScore];
+            fallback.final.score = finalScore ? [finalScore.homeScore, finalScore.awayScore] : ["", ""];
 
             return fallback;
         });
@@ -588,6 +737,12 @@
             syncLiveMatchCount(activeCountInput.value);
         });
     }
+
+    contentTabButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            setActiveContentTab(button.getAttribute("data-admin-content-tab"));
+        });
+    });
 
     async function loadBestAvailableData() {
         state = await api.loadData();
@@ -719,6 +874,7 @@
     (async function init() {
         render();
         applyEditorPermissions();
+        setActiveContentTab("live");
         await refreshRemoteStatus();
         await loadBestAvailableData();
         await refreshContactSubmissions();
