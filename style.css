@@ -3953,3 +3953,416 @@ h1 {
         font-size: 0.96rem;
     }
 }
+
+/* Global mobile refinement layer */
+img,
+video,
+svg,
+canvas {
+    max-width: 100%;
+}
+
+html,
+body {
+    overflow-x: clip;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 0.7rem 0.72rem 1rem;
+    }
+
+    main {
+        padding: 0 0.72rem 1.15rem;
+    }
+
+    .top-nav,
+    .hero-shell,
+    .page-shell,
+    .panel {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .top-nav {
+        padding: 0.36rem 0.44rem;
+        gap: 0.24rem 0.38rem;
+    }
+
+    .brand {
+        max-width: 62vw;
+        font-size: 0.8rem;
+        line-height: 1.15;
+    }
+
+    .nav-toggle {
+        min-height: 38px;
+        min-width: 78px;
+        padding: 0.36rem 0.62rem;
+        font-size: 0.79rem;
+    }
+
+    .nav-actions {
+        width: 100%;
+        min-width: 0;
+        gap: 0.3rem;
+    }
+
+    .nav-actions.open {
+        margin-top: 0.24rem;
+        padding: 0.3rem;
+        border-radius: 12px;
+    }
+
+    .nav-link,
+    .lang-picker {
+        min-height: 40px;
+        padding: 0.5rem 0.74rem;
+        font-size: 0.88rem;
+        line-height: 1.25;
+    }
+
+    .hero-shell,
+    .page-shell {
+        margin-top: 0.72rem;
+        padding: 0.95rem 0.88rem;
+        border-radius: 18px;
+    }
+
+    .hero-shell {
+        gap: 0.85rem;
+    }
+
+    .eyebrow {
+        font-size: 0.67rem;
+        letter-spacing: 0.14em;
+    }
+
+    h1,
+    .page-shell h1,
+    .program-page .page-shell h1,
+    .finance-page .page-shell h1 {
+        font-size: clamp(1.5rem, 6.7vw, 2.15rem);
+        line-height: 1.06;
+        letter-spacing: -0.03em;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .hero-text,
+    .section-text,
+    .tile p,
+    .tile li,
+    .faq-card p,
+    .post-card p,
+    .contact-info p {
+        font-size: 0.93rem;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+
+    .hero-list,
+    .tile ul,
+    .contact-list {
+        padding-left: 1rem;
+    }
+
+    .cta-row,
+    .admin-toolbar,
+    .contact-panel {
+        gap: 0.55rem;
+    }
+
+    .btn,
+    .cta-row .btn,
+    .contact-form button,
+    .admin-toolbar .btn {
+        min-height: 44px;
+        width: 100%;
+        justify-content: center;
+        padding: 0.72rem 0.9rem;
+        border-radius: 13px;
+        font-size: 0.93rem;
+    }
+
+    .stats,
+    .feature-grid,
+    .post-grid,
+    .faq-grid,
+    .contact-layout,
+    .program-overview-grid,
+    .admin-grid,
+    .admin-grid-compact,
+    .admin-live-grid,
+    .admin-branch-grid,
+    .admin-match-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .stats article,
+    .tile,
+    .faq-card,
+    .post-card,
+    .contact-form-card,
+    .contact-info,
+    .fixture-panel,
+    .score-summary-card,
+    .score-card,
+    .admin-card,
+    .admin-branch-card,
+    .admin-match-card,
+    .admin-submission-card,
+    .admin-status-card {
+        min-width: 0;
+        padding: 0.9rem 0.82rem;
+        border-radius: 15px;
+    }
+
+    .panel {
+        padding: 0.95rem 0.86rem;
+        border-radius: 18px;
+    }
+
+    .panel h2,
+    .section-head h2 {
+        font-size: 1.2rem;
+        line-height: 1.18;
+        overflow-wrap: anywhere;
+    }
+
+    .section-kicker,
+    .section-head .section-kicker {
+        font-size: 0.66rem;
+        letter-spacing: 0.16em;
+    }
+
+    .countdown-card {
+        padding: 0.58rem;
+    }
+
+    .countdown-grid {
+        gap: 0.34rem;
+    }
+
+    .countdown-item {
+        min-height: 60px;
+        padding: 0.42rem 0.28rem;
+    }
+
+    .countdown-value {
+        font-size: 0.92rem;
+    }
+
+    .countdown-label {
+        font-size: 0.6rem;
+    }
+
+    .scoreboard-panel,
+    .score-results-shell,
+    .score-results-day-panel,
+    .score-results-branch-panel,
+    .scoreboard-view,
+    .score-results-grid,
+    .score-results-day-panels {
+        min-width: 0;
+    }
+
+    .scoreboard-grid-empty .score-card-empty,
+    .score-card-empty {
+        min-height: 160px;
+        padding: 1rem 0.86rem;
+    }
+
+    .score-card-head,
+    .score-card-teams,
+    .score-card-meta,
+    .score-results-head {
+        gap: 0.42rem;
+    }
+
+    .score-card-team strong,
+    .score-card-score,
+    .score-results-date {
+        font-size: 0.96rem;
+    }
+
+    .score-results-caption,
+    .score-card-meta,
+    .score-summary-label,
+    .score-summary-value {
+        overflow-wrap: anywhere;
+    }
+
+    .score-results-grid {
+        gap: 0.6rem;
+        padding-bottom: 0.15rem;
+    }
+
+    .fixture-tabs,
+    .score-results-day-tabs,
+    .score-results-branch-tabs,
+    .admin-content-tabs,
+    .admin-branch-tabs {
+        gap: 0.34rem;
+        padding-bottom: 0.1rem;
+        overflow-x: auto;
+        overflow-y: hidden;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .fixture-tabs::-webkit-scrollbar,
+    .score-results-day-tabs::-webkit-scrollbar,
+    .score-results-branch-tabs::-webkit-scrollbar,
+    .admin-content-tabs::-webkit-scrollbar,
+    .admin-branch-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .fixture-tab {
+        flex: 0 0 auto;
+        min-height: 38px;
+        padding: 0.5rem 0.74rem;
+        font-size: 0.82rem;
+        white-space: nowrap;
+    }
+
+    .fixture-layout {
+        grid-template-columns: 1fr;
+        gap: 0.72rem;
+    }
+
+    .bracket-scroller,
+    .fixture-table-wrap,
+    .fixture-table,
+    .fixture-schedule {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .fixture-table {
+        display: block;
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    .fixture-table th,
+    .fixture-table td {
+        min-width: 96px;
+        font-size: 0.82rem;
+    }
+
+    .contact-form input,
+    .contact-form textarea,
+    .admin-field input,
+    .admin-toggle input,
+    .lang-picker {
+        width: 100%;
+        max-width: 100%;
+        font-size: 0.92rem;
+        min-height: 44px;
+    }
+
+    .contact-form textarea {
+        min-height: 132px;
+    }
+
+    .footer {
+        padding: 0.65rem 0.8rem 1rem;
+    }
+}
+
+@media (max-width: 414px) {
+    .hero {
+        padding-left: 0.62rem;
+        padding-right: 0.62rem;
+    }
+
+    main {
+        padding-left: 0.62rem;
+        padding-right: 0.62rem;
+    }
+
+    .top-nav,
+    .hero-shell,
+    .page-shell,
+    .panel {
+        border-radius: 16px;
+    }
+
+    .panel,
+    .hero-shell,
+    .page-shell,
+    .stats article,
+    .tile,
+    .score-card,
+    .score-summary-card,
+    .contact-form-card,
+    .contact-info {
+        padding-left: 0.78rem;
+        padding-right: 0.78rem;
+    }
+}
+
+@media (max-width: 390px) {
+    .brand {
+        max-width: 58vw;
+        font-size: 0.76rem;
+    }
+
+    h1,
+    .page-shell h1,
+    .program-page .page-shell h1,
+    .finance-page .page-shell h1 {
+        font-size: clamp(1.38rem, 6.1vw, 1.9rem);
+    }
+
+    .hero-text,
+    .section-text,
+    .tile p,
+    .tile li,
+    .faq-card p,
+    .post-card p {
+        font-size: 0.9rem;
+    }
+
+    .fixture-tab,
+    .nav-link,
+    .lang-picker {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .hero {
+        padding-left: 0.52rem;
+        padding-right: 0.52rem;
+    }
+
+    main {
+        padding-left: 0.52rem;
+        padding-right: 0.52rem;
+    }
+
+    .top-nav,
+    .hero-shell,
+    .page-shell,
+    .panel {
+        border-radius: 14px;
+    }
+
+    .nav-toggle {
+        min-width: 70px;
+        font-size: 0.74rem;
+    }
+
+    .btn,
+    .cta-row .btn,
+    .contact-form button,
+    .admin-toolbar .btn {
+        font-size: 0.88rem;
+        padding: 0.68rem 0.78rem;
+    }
+}
