@@ -3204,6 +3204,12 @@ h1 {
         padding: 1rem 0.95rem;
     }
 
+    .page-shell,
+    .feature-grid,
+    .feature-grid > * {
+        min-width: 0;
+    }
+
     .page-shell .hero-text {
         max-width: none;
         font-size: 0.98rem;
@@ -3231,12 +3237,15 @@ h1 {
         font-size: clamp(1.55rem, 7vw, 2rem);
         line-height: 1.06;
         margin-bottom: 0.72rem;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .page-shell .hero-text {
         font-size: 0.92rem;
         line-height: 1.62;
         margin: 0.58rem 0 0;
+        overflow-wrap: anywhere;
     }
 
     .hero-list {
@@ -3248,31 +3257,39 @@ h1 {
     .hero-list li {
         font-size: 0.9rem;
         line-height: 1.55;
+        overflow-wrap: anywhere;
     }
 
     .section-head {
         gap: 0.3rem;
+        min-width: 0;
     }
 
     .section-head h2 {
         font-size: 1.18rem;
         line-height: 1.2;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .tile {
         padding: 0.9rem 0.82rem;
         border-radius: 14px;
+        min-width: 0;
     }
 
     .tile h3 {
         font-size: 1rem;
         margin-bottom: 0.5rem;
+        overflow-wrap: anywhere;
     }
 
     .tile p,
     .tile li {
         font-size: 0.9rem;
         line-height: 1.58;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .tile ul {
