@@ -836,13 +836,18 @@ h1 {
 
 .score-results-day-panels {
     display: grid;
+    gap: 1rem;
     min-width: 0;
 }
 
 .score-results-day-panel {
-    display: none;
+    display: grid;
     gap: 0.8rem;
     min-width: 0;
+    padding: 0.9rem;
+    border-radius: 20px;
+    background: rgba(7, 15, 34, 0.28);
+    border: 1px solid rgba(151, 185, 239, 0.12);
 }
 
 .score-results-day-panel.active {

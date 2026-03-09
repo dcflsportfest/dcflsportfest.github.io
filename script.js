@@ -959,23 +959,6 @@ var renderScoreResults = (function () {
         ].join("");
     }
 
-    function activateDay(group, dayKey) {
-        var tabs = group.querySelectorAll("[data-score-day-tab]");
-        var panels = group.querySelectorAll("[data-score-day-panel]");
-
-        tabs.forEach(function (tab) {
-            var isActive = tab.getAttribute("data-score-day-tab") === dayKey;
-            tab.classList.toggle("active", isActive);
-            tab.setAttribute("aria-selected", isActive ? "true" : "false");
-        });
-
-        panels.forEach(function (panel) {
-            var isActive = panel.getAttribute("data-score-day-panel") === dayKey;
-            panel.classList.toggle("active", isActive);
-            panel.setAttribute("aria-hidden", isActive ? "false" : "true");
-        });
-    }
-
     return function (lang) {
         var currentLang = uiCopy[lang] ? lang : "tr";
         var dayUi = uiCopy[currentLang];
@@ -989,31 +972,20 @@ var renderScoreResults = (function () {
 
         shells.forEach(function (shell) {
             shell.innerHTML = [
-                "<div class=\"fixture-tabs score-results-day-tabs\" role=\"tablist\" aria-label=\"" + dayUi.dayTabsAria + "\">",
-                days.map(function (day, index) {
-                    return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-score-day-tab=\"" + day.key + "\" aria-selected=\"" + (index === 0 ? "true" : "false") + "\" aria-controls=\"score-results-" + day.key + "\">" + pickText(day.label, currentLang) + "</button>";
-                }).join(""),
-                "</div>",
                 "<div class=\"score-results-day-panels\">",
-                days.map(function (day, index) {
-                    return renderDayPanel(day, currentLang, dayUi, index === 0, templates, publishResults);
+                days.map(function (day) {
+                    return renderDayPanel(day, currentLang, dayUi, true, templates, publishResults);
                 }).join(""),
                 "</div>"
             ].join("");
 
-            shell.querySelectorAll("[data-score-day-tab]").forEach(function (tab) {
-                tab.setAttribute("role", "tab");
-                tab.addEventListener("click", function () {
-                    activateDay(shell, tab.getAttribute("data-score-day-tab"));
-                });
-            });
-
             shell.querySelectorAll("[data-score-day-panel]").forEach(function (panel) {
                 panel.setAttribute("role", "tabpanel");
+                panel.classList.add("active");
+                panel.setAttribute("aria-hidden", "false");
             });
 
             initializeFixtureTabGroups(shell);
-            activateDay(shell, days[0].key);
         });
     };
 })();
