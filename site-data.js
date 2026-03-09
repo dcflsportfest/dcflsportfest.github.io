@@ -86,7 +86,8 @@
 
     var defaultData = {
         summary: {
-            completedToday: "9"
+            completedToday: "9",
+            resultsCount: "4"
         },
         publishResults: false,
         liveMatches: [
@@ -293,6 +294,7 @@
         var source = raw && typeof raw === "object" ? raw : {};
 
         defaults.summary.completedToday = asText(source.summary && source.summary.completedToday, defaults.summary.completedToday);
+        defaults.summary.resultsCount = asText(source.summary && source.summary.resultsCount, defaults.summary.resultsCount);
         defaults.publishResults = !!source.publishResults;
 
         if (Array.isArray(source.liveMatches)) {

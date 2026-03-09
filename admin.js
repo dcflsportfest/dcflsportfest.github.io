@@ -12,6 +12,7 @@
     var resultsMount = document.querySelector("[data-admin-results]");
     var activeCountInput = document.querySelector("[data-admin-active-count]");
     var completedInput = document.querySelector("[data-admin-completed-today]");
+    var resultsCountInput = document.querySelector("[data-admin-results-count]");
     var publishToggle = document.querySelector("[data-admin-publish-results]");
     var saveButton = document.querySelector("[data-admin-save]");
     var resetButton = document.querySelector("[data-admin-reset]");
@@ -301,6 +302,9 @@
             activeCountInput.value = String(Array.isArray(state.liveMatches) ? state.liveMatches.length : 0);
         }
         completedInput.value = state.summary && state.summary.completedToday != null ? state.summary.completedToday : "9";
+        if (resultsCountInput) {
+            resultsCountInput.value = state.summary && state.summary.resultsCount != null ? state.summary.resultsCount : "4";
+        }
         publishToggle.checked = !!state.publishResults;
         liveMount.innerHTML = state.liveMatches.map(renderLiveCard).join("");
         fixtureMount.innerHTML = [
@@ -375,7 +379,7 @@
             adminMain.setAttribute("data-edit-locked", editable ? "false" : "true");
         }
 
-        Array.from(scope.querySelectorAll("[data-field], [data-admin-completed-today], [data-admin-publish-results]")).forEach(function (input) {
+        Array.from(scope.querySelectorAll("[data-field], [data-admin-completed-today], [data-admin-results-count], [data-admin-publish-results]")).forEach(function (input) {
             input.disabled = !editable;
         });
 
@@ -710,7 +714,8 @@
 
         return {
             summary: {
-                completedToday: completedInput.value.trim()
+                completedToday: completedInput.value.trim(),
+                resultsCount: resultsCountInput ? resultsCountInput.value.trim() : "4"
             },
             publishResults: !!publishToggle.checked,
             liveMatches: collectLiveMatches(),

@@ -562,12 +562,12 @@ var renderScoreResults = (function () {
     var uiCopy = {
         tr: {
             dayTabsAria: "G\u00fcnlere g\u00f6re sonu\u00e7lar",
-            daySelectLabel: "Tarih Se\u00e7",
             dayCaptions: {
                 "12-mayis": "Bran\u015fa g\u00f6re \u00e7eyrek final ma\u00e7lar\u0131",
                 "13-mayis": "Bran\u015fa g\u00f6re yar\u0131 final ma\u00e7lar\u0131",
                 "14-mayis": "Bran\u015fa g\u00f6re final ma\u00e7lar\u0131"
             },
+            empty: "Hen\u00fcz bir ma\u00e7 oynanmad\u0131.",
             resultsTitle: function (branchName) {
                 return branchName + " Sonu\u00e7lar\u0131";
             },
@@ -587,12 +587,12 @@ var renderScoreResults = (function () {
         },
         en: {
             dayTabsAria: "Results by day",
-            daySelectLabel: "Select Date",
             dayCaptions: {
                 "12-mayis": "Quarter-final matches by branch",
                 "13-mayis": "Semi-final matches by branch",
                 "14-mayis": "Final matches by branch"
             },
+            empty: "No matches have been played yet.",
             resultsTitle: function (branchName) {
                 return branchName + " Results";
             },
@@ -612,12 +612,12 @@ var renderScoreResults = (function () {
         },
         pl: {
             dayTabsAria: "Wyniki wedlug dni",
-            daySelectLabel: "Wybierz Date",
             dayCaptions: {
                 "12-mayis": "Mecze cwiercfinalowe wedlug dyscyplin",
                 "13-mayis": "Mecze polfinalowe wedlug dyscyplin",
                 "14-mayis": "Mecze finalowe wedlug dyscyplin"
             },
+            empty: "Nie rozegrano jeszcze zadnego meczu.",
             resultsTitle: function (branchName) {
                 return "Wyniki: " + branchName;
             },
@@ -950,13 +950,13 @@ var renderScoreResults = (function () {
         ].join("");
     }
 
-    function renderDayPanel(day, lang, dayUi, isActive, templates, publishResults) {
+    function renderDayPanel(day, lang, dayUi, isActive, templates, publishResults, resultsCount) {
         var branchTabs = templates.map(function (branch, index) {
             return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-fixture-tab=\"" + branch.key + "\">" + pickText(branch.name, lang) + "</button>";
         }).join("");
 
         var branchPanels = templates.map(function (branch, index) {
-            var matches = buildMatchesForBranch(branch, day, lang, publishResults);
+            var matches = buildMatchesForBranch(branch, day, lang, publishResults).slice(0, resultsCount);
             return [
                 "<article class=\"fixture-panel score-results-branch-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + branch.key + "\">",
                 "    <h3>" + dayUi.resultsTitle(pickText(branch.name, lang)) + "</h3>",
@@ -989,21 +989,23 @@ var renderScoreResults = (function () {
         var state = getScoreData();
         var templates = Array.isArray(state.branchTemplates) && state.branchTemplates.length ? state.branchTemplates : branchTemplates;
         var publishResults = !!state.publishResults;
+        var resultsCount = Math.max(0, Number(state.summary && state.summary.resultsCount != null ? state.summary.resultsCount : 4) || 0);
         var shells = document.querySelectorAll("[data-score-results]");
         if (!shells.length) {
             return;
         }
 
         shells.forEach(function (shell) {
+            if (resultsCount === 0) {
+                shell.innerHTML = [
+                    "<div class=\"score-results-empty\">",
+                    "    <p class=\"score-results-empty-text\">" + dayUi.empty + "</p>",
+                    "</div>"
+                ].join("");
+                return;
+            }
+
             shell.innerHTML = [
-                "<div class=\"score-results-toolbar\">",
-                "    <label class=\"score-results-select-label\" for=\"score-results-day-select\">" + dayUi.daySelectLabel + "</label>",
-                "    <select class=\"score-results-select\" id=\"score-results-day-select\" data-score-day-select>",
-                days.map(function (day, index) {
-                    return "<option value=\"" + day.key + "\"" + (index === 0 ? " selected" : "") + ">" + pickText(day.fullDate, currentLang) + "</option>";
-                }).join(""),
-                "    </select>",
-                "</div>",
                 "<div class=\"fixture-tabs score-results-day-tabs\" data-score-day-tabs role=\"tablist\" aria-label=\"" + dayUi.dayTabsAria + "\">",
                 days.map(function (day, index) {
                     return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-score-day-tab=\"" + day.key + "\" aria-selected=\"" + (index === 0 ? "true" : "false") + "\">" + pickText(day.label, currentLang) + "</button>";
@@ -1011,14 +1013,13 @@ var renderScoreResults = (function () {
                 "</div>",
                 "<div class=\"score-results-day-panels\">",
                 days.map(function (day) {
-                    return renderDayPanel(day, currentLang, dayUi, day.key === days[0].key, templates, publishResults);
+                    return renderDayPanel(day, currentLang, dayUi, day.key === days[0].key, templates, publishResults, resultsCount);
                 }).join(""),
                 "</div>"
             ].join("");
 
             var dayTabs = Array.prototype.slice.call(shell.querySelectorAll("[data-score-day-tab]"));
             var dayPanels = Array.prototype.slice.call(shell.querySelectorAll("[data-score-day-panel]"));
-            var daySelect = shell.querySelector("[data-score-day-select]");
 
             function activateDay(dayKey) {
                 dayTabs.forEach(function (tab) {
@@ -1032,10 +1033,6 @@ var renderScoreResults = (function () {
                     panel.classList.toggle("active", isActive);
                     panel.setAttribute("aria-hidden", isActive ? "false" : "true");
                 });
-
-                if (daySelect) {
-                    daySelect.value = dayKey;
-                }
             }
 
             dayTabs.forEach(function (tab) {
@@ -1044,12 +1041,6 @@ var renderScoreResults = (function () {
                     activateDay(tab.getAttribute("data-score-day-tab"));
                 });
             });
-
-            if (daySelect) {
-                daySelect.addEventListener("change", function () {
-                    activateDay(daySelect.value);
-                });
-            }
 
             dayPanels.forEach(function (panel) {
                 panel.setAttribute("role", "tabpanel");
