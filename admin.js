@@ -47,6 +47,12 @@
         isAdmin: false,
         users: []
     };
+    var LOGIN_GUARD_KEY = "dcfl_admin_login_guard_v1";
+    var MAX_LOGIN_ATTEMPTS = 5;
+    var LOGIN_WINDOW_MS = 10 * 60 * 1000;
+    var LOGIN_LOCK_MS = 15 * 60 * 1000;
+    var INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000;
+    var inactivityTimer = null;
 
     function clone(value) {
         return JSON.parse(JSON.stringify(value));
@@ -63,6 +69,114 @@
 
     function normalizeEmail(value) {
         return String(value || "").trim().toLowerCase();
+    }
+
+    function readLoginGuard() {
+        try {
+            return JSON.parse(localStorage.getItem(LOGIN_GUARD_KEY) || "{}");
+        } catch (_error) {
+            return {};
+        }
+    }
+
+    function writeLoginGuard(value) {
+        try {
+            localStorage.setItem(LOGIN_GUARD_KEY, JSON.stringify(value));
+        } catch (_error) {
+            // ignore storage errors
+        }
+    }
+
+    function normalizeLoginGuard(raw) {
+        var now = Date.now();
+        var attempts = Array.isArray(raw.attempts) ? raw.attempts.filter(function (value) {
+            return Number.isFinite(value) && now - value < LOGIN_WINDOW_MS;
+        }) : [];
+        var lockedUntil = Number.isFinite(raw.lockedUntil) ? raw.lockedUntil : 0;
+        return {
+            attempts: attempts,
+            lockedUntil: lockedUntil > now ? lockedUntil : 0
+        };
+    }
+
+    function getLockRemainingMs() {
+        var guard = normalizeLoginGuard(readLoginGuard());
+        writeLoginGuard(guard);
+        return guard.lockedUntil > 0 ? Math.max(0, guard.lockedUntil - Date.now()) : 0;
+    }
+
+    function clearLoginGuard() {
+        writeLoginGuard({ attempts: [], lockedUntil: 0 });
+    }
+
+    function registerFailedLogin() {
+        var guard = normalizeLoginGuard(readLoginGuard());
+        var now = Date.now();
+        guard.attempts.push(now);
+        if (guard.attempts.length >= MAX_LOGIN_ATTEMPTS) {
+            guard.attempts = [];
+            guard.lockedUntil = now + LOGIN_LOCK_MS;
+        }
+        writeLoginGuard(guard);
+        return guard;
+    }
+
+    function formatRemainingTime(ms) {
+        var minutes = Math.ceil(ms / 60000);
+        return minutes <= 1 ? "1 dakika" : String(minutes) + " dakika";
+    }
+
+    function maskEmail(email) {
+        var normalized = normalizeEmail(email);
+        var parts = normalized.split("@");
+        if (parts.length !== 2) {
+            return normalized;
+        }
+
+        var local = parts[0];
+        var domain = parts[1];
+        if (local.length <= 2) {
+            return local.charAt(0) + "*@" + domain;
+        }
+        return local.slice(0, 2) + "*****@" + domain;
+    }
+
+    async function forceLogout(reason) {
+        if (!bridge || !bridge.isConfigured || !bridge.isConfigured()) {
+            return;
+        }
+        try {
+            await bridge.signOut();
+        } catch (_error) {
+            // ignore sign-out errors during forced logout
+        }
+        inactivityTimer = null;
+        await refreshRemoteStatus();
+        await refreshContactSubmissions();
+        setMessage(reason || "Admin oturumu kapatıldı.", "info");
+    }
+
+    function armInactivityTimer() {
+        if (inactivityTimer) {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = null;
+        }
+        if (!(accessState.configured && accessState.session && accessState.isAdmin)) {
+            return;
+        }
+        inactivityTimer = setTimeout(function () {
+            forceLogout("Güvenlik için oturum süresi doldu. Yeniden giriş yap.");
+        }, INACTIVITY_TIMEOUT_MS);
+    }
+
+    function bindInactivityHandlers() {
+        ["pointerdown", "keydown", "touchstart", "scroll"].forEach(function (eventName) {
+            window.addEventListener(eventName, function () {
+                if (accessState.configured && accessState.session && accessState.isAdmin) {
+                    armInactivityTimer();
+                }
+            }, { passive: true });
+        });
     }
 
     function setMessage(text, tone) {
@@ -455,35 +569,30 @@
             return;
         }
 
-        if (!accessState.users.length) {
+        if (accessState.isAdmin) {
             adminUsersMount.innerHTML = [
-                "<article class=\"admin-user-row admin-user-row-empty\">",
+                "<article class=\"admin-user-row\">",
                 "    <div class=\"admin-user-meta\">",
-                "        <strong>Admin listesi boş</strong>",
-                "        <p>İlk giriş yapan hesap otomatik olarak ilk admin olabilir. Gerekirse sayfayı yenileyip tekrar giriş yap.</p>",
+                "        <strong>" + escapeHTML(sessionEmail || "-") + "</strong>",
+                "        <p>Bu hesap yetkili admin. Diğer admin hesapları güvenlik nedeniyle burada listelenmez.</p>",
+                "    </div>",
+                "    <div class=\"admin-user-actions\">",
+                "        <span class=\"admin-user-badge\">Admin</span>",
+                "        <span class=\"admin-user-badge\">Aktif</span>",
                 "    </div>",
                 "</article>"
             ].join("");
             return;
         }
 
-        adminUsersMount.innerHTML = "<div class=\"admin-user-list\">" + accessState.users.map(function (item) {
-            var email = normalizeEmail(item.email);
-            var isCurrent = email === sessionEmail;
-
-            return [
-                "<article class=\"admin-user-row\">",
-                "    <div class=\"admin-user-meta\">",
-                "        <strong>" + escapeHTML(email) + "</strong>",
-                "        <p>" + (isCurrent ? "Bu oturum şu an bu hesapla açık." : "Yetkili admin hesabı.") + "</p>",
-                "    </div>",
-                "    <div class=\"admin-user-actions\">",
-                "        <span class=\"admin-user-badge\">Admin</span>",
-                isCurrent ? "        <span class=\"admin-user-badge\">Aktif</span>" : "",
-                "    </div>",
-                "</article>"
-            ].join("");
-        }).join("") + "</div>";
+        adminUsersMount.innerHTML = [
+            "<article class=\"admin-user-row admin-user-row-empty\">",
+            "    <div class=\"admin-user-meta\">",
+            "        <strong>Yetki bekleniyor</strong>",
+            "        <p>Bu hesap giriş yaptı, ancak admin yetkisi tanımlı değil.</p>",
+            "    </div>",
+            "</article>"
+        ].join("");
     }
 
     function formatSubmissionTime(value) {
@@ -556,6 +665,7 @@
     }
 
     function setRemoteStatus(configured, session, isAdmin) {
+        var remaining = getLockRemainingMs();
         if (connectionStatus) {
             connectionStatus.textContent = configured ? "Supabase Haz\u0131r" : "Yerel Mod";
         }
@@ -577,7 +687,7 @@
                     : "Bu hesap oturum a\u00e7t\u0131, ancak admin listesinde de\u011fil.";
         }
         if (loginButton) {
-            loginButton.disabled = !configured;
+            loginButton.disabled = !configured || remaining > 0;
         }
         if (logoutButton) {
             logoutButton.disabled = !configured || !(session && session.user);
@@ -590,17 +700,13 @@
         var users = [];
         var isAdmin = false;
 
-        if (configured && session && session.user && bridge && bridge.fetchAdminUsers) {
+        if (configured && session && session.user && bridge && bridge.isCurrentUserAdmin) {
             try {
-                users = await bridge.fetchAdminUsers();
+                isAdmin = await bridge.isCurrentUserAdmin();
             } catch (error) {
-                users = [];
+                isAdmin = false;
             }
         }
-
-        isAdmin = !!(session && session.user && users.some(function (item) {
-            return normalizeEmail(item.email) === normalizeEmail(session.user.email);
-        }));
 
         accessState = {
             configured: configured,
@@ -611,6 +717,7 @@
 
         setRemoteStatus(configured, session, isAdmin);
         renderAdminAccess();
+        armInactivityTimer();
         return {
             configured: configured,
             session: session,
@@ -841,14 +948,29 @@
                 return;
             }
 
+            var remaining = getLockRemainingMs();
+            if (remaining > 0) {
+                setMessage("Çok fazla başarısız deneme oldu. " + formatRemainingTime(remaining) + " sonra tekrar dene.", "error");
+                await refreshRemoteStatus();
+                return;
+            }
+
             try {
                 await bridge.signIn(emailInput.value.trim(), passwordInput.value);
+                clearLoginGuard();
                 passwordInput.value = "";
                 await refreshRemoteStatus();
                 await loadBestAvailableData();
                 await refreshContactSubmissions();
                 setMessage("Admin oturumu a\u00e7\u0131ld\u0131.", "success");
             } catch (error) {
+                var guard = registerFailedLogin();
+                var lockRemaining = guard.lockedUntil ? Math.max(0, guard.lockedUntil - Date.now()) : 0;
+                await refreshRemoteStatus();
+                if (lockRemaining > 0) {
+                    setMessage("Çok fazla başarısız deneme oldu. " + formatRemainingTime(lockRemaining) + " boyunca giriş kilitlendi.", "error");
+                    return;
+                }
                 setMessage("Giri\u015f ba\u015far\u0131s\u0131z: " + (error && error.message ? error.message : "Bilinmeyen hata"), "error");
             }
         });
@@ -877,6 +999,7 @@
     });
 
     (async function init() {
+        bindInactivityHandlers();
         render();
         applyEditorPermissions();
         setActiveContentTab("live");

@@ -5,6 +5,7 @@
     var clientPromise = null;
     var authListenerAttached = false;
     var adminTable = config.adminTable || "admin_users";
+    var authStorageKey = config.authStorageKey || "dcfl_admin_auth_v1";
 
     function normalizeEmail(value) {
         return String(value || "").trim().toLowerCase();
@@ -28,9 +29,10 @@
                 .then(function (module) {
                     var client = module.createClient(config.url, publicKey, {
                         auth: {
+                            storageKey: authStorageKey,
                             persistSession: true,
                             autoRefreshToken: true,
-                            detectSessionInUrl: true
+                            detectSessionInUrl: false
                         }
                     });
 
@@ -65,7 +67,7 @@
         }
 
         var result = await client.auth.signInWithPassword({
-            email: email,
+            email: normalizeEmail(email),
             password: password
         });
 
@@ -159,6 +161,25 @@
         return Array.isArray(result.data) ? result.data : [];
     }
 
+    async function isCurrentUserAdmin() {
+        var client = await getClient();
+        if (!client) {
+            return false;
+        }
+
+        var session = await getSession();
+        if (!session || !session.user) {
+            return false;
+        }
+
+        var result = await client.rpc("is_admin");
+        if (result.error) {
+            throw result.error;
+        }
+
+        return !!result.data;
+    }
+
     async function submitContactSubmission(payload) {
         var client = await getClient();
         if (!client) {
@@ -236,6 +257,7 @@
         getSession: getSession,
         signIn: signIn,
         signOut: signOut,
+        isCurrentUserAdmin: isCurrentUserAdmin,
         fetchAdminUsers: fetchAdminUsers,
         submitContactSubmission: submitContactSubmission,
         fetchContactSubmissions: fetchContactSubmissions,

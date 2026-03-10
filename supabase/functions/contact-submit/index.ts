@@ -1,10 +1,11 @@
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 
-const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS"
-};
+const allowedOrigins = new Set([
+    "https://dcflsportfest.com",
+    "https://www.dcflsportfest.com",
+    "http://127.0.0.1:5500",
+    "http://localhost:5500"
+]);
 
 const projectUrl = Deno.env.get("PROJECT_URL") ?? "";
 const serviceRoleKey = Deno.env.get("SERVICE_ROLE_KEY") ?? "";
@@ -12,11 +13,21 @@ const resendApiKey = Deno.env.get("RESEND_API_KEY") ?? "";
 const resendFromEmail = Deno.env.get("RESEND_FROM_EMAIL") ?? "";
 const resendToEmail = Deno.env.get("RESEND_TO_EMAIL") ?? "";
 
-function jsonResponse(payload: unknown, status = 200) {
+function getCorsHeaders(origin: string | null) {
+    const safeOrigin = origin && allowedOrigins.has(origin) ? origin : "https://dcflsportfest.com";
+    return {
+        "Access-Control-Allow-Origin": safeOrigin,
+        "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        Vary: "Origin"
+    };
+}
+
+function jsonResponse(payload: unknown, status = 200, origin: string | null = null) {
     return new Response(JSON.stringify(payload), {
         status,
         headers: {
-            ...corsHeaders,
+            ...getCorsHeaders(origin),
             "Content-Type": "application/json; charset=utf-8"
         }
     });
@@ -112,12 +123,18 @@ async function sendMail(payload: { name: string; email: string; topic: string; m
 }
 
 serve(async (request) => {
+    const origin = request.headers.get("origin");
+
     if (request.method === "OPTIONS") {
-        return new Response("ok", { headers: corsHeaders });
+        return new Response("ok", { headers: getCorsHeaders(origin) });
     }
 
     if (request.method !== "POST") {
-        return jsonResponse({ error: "Method not allowed" }, 405);
+        return jsonResponse({ error: "Method not allowed" }, 405, origin);
+    }
+
+    if (!origin || !allowedOrigins.has(origin)) {
+        return jsonResponse({ error: "Origin not allowed" }, 403, origin);
     }
 
     try {
@@ -130,7 +147,7 @@ serve(async (request) => {
             payload.topic.length < 2 ||
             payload.message.length < 6
         ) {
-            return jsonResponse({ error: "Invalid contact payload" }, 400);
+            return jsonResponse({ error: "Invalid contact payload" }, 400, origin);
         }
 
         const submission = await insertSubmission(payload);
@@ -141,10 +158,10 @@ serve(async (request) => {
             submission,
             mailSent: mail.sent,
             mailStatus: mail
-        });
+        }, 200, origin);
     } catch (error) {
         return jsonResponse({
             error: error instanceof Error ? error.message : "Unknown error"
-        }, 500);
+        }, 500, origin);
     }
 });
