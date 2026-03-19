@@ -267,6 +267,7 @@ function renderLiveScoreboard() {
     var form = document.querySelector("[data-contact-form]");
     var status = document.querySelector("[data-contact-form-status]");
     var bridge = window.DCFLSupabaseBridge || null;
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!form) {
         return;
@@ -317,8 +318,13 @@ function renderLiveScoreboard() {
             payload.message = extraMessage.join("\n");
         }
 
-        if (!payload.name || !payload.email || !payload.topic || !payload.message) {
-            setStatus("L\u00fctfen t\u00fcm alanlar\u0131 doldur.", "warning");
+        if (
+            payload.name.length < 2 ||
+            !emailPattern.test(payload.email) ||
+            payload.topic.length < 2 ||
+            payload.message.length < 6
+        ) {
+            setStatus("L\u00fctfen ad soyad, ge\u00e7erli e-posta, konu ve en az 6 karakterlik mesaj alanlar\u0131n\u0131 do\u011fru doldur.", "warning");
             return;
         }
 
@@ -328,7 +334,11 @@ function renderLiveScoreboard() {
             form.reset();
             setStatus("Mesaj\u0131n g\u00f6nderildi. En k\u0131sa s\u00fcrede d\u00f6n\u00fc\u015f sa\u011flanacak.", "success");
         } catch (error) {
-            setStatus("Mesaj g\u00f6nderilemedi: " + (error && error.message ? error.message : "Bilinmeyen hata"), "error");
+            var errorMessage = error && error.message ? error.message : "Bilinmeyen hata";
+            if (errorMessage === "Invalid contact payload") {
+                errorMessage = "L\u00fctfen ad soyad, ge\u00e7erli e-posta, konu ve mesaj alanlar\u0131n\u0131 eksiksiz doldur.";
+            }
+            setStatus("Mesaj g\u00f6nderilemedi: " + errorMessage, "error");
         }
     });
 })();
