@@ -193,20 +193,39 @@
             message: String(payload && payload.message ? payload.message : "").trim()
         };
 
-        if (config.contactFunction && client.functions && typeof client.functions.invoke === "function") {
-            var functionResult = await client.functions.invoke(config.contactFunction, {
-                body: normalizedPayload
-            });
+        if (config.contactFunction && config.url) {
+            var functionResponse = await fetch(
+                config.url.replace(/\/$/, "") + "/functions/v1/" + config.contactFunction,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        apikey: publicKey
+                    },
+                    body: JSON.stringify(normalizedPayload)
+                }
+            );
 
-            if (functionResult.error) {
-                throw functionResult.error;
+            var functionData = null;
+            try {
+                functionData = await functionResponse.json();
+            } catch (_error) {
+                functionData = null;
             }
 
-            if (functionResult.data && functionResult.data.submission) {
-                return functionResult.data.submission;
+            if (!functionResponse.ok) {
+                throw new Error(
+                    functionData && functionData.error
+                        ? functionData.error
+                        : "Edge Function returned a non-2xx status code"
+                );
             }
 
-            return functionResult.data || null;
+            if (functionData && functionData.submission) {
+                return functionData.submission;
+            }
+
+            return functionData || null;
         }
 
         var result = await client
