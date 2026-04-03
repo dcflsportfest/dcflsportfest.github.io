@@ -108,27 +108,34 @@ function getSharedSiteState() {
 })();
 
 (function () {
-    var toggle = document.querySelector("[data-branches-toggle]");
-    var panel = document.querySelector("[data-branches-panel]");
-    if (!toggle || !panel) {
+    var toggles = document.querySelectorAll("[data-expand-toggle]");
+    if (!toggles.length) {
         return;
     }
 
-    panel.hidden = false;
-    panel.removeAttribute("hidden");
+    toggles.forEach(function (toggle) {
+        var panelId = toggle.getAttribute("aria-controls");
+        var panel = panelId ? document.getElementById(panelId) : null;
+        if (!panel) {
+            return;
+        }
 
-    function setOpen(isOpen) {
-        toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-        panel.classList.toggle("is-open", isOpen);
-        panel.setAttribute("aria-hidden", isOpen ? "false" : "true");
-    }
+        panel.hidden = false;
+        panel.removeAttribute("hidden");
 
-    toggle.addEventListener("click", function () {
-        var isOpen = toggle.getAttribute("aria-expanded") === "true";
-        setOpen(!isOpen);
+        function setOpen(isOpen) {
+            toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+            panel.classList.toggle("is-open", isOpen);
+            panel.setAttribute("aria-hidden", isOpen ? "false" : "true");
+        }
+
+        toggle.addEventListener("click", function () {
+            var isOpen = toggle.getAttribute("aria-expanded") === "true";
+            setOpen(!isOpen);
+        });
+
+        setOpen(false);
     });
-
-    setOpen(false);
 })();
 
 (function () {
@@ -522,17 +529,26 @@ function initializeFixtureTabGroups(root) {
             return;
         }
 
-        var tabs = group.querySelectorAll("[data-fixture-tab]");
+        var tabs = Array.prototype.filter.call(group.children, function (child) {
+            return child && child.nodeType === 1 && child.hasAttribute("data-fixture-tab");
+        });
         if (!tabs.length) {
             return;
         }
 
         var panelsContainer = group.nextElementSibling;
+        if (!panelsContainer || !panelsContainer.querySelector || !panelsContainer.querySelector("[data-fixture-panel]")) {
+            if (group.parentElement && group.parentElement.nextElementSibling && group.parentElement.nextElementSibling.querySelector && group.parentElement.nextElementSibling.querySelector("[data-fixture-panel]")) {
+                panelsContainer = group.parentElement.nextElementSibling;
+            }
+        }
         if (!panelsContainer) {
             return;
         }
 
-        var panels = panelsContainer.querySelectorAll("[data-fixture-panel]");
+        var panels = Array.prototype.filter.call(panelsContainer.children, function (child) {
+            return child && child.nodeType === 1 && child.hasAttribute("data-fixture-panel");
+        });
 
         function activate(branch) {
             tabs.forEach(function (tab) {
@@ -563,8 +579,73 @@ function initializeFixtureTabGroups(root) {
 
         group.setAttribute("data-fixture-ready", "true");
 
-        var initiallyActive = group.querySelector("[data-fixture-tab].active");
+        var initiallyActive = tabs.find(function (tab) {
+            return tab.classList.contains("active");
+        });
         activate(initiallyActive ? initiallyActive.getAttribute("data-fixture-tab") : tabs[0].getAttribute("data-fixture-tab"));
+    });
+}
+
+function initializeFixtureDateGroups(root) {
+    var scope = root || document;
+    var dateGroups = scope.querySelectorAll("[data-fixture-date-group]");
+    if (!dateGroups.length) {
+        return;
+    }
+
+    dateGroups.forEach(function (group) {
+        if (group.getAttribute("data-fixture-date-ready") === "true") {
+            return;
+        }
+
+        var tabs = group.querySelectorAll("[data-fixture-date-tab]");
+        if (!tabs.length) {
+            return;
+        }
+
+        var hostPanel = group.closest("[data-fixture-date-host]") || group.parentElement;
+        if (!hostPanel) {
+            return;
+        }
+
+        var placeholders = hostPanel.querySelectorAll("[data-fixture-date-placeholder]");
+        var targets = hostPanel.querySelectorAll("[data-fixture-date-target]");
+
+        function buildMessage(baseText, dateLabel) {
+            return dateLabel ? (dateLabel + " • " + baseText) : baseText;
+        }
+
+        function activate(dateLabel) {
+            tabs.forEach(function (tab) {
+                var isActive = tab.getAttribute("data-fixture-date-tab") === dateLabel;
+                tab.classList.toggle("active", isActive);
+                tab.setAttribute("aria-pressed", isActive ? "true" : "false");
+            });
+
+            placeholders.forEach(function (placeholder) {
+                var baseText = placeholder.getAttribute("data-placeholder-base") || placeholder.textContent || "";
+                placeholder.textContent = buildMessage(baseText, dateLabel);
+            });
+
+            targets.forEach(function (target) {
+                var isActive = target.getAttribute("data-fixture-date-target") === dateLabel;
+                target.hidden = !isActive;
+                target.classList.toggle("active", isActive);
+            });
+        }
+
+        tabs.forEach(function (tab) {
+            tab.setAttribute("type", "button");
+            tab.setAttribute("aria-pressed", tab.classList.contains("active") ? "true" : "false");
+            tab.addEventListener("click", function () {
+                activate(tab.getAttribute("data-fixture-date-tab"));
+            });
+        });
+
+        group.setAttribute("data-fixture-date-ready", "true");
+
+        var initiallyActive = group.querySelector("[data-fixture-date-tab].active");
+        activate(initiallyActive ? initiallyActive.getAttribute("data-fixture-date-tab") : tabs[0].getAttribute("data-fixture-date-tab"));
     });
 }
 
@@ -1064,6 +1145,7 @@ var renderScoreResults = (function () {
 
 (function () {
     initializeFixtureTabGroups(document);
+    initializeFixtureDateGroups(document);
     if (document.querySelector("[data-score-results]")) {
         renderScoreResults((document.documentElement.getAttribute("lang") || "tr").toLowerCase());
     }
@@ -1072,28 +1154,55 @@ var renderScoreResults = (function () {
 var renderProgramFixtures = (function () {
     var copy = {
         tr: {
-            tabsAria: "Bransa gore fikstur secimi",
-            fixtureSuffix: "Fiksturu",
+            tabsAria: "Branşa göre fikstür seçimi",
+            groupTabsAria: "Fikstür ve katılımcı seçimi",
+            divisionTabsAria: "Kategori seçimi",
+            fixtureSuffix: "Fikstürü",
+            participantsSuffix: "Katılımcıları",
+            fixturePending: "Fikstür henüz belirlenmedi",
+            participantPending: "Katılımcılar belli değil",
             rounds: {
-                qf: "Ceyrek Final",
-                sf: "Yari Final",
+                qf: "Çeyrek Final",
+                sf: "Yarı Final",
                 final: "Final"
             },
-            scheduleKicker: "Mac Akisi",
-            note: "8 takimli eslesme yapisi 12-13-14 Mayis akisina gore ilerler.",
+            scheduleKicker: "Maç Akışı",
+            note: "8 takımlı eşleşme yapısı 12-13-14 Mayıs akışına göre ilerler.",
             placeholders: {
-                qfWinner: "CF {n} Galibi",
+                qfWinner: "ÇF {n} Galibi",
                 sfWinner: "YF {n} Galibi"
             },
             dates: {
-                qf: "12 Mayis",
-                sf: "13 Mayis",
-                final: "14 Mayis"
+                qf: "12 Mayıs",
+                sf: "13 Mayıs",
+                final: "14 Mayıs"
+            },
+            groups: {
+                fixture: "Fikstür",
+                participants: "Katılımcılar"
+            },
+            branchLabels: {
+                basketbol: "Basketbol 3x3",
+                "bahce-satranci": "Satranç"
+            },
+            branchDateHints: {
+                voleybol: "12-13 Mayıs",
+                "masa-tenisi": "13 Mayıs",
+                atletizm: "13-13 Mayıs",
+                futbol: "12-13 Mayıs",
+                "bahce-satranci": "13 Mayıs",
+                oryantiring: "14 Mayıs"
+            },
+            divisions: {
+                kiz: "Kız",
+                erkek: "Erkek"
             }
         },
         en: {
             tabsAria: "Fixture selection by branch",
+            divisionTabsAria: "Category selection",
             fixtureSuffix: "Fixtures",
+            fixturePending: "Fixture has not been announced yet",
             rounds: {
                 qf: "Quarter-final",
                 sf: "Semi-final",
@@ -1109,11 +1218,18 @@ var renderProgramFixtures = (function () {
                 qf: "May 12",
                 sf: "May 13",
                 final: "May 14"
+            },
+            divisions: {
+                kiz: "Girls",
+                erkek: "Boys",
+                katilimcilar: "Participants"
             }
         },
         pl: {
             tabsAria: "Wybor terminarza wedlug dyscyplin",
+            divisionTabsAria: "Wybor kategorii",
             fixtureSuffix: "Terminarz",
+            fixturePending: "Terminarz nie zostal jeszcze ustalony",
             rounds: {
                 qf: "Cwiercfinal",
                 sf: "Polfinal",
@@ -1129,7 +1245,92 @@ var renderProgramFixtures = (function () {
                 qf: "12 maja",
                 sf: "13 maja",
                 final: "14 maja"
+            },
+            divisions: {
+                kiz: "Dziewczeta",
+                erkek: "Chlopcy",
+                katilimcilar: "Uczestnicy"
             }
+        }
+    };
+
+    var dividedBranches = {
+        "voleybol": true,
+        "masa-tenisi": true,
+        "atletizm": true
+    };
+
+    var participantLists = {
+        "basketbol": {
+            default: [
+                "Adnan Menderes Anadolu Lisesi",
+                "Doğan Cüceloğlu Fen Lisesi",
+                "Fuat Sezgin Fen Lisesi",
+                "Bahçelievler Anadolu Lisesi",
+                "TEMA Bahçeşehir Koleji",
+                "Çapa Fen Lisesi"
+            ]
+        },
+        "futbol": {
+            default: [
+                "Doğan Cüceloğlu Fen Lisesi",
+                "Yaşar Acar Fen Lisesi",
+                "Fuat Sezgin Fen Lisesi",
+                "Çapa Fen Lisesi"
+            ]
+        },
+        "bahce-satranci": {
+            default: [
+                "Doğan Cüceloğlu Fen Lisesi",
+                "Fuat Sezgin Fen Lisesi",
+                "Bahçelievler Anadolu Lisesi",
+                "Adnan Menderes Anadolu Lisesi",
+                "Müptas Turhan Sosyal Bilimler Lisesi"
+            ]
+        },
+        "atletizm": {
+            default: [
+                "Doğan Cüceloğlu Fen Lisesi",
+                "Fuat Sezgin Fen Lisesi",
+                "Orhan Cemal Anadolu Lisesi"
+            ]
+        },
+        "oryantiring": {
+            default: [
+                "Orhan Cemal Anadolu Lisesi"
+            ]
+        },
+        "voleybol": {
+            kiz: [
+                "Doğan Cüceloğlu Fen Lisesi",
+                "Fuat Sezgin",
+                "Çapa Fen",
+                "Müptas Turhan Sosyal Bilimler",
+                "Yaşar Acar Fen Lisesi"
+            ],
+            erkek: [
+                "Polonya",
+                "Doğan Cüceloğlu Fen Lisesi",
+                "Fuat Sezgin",
+                "Çapa Fen Lisesi",
+                "Orhan Gazi Anadolu Lisesi"
+            ]
+        },
+        "masa-tenisi": {
+            kiz: [
+                "Doğan Cüceloğlu Fen Lisesi",
+                "Fuat Sezgin Fen Lisesi",
+                "TED Atakent Koleji",
+                "Çapa Fen Lisesi"
+            ],
+            erkek: [
+                "Atakent Anadolu",
+                "Doğan Cüceloğlu Fen Lisesi",
+                "Adnan Menderes Anadolu Lisesi",
+                "Fuat Sezgin Fen Lisesi",
+                "Bahçelievler Anadolu Lisesi",
+                "Müptas Turhan Sosyal Bilimler Lisesi"
+            ]
         }
     };
 
@@ -1184,7 +1385,7 @@ var renderProgramFixtures = (function () {
 
     function renderScheduleItem(dateLabel, time, stageLabel, pair, venue) {
         return [
-            "<article class=\"fixture-schedule-item\">",
+            "<article class=\"fixture-schedule-item\" data-fixture-date-target=\"" + escapeHTML(dateLabel) + "\">",
             "    <span class=\"fixture-schedule-time\">" + dateLabel + " &#183; " + time + "</span>",
             "    <strong>" + stageLabel + "</strong>",
             "    <p>" + escapeHTML(pair[0]) + " vs " + escapeHTML(pair[1]) + " &#183; " + escapeHTML(venue) + "</p>",
@@ -1192,68 +1393,245 @@ var renderProgramFixtures = (function () {
         ].join("");
     }
 
-    function renderFixturePanel(template, index, lang) {
+    function getProgramBranchLabel(template, lang) {
         var langCopy = copy[lang] || copy.tr;
-        var venue = pickLocalizedText(template.venue, lang);
-        var qfMatches = template.qf.times.map(function (time, matchIndex) {
-            var pair = getTemplatePair(template, "qf", lang, matchIndex);
-            return {
-                pair: pair,
-                time: time,
-                score: (template.qf.scores && template.qf.scores[matchIndex]) || ["-", "-"]
-            };
-        });
-        var sfMatches = template.sf.times.map(function (time, matchIndex) {
-            var pair = getTemplatePair(template, "sf", lang, matchIndex);
-            return {
-                pair: pair,
-                time: time,
-                score: (template.sf.scores && template.sf.scores[matchIndex]) || ["-", "-"]
-            };
-        });
-        var finalPair = getTemplatePair(template, "final", lang, 0);
-        var finalScore = (template.final && template.final.score) || ["-", "-"];
+        if (langCopy.branchLabels && langCopy.branchLabels[template.key]) {
+            return langCopy.branchLabels[template.key];
+        }
+        return pickLocalizedText(template.name, lang);
+    }
 
-        var scheduleItems = [];
-        qfMatches.forEach(function (match, matchIndex) {
-            scheduleItems.push(renderScheduleItem(langCopy.dates.qf, match.time, langCopy.rounds.qf + " " + String(matchIndex + 1), match.pair, venue));
+    function getBranchDateHint(template, lang) {
+        var langCopy = copy[lang] || copy.tr;
+        return langCopy.branchDateHints && langCopy.branchDateHints[template.key]
+            ? langCopy.branchDateHints[template.key]
+            : "";
+    }
+
+    function getBranchDateOptions(template, lang) {
+        var hint = getBranchDateHint(template, lang);
+        var rangeMatch;
+
+        if (!hint) {
+            return [];
+        }
+
+        rangeMatch = hint.match(/^(\d+)\s*-\s*(\d+)\s+(.+)$/);
+        if (rangeMatch) {
+            if (rangeMatch[1] === rangeMatch[2]) {
+                return [rangeMatch[1] + " " + rangeMatch[3]];
+            }
+            return [
+                rangeMatch[1] + " " + rangeMatch[3],
+                rangeMatch[2] + " " + rangeMatch[3]
+            ];
+        }
+
+        return [hint];
+    }
+
+    function createDivisionTemplates(template, lang) {
+        var langCopy = copy[lang] || copy.tr;
+        if (!dividedBranches[template.key]) {
+            return [template];
+        }
+
+        if (Array.isArray(template.divisions) && template.divisions.length) {
+            return template.divisions.map(function (division, index) {
+                return {
+                    key: division.key || (template.key + "-division-" + index),
+                    slug: division.slug || "",
+                    branchKey: template.key,
+                    name: division.name || {
+                        tr: (pickLocalizedText(template.name, "tr") + " - " + (langCopy.divisions[division.slug] || division.slug || "")),
+                        en: (pickLocalizedText(template.name, "en") + " - " + (langCopy.divisions[division.slug] || division.slug || "")),
+                        pl: (pickLocalizedText(template.name, "pl") + " - " + (langCopy.divisions[division.slug] || division.slug || ""))
+                    },
+                    venue: division.venue || template.venue,
+                    lowWins: typeof division.lowWins === "boolean" ? division.lowWins : template.lowWins,
+                    qf: division.qf || template.qf,
+                    sf: division.sf || template.sf,
+                    final: division.final || template.final
+                };
+            });
+        }
+
+        return ["kiz", "erkek"].map(function (slug) {
+            return {
+                key: template.key + "-" + slug,
+                slug: slug,
+                branchKey: template.key,
+                shortLabel: langCopy.divisions[slug],
+                name: {
+                    tr: pickLocalizedText(template.name, "tr") + " - " + copy.tr.divisions[slug],
+                    en: pickLocalizedText(template.name, "en") + " - " + copy.en.divisions[slug],
+                    pl: pickLocalizedText(template.name, "pl") + " - " + copy.pl.divisions[slug]
+                },
+                venue: template.venue,
+                lowWins: template.lowWins,
+                qf: template.qf,
+                sf: template.sf,
+                final: template.final
+            };
         });
-        sfMatches.forEach(function (match, matchIndex) {
-            scheduleItems.push(renderScheduleItem(langCopy.dates.sf, match.time, langCopy.rounds.sf + " " + String(matchIndex + 1), match.pair, venue));
-        });
-        scheduleItems.push(renderScheduleItem(langCopy.dates.final, template.final.time, langCopy.rounds.final, finalPair, venue));
+    }
+
+    function getParticipantItems(template, mode) {
+        var branchKey;
+        var branchLists;
+        var inferredSlug = "";
+
+        if (mode !== "participants") {
+            return [];
+        }
+
+        branchKey = template.branchKey || template.key;
+        branchLists = participantLists[branchKey];
+        if (!branchLists) {
+            return [];
+        }
+
+        if (!template.slug && typeof template.key === "string") {
+            if (/\-kiz$/.test(template.key)) {
+                inferredSlug = "kiz";
+            } else if (/\-erkek$/.test(template.key)) {
+                inferredSlug = "erkek";
+            }
+        }
+
+        if (template.slug && Array.isArray(branchLists[template.slug])) {
+            return branchLists[template.slug];
+        }
+
+        if (inferredSlug && Array.isArray(branchLists[inferredSlug])) {
+            return branchLists[inferredSlug];
+        }
+
+        if (Array.isArray(branchLists.default)) {
+            return branchLists.default;
+        }
+
+        return [];
+    }
+
+    function renderDivisionPlaceholderBody(template, lang, mode, selectedDate) {
+        var langCopy = copy[lang] || copy.tr;
+        var suffix = mode === "participants" ? langCopy.participantsSuffix : langCopy.fixtureSuffix;
+        var pendingText = mode === "participants" ? langCopy.participantPending : langCopy.fixturePending;
+        var message = selectedDate ? (selectedDate + " • " + pendingText) : pendingText;
+        var participantItems = getParticipantItems(template, mode);
+
+        if (participantItems.length) {
+            return [
+                "    <h3>" + escapeHTML(getProgramBranchLabel(template, lang)) + " " + suffix + "</h3>",
+                "    <ul class=\"fixture-participant-list\">",
+                participantItems.map(function (item) {
+                    return "        <li>" + escapeHTML(item) + "</li>";
+                }).join(""),
+                "    </ul>"
+            ].join("");
+        }
 
         return [
-            "<article class=\"fixture-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + template.key + "\">",
-            "    <h3>" + escapeHTML(pickLocalizedText(template.name, lang)) + " " + langCopy.fixtureSuffix + "</h3>",
-            "    <div class=\"fixture-layout\">",
-            "        <div class=\"bracket-scroller\">",
-            "            <div class=\"bracket-board\">",
-            "                <section class=\"bracket-round\">",
-            "                    <p class=\"bracket-round-title\">" + langCopy.rounds.qf + "</p>",
-            qfMatches.map(function (match, matchIndex) {
-                return renderBracketMatch("qf", langCopy.rounds.qf, langCopy.dates.qf, match.time, match.pair, match.score, lang, matchIndex + 1, 8 - matchIndex);
+            "    <h3>" + escapeHTML(getProgramBranchLabel(template, lang)) + " " + suffix + "</h3>",
+            "    <div class=\"fixture-placeholder-state\">",
+            "        <p class=\"fixture-placeholder-text\" data-fixture-date-placeholder data-placeholder-base=\"" + escapeHTML(pendingText) + "\">" + escapeHTML(message) + "</p>",
+            "    </div>"
+        ].join("");
+    }
+
+    function renderDivisionGroup(template, lang, mode) {
+        var divisions = createDivisionTemplates(template, lang);
+        var dateOptions = getBranchDateOptions(template, lang);
+        return [
+            "    <div class=\"fixture-division-group\" data-fixture-date-host>",
+            "    <div class=\"fixture-subtabs-row\">",
+            "        <div class=\"fixture-tabs fixture-subtabs\" data-fixture-tabs role=\"tablist\" aria-label=\"" + (copy[lang] || copy.tr).divisionTabsAria + "\">",
+            divisions.map(function (division, divisionIndex) {
+                var shortLabel = division.shortLabel || pickLocalizedText(division.name, lang);
+                return "<button type=\"button\" class=\"fixture-tab" + (divisionIndex === 0 ? " active" : "") + "\" data-fixture-tab=\"" + division.key + "-" + mode + "\">" + escapeHTML(shortLabel) + "</button>";
             }).join(""),
-            "                </section>",
-            "                <section class=\"bracket-round bracket-round-semifinal\">",
-            "                    <p class=\"bracket-round-title\">" + langCopy.rounds.sf + "</p>",
-            sfMatches.map(function (match, matchIndex) {
-                return renderBracketMatch("sf", langCopy.rounds.sf, langCopy.dates.sf, match.time, match.pair, match.score, lang, "YF" + String(matchIndex + 1), "YF" + String(matchIndex + 1));
-            }).join(""),
-            "                </section>",
-            "                <section class=\"bracket-round bracket-round-final\">",
-            "                    <p class=\"bracket-round-title\">" + langCopy.rounds.final + "</p>",
-            renderBracketMatch("final", langCopy.rounds.final, langCopy.dates.final, template.final.time, finalPair, finalScore, lang, "F1", "F2"),
-            "                    <p class=\"bracket-note\">" + langCopy.note + "</p>",
-            "                </section>",
-            "            </div>",
             "        </div>",
-            "        <aside class=\"fixture-schedule\">",
-            "            <p class=\"fixture-schedule-kicker\">" + langCopy.scheduleKicker + "</p>",
-            "            <div class=\"fixture-schedule-list\">",
-            scheduleItems.join(""),
-            "            </div>",
-            "        </aside>",
+            (dateOptions.length ? [
+                "        <div class=\"fixture-date-tabs\" data-fixture-date-group>",
+                dateOptions.map(function (dateLabel, dateIndex) {
+                    return "            <button class=\"fixture-date-pill" + (dateIndex === 0 ? " active" : "") + "\" data-fixture-date-tab=\"" + escapeHTML(dateLabel) + "\">" + escapeHTML(dateLabel) + "</button>";
+                }).join(""),
+                "        </div>"
+            ].join("") : ""),
+            "    </div>",
+            "    <div class=\"fixture-panels\">",
+            divisions.map(function (division, divisionIndex) {
+                return [
+                    "<article class=\"fixture-panel fixture-subpanel" + (divisionIndex === 0 ? " active" : "") + "\" data-fixture-panel=\"" + division.key + "-" + mode + "\">",
+                    renderDivisionPlaceholderBody(division, lang, mode, dateOptions[0] || ""),
+                    "</article>"
+                ].join("");
+            }).join(""),
+            "    </div>",
+            "    </div>"
+        ].join("");
+    }
+
+    function renderSingleModeGroup(template, lang, mode) {
+        var dateOptions = getBranchDateOptions(template, lang);
+        return [
+            "    <div class=\"fixture-division-group\"" + (dateOptions.length ? " data-fixture-date-host" : "") + ">",
+            (dateOptions.length ? [
+                "    <div class=\"fixture-subtabs-row fixture-single-date-row\">",
+                "        <div class=\"fixture-date-tabs\" data-fixture-date-group>",
+                dateOptions.map(function (dateLabel, dateIndex) {
+                    return "            <button class=\"fixture-date-pill" + (dateIndex === 0 ? " active" : "") + "\" data-fixture-date-tab=\"" + escapeHTML(dateLabel) + "\">" + escapeHTML(dateLabel) + "</button>";
+                }).join(""),
+                "        </div>",
+                "    </div>"
+            ].join("") : ""),
+            renderDivisionPlaceholderBody(template, lang, mode, dateOptions[0] || ""),
+            "    </div>"
+        ].join("");
+    }
+
+    function renderFixturePanelBody(template, lang) {
+        var langCopy = copy[lang] || copy.tr;
+        var dateOptions = getBranchDateOptions(template, lang);
+
+        return [
+            "    <div class=\"fixture-division-group\"" + (dateOptions.length ? " data-fixture-date-host" : "") + ">",
+            (dateOptions.length ? [
+                "    <div class=\"fixture-subtabs-row fixture-single-date-row\">",
+                "        <h3>" + escapeHTML(getProgramBranchLabel(template, lang)) + " " + langCopy.fixtureSuffix + "</h3>",
+                "        <div class=\"fixture-date-tabs\" data-fixture-date-group>",
+                dateOptions.map(function (dateLabel, dateIndex) {
+                    return "            <button class=\"fixture-date-pill" + (dateIndex === 0 ? " active" : "") + "\" data-fixture-date-tab=\"" + escapeHTML(dateLabel) + "\">" + escapeHTML(dateLabel) + "</button>";
+                }).join(""),
+                "        </div>",
+                "    </div>"
+            ].join("") : "    <h3>" + escapeHTML(getProgramBranchLabel(template, lang)) + " " + langCopy.fixtureSuffix + "</h3>"),
+            "    <div class=\"fixture-placeholder-state\">",
+            (dateOptions.length ? dateOptions.map(function (dateLabel, dateIndex) {
+                return "        <p class=\"fixture-placeholder-text" + (dateIndex === 0 ? " active" : "") + "\" data-fixture-date-target=\"" + escapeHTML(dateLabel) + "\"" + (dateIndex === 0 ? "" : " hidden") + ">" + escapeHTML(dateLabel + " • " + langCopy.fixturePending) + "</p>";
+            }).join("") : "        <p class=\"fixture-placeholder-text\">" + escapeHTML(langCopy.fixturePending) + "</p>"),
+            "    </div>",
+            "    </div>"
+        ].join("");
+    }
+
+    function renderFixturePanel(template, index, lang) {
+        var langCopy = copy[lang] || copy.tr;
+        var divisions = createDivisionTemplates(template, lang);
+        return [
+            "<article class=\"fixture-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + template.key + "\">",
+            "    <div class=\"fixture-tabs fixture-subtabs fixture-group-tabs\" data-fixture-tabs role=\"tablist\" aria-label=\"" + langCopy.groupTabsAria + "\">",
+            "        <button type=\"button\" class=\"fixture-tab active\" data-fixture-tab=\"" + template.key + "-fixture-group\">" + langCopy.groups.fixture + "</button>",
+            "        <button type=\"button\" class=\"fixture-tab\" data-fixture-tab=\"" + template.key + "-participants-group\">" + langCopy.groups.participants + "</button>",
+            "    </div>",
+            "    <div class=\"fixture-panels\">",
+            "        <article class=\"fixture-panel fixture-subpanel active\" data-fixture-panel=\"" + template.key + "-fixture-group\">",
+            (divisions.length === 1 ? renderSingleModeGroup(divisions[0], lang, "fixture") : renderDivisionGroup(template, lang, "fixture")),
+            "        </article>",
+            "        <article class=\"fixture-panel fixture-subpanel\" data-fixture-panel=\"" + template.key + "-participants-group\">",
+            (divisions.length === 1 ? renderSingleModeGroup(divisions[0], lang, "participants") : renderDivisionGroup(template, lang, "participants")),
+            "        </article>",
             "    </div>",
             "</article>"
         ].join("");
@@ -1277,7 +1655,7 @@ var renderProgramFixtures = (function () {
             head.outerHTML,
             "<div class=\"fixture-tabs\" data-fixture-tabs role=\"tablist\" aria-label=\"" + copy[currentLang].tabsAria + "\">",
             templates.map(function (template, index) {
-                return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-fixture-tab=\"" + template.key + "\">" + escapeHTML(pickLocalizedText(template.name, currentLang)) + "</button>";
+                return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-fixture-tab=\"" + template.key + "\">" + escapeHTML(getProgramBranchLabel(template, currentLang)) + "</button>";
             }).join(""),
             "</div>",
             "<div class=\"fixture-panels\">",
@@ -1288,6 +1666,7 @@ var renderProgramFixtures = (function () {
         ].join("");
 
         initializeFixtureTabGroups(section);
+        initializeFixtureDateGroups(section);
     };
 })();
 
@@ -1504,7 +1883,7 @@ var renderProgramFixtures = (function () {
                     "\u00c7ok dilli ileti\u015fim ve tan\u0131t\u0131m"
                 ],
                 cta: "Program ve Turnuva",
-                stats: ["10 Adet Bran\u015f", "8+ Farkl\u0131 Okullardan Kat\u0131l\u0131mc\u0131lar", "Her G\u00fcn 200+ Kat\u0131l\u0131mc\u0131"],
+                stats: ["10 Adet Bran\u015f", "14 Farkl\u0131 Okuldan Kat\u0131l\u0131mc\u0131lar", "Her G\u00fcn 300+ Kat\u0131l\u0131mc\u0131"],
                 sponsorCta: "Sporcu Ba\u015fvurusu Yap",
                 countdown: "SportFeste kalan s\u00fcre",
                 countdownLabels: ["G\u00fcn", "Saat", "Dakika", "Saniye"],
@@ -1534,6 +1913,22 @@ var renderProgramFixtures = (function () {
                     ]
                 },
                 branches: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Ok\u00e7uluk", "Oryantiring", "Bah\u00e7e Satranc\u0131", "PlayStation Turnuvas\u0131", "Atletizm", "Bah\u00e7e Oyunlar\u0131"],
+                schools: [
+                    "Do\u011fan C\u00fccelo\u011flu Fen Lisesi",
+                    "Atakent Anadolu Lisesi",
+                    "Atakent TED Koleji",
+                    "Tema Bah\u00e7e\u015fehir Koleji",
+                    "Prof. Dr. Fuat Sezgin Fen Lisesi",
+                    "Fahrettin Kerim G\u00f6kay Anadolu Lisesi",
+                    "\u00c7apa Fen Lisesi",
+                    "Adnan Menderes Anadolu Lisesi",
+                    "Bah\u00e7elievler Anadolu Lisesi",
+                    "Prof. Dr. M\u00fcmtaz Turhan Sosyal Bilimler Lisesi",
+                    "Ca\u011falo\u011flu Fen Lisesi",
+                    "Orhan Gazi Anadolu Lisesi",
+                    "Orhan Cemal Fersoy Anadolu Lisesi",
+                    "Ya\u015far Acar Fen Lisesi"
+                ],
                 contactTitle: "\u0130leti\u015fim Formu",
                 contactDetails: [
                     "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
@@ -1559,7 +1954,7 @@ var renderProgramFixtures = (function () {
                     "Multilingual communication and promotion"
                 ],
                 cta: "Program and Tournament",
-                stats: ["10 Sports Branches", "Participants from 8+ Different Schools", "200+ Participants Daily"],
+                stats: ["10 Sports Branches", "Participants from 14 Different Schools", "300+ Participants Daily"],
                 sponsorCta: "Apply as an Athlete",
                 countdown: "Time Left to Sportfest",
                 countdownLabels: ["Days", "Hours", "Minutes", "Seconds"],
@@ -1589,6 +1984,22 @@ var renderProgramFixtures = (function () {
                     ]
                 },
                 branches: ["Volleyball", "Basketball", "Football", "Table Tennis", "Archery", "Orienteering", "Garden Chess", "PlayStation Tournament", "Athletics", "Garden Games"],
+                schools: [
+                    "Dogan Cuceloglu Science High School",
+                    "Atakent Anatolian High School",
+                    "Atakent TED College",
+                    "Tema Bahcesehir College",
+                    "Prof. Dr. Fuat Sezgin Science High School",
+                    "Fahrettin Kerim Gokay Anatolian High School",
+                    "Capa Science High School",
+                    "Adnan Menderes Anatolian High School",
+                    "Bahcelievler Anatolian High School",
+                    "Prof. Dr. Mumtaz Turhan Social Sciences High School",
+                    "Cagaloglu Science High School",
+                    "Orhan Gazi Anatolian High School",
+                    "Orhan Cemal Fersoy Anatolian High School",
+                    "Yasar Acar Science High School"
+                ],
                 contactTitle: "Contact Form",
                 contactDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
@@ -1614,7 +2025,7 @@ var renderProgramFixtures = (function () {
                     "Wielojezyczna komunikacja i promocja"
                 ],
                 cta: "Program i Turniej",
-                stats: ["10 Dyscyplin", "Uczestnicy z 8+ Roznych Szkol", "200+ Uczestnikow Dziennie"],
+                stats: ["10 Dyscyplin", "Uczestnicy z 14 Roznych Szkol", "300+ Uczestnikow Dziennie"],
                 sponsorCta: "Zloz Wniosek Zawodnika",
                 countdown: "Czas do Sportfestu",
                 countdownLabels: ["Dni", "Godz.", "Min.", "Sek."],
@@ -1644,6 +2055,22 @@ var renderProgramFixtures = (function () {
                     ]
                 },
                 branches: ["Siatkowka", "Koszykowka", "Pilka nozna", "Tenis stolowy", "Lucznictwo", "Bieg na orientacje", "Szachy ogrodowe", "Turniej PlayStation", "Lekkoatletyka", "Gry ogrodowe"],
+                schools: [
+                    "Dogan Cuceloglu Fen Lisesi",
+                    "Atakent Anadolu Lisesi",
+                    "Atakent TED Koleji",
+                    "Tema Bahcesehir Koleji",
+                    "Prof. Dr. Fuat Sezgin Fen Lisesi",
+                    "Fahrettin Kerim Gokay Anadolu Lisesi",
+                    "Capa Fen Lisesi",
+                    "Adnan Menderes Anadolu Lisesi",
+                    "Bahcelievler Anadolu Lisesi",
+                    "Prof. Dr. Mumtaz Turhan Sosyal Bilimler Lisesi",
+                    "Cagaloglu Fen Lisesi",
+                    "Orhan Gazi Anadolu Lisesi",
+                    "Orhan Cemal Fersoy Anadolu Lisesi",
+                    "Yasar Acar Fen Lisesi"
+                ],
                 contactTitle: "Formularz Kontaktowy",
                 contactDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
@@ -1662,9 +2089,9 @@ var renderProgramFixtures = (function () {
         setList(".hero-copy .hero-text", copy.hero);
         setList(".hero-list li", copy.list);
         setText(".cta-row .btn", copy.cta);
-        setText(".stats-branch-trigger h3", copy.stats[0]);
-        setText(".stats article:nth-child(2) h3", copy.stats[1]);
-        setText(".stats article:nth-child(3) h3", copy.stats[2]);
+        setText(".stats [aria-controls='home-branches-list'] h3", copy.stats[0]);
+        setText(".stats [aria-controls='home-schools-list'] h3", copy.stats[1]);
+        setText(".stats [data-stat-daily] h3", copy.stats[2]);
         setText(".countdown-title", copy.countdown);
         setText(".countdown-cta", copy.sponsorCta);
         setList(".countdown-label", copy.countdownLabels);
@@ -1673,6 +2100,7 @@ var renderProgramFixtures = (function () {
         renderLiveScoreboard();
         renderScoreResults(lang);
         setList(".home-branch-list li", copy.branches);
+        setList(".home-school-list li", copy.schools || []);
         setText(".contact-info h2", copy.contactTitle);
         if (Array.isArray(copy.contactDetails)) {
             setHTML(".contact-info .section-text:nth-of-type(1)", copy.contactDetails[0]);
