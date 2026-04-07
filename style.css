@@ -1813,6 +1813,13 @@ main {
     gap: 0.65rem;
 }
 
+.contact-social {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
 .footer-social-link {
     display: inline-flex;
     align-items: center;
