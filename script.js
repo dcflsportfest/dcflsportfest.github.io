@@ -186,6 +186,30 @@ function getSharedSiteState() {
     });
 })();
 
+(function () {
+    var footer = document.querySelector(".footer");
+    if (!footer || document.body.hasAttribute("data-admin-page")) {
+        return;
+    }
+
+    if (footer.querySelector(".footer-social")) {
+        return;
+    }
+
+    footer.insertAdjacentHTML("beforeend", [
+        "<div class=\"footer-social\">",
+        "    <a class=\"footer-social-link\" href=\"https://www.instagram.com/dcflsportfest?igsh=MWszOWFhcm92NnVwYQ==\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"DCFL Sportfest Instagram\">",
+        "        <img src=\"assets/instagram-logo.jfif\" alt=\"Instagram\" class=\"footer-social-icon\">",
+        "        <span>@dcflsportfest</span>",
+        "    </a>",
+        "    <a class=\"footer-social-link footer-social-link--tiktok\" href=\"https://www.tiktok.com/@dcflsportfest?_r=1&_t=ZS-95L5JIFX8Oy\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"DCFL Sportfest TikTok\">",
+        "        <img src=\"assets/tiktok-icon.png\" alt=\"TikTok\" class=\"footer-social-icon\">",
+        "        <span>@dcflsportfest</span>",
+        "    </a>",
+        "</div>"
+    ].join(""));
+})();
+
 function renderLiveScoreboard() {
     var liveGrid = document.querySelector("[data-live-score-grid]");
     var activeSummary = document.querySelector("[data-score-summary-active]");
@@ -3068,5 +3092,3 @@ var renderProgramFixtures = (function () {
         });
     }
 })();
-
-

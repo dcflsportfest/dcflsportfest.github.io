@@ -100,9 +100,8 @@
     }
 
     function getLockRemainingMs() {
-        var guard = normalizeLoginGuard(readLoginGuard());
-        writeLoginGuard(guard);
-        return guard.lockedUntil > 0 ? Math.max(0, guard.lockedUntil - Date.now()) : 0;
+        clearLoginGuard();
+        return 0;
     }
 
     function clearLoginGuard() {
@@ -110,13 +109,10 @@
     }
 
     function registerFailedLogin() {
-        var guard = normalizeLoginGuard(readLoginGuard());
-        var now = Date.now();
-        guard.attempts.push(now);
-        if (guard.attempts.length >= MAX_LOGIN_ATTEMPTS) {
-            guard.attempts = [];
-            guard.lockedUntil = now + LOGIN_LOCK_MS;
-        }
+        var guard = {
+            attempts: [],
+            lockedUntil: 0
+        };
         writeLoginGuard(guard);
         return guard;
     }

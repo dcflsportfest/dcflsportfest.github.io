@@ -527,7 +527,7 @@ h1 {
     margin: 0 0 0.55rem;
     color: var(--accent-soft);
     font-size: 0.82rem;
-    font-weight: 700;
+    font-weht: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
@@ -1803,6 +1803,46 @@ main {
 
 .footer p {
     margin: 0.15rem 0;
+}
+
+.footer-social {
+    margin-top: 0.75rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
+.footer-social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid rgba(166, 197, 242, 0.2);
+    border-radius: 999px;
+    background: rgba(10, 22, 48, 0.34);
+    color: #e8f1ff;
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.footer-social-link:hover {
+    transform: translateY(-1px);
+    border-color: rgba(166, 197, 242, 0.44);
+    background: rgba(10, 22, 48, 0.52);
+}
+
+.footer-social-link--tiktok {
+    background: rgba(15, 15, 18, 0.6);
+}
+
+.footer-social-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
 }
 
 .footer-sponsors {
