@@ -30,6 +30,12 @@
         });
     }
 
+    function normalizeBooleanList(value, fallback) {
+        return fallback.map(function (item, index) {
+            return Array.isArray(value) ? !!value[index] : !!item;
+        });
+    }
+
     function dispatchUpdate(source) {
         window.dispatchEvent(new CustomEvent(EVENT_NAME, {
             detail: {
@@ -254,6 +260,23 @@
         ]
     };
 
+    function ensureTemplateVisibility(template) {
+        if (!template || !template.qf || !template.sf || !template.final) {
+            return template;
+        }
+
+        template.qf.hidden = normalizeBooleanList(template.qf.hidden, template.qf.times.map(function () {
+            return false;
+        }));
+        template.sf.hidden = normalizeBooleanList(template.sf.hidden, template.sf.times.map(function () {
+            return false;
+        }));
+        template.final.hidden = !!template.final.hidden;
+        return template;
+    }
+
+    defaultData.branchTemplates.forEach(ensureTemplateVisibility);
+
     function sanitizeLiveMatch(match, fallback, index) {
         return createLiveMatchTemplate(index, {
             branch: asText(match && match.branch, fallback.branch),
@@ -270,18 +293,23 @@
         var next = clone(fallback);
         var source = template && typeof template === "object" ? template : {};
 
+        ensureTemplateVisibility(next);
+
         next.qf.times = normalizeTextList(source.qf && source.qf.times, fallback.qf.times);
         next.qf.pairs = normalizePairList(source.qf && source.qf.pairs, fallback.qf.pairs);
         next.qf.scores = normalizePairList(source.qf && source.qf.scores, fallback.qf.scores);
+        next.qf.hidden = normalizeBooleanList(source.qf && source.qf.hidden, next.qf.hidden);
 
         next.sf.times = normalizeTextList(source.sf && source.sf.times, fallback.sf.times);
         next.sf.scores = normalizePairList(source.sf && source.sf.scores, fallback.sf.scores);
+        next.sf.hidden = normalizeBooleanList(source.sf && source.sf.hidden, next.sf.hidden);
         if (source.sf && Array.isArray(source.sf.pairs)) {
             next.sf.pairs = normalizePairList(source.sf.pairs, source.sf.pairs);
         }
 
         next.final.time = asText(source.final && source.final.time, fallback.final.time);
         next.final.score = normalizePairList([source.final && source.final.score], [fallback.final.score])[0];
+        next.final.hidden = !!(source.final && source.final.hidden);
         if (source.final && Array.isArray(source.final.pair)) {
             next.final.pair = normalizePairList([source.final.pair], [source.final.pair])[0];
         }

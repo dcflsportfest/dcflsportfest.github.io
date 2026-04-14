@@ -1004,6 +1004,8 @@ var renderScoreResults = (function () {
     function buildMatchesForBranch(template, day, lang, publishResults) {
         var qfMatches = template.qf.pairs.map(function (pair, index) {
             return createMatch(day, template, "qf", index, template.qf.times[index], pair[0], pair[1], template.qf.scores[index], lang, publishResults);
+        }).filter(function (_match, index) {
+            return !(template.qf.hidden && template.qf.hidden[index]);
         });
 
         if (day.stage === "qf") {
@@ -1024,6 +1026,8 @@ var renderScoreResults = (function () {
 
         var sfMatches = sfPairs.map(function (pair, index) {
             return createMatch(day, template, "sf", index, template.sf.times[index], pair[0], pair[1], template.sf.scores[index], lang, publishResults);
+        }).filter(function (_match, index) {
+            return !(template.sf.hidden && template.sf.hidden[index]);
         });
 
         if (day.stage === "sf") {
@@ -1033,6 +1037,10 @@ var renderScoreResults = (function () {
         var finalPair = template.final.pair || [getWinnerName(sfMatches[0]), getWinnerName(sfMatches[1])];
         if (!publishResults || !finalPair[0] || !finalPair[1]) {
             finalPair = buildPlaceholderPair("final", lang, 0);
+        }
+
+        if (template.final.hidden) {
+            return [];
         }
 
         return [
@@ -1072,11 +1080,15 @@ var renderScoreResults = (function () {
 
         var branchPanels = templates.map(function (branch, index) {
             var matches = buildMatchesForBranch(branch, day, lang, publishResults).slice(0, resultsCount);
+            var cards = matches.length
+                ? matches.map(function (match) { return renderResultMatchCard(match); }).join("")
+                : "<p class=\"score-results-empty-branch\">Bu branş için görünür sonuç kartı yok.</p>";
+
             return [
                 "<article class=\"fixture-panel score-results-branch-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + branch.key + "\">",
                 "    <h3>" + dayUi.resultsTitle(pickText(branch.name, lang)) + "</h3>",
                 "    <div class=\"scoreboard-grid score-results-grid\">",
-                matches.map(function (match) { return renderResultMatchCard(match); }).join(""),
+                cards,
                 "    </div>",
                 "</article>"
             ].join("");
@@ -2154,12 +2166,12 @@ var renderProgramFixtures = (function () {
                 tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Ok\u00e7uluk", "Oryantiring", "Bah\u00e7e Satranc\u0131", "PlayStation", "Atletizm", "Bah\u00e7e Oyunlar\u0131"],
                 panels: ["Voleybol Fikst\u00fcr\u00fc", "Basketbol Fikst\u00fcr\u00fc", "Futbol Fikst\u00fcr\u00fc", "Masa Tenisi Fikst\u00fcr\u00fc", "Ok\u00e7uluk Fikst\u00fcr\u00fc", "Oryantiring Fikst\u00fcr\u00fc", "Bah\u00e7e Satranc\u0131 Fikst\u00fcr\u00fc", "PlayStation Turnuvas\u0131 Fikst\u00fcr\u00fc", "Atletizm Fikst\u00fcr\u00fc", "Bah\u00e7e Oyunlar\u0131 Fikst\u00fcr\u00fc"],
                 timelineTitles: [
-                    "12 May\u0131s | \u00c7eyrek Finaller ve A\u00e7\u0131l\u0131\u015f",
+                    "12 May\u0131s | A\u00e7\u0131l\u0131\u015f,\u00c7eyrek Finaller ve Yar\u0131 Finaller",
                     "13 May\u0131s | Yar\u0131 Finaller ve Yan Etkinlikler",
                     "14 May\u0131s | Final ve \u00d6d\u00fcl T\u00f6reni"
                 ],
                 timelineText: [
-                    "8 tak\u0131m ile ba\u015flayan turnuva e\u015fle\u015fmeleri ve a\u00e7\u0131l\u0131\u015f seremonisi ayn\u0131 g\u00fcn ba\u015flar.",
+                    "",
                     "\u00c7eyrek final galipleri yar\u0131 finalde bulu\u015fur; g\u00fcn boyunca yan etkinlik ak\u0131\u015f\u0131 devam eder.",
                     "Her bran\u015fta \u015fampiyonluk ma\u00e7\u0131 oynan\u0131r, ard\u0131ndan kupa seremonisi ve kapan\u0131\u015f yap\u0131l\u0131r."
                 ],

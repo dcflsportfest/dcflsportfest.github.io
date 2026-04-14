@@ -36,6 +36,7 @@
     var submissionsMount = document.querySelector("[data-admin-submissions]");
     var contentTabButtons = Array.from(document.querySelectorAll("[data-admin-content-tab]"));
     var contentPanels = Array.from(document.querySelectorAll("[data-admin-content-panel]"));
+    var liveAddButton = document.querySelector("[data-admin-live-add]");
     var defaultTemplates = api.getDefaultData().branchTemplates.reduce(function (map, template) {
         map[template.key] = template;
         return map;
@@ -214,21 +215,71 @@
         ].join("");
     }
 
+    function getScoreLeader(homeScore, awayScore) {
+        var home = Number(String(homeScore).replace(",", "."));
+        var away = Number(String(awayScore).replace(",", "."));
+        if (!Number.isFinite(home) || !Number.isFinite(away) || home === away) {
+            return "";
+        }
+        return home > away ? "home" : "away";
+    }
+
+    function normalizeBooleanList(value, length) {
+        return Array.from({ length: length }, function (_item, index) {
+            return Array.isArray(value) ? !!value[index] : false;
+        });
+    }
+
+    function renderLivePreviewCard(match) {
+        var winner = getScoreLeader(match.homeScore, match.awayScore);
+        var homeClass = winner === "home" ? " is-leading" : "";
+        var awayClass = winner === "away" ? " is-leading" : "";
+
+        return [
+            "<article class=\"score-card admin-preview-score-card\">",
+            "    <div class=\"score-card-head\">",
+            "        <p class=\"score-card-branch\">" + escapeHTML(match.branch || "Canl\u0131 Kart") + "</p>",
+            "        <span class=\"score-card-badge score-card-badge-live\">" + escapeHTML(match.status || "Canl\u0131") + "</span>",
+            "    </div>",
+            "    <div class=\"score-card-teams\">",
+            "        <div class=\"score-card-team" + homeClass + "\">",
+            "            <strong>" + escapeHTML(match.home || "-") + "</strong>",
+            "            <span class=\"score-card-score\">" + escapeHTML(match.homeScore || "0") + "</span>",
+            "        </div>",
+            "        <div class=\"score-card-team" + awayClass + "\">",
+            "            <strong>" + escapeHTML(match.away || "-") + "</strong>",
+            "            <span class=\"score-card-score\">" + escapeHTML(match.awayScore || "0") + "</span>",
+            "        </div>",
+            "    </div>",
+            "    <p class=\"score-card-meta\">" + escapeHTML(match.meta || "") + "</p>",
+            "</article>"
+        ].join("");
+    }
+
     function renderLiveCard(match, index) {
         return [
-            "<article class=\"admin-card\" data-admin-live-card data-live-index=\"" + index + "\">",
-            "    <div class=\"admin-card-head\">",
-            "        <h3>Canl\u0131 Kart " + String(index + 1) + "</h3>",
+            "<article class=\"admin-card admin-live-editor-card\" data-admin-live-card data-live-index=\"" + index + "\">",
+            "    <div class=\"admin-card-head admin-card-head-actions\">",
+            "        <div>",
+            "            <h3>Canl\u0131 Kart " + String(index + 1) + "</h3>",
+            "            <p>Ana sayfa \u00f6nizlemesi</p>",
+            "        </div>",
+            "        <button type=\"button\" class=\"btn btn-ghost admin-card-action\" data-admin-live-remove>Sil</button>",
             "    </div>",
-            "    <div class=\"admin-grid\">",
+            "    <div class=\"admin-live-editor-layout\">",
+            "        <div class=\"admin-live-preview\" data-admin-live-preview>",
+            renderLivePreviewCard(match),
+            "        </div>",
+            "        <div class=\"admin-grid admin-grid-compact admin-live-editor-fields\">",
             renderField("Bran\u015f", "branch", match.branch),
             renderField("Durum", "status", match.status),
-            renderField("Tak\u0131m 1", "home", match.home),
-            renderField("Tak\u0131m 1 Skor", "homeScore", match.homeScore),
-            renderField("Tak\u0131m 2", "away", match.away),
-            renderField("Tak\u0131m 2 Skor", "awayScore", match.awayScore),
-            renderField("Alt A\u00e7\u0131klama", "meta", match.meta),
-            "</div>",
+            renderField("1. Tak\u0131m", "home", match.home),
+            renderField("1. Skor", "homeScore", match.homeScore),
+            renderField("2. Tak\u0131m", "away", match.away),
+            renderField("2. Skor", "awayScore", match.awayScore),
+            renderField("Alt metin", "meta", match.meta),
+            "        </div>",
+            "    </div>",
             "</article>"
         ].join("");
     }
@@ -265,18 +316,49 @@
         ].join("");
     }
 
-    function renderResultMatchCard(stageLabel, stageKey, index, home, away, homeScore, awayScore) {
+    function renderResultPreviewCard(stageLabel, home, away, homeScore, awayScore, hidden) {
+        var winner = getScoreLeader(homeScore, awayScore);
+        var homeClass = winner === "home" ? " is-leading" : "";
+        var awayClass = winner === "away" ? " is-leading" : "";
+        var hasScore = homeScore !== "" || awayScore !== "";
+
         return [
-            "<article class=\"admin-match-card admin-match-card-results\" data-stage-key=\"" + stageKey + "\" data-match-index=\"" + index + "\">",
-            "    <div class=\"admin-card-head\">",
+            "<article class=\"score-card score-card-result admin-preview-score-card" + (hidden ? " is-hidden" : "") + "\">",
+            "    <div class=\"score-card-head\">",
+            "        <p class=\"score-card-branch\">" + stageLabel + "</p>",
+            "        <span class=\"score-card-badge " + (hasScore ? "score-card-badge-final" : "score-card-badge-pending") + "\">" + (hidden ? "Gizli" : (hasScore ? "Tamamland\u0131" : "Bekliyor")) + "</span>",
+            "    </div>",
+            "    <div class=\"score-card-teams\">",
+            "        <div class=\"score-card-team" + homeClass + "\">",
+            "            <strong>" + escapeHTML(home || "-") + "</strong>",
+            "            <span class=\"score-card-score\">" + escapeHTML(homeScore || "0") + "</span>",
+            "        </div>",
+            "        <div class=\"score-card-team" + awayClass + "\">",
+            "            <strong>" + escapeHTML(away || "-") + "</strong>",
+            "            <span class=\"score-card-score\">" + escapeHTML(awayScore || "0") + "</span>",
+            "        </div>",
+            "    </div>",
+            "    <p class=\"score-card-meta\">" + (hidden ? "Bu kart ana sayfada gizli." : "Ana sayfa sonu\u00e7 \u00f6nizlemesi") + "</p>",
+            "</article>"
+        ].join("");
+    }
+
+    function renderResultMatchCard(stageLabel, stageKey, index, home, away, homeScore, awayScore, hidden) {
+        return [
+            "<article class=\"admin-match-card admin-match-card-results" + (hidden ? " is-hidden" : "") + "\" data-stage-key=\"" + stageKey + "\" data-match-index=\"" + index + "\">",
+            "    <div class=\"admin-card-head admin-card-head-actions\">",
             "        <h4>" + stageLabel + "</h4>",
+            "        <button type=\"button\" class=\"btn btn-ghost admin-card-action\" data-admin-result-toggle>" + (hidden ? "Geri Getir" : "Sil") + "</button>",
             "    </div>",
             "    <div class=\"admin-results-match-head\">",
             "        <strong>" + escapeHTML(home) + "</strong>",
             "        <span>vs</span>",
             "        <strong>" + escapeHTML(away) + "</strong>",
             "    </div>",
-            "    <div class=\"admin-grid admin-grid-compact\">",
+            "    <div class=\"admin-result-preview\" data-admin-result-preview>",
+            renderResultPreviewCard(stageLabel, home, away, homeScore, awayScore, hidden),
+            "    </div>",
+            "    <div class=\"admin-grid admin-grid-compact admin-result-editor-fields\">",
             renderField("Ev Skor", "homeScore", homeScore),
             renderField("Dep. Skor", "awayScore", awayScore),
             "    </div>",
@@ -362,16 +444,18 @@
     }
 
     function renderResultsBranchCard(template, index) {
+        var qfHidden = normalizeBooleanList(template.qf && template.qf.hidden, template.qf.times.length);
         var qfCards = template.qf.times.map(function (_time, resultIndex) {
             var pair = getPair(template, "qf", resultIndex);
             var score = template.qf.scores[resultIndex] || ["", ""];
-            return renderResultMatchCard("\u00c7eyrek Final " + String(resultIndex + 1), "qf", resultIndex, pair[0], pair[1], score[0], score[1]);
+            return renderResultMatchCard("\u00c7eyrek Final " + String(resultIndex + 1), "qf", resultIndex, pair[0], pair[1], score[0], score[1], qfHidden[resultIndex]);
         }).join("");
 
+        var sfHidden = normalizeBooleanList(template.sf && template.sf.hidden, template.sf.times.length);
         var sfCards = template.sf.times.map(function (_time, resultIndex) {
             var pair = getPair(template, "sf", resultIndex);
             var score = template.sf.scores[resultIndex] || ["", ""];
-            return renderResultMatchCard("Yar\u0131 Final " + String(resultIndex + 1), "sf", resultIndex, pair[0], pair[1], score[0], score[1]);
+            return renderResultMatchCard("Yar\u0131 Final " + String(resultIndex + 1), "sf", resultIndex, pair[0], pair[1], score[0], score[1], sfHidden[resultIndex]);
         }).join("");
 
         var finalPair = getPair(template, "final", 0);
@@ -394,7 +478,7 @@
             "    <div class=\"admin-stage-group\">",
             "        <h4>Final</h4>",
             "        <div class=\"admin-match-grid\">",
-            renderResultMatchCard("Final", "final", 0, finalPair[0], finalPair[1], finalScore[0], finalScore[1]),
+            renderResultMatchCard("Final", "final", 0, finalPair[0], finalPair[1], finalScore[0], finalScore[1], !!template.final.hidden),
             "        </div>",
             "    </div>",
             "</article>"
@@ -442,6 +526,112 @@
         applyEditorPermissions();
     }
 
+    function updateLivePreview(card) {
+        var preview = card.querySelector("[data-admin-live-preview]");
+        if (!preview) {
+            return;
+        }
+
+        preview.innerHTML = renderLivePreviewCard({
+            branch: getInputValue(card, "branch"),
+            status: getInputValue(card, "status"),
+            home: getInputValue(card, "home"),
+            homeScore: getInputValue(card, "homeScore"),
+            away: getInputValue(card, "away"),
+            awayScore: getInputValue(card, "awayScore"),
+            meta: getInputValue(card, "meta")
+        });
+    }
+
+    function updateResultPreview(card) {
+        var preview = card.querySelector("[data-admin-result-preview]");
+        if (!preview) {
+            return;
+        }
+
+        var teams = card.querySelectorAll(".admin-results-match-head strong");
+        var home = teams[0] ? teams[0].textContent.trim() : "-";
+        var away = teams[1] ? teams[1].textContent.trim() : "-";
+        var title = card.querySelector(".admin-card-head h4");
+
+        preview.innerHTML = renderResultPreviewCard(
+            title ? title.textContent.trim() : "Sonuç",
+            home,
+            away,
+            getInputValue(card, "homeScore"),
+            getInputValue(card, "awayScore"),
+            card.classList.contains("is-hidden")
+        );
+    }
+
+    function syncDraftStateFromForm() {
+        if (!liveMount || !fixtureMount || !resultsMount) {
+            return;
+        }
+
+        state = collectFormData();
+    }
+
+    function addLiveCard() {
+        if (!canEditContent()) {
+            setMessage("Yeni canlı kart eklemek için önce yetkili admin olarak giriş yap.", "warning");
+            return;
+        }
+
+        syncDraftStateFromForm();
+        state.liveMatches.push(api.createLiveMatchTemplate(state.liveMatches.length));
+        render();
+        setMessage("Yeni canlı kart eklendi.", "success");
+    }
+
+    function removeLiveCard(index) {
+        if (!canEditContent()) {
+            setMessage("Canlı kart silmek için önce yetkili admin olarak giriş yap.", "warning");
+            return;
+        }
+
+        syncDraftStateFromForm();
+        state.liveMatches.splice(index, 1);
+        render();
+        setMessage("Canlı kart silindi.", "info");
+    }
+
+    function toggleResultCardVisibility(branchKey, stageKey, index) {
+        if (!canEditContent()) {
+            setMessage("Sonuç kartı düzenlemek için önce yetkili admin olarak giriş yap.", "warning");
+            return;
+        }
+
+        var template = (state.branchTemplates || []).find(function (item) {
+            return item && item.key === branchKey;
+        });
+
+        if (!template) {
+            return;
+        }
+
+        syncDraftStateFromForm();
+        template = (state.branchTemplates || []).find(function (item) {
+            return item && item.key === branchKey;
+        });
+
+        if (!template) {
+            return;
+        }
+
+        if (stageKey === "final") {
+            template.final.hidden = !template.final.hidden;
+            render();
+            setMessage(template.final.hidden ? "Sonuç kartı gizlendi." : "Sonuç kartı geri getirildi.", "info");
+            return;
+        }
+
+        template[stageKey].hidden = normalizeBooleanList(template[stageKey].hidden, template[stageKey].times.length);
+        template[stageKey].hidden[index] = !template[stageKey].hidden[index];
+        render();
+        setMessage(template[stageKey].hidden[index] ? "Sonuç kartı gizlendi." : "Sonuç kartı geri getirildi.", "info");
+    }
+
     function setActiveContentTab(key) {
         contentTabButtons.forEach(function (button) {
             var isActive = button.getAttribute("data-admin-content-tab") === key;
@@ -456,6 +646,10 @@
     }
 
     function syncLiveMatchCount(nextCount) {
+        if (liveMount && liveMount.children.length) {
+            syncDraftStateFromForm();
+        }
+
         var safeCount = Math.max(0, Math.floor(Number(nextCount) || 0));
         var current = Array.isArray(state.liveMatches) ? state.liveMatches.slice() : [];
 
@@ -489,7 +683,7 @@
             adminMain.setAttribute("data-edit-locked", editable ? "false" : "true");
         }
 
-        Array.from(scope.querySelectorAll("[data-field], [data-admin-completed-today], [data-admin-results-count], [data-admin-publish-results]")).forEach(function (input) {
+        Array.from(scope.querySelectorAll("[data-field], [data-admin-completed-today], [data-admin-results-count], [data-admin-publish-results], [data-admin-live-add], [data-admin-live-remove], [data-admin-result-toggle]")).forEach(function (input) {
             input.disabled = !editable;
         });
 
@@ -787,6 +981,9 @@
             var key = branchCard.getAttribute("data-fixture-branch-key");
             var resultCard = resultsMount.querySelector("[data-results-branch-key=\"" + key + "\"]");
             var fallback = clone(defaultTemplates[key]);
+            var currentTemplate = (state.branchTemplates || []).find(function (item) {
+                return item && item.key === key;
+            }) || fallback;
             var qfMatches = collectStageMatches(branchCard, "qf");
             var sfMatches = collectStageMatches(branchCard, "sf");
             var finalMatch = collectStageMatches(branchCard, "final")[0];
@@ -805,16 +1002,15 @@
             fallback.final.time = finalMatch.time;
             fallback.final.pair = [finalMatch.home, finalMatch.away];
             fallback.final.score = finalScore ? [finalScore.homeScore, finalScore.awayScore] : ["", ""];
+            fallback.qf.hidden = normalizeBooleanList(currentTemplate.qf && currentTemplate.qf.hidden, fallback.qf.times.length);
+            fallback.sf.hidden = normalizeBooleanList(currentTemplate.sf && currentTemplate.sf.hidden, fallback.sf.times.length);
+            fallback.final.hidden = !!(currentTemplate.final && currentTemplate.final.hidden);
 
             return fallback;
         });
     }
 
     function collectFormData() {
-        if (activeCountInput) {
-            syncLiveMatchCount(activeCountInput.value);
-        }
-
         return {
             summary: {
                 completedToday: completedInput.value.trim(),
@@ -843,6 +1039,61 @@
             }
 
             syncLiveMatchCount(activeCountInput.value);
+        });
+    }
+
+    if (liveAddButton) {
+        liveAddButton.addEventListener("click", addLiveCard);
+    }
+
+    if (liveMount) {
+        liveMount.addEventListener("input", function (event) {
+            var card = event.target.closest("[data-admin-live-card]");
+            if (card) {
+                updateLivePreview(card);
+            }
+        });
+
+        liveMount.addEventListener("click", function (event) {
+            var removeButton = event.target.closest("[data-admin-live-remove]");
+            if (!removeButton) {
+                return;
+            }
+
+            var card = removeButton.closest("[data-admin-live-card]");
+            if (!card) {
+                return;
+            }
+
+            removeLiveCard(Number(card.getAttribute("data-live-index")) || 0);
+        });
+    }
+
+    if (resultsMount) {
+        resultsMount.addEventListener("input", function (event) {
+            var card = event.target.closest(".admin-match-card-results");
+            if (card) {
+                updateResultPreview(card);
+            }
+        });
+
+        resultsMount.addEventListener("click", function (event) {
+            var toggleButton = event.target.closest("[data-admin-result-toggle]");
+            if (!toggleButton) {
+                return;
+            }
+
+            var card = toggleButton.closest(".admin-match-card-results");
+            var branchCard = toggleButton.closest("[data-results-branch-key]");
+            if (!card || !branchCard) {
+                return;
+            }
+
+            toggleResultCardVisibility(
+                branchCard.getAttribute("data-results-branch-key"),
+                card.getAttribute("data-stage-key"),
+                Number(card.getAttribute("data-match-index")) || 0
+            );
         });
     }
 
@@ -1005,4 +1256,5 @@
         setMessage("Panel haz\u0131r.", "info");
     })();
 })();
+
 

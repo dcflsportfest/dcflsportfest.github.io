@@ -999,6 +999,10 @@ main {
     color: var(--muted);
 }
 
+.step p:empty {
+    display: none;
+}
+
 .feature-grid,
 .sponsor-grid,
 .post-grid,
@@ -3647,6 +3651,19 @@ h1 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.admin-inline-actions {
+    margin-top: 0.65rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.admin-inline-note {
+    margin: 0;
+}
+
 .admin-user-list-wrap {
     margin-top: 0.95rem;
 }
@@ -3747,6 +3764,15 @@ h1 {
     font-size: 0.88rem;
 }
 
+.admin-card-head-actions {
+    align-items: center;
+}
+
+.admin-card-action {
+    min-height: 38px;
+    padding: 0.5rem 0.8rem;
+}
+
 .admin-stage-group + .admin-stage-group {
     margin-top: 1rem;
 }
@@ -3779,6 +3805,61 @@ h1 {
     background: rgba(7, 15, 34, 0.58);
 }
 
+.admin-live-editor-card {
+    padding: 0.9rem;
+}
+
+.admin-live-editor-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 0.85rem;
+    align-items: start;
+}
+
+.admin-live-preview,
+.admin-result-preview {
+    min-width: 0;
+}
+
+.admin-preview-score-card {
+    min-height: 100%;
+}
+
+.admin-live-editor-fields,
+.admin-result-editor-fields {
+    gap: 0.7rem;
+}
+
+.admin-live-editor-fields .admin-field input,
+.admin-result-editor-fields .admin-field input {
+    min-height: 42px;
+    padding: 0.64rem 0.76rem;
+}
+
+.admin-match-card-results.is-hidden,
+.admin-preview-score-card.is-hidden {
+    opacity: 0.58;
+}
+
+.admin-results-match-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.7rem;
+    margin-bottom: 0.75rem;
+    color: #f4f8ff;
+}
+
+.score-results-empty-branch {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 0.95rem 1rem;
+    border: 1px dashed rgba(168, 197, 245, 0.22);
+    border-radius: 14px;
+    color: var(--muted);
+    background: rgba(7, 15, 34, 0.34);
+}
+
 @media (max-width: 900px) {
     .corner-logo-stack {
         display: none !important;
@@ -3799,5 +3880,9 @@ h1 {
         width: 100%;
         justify-content: flex-start;
         flex-wrap: wrap;
+    }
+
+    .admin-live-editor-layout {
+        grid-template-columns: 1fr;
     }
 }
