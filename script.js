@@ -188,26 +188,35 @@ function getSharedSiteState() {
 
 (function () {
     var footer = document.querySelector(".footer");
-    if (!footer || document.body.hasAttribute("data-admin-page")) {
+    if (!footer) {
         return;
     }
 
-    if (footer.querySelector(".footer-social")) {
-        return;
+    if (!footer.querySelector(".footer-social")) {
+        footer.insertAdjacentHTML("beforeend", [
+            "<div class=\"footer-social\">",
+            "    <a class=\"footer-social-link\" href=\"https://www.instagram.com/dcflsportfest?igsh=MWszOWFhcm92NnVwYQ==\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"DCFL Sportfest Instagram\">",
+            "        <img src=\"assets/instagram-logo.jfif\" alt=\"Instagram\" class=\"footer-social-icon\">",
+            "        <span>@dcflsportfest</span>",
+            "    </a>",
+            "    <a class=\"footer-social-link footer-social-link--tiktok\" href=\"https://www.tiktok.com/@dcflsportfest?_r=1&_t=ZS-95L5JIFX8Oy\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"DCFL Sportfest TikTok\">",
+            "        <img src=\"assets/tiktok-icon.png\" alt=\"TikTok\" class=\"footer-social-icon\">",
+            "        <span>@dcflsportfest</span>",
+            "    </a>",
+            "</div>"
+        ].join(""));
     }
 
-    footer.insertAdjacentHTML("beforeend", [
-        "<div class=\"footer-social\">",
-        "    <a class=\"footer-social-link\" href=\"https://www.instagram.com/dcflsportfest?igsh=MWszOWFhcm92NnVwYQ==\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"DCFL Sportfest Instagram\">",
-        "        <img src=\"assets/instagram-logo.jfif\" alt=\"Instagram\" class=\"footer-social-icon\">",
-        "        <span>@dcflsportfest</span>",
-        "    </a>",
-        "    <a class=\"footer-social-link footer-social-link--tiktok\" href=\"https://www.tiktok.com/@dcflsportfest?_r=1&_t=ZS-95L5JIFX8Oy\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"DCFL Sportfest TikTok\">",
-        "        <img src=\"assets/tiktok-icon.png\" alt=\"TikTok\" class=\"footer-social-icon\">",
-        "        <span>@dcflsportfest</span>",
-        "    </a>",
-        "</div>"
-    ].join(""));
+    if (!footer.querySelector(".footer-committee")) {
+        footer.insertAdjacentHTML("beforeend", [
+            "<div class=\"footer-committee\">",
+            "    <p><strong>OKUL MÜDÜRÜ:</strong> ALİEKBER BABA</p>",
+            "    <p><strong>DANIŞMAN ÖĞRETMENLER:</strong> AYŞE FIRAT, UĞUR ERASLAN, HANDAN ARICI EĞLENCE</p>",
+            "    <p><strong>KULÜP BAŞKANI:</strong> KAVİN POLAT</p>",
+            "    <p><strong>GENEL ORGANİZATÖR:</strong> MUSTAFA TAYLAN ŞAHİN</p>",
+            "</div>"
+        ].join(""));
+    }
 })();
 
 function renderLiveScoreboard() {
@@ -670,6 +679,90 @@ function initializeFixtureDateGroups(root) {
 
         var initiallyActive = group.querySelector("[data-fixture-date-tab].active");
         activate(initiallyActive ? initiallyActive.getAttribute("data-fixture-date-tab") : tabs[0].getAttribute("data-fixture-date-tab"));
+    });
+}
+
+function initializeArchiveTabs(root) {
+    var scope = root || document;
+    var tabs = scope.querySelectorAll("[data-archive-tab]");
+    var panels = scope.querySelectorAll("[data-archive-panel]");
+    if (!tabs.length || !panels.length) {
+        return;
+    }
+
+    function activate(key) {
+        tabs.forEach(function (tab) {
+            var isActive = tab.getAttribute("data-archive-tab") === key;
+            tab.classList.toggle("active", isActive);
+            tab.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+
+        panels.forEach(function (panel) {
+            var isActive = panel.getAttribute("data-archive-panel") === key;
+            panel.classList.toggle("active", isActive);
+            panel.hidden = !isActive;
+            panel.setAttribute("aria-hidden", isActive ? "false" : "true");
+        });
+    }
+
+    tabs.forEach(function (tab) {
+        tab.setAttribute("role", "tab");
+        tab.addEventListener("click", function () {
+            activate(tab.getAttribute("data-archive-tab"));
+        });
+    });
+
+    panels.forEach(function (panel) {
+        panel.setAttribute("role", "tabpanel");
+    });
+
+    var initiallyActive = Array.prototype.find.call(tabs, function (tab) {
+        return tab.classList.contains("active");
+    });
+    activate(initiallyActive ? initiallyActive.getAttribute("data-archive-tab") : tabs[0].getAttribute("data-archive-tab"));
+}
+
+function initializeArchiveLightbox(root) {
+    var scope = root || document;
+    var items = scope.querySelectorAll("[data-archive-image]");
+    var lightbox = scope.querySelector("[data-archive-lightbox]");
+    var lightboxImage = scope.querySelector("[data-archive-lightbox-image]");
+    var closeTriggers = scope.querySelectorAll("[data-archive-lightbox-close]");
+    if (!items.length || !lightbox || !lightboxImage) {
+        return;
+    }
+
+    function closeLightbox() {
+        lightbox.hidden = true;
+        lightbox.setAttribute("aria-hidden", "true");
+        lightboxImage.setAttribute("src", "");
+        document.body.classList.remove("archive-lightbox-open");
+    }
+
+    function openLightbox(src, alt) {
+        lightboxImage.setAttribute("src", src);
+        lightboxImage.setAttribute("alt", alt || "");
+        lightbox.hidden = false;
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.classList.add("archive-lightbox-open");
+    }
+
+    items.forEach(function (item) {
+        item.addEventListener("click", function (event) {
+            event.preventDefault();
+            var image = item.querySelector("img");
+            openLightbox(item.getAttribute("href"), image ? image.getAttribute("alt") : "");
+        });
+    });
+
+    closeTriggers.forEach(function (trigger) {
+        trigger.addEventListener("click", closeLightbox);
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && !lightbox.hidden) {
+            closeLightbox();
+        }
     });
 }
 
@@ -1299,20 +1392,22 @@ var renderProgramFixtures = (function () {
     var participantLists = {
         "basketbol": {
             default: [
-                "Adnan Menderes Anadolu Lisesi",
                 "Doğan Cüceloğlu Fen Lisesi",
                 "Fuat Sezgin Fen Lisesi",
                 "Bahçelievler Anadolu Lisesi",
-                "TEMA Bahçeşehir Koleji",
-                "Çapa Fen Lisesi"
+                "Küçükçekmece Spor Lisesi",
+                "Atakent Anadolu Lisesi",
+                "İtalyan Lisesi",
+                "Gazi Anadolu Lisesi"
             ]
         },
         "futbol": {
             default: [
                 "Doğan Cüceloğlu Fen Lisesi",
-                "Yaşar Acar Fen Lisesi",
                 "Fuat Sezgin Fen Lisesi",
-                "Çapa Fen Lisesi"
+                "Çapa Fen Lisesi",
+                "Gazi Anadolu Lisesi",
+                "İtalyan Lisesi"
             ]
         },
         "bahce-satranci": {
@@ -1320,8 +1415,8 @@ var renderProgramFixtures = (function () {
                 "Doğan Cüceloğlu Fen Lisesi",
                 "Fuat Sezgin Fen Lisesi",
                 "Bahçelievler Anadolu Lisesi",
-                "Adnan Menderes Anadolu Lisesi",
-                "Müptas Turhan Sosyal Bilimler Lisesi"
+                "Müptas Turhan Sosyal Bilimler Lisesi",
+                "Gazi Anadolu Lisesi"
             ]
         },
         "atletizm": {
@@ -1339,15 +1434,14 @@ var renderProgramFixtures = (function () {
         "voleybol": {
             kiz: [
                 "Doğan Cüceloğlu Fen Lisesi",
-                "Fuat Sezgin",
-                "Çapa Fen",
-                "Müptas Turhan Sosyal Bilimler",
-                "Yaşar Acar Fen Lisesi"
+                "Fuat Sezgin Fen Lisesi",
+                "Çapa Fen Lisesi",
+                "Müptas Turhan Sosyal Bilimler"
             ],
             erkek: [
                 "Polonya",
                 "Doğan Cüceloğlu Fen Lisesi",
-                "Fuat Sezgin",
+                "Fuat Sezgin Fen Lisesi",
                 "Çapa Fen Lisesi",
                 "Orhan Gazi Anadolu Lisesi"
             ]
@@ -1727,10 +1821,9 @@ var renderProgramFixtures = (function () {
             nav: {
                 "index.html": "Ana Sayfa",
                 "kurumsal.html": "Amac\u0131m\u0131z",
-                "hizmetler.html": "S\u0131k\u00e7a Sorulanlar",
                 "program.html": "Program & Turnuva",
                 "finans.html": "Finans",
-                "blog.html": "Blog",
+                "blog.html": "Maç Kayıtları",
                 "arsiv.html": "Ar\u015fiv",
                 "sporcu-basvuru.html": "Sporcu Ba\u015fvuru",
                 "iletisim.html": "\u0130leti\u015fim",
@@ -1743,10 +1836,9 @@ var renderProgramFixtures = (function () {
             nav: {
                 "index.html": "Home",
                 "kurumsal.html": "Purpose",
-                "hizmetler.html": "FAQ",
                 "program.html": "Program & Tournament",
                 "finans.html": "Finance",
-                "blog.html": "Blog",
+                "blog.html": "Match Recordings",
                 "arsiv.html": "Archive",
                 "sporcu-basvuru.html": "Athlete Application",
                 "iletisim.html": "Contact",
@@ -1759,10 +1851,9 @@ var renderProgramFixtures = (function () {
             nav: {
                 "index.html": "Strona glowna",
                 "kurumsal.html": "Cel",
-                "hizmetler.html": "FAQ",
                 "program.html": "Program i Turniej",
                 "finans.html": "Finanse",
-                "blog.html": "Blog",
+                "blog.html": "Nagrania meczow",
                 "arsiv.html": "Archiwum",
                 "sporcu-basvuru.html": "Zgloszenie Zawodnika",
                 "iletisim.html": "Kontakt",
@@ -1827,6 +1918,28 @@ var renderProgramFixtures = (function () {
             if (nodes[index]) {
                 nodes[index].textContent = value;
             }
+        });
+    }
+
+    function renderSectionTextList(containerSelector, values) {
+        if (!Array.isArray(values)) {
+            return;
+        }
+        var container = document.querySelector(containerSelector);
+        if (!container) {
+            return;
+        }
+        Array.prototype.slice.call(container.querySelectorAll(".section-text")).forEach(function (node) {
+            node.remove();
+        });
+        values.forEach(function (value) {
+            if (typeof value !== "string" || !value.length) {
+                return;
+            }
+            var item = document.createElement("p");
+            item.className = "section-text";
+            item.innerHTML = value;
+            container.appendChild(item);
         });
     }
 
@@ -1927,7 +2040,7 @@ var renderProgramFixtures = (function () {
                 scoreboard: {
                     kicker: "SKOR MERKEZ\u0130",
                     title: "Canl\u0131 Skor ve Sonu\u00e7lar",
-                    text: "G\u00fcn\u00fcn canl\u0131 kar\u015f\u0131la\u015fmalar\u0131n\u0131 ve tamamlanan ma\u00e7 sonu\u00e7lar\u0131n\u0131 tek panelden takip et.",
+                    text: "",
                     tabAria: "Skor paneli sekmeleri",
                     tabs: ["Canl\u0131", "Sonu\u00e7lar"],
                     summaryLabels: ["Aktif kar\u015f\u0131la\u015fma", "Bug\u00fcn tamamlanan ma\u00e7", "Son g\u00fcncelleme"],
@@ -1969,7 +2082,10 @@ var renderProgramFixtures = (function () {
                 contactDetails: [
                     "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 K\u00fc\u00e7\u00fck\u00e7ekmece / \u0130stanbul",
-                    "<strong>Tarih:</strong> 12-13-14 May\u0131s 2026"
+                    "<strong>Tarih:</strong> 12-13-14 May\u0131s 2026",
+                    "<strong>Dan\u0131\u015fman \u00d6\u011fretmen / Ay\u015fe F\u0131rat:</strong> +90 555 691 88 48",
+                    "<strong>Kul\u00fcp Ba\u015fkan\u0131 / Kavin Polat:</strong> +90 539 202 29 75",
+                    "<strong>Genel Organizat\u00f6r / Mustafa Taylan \u015eahin:</strong> +90 530 287 00 86"
                 ],
                 quick: "H\u0131zl\u0131 Mesaj",
                 labels: ["Ad Soyad/ Firma Ad\u0131", "E-posta", "Konu", "Mesaj"],
@@ -2040,7 +2156,10 @@ var renderProgramFixtures = (function () {
                 contactDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Location:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Date:</strong> May 12-14, 2026"
+                    "<strong>Date:</strong> May 12-14, 2026",
+                    "<strong>Advisor Teacher / Ayse Firat:</strong> +90 555 691 88 48",
+                    "<strong>Club President / Kavin Polat:</strong> +90 539 202 29 75",
+                    "<strong>General Organizer / Mustafa Taylan Sahin:</strong> +90 530 287 00 86"
                 ],
                 quick: "Quick Message",
                 labels: ["Name / Company Name", "E-mail", "Subject", "Message"],
@@ -2111,7 +2230,10 @@ var renderProgramFixtures = (function () {
                 contactDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Lokalizacja:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Data:</strong> 12-14 maja 2026"
+                    "<strong>Data:</strong> 12-14 maja 2026",
+                    "<strong>Nauczyciel Doradca / Ayse Firat:</strong> +90 555 691 88 48",
+                    "<strong>Prezes Klubu / Kavin Polat:</strong> +90 539 202 29 75",
+                    "<strong>Glowny Organizator / Mustafa Taylan Sahin:</strong> +90 530 287 00 86"
                 ],
                 quick: "Szybka Wiadomosc",
                 labels: ["Imie i nazwisko / Firma", "E-mail", "Temat", "Wiadomosc"],
@@ -2138,11 +2260,7 @@ var renderProgramFixtures = (function () {
         setList(".home-branch-list li", copy.branches);
         setList(".home-school-list li", copy.schools || []);
         setText(".contact-info h2", copy.contactTitle);
-        if (Array.isArray(copy.contactDetails)) {
-            setHTML(".contact-info .section-text:nth-of-type(1)", copy.contactDetails[0]);
-            setHTML(".contact-info .section-text:nth-of-type(2)", copy.contactDetails[1]);
-            setHTML(".contact-info .section-text:nth-of-type(3)", copy.contactDetails[2]);
-        }
+        renderSectionTextList(".contact-info", copy.contactDetails);
         setText(".contact-form-card h2", copy.quick);
         setText("label[for='home-name']", copy.labels[0]);
         setText("label[for='home-email']", copy.labels[1]);
@@ -2161,19 +2279,19 @@ var renderProgramFixtures = (function () {
                 eyebrow: "PROGRAM & TURNUVA",
                 h1: "Sportfest Etkinlik Ak\u0131\u015f\u0131\u00a0ve\u00a0Turnuva\u00a0Ak\u0131\u015f\u0131",
                 hero: "A\u00e7\u0131l\u0131\u015f, g\u00fcnl\u00fck etkinlik plan\u0131 ve bran\u015f bazl\u0131 8 tak\u0131ml\u0131 t\u00fcm turnuva fikst\u00fcrlerini tek sayfada takip edebilirsin.",
-                sections: ["OPERASYON AKI\u015eI", "FEST\u0130VAL HATLARI", "F\u0130KST\u00dcR DETAYLARI"],
-                titles: ["G\u00fcnl\u00fck Program", "Bran\u015flar", "Turnuva Se\u00e7im Ekran\u0131"],
+                sections: ["GENEL AKI\u015e PROGRAMI", "FEST\u0130VAL HATLARI", "F\u0130KST\u00dcR DETAYLARI"],
+                titles: ["Genel Ak\u0131\u015f Program\u0131", "Bran\u015flar", "Turnuva Se\u00e7im Ekran\u0131"],
                 tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Ok\u00e7uluk", "Oryantiring", "Bah\u00e7e Satranc\u0131", "PlayStation", "Atletizm", "Bah\u00e7e Oyunlar\u0131"],
                 panels: ["Voleybol Fikst\u00fcr\u00fc", "Basketbol Fikst\u00fcr\u00fc", "Futbol Fikst\u00fcr\u00fc", "Masa Tenisi Fikst\u00fcr\u00fc", "Ok\u00e7uluk Fikst\u00fcr\u00fc", "Oryantiring Fikst\u00fcr\u00fc", "Bah\u00e7e Satranc\u0131 Fikst\u00fcr\u00fc", "PlayStation Turnuvas\u0131 Fikst\u00fcr\u00fc", "Atletizm Fikst\u00fcr\u00fc", "Bah\u00e7e Oyunlar\u0131 Fikst\u00fcr\u00fc"],
                 timelineTitles: [
-                    "12 May\u0131s | A\u00e7\u0131l\u0131\u015f,\u00c7eyrek Finaller ve Yar\u0131 Finaller",
-                    "13 May\u0131s | Yar\u0131 Finaller ve Yan Etkinlikler",
-                    "14 May\u0131s | Final ve \u00d6d\u00fcl T\u00f6reni"
+                    "",
+                    "",
+                    ""
                 ],
                 timelineText: [
                     "",
-                    "\u00c7eyrek final galipleri yar\u0131 finalde bulu\u015fur; g\u00fcn boyunca yan etkinlik ak\u0131\u015f\u0131 devam eder.",
-                    "Her bran\u015fta \u015fampiyonluk ma\u00e7\u0131 oynan\u0131r, ard\u0131ndan kupa seremonisi ve kapan\u0131\u015f yap\u0131l\u0131r."
+                    "",
+                    ""
                 ],
                 headerMap: {
                     "Tarih": "Tarih",
@@ -2194,19 +2312,19 @@ var renderProgramFixtures = (function () {
                 eyebrow: "PROGRAM & TOURNAMENT",
                 h1: "Sportfest Event Flow\u00a0and\u00a0Tournament\u00a0Flow",
                 hero: "Follow the opening, daily schedule and branch-based 8-team brackets on one page.",
-                sections: ["OPERATION FLOW", "FESTIVAL LINES", "FIXTURE DETAILS"],
-                titles: ["Daily Program", "Sports Branches", "Tournament Selection Screen"],
+                sections: ["GENERAL FLOW PROGRAM", "FESTIVAL LINES", "FIXTURE DETAILS"],
+                titles: ["General Flow Program", "Sports Branches", "Tournament Selection Screen"],
                 tabs: ["Volleyball", "Basketball", "Football", "Table Tennis", "Archery", "Orienteering", "Garden Chess", "PlayStation", "Athletics", "Garden Games"],
                 panels: ["Volleyball Fixture", "Basketball Fixture", "Football Fixture", "Table Tennis Fixture", "Archery Fixture", "Orienteering Fixture", "Garden Chess Fixture", "PlayStation Tournament Fixture", "Athletics Fixture", "Garden Games Fixture"],
                 timelineTitles: [
-                    "May 12 | Quarter-finals and Opening",
-                    "May 13 | Semi-finals and Side Events",
-                    "May 14 | Final and Award Ceremony"
+                    "",
+                    "",
+                    ""
                 ],
                 timelineText: [
                     "The 8-team tournament bracket starts on the same day as the opening ceremony.",
-                    "Quarter-final winners meet in the semi-finals while side activities continue throughout the day.",
-                    "Each branch plays its championship match, followed by the cup ceremony and closing."
+                    "",
+                    ""
                 ],
                 headerMap: {
                     "Tarih": "Date",
@@ -2251,19 +2369,19 @@ var renderProgramFixtures = (function () {
                 eyebrow: "PROGRAM I TURNIEJ",
                 h1: "Przebieg Sportfest\u00a0i\u00a0przebieg\u00a0turnieju",
                 hero: "Na jednej stronie sledzisz otwarcie, plan dnia i drabinki turniejowe z udzialem 8 druzyn.",
-                sections: ["PRZEBIEG OPERACYJNY", "LINIE FESTIWALU", "SZCZEGOLY TERMINARZA"],
-                titles: ["Program Dzienny", "Dyscypliny", "Ekran Wyboru Turnieju"],
+                sections: ["PROGRAM GLOWNEGO PRZEBIEGU", "LINIE FESTIWALU", "SZCZEGOLY TERMINARZA"],
+                titles: ["Program Glownego Przebiegu", "Dyscypliny", "Ekran Wyboru Turnieju"],
                 tabs: ["Siatkowka", "Koszykowka", "Pilka nozna", "Tenis stolowy", "Lucznictwo", "Bieg na orientacje", "Szachy ogrodowe", "PlayStation", "Lekkoatletyka", "Gry ogrodowe"],
                 panels: ["Terminarz siatkowki", "Terminarz koszykowki", "Terminarz pilki noznej", "Terminarz tenisa stolowego", "Terminarz lucznictwa", "Terminarz biegu na orientacje", "Terminarz szachow ogrodowych", "Terminarz turnieju PlayStation", "Terminarz lekkoatletyki", "Terminarz gier ogrodowych"],
                 timelineTitles: [
-                    "12 maja | Cwiercfinaly i Otwarcie",
-                    "13 maja | Polfinaly i Wydarzenia Towarzyszace",
-                    "14 maja | Final i Ceremonia Nagrod"
+                    "",
+                    "",
+                    ""
                 ],
                 timelineText: [
-                    "Drabinka turnieju z udzialem 8 druzyn rusza tego samego dnia co ceremonia otwarcia.",
-                    "Zwyciezcy cwiercfinalow spotykaja sie w polfinalach, a wydarzenia towarzyszace trwaja przez caly dzien.",
-                    "Kazda dyscyplina rozgrywa mecz mistrzowski, po czym odbywa sie ceremonia pucharowa i zamkniecie."
+                    "",
+                    "",
+                    ""
                 ],
                 headerMap: {
                     "Tarih": "Data",
@@ -2338,7 +2456,9 @@ var renderProgramFixtures = (function () {
                 contactDetails: [
                     "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 K\u00fc\u00e7\u00fck\u00e7ekmece / \u0130stanbul",
-                    "<strong>Not:</strong> Sponsorluk detay dosyas\u0131 ve teklif g\u00f6nderimi i\u00e7in ileti\u015fime ge\u00e7ebilirsin."
+                    "<strong>Dan\u0131\u015fman \u00d6\u011fretmen / Ay\u015fe F\u0131rat:</strong> +90 555 691 88 48",
+                    "<strong>Kul\u00fcp Ba\u015fkan\u0131 / Kavin Polat:</strong> +90 539 202 29 75",
+                    "<strong>Genel Organizat\u00f6r / Mustafa Taylan \u015eahin:</strong> +90 530 287 00 86"
                 ],
                 quick: "H\u0131zl\u0131 Mesaj",
                 labels: ["Ad Soyad / Firma Ad\u0131", "E-posta", "Konu", "Mesaj"],
@@ -2359,7 +2479,9 @@ var renderProgramFixtures = (function () {
                 contactDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Location:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Note:</strong> Contact us for the sponsorship file and proposal process."
+                    "<strong>Advisor Teacher / Ayse Firat:</strong> +90 555 691 88 48",
+                    "<strong>Club President / Kavin Polat:</strong> +90 539 202 29 75",
+                    "<strong>General Organizer / Mustafa Taylan Sahin:</strong> +90 530 287 00 86"
                 ],
                 quick: "Quick Message",
                 labels: ["Name / Company Name", "E-mail", "Subject", "Message"],
@@ -2380,7 +2502,9 @@ var renderProgramFixtures = (function () {
                 contactDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Lokalizacja:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Notatka:</strong> Skontaktuj sie z nami, aby otrzymac plik sponsorski i wyslac propozycje."
+                    "<strong>Nauczyciel Doradca / Ayse Firat:</strong> +90 555 691 88 48",
+                    "<strong>Prezes Klubu / Kavin Polat:</strong> +90 539 202 29 75",
+                    "<strong>Glowny Organizator / Mustafa Taylan Sahin:</strong> +90 530 287 00 86"
                 ],
                 quick: "Szybka Wiadomosc",
                 labels: ["Imie i nazwisko / Firma", "E-mail", "Temat", "Wiadomosc"],
@@ -2450,11 +2574,7 @@ var renderProgramFixtures = (function () {
         setText(".finance-group-head .section-kicker", copy.group);
         setText(".finance-group-head h3", copy.groupTitle);
         setText(".contact-info h2", copy.contact);
-        if (Array.isArray(copy.contactDetails)) {
-            setHTML(".contact-info .section-text:nth-of-type(1)", copy.contactDetails[0]);
-            setHTML(".contact-info .section-text:nth-of-type(2)", copy.contactDetails[1]);
-            setHTML(".contact-info .section-text:nth-of-type(3)", copy.contactDetails[2]);
-        }
+        renderSectionTextList(".contact-info", copy.contactDetails);
         setText(".contact-form-card h2", copy.quick);
         setText("label[for='finans-name']", copy.labels[0]);
         setText("label[for='finans-email']", copy.labels[1]);
@@ -2599,66 +2719,6 @@ var renderProgramFixtures = (function () {
         setText(".footer p:nth-of-type(2)", copy.footer);
     }
 
-    function applyFaq(lang) {
-        var copy = {
-            tr: {
-                title: "S\u0131k\u00e7a Sorulanlar | DCFLSPORTFEST'26",
-                eyebrow: "SIK\u00c7A SORULANLAR",
-                h1: "Merak edilen sorular\u0131n net cevaplar\u0131.",
-                hero: "Kat\u0131l\u0131m, kay\u0131t, kontenjan ve sponsorluk s\u00fcre\u00e7leriyle ilgili en \u00e7ok sorulan sorular\u0131 burada bulabilirsin.",
-                section: "SIK\u00c7A SORULANLAR",
-                title2: "H\u0131zl\u0131 Cevaplar",
-                cardsTitle: ["Kay\u0131t nas\u0131l yap\u0131l\u0131r?", "Bran\u015flara kat\u0131l\u0131m s\u0131n\u0131r\u0131 var m\u0131?", "Sponsor ba\u015fvurusu nas\u0131l olur?"],
-                cardsText: [
-                    "\u0130leti\u015fim sekmesindeki form \u00fczerinden tak\u0131m veya bireysel ba\u015fvuru al\u0131n\u0131r.",
-                    "Her bran\u015f i\u00e7in kontenjan vard\u0131r. Erken ba\u015fvuru \u00f6nceli\u011fi uygulan\u0131r.",
-                    "\u0130leti\u015fim sekmesinden sponsorluk konusu se\u00e7ilerek teklif g\u00f6nderilebilir."
-                ],
-                footer: "S\u0131k\u00e7a Sorulanlar Sayfas\u0131"
-            },
-            en: {
-                title: "FAQ | DCFLSPORTFEST'26",
-                eyebrow: "FAQ",
-                h1: "Clear answers to common questions.",
-                hero: "Find the most frequently asked questions about registration, quotas and sponsorship.",
-                section: "FAQ",
-                title2: "Quick Answers",
-                cardsTitle: ["How do I register?", "Is there a participation limit for branches?", "How does sponsorship application work?"],
-                cardsText: [
-                    "Team or individual applications are collected through the form on the contact page.",
-                    "Each branch has a quota. Early applications are prioritized.",
-                    "You can send a proposal by selecting the sponsorship topic from the contact page."
-                ],
-                footer: "FAQ Page"
-            },
-            pl: {
-                title: "FAQ | DCFLSPORTFEST'26",
-                eyebrow: "FAQ",
-                h1: "Jasne odpowiedzi na najczestsze pytania.",
-                hero: "Znajdziesz tu najczestsze pytania o rejestracje, limity i sponsoring.",
-                section: "FAQ",
-                title2: "Szybkie Odpowiedzi",
-                cardsTitle: ["Jak sie zarejestrowac?", "Czy istnieje limit uczestnikow w dyscyplinach?", "Jak dziala zgloszenie sponsorskie?"],
-                cardsText: [
-                    "Zgloszenia druzynowe i indywidualne przyjmowane sa przez formularz na stronie kontaktowej.",
-                    "Kazda dyscyplina ma limit miejsc. Wczesniejsze zgloszenia maja pierwszenstwo.",
-                    "Mozesz wyslac propozycje, wybierajac temat sponsoringu na stronie kontaktowej."
-                ],
-                footer: "Strona FAQ"
-            }
-        }[lang] || {};
-
-        document.title = copy.title || document.title;
-        setText(".page-shell .eyebrow", copy.eyebrow);
-        setText(".page-shell h1", copy.h1);
-        setText(".page-shell .hero-text", copy.hero);
-        setText("main .section-head .section-kicker", copy.section);
-        setText("main .section-head h2", copy.title2);
-        setList(".faq-card h3", copy.cardsTitle);
-        setList(".faq-card p", copy.cardsText);
-        setText(".footer p:nth-of-type(2)", copy.footer);
-    }
-
     function applySporcuBasvuru(lang) {
         var copy = {
             tr: {
@@ -2670,7 +2730,10 @@ var renderProgramFixtures = (function () {
                 infoDetails: [
                     "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 K\u00fc\u00e7\u00fck\u00e7ekmece / \u0130stanbul",
-                    "<strong>Not:</strong> Bran\u015f, okul ve sorumlu \u00f6\u011fretmen bilgilerini eksiksiz gir."
+                    "<strong>Not:</strong> Bran\u015f, okul ve sorumlu \u00f6\u011fretmen bilgilerini eksiksiz gir.",
+                    "<strong>Dan\u0131\u015fman \u00d6\u011fretmen / Ay\u015fe F\u0131rat:</strong> +90 555 691 88 48",
+                    "<strong>Kul\u00fcp Ba\u015fkan\u0131 / Kavin Polat:</strong> +90 539 202 29 75",
+                    "<strong>Genel Organizat\u00f6r / Mustafa Taylan \u015eahin:</strong> +90 530 287 00 86"
                 ],
                 formTitle: "Sporcu Ba\u015fvuru Formu",
                 labels: [
@@ -2692,7 +2755,7 @@ var renderProgramFixtures = (function () {
                     "Eklemek istedi\u011fin notlar\u0131 yaz..."
                 ],
                 send: "Ba\u015fvuruyu G\u00f6nder",
-                status: "Ba\u015fvurun g\u00fcvenli form kanal\u0131yla iletilir.",
+                status: "",
                 footer: "Sporcu Ba\u015fvuru Sayfas\u0131"
             },
             en: {
@@ -2704,7 +2767,10 @@ var renderProgramFixtures = (function () {
                 infoDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Location:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Note:</strong> Fill in the branch, school and responsible teacher details completely."
+                    "<strong>Note:</strong> Fill in the branch, school and responsible teacher details completely.",
+                    "<strong>Advisor Teacher / Ayse Firat:</strong> +90 555 691 88 48",
+                    "<strong>Club President / Kavin Polat:</strong> +90 539 202 29 75",
+                    "<strong>General Organizer / Mustafa Taylan Sahin:</strong> +90 530 287 00 86"
                 ],
                 formTitle: "Athlete Application Form",
                 labels: [
@@ -2726,7 +2792,7 @@ var renderProgramFixtures = (function () {
                     "Write any additional notes..."
                 ],
                 send: "Submit Application",
-                status: "Your application is sent through the secure form channel.",
+                status: "",
                 footer: "Athlete Application Page"
             },
             pl: {
@@ -2738,7 +2804,10 @@ var renderProgramFixtures = (function () {
                 infoDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Lokalizacja:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Notatka:</strong> Wypelnij komplet informacji o dyscyplinie, szkole i nauczycielu odpowiedzialnym."
+                    "<strong>Notatka:</strong> Wypelnij komplet informacji o dyscyplinie, szkole i nauczycielu odpowiedzialnym.",
+                    "<strong>Nauczyciel Doradca / Ayse Firat:</strong> +90 555 691 88 48",
+                    "<strong>Prezes Klubu / Kavin Polat:</strong> +90 539 202 29 75",
+                    "<strong>Glowny Organizator / Mustafa Taylan Sahin:</strong> +90 530 287 00 86"
                 ],
                 formTitle: "Formularz Zgloszenia Zawodnika",
                 labels: [
@@ -2760,7 +2829,7 @@ var renderProgramFixtures = (function () {
                     "Wpisz dodatkowe notatki..."
                 ],
                 send: "Wyslij Zgloszenie",
-                status: "Zgloszenie zostanie wyslane przez bezpieczny formularz.",
+                status: "",
                 footer: "Strona Zgloszenia Zawodnika"
             }
         }[lang] || {};
@@ -2770,11 +2839,7 @@ var renderProgramFixtures = (function () {
         setText(".page-shell h1", copy.h1);
         setText(".page-shell .hero-text", copy.hero);
         setText(".contact-info h2", copy.infoTitle);
-        if (Array.isArray(copy.infoDetails)) {
-            setHTML(".contact-info .section-text:nth-of-type(1)", copy.infoDetails[0]);
-            setHTML(".contact-info .section-text:nth-of-type(2)", copy.infoDetails[1]);
-            setHTML(".contact-info .section-text:nth-of-type(3)", copy.infoDetails[2]);
-        }
+        renderSectionTextList(".contact-info", copy.infoDetails);
         setText(".contact-form-card h2", copy.formTitle);
         setText("label[for='athlete-name']", copy.labels[0]);
         setText("label[for='athlete-topic']", copy.labels[1]);
@@ -2798,40 +2863,61 @@ var renderProgramFixtures = (function () {
     function applyBlog(lang) {
         var copy = {
             tr: {
-                title: "Blog | DCFLSPORTFEST'26",
-                eyebrow: "BLOG",
-                h1: "Sportfest g\u00fcndeminden notlar.",
-                hero: "Etkinlik haz\u0131rl\u0131klar\u0131, bran\u015f hikayeleri ve organizasyon g\u00fcncellemeleri.",
-                section: "YAKINDA",
-                title2: "Yak\u0131nda",
-                postMeta: ["Yak\u0131nda", "Yak\u0131nda", "Yak\u0131nda"],
-                postTitles: ["Yak\u0131nda", "Yak\u0131nda", "Yak\u0131nda"],
-                postText: ["Yak\u0131nda", "Yak\u0131nda", "Yak\u0131nda"],
-                footer: "Yak\u0131nda"
+                title: "Maç Kayıtları | DCFLSPORTFEST'26",
+                eyebrow: "MAÇ KAYITLARI",
+                h1: "Turnuva maç kayıtları burada yayınlanacak.",
+                hero: "Karşılaşma videoları, seçili maç özetleri ve yayın arşivi bu sayfada toplanacak.",
+                section: "YAYIN PLANI",
+                title2: "Kayıtlar Hazırlanıyor",
+                postMeta: ["12 Mayıs", "13 Mayıs", "Final Günü"],
+                postTags: ["Açılış Günü", "Eleme Turları", "Final Yayını"],
+                recordStates: ["Yayın Bekliyor", "Yayın Bekliyor", "Yayın Bekliyor"],
+                postTitles: ["Açılış Günü Karşılaşmaları", "Eleme ve Yarı Final Kayıtları", "Final Maçları ve Kupa Seremonisi"],
+                postText: [
+                    "Açılış günündeki seçili maç kayıtları ve özet görüntüler bu alanda yayınlanacak.",
+                    "Branş bazlı eleme turları ve yarı final karşılaşmalarının kayıtları sırayla eklenecek.",
+                    "Final karşılaşmaları, kapanış anları ve ödül töreni kayıtları bu bölümde yer alacak."
+                ],
+                actions: ["Kayıt Yakında", "Kayıt Yakında", "Kayıt Yakında"],
+                footer: "Maç kayıtları yakında"
             },
             en: {
-                title: "Blog | DCFLSPORTFEST'26",
-                eyebrow: "BLOG",
-                h1: "Coming Soon",
-                hero: "Coming Soon",
-                section: "COMING SOON",
-                title2: "Coming Soon",
-                postMeta: ["Coming Soon", "Coming Soon", "Coming Soon"],
-                postTitles: ["Coming Soon", "Coming Soon", "Coming Soon"],
-                postText: ["Coming Soon", "Coming Soon", "Coming Soon"],
-                footer: "Coming Soon"
+                title: "Match Recordings | DCFLSPORTFEST'26",
+                eyebrow: "MATCH RECORDINGS",
+                h1: "Tournament match recordings will be published here.",
+                hero: "Match videos, selected highlights and the recording archive will be collected on this page.",
+                section: "RELEASE PLAN",
+                title2: "Recordings in Preparation",
+                postMeta: ["12 May", "13 May", "Final Day"],
+                postTags: ["Opening Day", "Elimination Round", "Final Broadcast"],
+                recordStates: ["Awaiting Release", "Awaiting Release", "Awaiting Release"],
+                postTitles: ["Opening Day Matches", "Elimination and Semi-Final Recordings", "Final Matches and Trophy Ceremony"],
+                postText: [
+                    "Selected recordings and highlights from the opening day will be published in this section.",
+                    "Branch-based elimination rounds and semi-final recordings will be added here in order.",
+                    "Final matches, closing moments and award ceremony recordings will be published here."
+                ],
+                actions: ["Recording Soon", "Recording Soon", "Recording Soon"],
+                footer: "Match recordings coming soon"
             },
             pl: {
-                title: "Blog | DCFLSPORTFEST'26",
-                eyebrow: "BLOG",
-                h1: "Wkr\u00f3tce",
-                hero: "Wkr\u00f3tce",
-                section: "WKR\u00d3TCE",
-                title2: "Wkr\u00f3tce",
-                postMeta: ["Wkr\u00f3tce", "Wkr\u00f3tce", "Wkr\u00f3tce"],
-                postTitles: ["Wkr\u00f3tce", "Wkr\u00f3tce", "Wkr\u00f3tce"],
-                postText: ["Wkr\u00f3tce", "Wkr\u00f3tce", "Wkr\u00f3tce"],
-                footer: "Wkr\u00f3tce"
+                title: "Nagrania meczow | DCFLSPORTFEST'26",
+                eyebrow: "NAGRANIA MECZOW",
+                h1: "Nagrania meczow turniejowych beda publikowane tutaj.",
+                hero: "Filmy z meczow, wybrane skroty i archiwum nagran beda zebrane na tej stronie.",
+                section: "PLAN PUBLIKACJI",
+                title2: "Nagrania w przygotowaniu",
+                postMeta: ["12 maja", "13 maja", "Dzien finalow"],
+                postTags: ["Dzien otwarcia", "Runda eliminacyjna", "Transmisja finalu"],
+                recordStates: ["Oczekuje na publikacje", "Oczekuje na publikacje", "Oczekuje na publikacje"],
+                postTitles: ["Mecze dnia otwarcia", "Nagrania eliminacji i polfinalow", "Finaly i ceremonia pucharowa"],
+                postText: [
+                    "Wybrane nagrania i skroty z dnia otwarcia zostana opublikowane w tej sekcji.",
+                    "Nagrania rund eliminacyjnych i polfinalow beda dodawane tutaj kolejno wedlug dyscyplin.",
+                    "Tutaj zostana opublikowane finaly, momenty zakonczenia i ceremonia nagrod."
+                ],
+                actions: ["Nagranie wkrotce", "Nagranie wkrotce", "Nagranie wkrotce"],
+                footer: "Nagrania meczow wkrótce"
             }
         }[lang] || {};
 
@@ -2841,9 +2927,12 @@ var renderProgramFixtures = (function () {
         setText(".page-shell .hero-text", copy.hero);
         setText("main .section-head .section-kicker", copy.section);
         setText("main .section-head h2", copy.title2);
-        setList(".post-meta", copy.postMeta);
-        setList(".post-card h3", copy.postTitles);
-        setList(".post-card p:not(.post-meta)", copy.postText);
+        setList(".record-date", copy.postMeta);
+        setList(".record-tag", copy.postTags);
+        setList(".record-state", copy.recordStates);
+        setList(".record-card h3", copy.postTitles);
+        setList(".record-text", copy.postText);
+        setList(".record-action", copy.actions);
         setText(".footer p:nth-of-type(2)", copy.footer);
     }
 
@@ -2852,48 +2941,63 @@ var renderProgramFixtures = (function () {
             tr: {
                 title: "Ar\u015fiv | DCFLSPORTFEST'26",
                 eyebrow: "AR\u015e\u0130V",
-                h1: "Etkinlik Ar\u015fivi",
-                hero: "Ge\u00e7mi\u015f y\u0131llara ait duyurular, g\u00f6rseller ve \u00f6ne \u00e7\u0131kan anlar yak\u0131nda burada yer alacak.",
-                section: "AR\u015e\u0130V",
-                title2: "Yak\u0131nda Eklenecek \u0130\u00e7erikler",
-                postMeta: ["Yak\u0131nda", "Yak\u0131nda", "Yak\u0131nda"],
-                postTitles: ["Ge\u00e7mi\u015f Etkinlik Foto\u011fraflar\u0131", "Turnuva Sonu\u00e7 Ar\u015fivi", "Bas\u0131n ve Duyuru Kay\u0131tlar\u0131"],
-                postText: [
-                    "\u00d6nceki d\u00f6nem organizasyonlar\u0131ndan \u00f6ne \u00e7\u0131kan kareler bu alanda yay\u0131nlanacak.",
-                    "Bran\u015f bazl\u0131 ge\u00e7mi\u015f y\u0131llar\u0131n fikst\u00fcr ve sonu\u00e7lar\u0131 ar\u015fiv olarak eri\u015fime a\u00e7\u0131lacak.",
-                    "Ge\u00e7mi\u015f duyurular, afi\u015fler ve medya i\u00e7erikleri tek noktadan g\u00f6r\u00fcnt\u00fclenebilecek."
+                h1: "Ge\u00e7mi\u015f sezon ar\u015fivleri burada toplanacak.",
+                hero: "Turnuva ge\u00e7mi\u015fi, sezon bazl\u0131 foto\u011fraf ve ma\u00e7 kay\u0131tlar\u0131 y\u0131llara g\u00f6re bu sayfada listelenecek.",
+                section: "SEZONLAR",
+                title2: "Ar\u015fiv Kategorileri",
+                seasonTitles: [
+                    "2022-2023 Sezonu",
+                    "2023-2024 Sezonu",
+                    "2024-2025 Sezonu",
+                    "2025-2026 Sezonu"
+                ],
+                seasonText: [
+                    "2022-2023 sezonuna ait foto\u011fraf ar\u015fivi a\u015fa\u011f\u0131da yay\u0131nda.",
+                    "2023-2024 sezonuna ait ar\u015fiv i\u00e7erikleri yak\u0131nda eklenecek.",
+                    "2024-2025 sezonuna ait ar\u015fiv i\u00e7erikleri yak\u0131nda eklenecek.",
+                    "2025-2026 sezonuna ait ar\u015fiv i\u00e7erikleri yak\u0131nda eklenecek."
                 ],
                 footer: "Ar\u015fiv Sayfas\u0131"
             },
             en: {
                 title: "Archive | DCFLSPORTFEST'26",
                 eyebrow: "ARCHIVE",
-                h1: "Event Archive",
-                hero: "Announcements, visuals and highlights from previous years will be added here soon.",
-                section: "ARCHIVE",
-                title2: "Upcoming Archive Content",
-                postMeta: ["Soon", "Soon", "Soon"],
-                postTitles: ["Photos from Past Events", "Tournament Results Archive", "Press and Announcement Records"],
-                postText: [
-                    "Highlight frames from previous editions will be published in this area.",
-                    "Past years' fixtures and results by branch will be available as an archive.",
-                    "Past announcements, posters and media content will be viewable from a single point."
+                h1: "Past season archives will be collected here.",
+                hero: "Tournament history, season-based photos and match recordings will be listed on this page by year.",
+                section: "SEASONS",
+                title2: "Archive Categories",
+                seasonTitles: [
+                    "2022-2023 Season",
+                    "2023-2024 Season",
+                    "2024-2025 Season",
+                    "2025-2026 Season"
+                ],
+                seasonText: [
+                    "The photo archive for the 2022-2023 season is published below.",
+                    "Archive content for the 2023-2024 season will be added soon.",
+                    "Archive content for the 2024-2025 season will be added soon.",
+                    "Archive content for the 2025-2026 season will be added soon."
                 ],
                 footer: "Archive Page"
             },
             pl: {
                 title: "Archiwum | DCFLSPORTFEST'26",
                 eyebrow: "ARCHIWUM",
-                h1: "Archiwum Wydarzenia",
-                hero: "Wkrotce pojawia sie tu ogloszenia, materialy wizualne i najwazniejsze momenty z poprzednich lat.",
-                section: "ARCHIWUM",
-                title2: "Nadchodzace Materialy",
-                postMeta: ["Wkrotce", "Wkrotce", "Wkrotce"],
-                postTitles: ["Zdjecia z poprzednich wydarzen", "Archiwum wynikow turniejowych", "Materialy prasowe i ogloszenia"],
-                postText: [
-                    "Najciekawsze kadry z poprzednich edycji zostana opublikowane w tej sekcji.",
-                    "Dawne terminarze i wyniki wedlug dyscyplin beda dostepne w archiwum.",
-                    "Wczesniejsze ogloszenia, plakaty i materialy medialne beda widoczne w jednym miejscu."
+                h1: "Archiwa poprzednich sezonow beda zebrane tutaj.",
+                hero: "Historia turnieju, zdjecia sezonowe i nagrania meczow beda na tej stronie uporzadkowane wedlug lat.",
+                section: "SEZONY",
+                title2: "Kategorie Archiwum",
+                seasonTitles: [
+                    "Sezon 2022-2023",
+                    "Sezon 2023-2024",
+                    "Sezon 2024-2025",
+                    "Sezon 2025-2026"
+                ],
+                seasonText: [
+                    "Archiwum zdjec sezonu 2022-2023 jest opublikowane ponizej.",
+                    "Materialy archiwalne z sezonu 2023-2024 zostana wkrotce dodane.",
+                    "Materialy archiwalne z sezonu 2024-2025 zostana wkrotce dodane.",
+                    "Materialy archiwalne z sezonu 2025-2026 zostana wkrotce dodane."
                 ],
                 footer: "Strona Archiwum"
             }
@@ -2905,9 +3009,8 @@ var renderProgramFixtures = (function () {
         setText(".page-shell .hero-text", copy.hero);
         setText("main .section-head .section-kicker", copy.section);
         setText("main .section-head h2", copy.title2);
-        setList(".post-meta", copy.postMeta);
-        setList(".post-card h3", copy.postTitles);
-        setList(".post-card p:not(.post-meta)", copy.postText);
+        setList(".archive-season-panel h3", copy.seasonTitles);
+        setList(".archive-season-panel p", copy.seasonText);
         setText(".footer p:nth-of-type(2)", copy.footer);
     }
 
@@ -2922,7 +3025,10 @@ var renderProgramFixtures = (function () {
                 contactDetails: [
                     "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 K\u00fc\u00e7\u00fck\u00e7ekmece / \u0130stanbul",
-                    "<strong>Tarih:</strong> 12-13-14 May\u0131s 2026"
+                    "<strong>Tarih:</strong> 12-13-14 May\u0131s 2026",
+                    "<strong>Dan\u0131\u015fman \u00d6\u011fretmen / Ay\u015fe F\u0131rat:</strong> +90 555 691 88 48",
+                    "<strong>Kul\u00fcp Ba\u015fkan\u0131 / Kavin Polat:</strong> +90 539 202 29 75",
+                    "<strong>Genel Organizat\u00f6r / Mustafa Taylan \u015eahin:</strong> +90 530 287 00 86"
                 ],
                 quick: "H\u0131zl\u0131 Mesaj",
                 labels: ["Ad Soyad/ Firma Ad\u0131", "E-posta", "Konu", "Mesaj"],
@@ -2939,7 +3045,10 @@ var renderProgramFixtures = (function () {
                 contactDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Location:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Date:</strong> May 12-14, 2026"
+                    "<strong>Date:</strong> May 12-14, 2026",
+                    "<strong>Advisor Teacher / Ayse Firat:</strong> +90 555 691 88 48",
+                    "<strong>Club President / Kavin Polat:</strong> +90 539 202 29 75",
+                    "<strong>General Organizer / Mustafa Taylan Sahin:</strong> +90 530 287 00 86"
                 ],
                 quick: "Quick Message",
                 labels: ["Name / Company Name", "E-mail", "Subject", "Message"],
@@ -2956,7 +3065,10 @@ var renderProgramFixtures = (function () {
                 contactDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Lokalizacja:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Data:</strong> 12-14 maja 2026"
+                    "<strong>Data:</strong> 12-14 maja 2026",
+                    "<strong>Nauczyciel Doradca / Ayse Firat:</strong> +90 555 691 88 48",
+                    "<strong>Prezes Klubu / Kavin Polat:</strong> +90 539 202 29 75",
+                    "<strong>Glowny Organizator / Mustafa Taylan Sahin:</strong> +90 530 287 00 86"
                 ],
                 quick: "Szybka Wiadomosc",
                 labels: ["Imie i nazwisko / Firma", "E-mail", "Temat", "Wiadomosc"],
@@ -2971,11 +3083,7 @@ var renderProgramFixtures = (function () {
         setText(".page-shell h1", copy.h1);
         setText(".page-shell .hero-text", copy.hero);
         setText(".contact-info h2", copy.contact);
-        if (Array.isArray(copy.contactDetails)) {
-            setHTML(".contact-info .section-text:nth-of-type(1)", copy.contactDetails[0]);
-            setHTML(".contact-info .section-text:nth-of-type(2)", copy.contactDetails[1]);
-            setHTML(".contact-info .section-text:nth-of-type(3)", copy.contactDetails[2]);
-        }
+        renderSectionTextList(".contact-info", copy.contactDetails);
         setText(".contact-form-card h2", copy.quick);
         setText("label[for='name']", copy.labels[0]);
         setText("label[for='email']", copy.labels[1]);
@@ -2999,8 +3107,6 @@ var renderProgramFixtures = (function () {
             applyFinans(lang);
         } else if (key === "kurumsal.html") {
             applyKurumsal(lang);
-        } else if (key === "hizmetler.html") {
-            applyFaq(lang);
         } else if (key === "blog.html") {
             applyBlog(lang);
         } else if (key === "arsiv.html") {
@@ -3093,6 +3199,8 @@ var renderProgramFixtures = (function () {
     window.addEventListener("resize", syncPickerLayout);
     applyCommon(initialLang);
     applyPage(initialLang);
+    initializeArchiveTabs(document);
+    initializeArchiveLightbox(document);
 
     if (pageKey() === "program.html" && window.DCFLSiteData && typeof window.DCFLSiteData.loadData === "function") {
         window.DCFLSiteData.loadData().then(function () {
@@ -3104,3 +3212,5 @@ var renderProgramFixtures = (function () {
         });
     }
 })();
+
+
