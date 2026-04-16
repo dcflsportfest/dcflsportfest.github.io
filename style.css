@@ -1525,6 +1525,20 @@ main {
     gap: 0.8rem;
 }
 
+.contact-intro {
+    grid-column: 1 / -1;
+}
+
+.contact-intro .eyebrow {
+    margin-bottom: 0.35rem;
+}
+
+.contact-intro h1 {
+    margin: 0;
+    font-size: clamp(1.45rem, 3.6vw, 2.3rem);
+    line-height: 1.06;
+}
+
 .contact-form {
     display: grid;
     gap: 0.55rem;

@@ -1644,11 +1644,10 @@ var renderProgramFixtures = (function () {
         return [];
     }
 
-    function renderDivisionPlaceholderBody(template, lang, mode, selectedDate) {
+    function renderDivisionPlaceholderBody(template, lang, mode) {
         var langCopy = copy[lang] || copy.tr;
         var suffix = mode === "participants" ? langCopy.participantsSuffix : langCopy.fixtureSuffix;
         var pendingText = mode === "participants" ? langCopy.participantPending : langCopy.fixturePending;
-        var message = selectedDate ? (selectedDate + " • " + pendingText) : pendingText;
         var participantItems = getParticipantItems(template, mode);
 
         if (participantItems.length) {
@@ -1665,16 +1664,15 @@ var renderProgramFixtures = (function () {
         return [
             "    <h3>" + escapeHTML(getProgramBranchLabel(template, lang)) + " " + suffix + "</h3>",
             "    <div class=\"fixture-placeholder-state\">",
-            "        <p class=\"fixture-placeholder-text\" data-fixture-date-placeholder data-placeholder-base=\"" + escapeHTML(pendingText) + "\">" + escapeHTML(message) + "</p>",
+            "        <p class=\"fixture-placeholder-text\">" + escapeHTML(pendingText) + "</p>",
             "    </div>"
         ].join("");
     }
 
     function renderDivisionGroup(template, lang, mode) {
         var divisions = createDivisionTemplates(template, lang);
-        var dateOptions = getBranchDateOptions(template, lang);
         return [
-            "    <div class=\"fixture-division-group\" data-fixture-date-host>",
+            "    <div class=\"fixture-division-group\">",
             "    <div class=\"fixture-subtabs-row\">",
             "        <div class=\"fixture-tabs fixture-subtabs\" data-fixture-tabs role=\"tablist\" aria-label=\"" + (copy[lang] || copy.tr).divisionTabsAria + "\">",
             divisions.map(function (division, divisionIndex) {
@@ -1682,19 +1680,12 @@ var renderProgramFixtures = (function () {
                 return "<button type=\"button\" class=\"fixture-tab" + (divisionIndex === 0 ? " active" : "") + "\" data-fixture-tab=\"" + division.key + "-" + mode + "\">" + escapeHTML(shortLabel) + "</button>";
             }).join(""),
             "        </div>",
-            (dateOptions.length ? [
-                "        <div class=\"fixture-date-tabs\" data-fixture-date-group>",
-                dateOptions.map(function (dateLabel, dateIndex) {
-                    return "            <button class=\"fixture-date-pill" + (dateIndex === 0 ? " active" : "") + "\" data-fixture-date-tab=\"" + escapeHTML(dateLabel) + "\">" + escapeHTML(dateLabel) + "</button>";
-                }).join(""),
-                "        </div>"
-            ].join("") : ""),
             "    </div>",
             "    <div class=\"fixture-panels\">",
             divisions.map(function (division, divisionIndex) {
                 return [
                     "<article class=\"fixture-panel fixture-subpanel" + (divisionIndex === 0 ? " active" : "") + "\" data-fixture-panel=\"" + division.key + "-" + mode + "\">",
-                    renderDivisionPlaceholderBody(division, lang, mode, dateOptions[0] || ""),
+                    renderDivisionPlaceholderBody(division, lang, mode),
                     "</article>"
                 ].join("");
             }).join(""),
@@ -1704,43 +1695,21 @@ var renderProgramFixtures = (function () {
     }
 
     function renderSingleModeGroup(template, lang, mode) {
-        var dateOptions = getBranchDateOptions(template, lang);
         return [
-            "    <div class=\"fixture-division-group\"" + (dateOptions.length ? " data-fixture-date-host" : "") + ">",
-            (dateOptions.length ? [
-                "    <div class=\"fixture-subtabs-row fixture-single-date-row\">",
-                "        <div class=\"fixture-date-tabs\" data-fixture-date-group>",
-                dateOptions.map(function (dateLabel, dateIndex) {
-                    return "            <button class=\"fixture-date-pill" + (dateIndex === 0 ? " active" : "") + "\" data-fixture-date-tab=\"" + escapeHTML(dateLabel) + "\">" + escapeHTML(dateLabel) + "</button>";
-                }).join(""),
-                "        </div>",
-                "    </div>"
-            ].join("") : ""),
-            renderDivisionPlaceholderBody(template, lang, mode, dateOptions[0] || ""),
+            "    <div class=\"fixture-division-group\">",
+            renderDivisionPlaceholderBody(template, lang, mode),
             "    </div>"
         ].join("");
     }
 
     function renderFixturePanelBody(template, lang) {
         var langCopy = copy[lang] || copy.tr;
-        var dateOptions = getBranchDateOptions(template, lang);
 
         return [
-            "    <div class=\"fixture-division-group\"" + (dateOptions.length ? " data-fixture-date-host" : "") + ">",
-            (dateOptions.length ? [
-                "    <div class=\"fixture-subtabs-row fixture-single-date-row\">",
-                "        <h3>" + escapeHTML(getProgramBranchLabel(template, lang)) + " " + langCopy.fixtureSuffix + "</h3>",
-                "        <div class=\"fixture-date-tabs\" data-fixture-date-group>",
-                dateOptions.map(function (dateLabel, dateIndex) {
-                    return "            <button class=\"fixture-date-pill" + (dateIndex === 0 ? " active" : "") + "\" data-fixture-date-tab=\"" + escapeHTML(dateLabel) + "\">" + escapeHTML(dateLabel) + "</button>";
-                }).join(""),
-                "        </div>",
-                "    </div>"
-            ].join("") : "    <h3>" + escapeHTML(getProgramBranchLabel(template, lang)) + " " + langCopy.fixtureSuffix + "</h3>"),
+            "    <div class=\"fixture-division-group\">",
+            "    <h3>" + escapeHTML(getProgramBranchLabel(template, lang)) + " " + langCopy.fixtureSuffix + "</h3>",
             "    <div class=\"fixture-placeholder-state\">",
-            (dateOptions.length ? dateOptions.map(function (dateLabel, dateIndex) {
-                return "        <p class=\"fixture-placeholder-text" + (dateIndex === 0 ? " active" : "") + "\" data-fixture-date-target=\"" + escapeHTML(dateLabel) + "\"" + (dateIndex === 0 ? "" : " hidden") + ">" + escapeHTML(dateLabel + " • " + langCopy.fixturePending) + "</p>";
-            }).join("") : "        <p class=\"fixture-placeholder-text\">" + escapeHTML(langCopy.fixturePending) + "</p>"),
+            "        <p class=\"fixture-placeholder-text\">" + escapeHTML(langCopy.fixturePending) + "</p>",
             "    </div>",
             "    </div>"
         ].join("");
@@ -2725,12 +2694,10 @@ var renderProgramFixtures = (function () {
                 title: "Sporcu Ba\u015fvuru | DCFLSPORTFEST'26",
                 eyebrow: "SPORCU BA\u015eVURU",
                 h1: "Ba\u015fvurunu ilet, de\u011ferlendirmeye alal\u0131m.",
-                hero: "Tak\u0131m veya bireysel sporcu ba\u015fvurular\u0131n\u0131 g\u00fcvenli form \u00fczerinden g\u00f6nderebilirsin.",
                 infoTitle: "Ba\u015fvuru Bilgileri",
                 infoDetails: [
                     "<strong>E-posta:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Konum:</strong> Atakent Mah. 4. Cad. Blok No 31/4 K\u00fc\u00e7\u00fck\u00e7ekmece / \u0130stanbul",
-                    "<strong>Not:</strong> Bran\u015f, okul ve sorumlu \u00f6\u011fretmen bilgilerini eksiksiz gir.",
                     "<strong>Dan\u0131\u015fman \u00d6\u011fretmen / Ay\u015fe F\u0131rat:</strong> +90 555 691 88 48",
                     "<strong>Kul\u00fcp Ba\u015fkan\u0131 / Kavin Polat:</strong> +90 539 202 29 75",
                     "<strong>Genel Organizat\u00f6r / Mustafa Taylan \u015eahin:</strong> +90 530 287 00 86"
@@ -2762,12 +2729,10 @@ var renderProgramFixtures = (function () {
                 title: "Athlete Application | DCFLSPORTFEST'26",
                 eyebrow: "ATHLETE APPLICATION",
                 h1: "Submit your application for review.",
-                hero: "You can send team or individual athlete applications through the secure form.",
                 infoTitle: "Application Details",
                 infoDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Location:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Note:</strong> Fill in the branch, school and responsible teacher details completely.",
                     "<strong>Advisor Teacher / Ayse Firat:</strong> +90 555 691 88 48",
                     "<strong>Club President / Kavin Polat:</strong> +90 539 202 29 75",
                     "<strong>General Organizer / Mustafa Taylan Sahin:</strong> +90 530 287 00 86"
@@ -2799,12 +2764,10 @@ var renderProgramFixtures = (function () {
                 title: "Zgloszenie Zawodnika | DCFLSPORTFEST'26",
                 eyebrow: "ZGLOSZENIE ZAWODNIKA",
                 h1: "Przeslij zgloszenie do oceny.",
-                hero: "Mozesz wyslac zgloszenia druzynowe lub indywidualne przez bezpieczny formularz.",
                 infoTitle: "Informacje o Zgloszeniu",
                 infoDetails: [
                     "<strong>E-mail:</strong> dcflsportfest2020@gmail.com",
                     "<strong>Lokalizacja:</strong> Atakent Mah. 4. Cad. Blok No 31/4 Kucukcekmece / Istanbul",
-                    "<strong>Notatka:</strong> Wypelnij komplet informacji o dyscyplinie, szkole i nauczycielu odpowiedzialnym.",
                     "<strong>Nauczyciel Doradca / Ayse Firat:</strong> +90 555 691 88 48",
                     "<strong>Prezes Klubu / Kavin Polat:</strong> +90 539 202 29 75",
                     "<strong>Glowny Organizator / Mustafa Taylan Sahin:</strong> +90 530 287 00 86"
@@ -2835,9 +2798,8 @@ var renderProgramFixtures = (function () {
         }[lang] || {};
 
         document.title = copy.title || document.title;
-        setText(".page-shell .eyebrow", copy.eyebrow);
-        setText(".page-shell h1", copy.h1);
-        setText(".page-shell .hero-text", copy.hero);
+        setText(".athlete-intro .eyebrow", copy.eyebrow);
+        setText(".athlete-intro h1", copy.h1);
         setText(".contact-info h2", copy.infoTitle);
         renderSectionTextList(".contact-info", copy.infoDetails);
         setText(".contact-form-card h2", copy.formTitle);
@@ -2865,18 +2827,18 @@ var renderProgramFixtures = (function () {
             tr: {
                 title: "Maç Kayıtları | DCFLSPORTFEST'26",
                 eyebrow: "MAÇ KAYITLARI",
-                h1: "Turnuva maç kayıtları burada yayınlanacak.",
-                hero: "Karşılaşma videoları, seçili maç özetleri ve yayın arşivi bu sayfada toplanacak.",
-                section: "YAYIN PLANI",
-                title2: "Kayıtlar Hazırlanıyor",
-                postMeta: ["12 Mayıs", "13 Mayıs", "Final Günü"],
-                postTags: ["Açılış Günü", "Eleme Turları", "Final Yayını"],
+                h1: "Maç kayıtları başlıklarına göre listelenecek.",
+                hero: "Her kayıt, belirleyeceğin maç başlığıyla bu sayfada yayınlanacak.",
+                section: "MAÇ BAŞLIKLARI",
+                title2: "Kayıt Başlıkları Hazırlanıyor",
+                postMeta: ["Başlık Bekleniyor", "Başlık Bekleniyor", "Başlık Bekleniyor"],
+                postTags: ["Maç Kaydı", "Maç Kaydı", "Maç Kaydı"],
                 recordStates: ["Yayın Bekliyor", "Yayın Bekliyor", "Yayın Bekliyor"],
-                postTitles: ["Açılış Günü Karşılaşmaları", "Eleme ve Yarı Final Kayıtları", "Final Maçları ve Kupa Seremonisi"],
+                postTitles: ["Başlık Eklenecek", "Başlık Eklenecek", "Başlık Eklenecek"],
                 postText: [
-                    "Açılış günündeki seçili maç kayıtları ve özet görüntüler bu alanda yayınlanacak.",
-                    "Branş bazlı eleme turları ve yarı final karşılaşmalarının kayıtları sırayla eklenecek.",
-                    "Final karşılaşmaları, kapanış anları ve ödül töreni kayıtları bu bölümde yer alacak."
+                    "Örnek: DCFL-AAL Futbol Eleme Turu Maç Kaydı",
+                    "Örnek: DCFL-ÇFL Voleybol Yarı Final Maç Kaydı",
+                    "Örnek: DCFL-Orhan Gazi Basketbol 3x3 Maç Kaydı"
                 ],
                 actions: ["Kayıt Yakında", "Kayıt Yakında", "Kayıt Yakında"],
                 footer: "Maç kayıtları yakında"
@@ -2884,18 +2846,18 @@ var renderProgramFixtures = (function () {
             en: {
                 title: "Match Recordings | DCFLSPORTFEST'26",
                 eyebrow: "MATCH RECORDINGS",
-                h1: "Tournament match recordings will be published here.",
-                hero: "Match videos, selected highlights and the recording archive will be collected on this page.",
-                section: "RELEASE PLAN",
-                title2: "Recordings in Preparation",
-                postMeta: ["12 May", "13 May", "Final Day"],
-                postTags: ["Opening Day", "Elimination Round", "Final Broadcast"],
+                h1: "Match recordings will be listed by title.",
+                hero: "Each recording will be published on this page under the title you define.",
+                section: "MATCH TITLES",
+                title2: "Recording Titles in Preparation",
+                postMeta: ["Title Pending", "Title Pending", "Title Pending"],
+                postTags: ["Match Recording", "Match Recording", "Match Recording"],
                 recordStates: ["Awaiting Release", "Awaiting Release", "Awaiting Release"],
-                postTitles: ["Opening Day Matches", "Elimination and Semi-Final Recordings", "Final Matches and Trophy Ceremony"],
+                postTitles: ["Title Will Be Added", "Title Will Be Added", "Title Will Be Added"],
                 postText: [
-                    "Selected recordings and highlights from the opening day will be published in this section.",
-                    "Branch-based elimination rounds and semi-final recordings will be added here in order.",
-                    "Final matches, closing moments and award ceremony recordings will be published here."
+                    "Example: DCFL-AAL Football Elimination Round Match Recording",
+                    "Example: DCFL-CFL Volleyball Semi Final Match Recording",
+                    "Example: DCFL-Orhan Gazi Basketball 3x3 Match Recording"
                 ],
                 actions: ["Recording Soon", "Recording Soon", "Recording Soon"],
                 footer: "Match recordings coming soon"
@@ -2903,18 +2865,18 @@ var renderProgramFixtures = (function () {
             pl: {
                 title: "Nagrania meczow | DCFLSPORTFEST'26",
                 eyebrow: "NAGRANIA MECZOW",
-                h1: "Nagrania meczow turniejowych beda publikowane tutaj.",
-                hero: "Filmy z meczow, wybrane skroty i archiwum nagran beda zebrane na tej stronie.",
-                section: "PLAN PUBLIKACJI",
-                title2: "Nagrania w przygotowaniu",
-                postMeta: ["12 maja", "13 maja", "Dzien finalow"],
-                postTags: ["Dzien otwarcia", "Runda eliminacyjna", "Transmisja finalu"],
+                h1: "Nagrania meczow beda uporzadkowane wedlug tytulow.",
+                hero: "Kazde nagranie zostanie opublikowane na tej stronie pod wskazanym tytulem meczu.",
+                section: "TYTULY MECZOW",
+                title2: "Tytuly nagran w przygotowaniu",
+                postMeta: ["Tytul oczekuje", "Tytul oczekuje", "Tytul oczekuje"],
+                postTags: ["Nagranie meczu", "Nagranie meczu", "Nagranie meczu"],
                 recordStates: ["Oczekuje na publikacje", "Oczekuje na publikacje", "Oczekuje na publikacje"],
-                postTitles: ["Mecze dnia otwarcia", "Nagrania eliminacji i polfinalow", "Finaly i ceremonia pucharowa"],
+                postTitles: ["Tytul zostanie dodany", "Tytul zostanie dodany", "Tytul zostanie dodany"],
                 postText: [
-                    "Wybrane nagrania i skroty z dnia otwarcia zostana opublikowane w tej sekcji.",
-                    "Nagrania rund eliminacyjnych i polfinalow beda dodawane tutaj kolejno wedlug dyscyplin.",
-                    "Tutaj zostana opublikowane finaly, momenty zakonczenia i ceremonia nagrod."
+                    "Przyklad: DCFL-AAL Pilka Nozna Eliminacje Nagranie Meczu",
+                    "Przyklad: DCFL-CFL Siatkowka Polfinal Nagranie Meczu",
+                    "Przyklad: DCFL-Orhan Gazi Koszykowka 3x3 Nagranie Meczu"
                 ],
                 actions: ["Nagranie wkrotce", "Nagranie wkrotce", "Nagranie wkrotce"],
                 footer: "Nagrania meczow wkrótce"
@@ -2942,7 +2904,7 @@ var renderProgramFixtures = (function () {
                 title: "Ar\u015fiv | DCFLSPORTFEST'26",
                 eyebrow: "AR\u015e\u0130V",
                 h1: "Ge\u00e7mi\u015f sezon ar\u015fivleri burada toplanacak.",
-                hero: "Turnuva ge\u00e7mi\u015fi, sezon bazl\u0131 foto\u011fraf ve ma\u00e7 kay\u0131tlar\u0131 y\u0131llara g\u00f6re bu sayfada listelenecek.",
+                hero: "Sezon bazl\u0131 foto\u011fraf ar\u015fivleri y\u0131llara g\u00f6re bu sayfada listelenecek.",
                 section: "SEZONLAR",
                 title2: "Ar\u015fiv Kategorileri",
                 seasonTitles: [
@@ -2963,7 +2925,7 @@ var renderProgramFixtures = (function () {
                 title: "Archive | DCFLSPORTFEST'26",
                 eyebrow: "ARCHIVE",
                 h1: "Past season archives will be collected here.",
-                hero: "Tournament history, season-based photos and match recordings will be listed on this page by year.",
+                hero: "Season-based photo archives will be listed on this page by year.",
                 section: "SEASONS",
                 title2: "Archive Categories",
                 seasonTitles: [
@@ -2984,7 +2946,7 @@ var renderProgramFixtures = (function () {
                 title: "Archiwum | DCFLSPORTFEST'26",
                 eyebrow: "ARCHIWUM",
                 h1: "Archiwa poprzednich sezonow beda zebrane tutaj.",
-                hero: "Historia turnieju, zdjecia sezonowe i nagrania meczow beda na tej stronie uporzadkowane wedlug lat.",
+                hero: "Archiwa zdjec sezonowych beda na tej stronie uporzadkowane wedlug lat.",
                 section: "SEZONY",
                 title2: "Kategorie Archiwum",
                 seasonTitles: [
