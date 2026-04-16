@@ -24,7 +24,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&family=Geist+Mono:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20260415b">
+    <link rel="stylesheet" href="style.css?v=20260416a">
 </head>
 <body>
     <div class="corner-logo-stack" aria-hidden="true">
@@ -49,61 +49,195 @@
 
         <div class="page-shell">
             <p class="eyebrow">MAÇ KAYITLARI</p>
-            <h1>Maç kayıtları başlıklarına göre listelenecek.</h1>
-            <p class="hero-text">Her kayıt, belirleyeceğin maç başlığıyla bu sayfada yayınlanacak.</p>
+            <h1>Maç Kayıtları</h1>
+            <p class="hero-text">Turnuva karşılaşmalarına ait maç kayıtları, DCFL SPORTFEST tamamlandıktan sonra bu alanda yayınlanacaktır.</p>
+            <p class="record-page-note">Yayınlanan kayıtlar branş, karşılaşma başlığı ve tarih bilgileriyle düzenli bir arşiv yapısında listelenecektir.</p>
         </div>
     </header>
 
     <main>
         <section class="panel">
             <div class="section-head">
-                <p class="section-kicker">MAÇ BAŞLIKLARI</p>
-                <h2>Kayıt Başlıkları Hazırlanıyor</h2>
+                <p class="section-kicker">KAYIT ARŞİVİ</p>
+                <h2>Yayın Planı</h2>
+                <p class="record-section-intro">Festival tamamlanana kadar kayıt alanları planlı yayın yapısını gösterecek şekilde korunur; kayıtlar tamamlandıktan sonra doğrudan güncellenecektir.</p>
             </div>
-            <div class="record-grid">
-                <article class="record-card">
-                    <div class="record-preview">
-                        <span class="record-state">Yayın Bekliyor</span>
-                        <span class="record-play" aria-hidden="true">▶</span>
-                    </div>
-                    <div class="record-body">
-                        <div class="record-topline">
-                            <p class="post-meta record-date">Başlık Bekleniyor</p>
-                            <span class="record-tag">Maç Kaydı</span>
-                        </div>
-                        <h3>Başlık Eklenecek</h3>
-                        <p class="record-text">Örnek: DCFL-AAL Futbol Eleme Turu Maç Kaydı</p>
-                        <button class="btn btn-ghost record-action" type="button" disabled>Kayıt Yakında</button>
+            <div class="fixture-tabs record-branch-tabs" data-fixture-tabs role="tablist" aria-label="Maç kaydı branş seçimi">
+                <button type="button" class="fixture-tab active" data-fixture-tab="voleybol">Voleybol</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="basketbol-3x3">Basketbol 3x3</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="futbol">Futbol</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="masa-tenisi">Masa Tenisi</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="okculuk">Okçuluk</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="oryantiring">Oryantiring</button>
+                <button type="button" class="fixture-tab" data-fixture-tab="atletizm">Atletizm</button>
+            </div>
+            <div class="fixture-panels record-branch-panels">
+                <article class="fixture-panel record-branch-panel active" data-fixture-panel="voleybol">
+                    <p class="record-branch-intro">Voleybol branşına ait maç kayıtları, DCFL SPORTFEST tamamlandıktan sonra bu alanda yayınlanacaktır.</p>
+                    <div class="record-grid record-grid--branch">
+                        <article class="record-card">
+                            <div class="record-preview">
+                                <span class="record-state record-state--soon">Yakında</span>
+                                <span class="record-watermark" aria-hidden="true">Voleybol</span>
+                                <span class="record-preview-icon" aria-hidden="true">◌</span>
+                            </div>
+                            <div class="record-body">
+                                <div class="record-meta-row">
+                                    <p class="record-sport">Voleybol</p>
+                                    <p class="record-date">Tarih Güncellenecek</p>
+                                </div>
+                                <h3 class="record-match">Sportfest Sonrası Yayınlanacaktır</h3>
+                                <p class="record-text">Voleybol karşılaşmalarına ait kayıtlar, etkinlik tamamlandıktan sonra resmi başlık ve yayın bilgileriyle bu karta eklenecektir.</p>
+                                <div class="record-bottom">
+                                    <p class="record-status-text">Voleybol kayıtları festival sonrası arşiv planına göre etap etap paylaşılacaktır.</p>
+                                    <button class="btn btn-ghost record-action" type="button" disabled>Yakında</button>
+                                </div>
+                            </div>
+                        </article>
                     </div>
                 </article>
-                <article class="record-card">
-                    <div class="record-preview">
-                        <span class="record-state">Yayın Bekliyor</span>
-                        <span class="record-play" aria-hidden="true">▶</span>
-                    </div>
-                    <div class="record-body">
-                        <div class="record-topline">
-                            <p class="post-meta record-date">Başlık Bekleniyor</p>
-                            <span class="record-tag">Maç Kaydı</span>
-                        </div>
-                        <h3>Başlık Eklenecek</h3>
-                        <p class="record-text">Örnek: DCFL-ÇFL Voleybol Yarı Final Maç Kaydı</p>
-                        <button class="btn btn-ghost record-action" type="button" disabled>Kayıt Yakında</button>
+                <article class="fixture-panel record-branch-panel" data-fixture-panel="basketbol-3x3">
+                    <p class="record-branch-intro">Basketbol 3x3 branşına ait maç kayıtları, DCFL SPORTFEST tamamlandıktan sonra bu alanda yayınlanacaktır.</p>
+                    <div class="record-grid record-grid--branch">
+                        <article class="record-card">
+                            <div class="record-preview">
+                                <span class="record-state record-state--soon">Yakında</span>
+                                <span class="record-watermark" aria-hidden="true">Basketbol 3x3</span>
+                                <span class="record-preview-icon" aria-hidden="true">◌</span>
+                            </div>
+                            <div class="record-body">
+                                <div class="record-meta-row">
+                                    <p class="record-sport">Basketbol 3x3</p>
+                                    <p class="record-date">Tarih Güncellenecek</p>
+                                </div>
+                                <h3 class="record-match">Sportfest Sonrası Yayınlanacaktır</h3>
+                                <p class="record-text">Basketbol 3x3 karşılaşmalarına ait kayıtlar, etkinlik sonrasında resmi başlık ve yayın bağlantılarıyla eklenecektir.</p>
+                                <div class="record-bottom">
+                                    <p class="record-status-text">Basketbol 3x3 kayıtları festival sonrası yayın akışına göre sırayla paylaşılacaktır.</p>
+                                    <button class="btn btn-ghost record-action" type="button" disabled>Yakında</button>
+                                </div>
+                            </div>
+                        </article>
                     </div>
                 </article>
-                <article class="record-card">
-                    <div class="record-preview">
-                        <span class="record-state">Yayın Bekliyor</span>
-                        <span class="record-play" aria-hidden="true">▶</span>
+                <article class="fixture-panel record-branch-panel" data-fixture-panel="futbol">
+                    <p class="record-branch-intro">Futbol branşına ait maç kayıtları, DCFL SPORTFEST tamamlandıktan sonra bu alanda yayınlanacaktır.</p>
+                    <div class="record-grid record-grid--branch">
+                        <article class="record-card">
+                            <div class="record-preview">
+                                <span class="record-state record-state--soon">Yakında</span>
+                                <span class="record-watermark" aria-hidden="true">Futbol</span>
+                                <span class="record-preview-icon" aria-hidden="true">◌</span>
+                            </div>
+                            <div class="record-body">
+                                <div class="record-meta-row">
+                                    <p class="record-sport">Futbol</p>
+                                    <p class="record-date">Tarih Güncellenecek</p>
+                                </div>
+                                <h3 class="record-match">Sportfest Sonrası Yayınlanacaktır</h3>
+                                <p class="record-text">Futbol karşılaşmalarına ait kayıtlar, etkinlik sonrasında resmi karşılaşma adı ve yayın bilgileriyle eklenecektir.</p>
+                                <div class="record-bottom">
+                                    <p class="record-status-text">Futbol kayıtları festival sonrası doğrulama sırasına göre bu bölüme eklenecektir.</p>
+                                    <button class="btn btn-ghost record-action" type="button" disabled>Yakında</button>
+                                </div>
+                            </div>
+                        </article>
                     </div>
-                    <div class="record-body">
-                        <div class="record-topline">
-                            <p class="post-meta record-date">Başlık Bekleniyor</p>
-                            <span class="record-tag">Maç Kaydı</span>
-                        </div>
-                        <h3>Başlık Eklenecek</h3>
-                        <p class="record-text">Örnek: DCFL-Orhan Gazi Basketbol 3x3 Maç Kaydı</p>
-                        <button class="btn btn-ghost record-action" type="button" disabled>Kayıt Yakında</button>
+                </article>
+                <article class="fixture-panel record-branch-panel" data-fixture-panel="masa-tenisi">
+                    <p class="record-branch-intro">Masa Tenisi branşına ait maç kayıtları, DCFL SPORTFEST tamamlandıktan sonra bu alanda yayınlanacaktır.</p>
+                    <div class="record-grid record-grid--branch">
+                        <article class="record-card">
+                            <div class="record-preview">
+                                <span class="record-state record-state--soon">Yakında</span>
+                                <span class="record-watermark" aria-hidden="true">Masa Tenisi</span>
+                                <span class="record-preview-icon" aria-hidden="true">◌</span>
+                            </div>
+                            <div class="record-body">
+                                <div class="record-meta-row">
+                                    <p class="record-sport">Masa Tenisi</p>
+                                    <p class="record-date">Tarih Güncellenecek</p>
+                                </div>
+                                <h3 class="record-match">Sportfest Sonrası Yayınlanacaktır</h3>
+                                <p class="record-text">Masa Tenisi karşılaşmalarına ait kayıtlar, etkinlik tamamlandıktan sonra resmi başlık bilgileriyle bu karta işlenecektir.</p>
+                                <div class="record-bottom">
+                                    <p class="record-status-text">Masa Tenisi kayıtları festival sonrası etap etap yayın planına alınacaktır.</p>
+                                    <button class="btn btn-ghost record-action" type="button" disabled>Yakında</button>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </article>
+                <article class="fixture-panel record-branch-panel" data-fixture-panel="okculuk">
+                    <p class="record-branch-intro">Okçuluk branşına ait maç kayıtları, DCFL SPORTFEST tamamlandıktan sonra bu alanda yayınlanacaktır.</p>
+                    <div class="record-grid record-grid--branch">
+                        <article class="record-card">
+                            <div class="record-preview">
+                                <span class="record-state record-state--soon">Yakında</span>
+                                <span class="record-watermark" aria-hidden="true">Okçuluk</span>
+                                <span class="record-preview-icon" aria-hidden="true">◌</span>
+                            </div>
+                            <div class="record-body">
+                                <div class="record-meta-row">
+                                    <p class="record-sport">Okçuluk</p>
+                                    <p class="record-date">Tarih Güncellenecek</p>
+                                </div>
+                                <h3 class="record-match">Sportfest Sonrası Yayınlanacaktır</h3>
+                                <p class="record-text">Okçuluk karşılaşmalarına ait kayıtlar, etkinlik sonrasında resmi başlık ve yayın bilgileriyle eklenecektir.</p>
+                                <div class="record-bottom">
+                                    <p class="record-status-text">Okçuluk kayıtları festival sonrası arşiv alanında paylaşılacaktır.</p>
+                                    <button class="btn btn-ghost record-action" type="button" disabled>Yakında</button>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </article>
+                <article class="fixture-panel record-branch-panel" data-fixture-panel="oryantiring">
+                    <p class="record-branch-intro">Oryantiring branşına ait maç kayıtları, DCFL SPORTFEST tamamlandıktan sonra bu alanda yayınlanacaktır.</p>
+                    <div class="record-grid record-grid--branch">
+                        <article class="record-card">
+                            <div class="record-preview">
+                                <span class="record-state record-state--soon">Yakında</span>
+                                <span class="record-watermark" aria-hidden="true">Oryantiring</span>
+                                <span class="record-preview-icon" aria-hidden="true">◌</span>
+                            </div>
+                            <div class="record-body">
+                                <div class="record-meta-row">
+                                    <p class="record-sport">Oryantiring</p>
+                                    <p class="record-date">Tarih Güncellenecek</p>
+                                </div>
+                                <h3 class="record-match">Sportfest Sonrası Yayınlanacaktır</h3>
+                                <p class="record-text">Oryantiring karşılaşmalarına ait kayıtlar, etkinlik sonrasında resmi karşılaşma bilgileriyle yayına alınacaktır.</p>
+                                <div class="record-bottom">
+                                    <p class="record-status-text">Oryantiring kayıtları festival sonrası yayın sırasına göre paylaşılacaktır.</p>
+                                    <button class="btn btn-ghost record-action" type="button" disabled>Yakında</button>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </article>
+                <article class="fixture-panel record-branch-panel" data-fixture-panel="atletizm">
+                    <p class="record-branch-intro">Atletizm branşına ait maç kayıtları, DCFL SPORTFEST tamamlandıktan sonra bu alanda yayınlanacaktır.</p>
+                    <div class="record-grid record-grid--branch">
+                        <article class="record-card">
+                            <div class="record-preview">
+                                <span class="record-state record-state--soon">Yakında</span>
+                                <span class="record-watermark" aria-hidden="true">Atletizm</span>
+                                <span class="record-preview-icon" aria-hidden="true">◌</span>
+                            </div>
+                            <div class="record-body">
+                                <div class="record-meta-row">
+                                    <p class="record-sport">Atletizm</p>
+                                    <p class="record-date">Tarih Güncellenecek</p>
+                                </div>
+                                <h3 class="record-match">Sportfest Sonrası Yayınlanacaktır</h3>
+                                <p class="record-text">Atletizm karşılaşmalarına ait kayıtlar, etkinlik tamamlandıktan sonra resmi yayın bilgileriyle bu kartta görüntülenecektir.</p>
+                                <div class="record-bottom">
+                                    <p class="record-status-text">Atletizm kayıtları festival sonrası doğrulanan sıraya göre yayına alınacaktır.</p>
+                                    <button class="btn btn-ghost record-action" type="button" disabled>Yakında</button>
+                                </div>
+                            </div>
+                        </article>
                     </div>
                 </article>
             </div>
@@ -120,9 +254,10 @@
         <p>DCFLSPORTFEST'26</p>
         <p>Maç kayıtları yakında</p>
     </footer>
-    <script src="script.js?v=20260415b"></script>
+    <script src="script.js?v=20260416a"></script>
 </body>
 </html>
+
 
 
 

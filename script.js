@@ -722,6 +722,45 @@ function initializeArchiveTabs(root) {
     activate(initiallyActive ? initiallyActive.getAttribute("data-archive-tab") : tabs[0].getAttribute("data-archive-tab"));
 }
 
+function initializeRecordGrids(root) {
+    var scope = root || document;
+    var grids = scope.querySelectorAll(".record-grid--branch");
+    if (!grids.length) {
+        return;
+    }
+
+    grids.forEach(function (grid) {
+        if (grid.getAttribute("data-record-ready") === "true") {
+            return;
+        }
+
+        var baseCard = grid.querySelector(".record-card");
+        if (!baseCard) {
+            return;
+        }
+
+        var totalCards = 6;
+        for (var index = 2; index <= totalCards; index += 1) {
+            var clone = baseCard.cloneNode(true);
+            var suffix = index < 10 ? "0" + index : String(index);
+            var watermark = clone.querySelector(".record-watermark");
+            var date = clone.querySelector(".record-date");
+
+            if (watermark) {
+                watermark.textContent = (watermark.textContent || "").trim() + " " + suffix;
+            }
+
+            if (date) {
+                date.textContent = "Tarih Güncellenecek";
+            }
+
+            grid.appendChild(clone);
+        }
+
+        grid.setAttribute("data-record-ready", "true");
+    });
+}
+
 function initializeArchiveLightbox(root) {
     var scope = root || document;
     var items = scope.querySelectorAll("[data-archive-image]");
@@ -1275,6 +1314,7 @@ var renderScoreResults = (function () {
 (function () {
     initializeFixtureTabGroups(document);
     initializeFixtureDateGroups(document);
+    initializeRecordGrids(document);
     if (document.querySelector("[data-score-results]")) {
         renderScoreResults((document.documentElement.getAttribute("lang") || "tr").toLowerCase());
     }
@@ -2827,59 +2867,38 @@ var renderProgramFixtures = (function () {
             tr: {
                 title: "Maç Kayıtları | DCFLSPORTFEST'26",
                 eyebrow: "MAÇ KAYITLARI",
-                h1: "Maç kayıtları başlıklarına göre listelenecek.",
-                hero: "Her kayıt, belirleyeceğin maç başlığıyla bu sayfada yayınlanacak.",
-                section: "MAÇ BAŞLIKLARI",
-                title2: "Kayıt Başlıkları Hazırlanıyor",
-                postMeta: ["Başlık Bekleniyor", "Başlık Bekleniyor", "Başlık Bekleniyor"],
-                postTags: ["Maç Kaydı", "Maç Kaydı", "Maç Kaydı"],
-                recordStates: ["Yayın Bekliyor", "Yayın Bekliyor", "Yayın Bekliyor"],
-                postTitles: ["Başlık Eklenecek", "Başlık Eklenecek", "Başlık Eklenecek"],
-                postText: [
-                    "Örnek: DCFL-AAL Futbol Eleme Turu Maç Kaydı",
-                    "Örnek: DCFL-ÇFL Voleybol Yarı Final Maç Kaydı",
-                    "Örnek: DCFL-Orhan Gazi Basketbol 3x3 Maç Kaydı"
-                ],
-                actions: ["Kayıt Yakında", "Kayıt Yakında", "Kayıt Yakında"],
+                h1: "Maç Kayıtları",
+                hero: "Turnuva karşılaşmalarına ait maç kayıtları, DCFL SPORTFEST tamamlandıktan sonra bu alanda yayınlanacaktır.",
+                note: "Yayınlanan kayıtlar branş, karşılaşma başlığı ve tarih bilgileriyle düzenli bir arşiv yapısında listelenecektir.",
+                section: "KAYIT ARŞİVİ",
+                title2: "Yayın Planı",
+                sectionIntro: "Festival tamamlanana kadar kayıt alanları planlı yayın yapısını gösterecek şekilde korunur; kayıtlar tamamlandıktan sonra doğrudan güncellenecektir.",
+                branchTabs: ["Voleybol", "Basketbol 3x3", "Futbol", "Masa Tenisi", "Okçuluk", "Oryantiring", "Atletizm"],
                 footer: "Maç kayıtları yakında"
             },
             en: {
                 title: "Match Recordings | DCFLSPORTFEST'26",
                 eyebrow: "MATCH RECORDINGS",
-                h1: "Match recordings will be listed by title.",
-                hero: "Each recording will be published on this page under the title you define.",
-                section: "MATCH TITLES",
-                title2: "Recording Titles in Preparation",
-                postMeta: ["Title Pending", "Title Pending", "Title Pending"],
-                postTags: ["Match Recording", "Match Recording", "Match Recording"],
-                recordStates: ["Awaiting Release", "Awaiting Release", "Awaiting Release"],
-                postTitles: ["Title Will Be Added", "Title Will Be Added", "Title Will Be Added"],
-                postText: [
-                    "Example: DCFL-AAL Football Elimination Round Match Recording",
-                    "Example: DCFL-CFL Volleyball Semi Final Match Recording",
-                    "Example: DCFL-Orhan Gazi Basketball 3x3 Match Recording"
-                ],
-                actions: ["Recording Soon", "Recording Soon", "Recording Soon"],
+                h1: "Match Recordings",
+                hero: "Match recordings will be published in this area after DCFL SPORTFEST is completed.",
+                note: "Published recordings will be listed in an orderly archive structure with branch, match title and date information.",
+                section: "RECORD ARCHIVE",
+                title2: "Release Plan",
+                sectionIntro: "Until the festival is completed, the recording area preserves the planned release structure; content will be updated directly afterwards.",
+                branchTabs: ["Volleyball", "Basketball 3x3", "Football", "Table Tennis", "Archery", "Orienteering", "Athletics"],
                 footer: "Match recordings coming soon"
             },
             pl: {
                 title: "Nagrania meczow | DCFLSPORTFEST'26",
                 eyebrow: "NAGRANIA MECZOW",
-                h1: "Nagrania meczow beda uporzadkowane wedlug tytulow.",
-                hero: "Kazde nagranie zostanie opublikowane na tej stronie pod wskazanym tytulem meczu.",
-                section: "TYTULY MECZOW",
-                title2: "Tytuly nagran w przygotowaniu",
-                postMeta: ["Tytul oczekuje", "Tytul oczekuje", "Tytul oczekuje"],
-                postTags: ["Nagranie meczu", "Nagranie meczu", "Nagranie meczu"],
-                recordStates: ["Oczekuje na publikacje", "Oczekuje na publikacje", "Oczekuje na publikacje"],
-                postTitles: ["Tytul zostanie dodany", "Tytul zostanie dodany", "Tytul zostanie dodany"],
-                postText: [
-                    "Przyklad: DCFL-AAL Pilka Nozna Eliminacje Nagranie Meczu",
-                    "Przyklad: DCFL-CFL Siatkowka Polfinal Nagranie Meczu",
-                    "Przyklad: DCFL-Orhan Gazi Koszykowka 3x3 Nagranie Meczu"
-                ],
-                actions: ["Nagranie wkrotce", "Nagranie wkrotce", "Nagranie wkrotce"],
-                footer: "Nagrania meczow wkrótce"
+                h1: "Nagrania Meczow",
+                hero: "Nagrania meczow beda publikowane w tej sekcji po zakonczeniu DCFL SPORTFEST.",
+                note: "Opublikowane nagrania beda prezentowane w uporzadkowanej strukturze archiwum z informacja o dyscyplinie, tytule meczu i dacie.",
+                section: "ARCHIWUM NAGRAN",
+                title2: "Plan Publikacji",
+                sectionIntro: "Do czasu zakonczenia festiwalu obszar nagran zachowuje planowana strukture publikacji; tresci zostana zaktualizowane po wydarzeniu.",
+                branchTabs: ["Siatkowka", "Koszykowka 3x3", "Pilka Nozna", "Tenis Stolowy", "Lucznictwo", "Bieg Na Orientacje", "Lekkoatletyka"],
+                footer: "Nagrania meczow wkrotce"
             }
         }[lang] || {};
 
@@ -2887,14 +2906,11 @@ var renderProgramFixtures = (function () {
         setText(".page-shell .eyebrow", copy.eyebrow);
         setText(".page-shell h1", copy.h1);
         setText(".page-shell .hero-text", copy.hero);
+        setText(".record-page-note", copy.note);
         setText("main .section-head .section-kicker", copy.section);
         setText("main .section-head h2", copy.title2);
-        setList(".record-date", copy.postMeta);
-        setList(".record-tag", copy.postTags);
-        setList(".record-state", copy.recordStates);
-        setList(".record-card h3", copy.postTitles);
-        setList(".record-text", copy.postText);
-        setList(".record-action", copy.actions);
+        setText(".record-section-intro", copy.sectionIntro);
+        setList(".record-branch-tabs [data-fixture-tab]", copy.branchTabs);
         setText(".footer p:nth-of-type(2)", copy.footer);
     }
 
