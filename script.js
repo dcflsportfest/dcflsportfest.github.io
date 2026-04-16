@@ -751,7 +751,7 @@ function initializeRecordGrids(root) {
             }
 
             if (date) {
-                date.textContent = "Tarih Güncellenecek";
+                date.textContent = "Tarih Yakında";
             }
 
             grid.appendChild(clone);
@@ -2868,20 +2868,20 @@ var renderProgramFixtures = (function () {
                 title: "Maç Kayıtları | DCFLSPORTFEST'26",
                 eyebrow: "MAÇ KAYITLARI",
                 h1: "Maç Kayıtları",
-                hero: "Turnuva karşılaşmalarına ait maç kayıtları, DCFL SPORTFEST tamamlandıktan sonra bu alanda yayınlanacaktır.",
-                note: "Yayınlanan kayıtlar branş, karşılaşma başlığı ve tarih bilgileriyle düzenli bir arşiv yapısında listelenecektir.",
+                hero: "DCFL SPORTFEST kapsamında oynanan karşılaşmaların kayıtları festival sonrasında bu sayfada yayınlanacaktır.",
+                note: "",
                 section: "KAYIT ARŞİVİ",
-                title2: "Yayın Planı",
-                sectionIntro: "Festival tamamlanana kadar kayıt alanları planlı yayın yapısını gösterecek şekilde korunur; kayıtlar tamamlandıktan sonra doğrudan güncellenecektir.",
+                title2: "Karşılaşma Kayıtları",
+                sectionIntro: "Kayıt arşivi, festival sonrasında etap etap güncellenecektir.",
                 branchTabs: ["Voleybol", "Basketbol 3x3", "Futbol", "Masa Tenisi", "Okçuluk", "Oryantiring", "Atletizm"],
-                footer: "Maç kayıtları yakında"
+                footer: "Kayıt arşivi festival sonrasında yayına alınacaktır."
             },
             en: {
                 title: "Match Recordings | DCFLSPORTFEST'26",
                 eyebrow: "MATCH RECORDINGS",
                 h1: "Match Recordings",
                 hero: "Match recordings will be published in this area after DCFL SPORTFEST is completed.",
-                note: "Published recordings will be listed in an orderly archive structure with branch, match title and date information.",
+                note: "",
                 section: "RECORD ARCHIVE",
                 title2: "Release Plan",
                 sectionIntro: "Until the festival is completed, the recording area preserves the planned release structure; content will be updated directly afterwards.",
@@ -2893,7 +2893,7 @@ var renderProgramFixtures = (function () {
                 eyebrow: "NAGRANIA MECZOW",
                 h1: "Nagrania Meczow",
                 hero: "Nagrania meczow beda publikowane w tej sekcji po zakonczeniu DCFL SPORTFEST.",
-                note: "Opublikowane nagrania beda prezentowane w uporzadkowanej strukturze archiwum z informacja o dyscyplinie, tytule meczu i dacie.",
+                note: "",
                 section: "ARCHIWUM NAGRAN",
                 title2: "Plan Publikacji",
                 sectionIntro: "Do czasu zakonczenia festiwalu obszar nagran zachowuje planowana strukture publikacji; tresci zostana zaktualizowane po wydarzeniu.",
