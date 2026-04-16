@@ -2868,13 +2868,13 @@ var renderProgramFixtures = (function () {
                 title: "Maç Kayıtları | DCFLSPORTFEST'26",
                 eyebrow: "MAÇ KAYITLARI",
                 h1: "Maç Kayıtları",
-                hero: "DCFL SPORTFEST kapsamında oynanan karşılaşmaların kayıtları festival sonrasında bu sayfada yayınlanacaktır.",
+                hero: "Karşılaşma kayıtları festival sonrasında bu sayfada yayınlanacaktır.",
                 note: "",
                 section: "KAYIT ARŞİVİ",
-                title2: "Karşılaşma Kayıtları",
-                sectionIntro: "Kayıt arşivi, festival sonrasında etap etap güncellenecektir.",
+                title2: "Kayıtlar",
+                sectionIntro: "Yeni kayıtlar yayınlandıkça bu alan güncellenecektir.",
                 branchTabs: ["Voleybol", "Basketbol 3x3", "Futbol", "Masa Tenisi", "Okçuluk", "Oryantiring", "Atletizm"],
-                footer: "Kayıt arşivi festival sonrasında yayına alınacaktır."
+                footer: "Maç Kayıtları"
             },
             en: {
                 title: "Match Recordings | DCFLSPORTFEST'26",
