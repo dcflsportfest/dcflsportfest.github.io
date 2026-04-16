@@ -2903,64 +2903,148 @@ var renderProgramFixtures = (function () {
             tr: {
                 title: "Ar\u015fiv | DCFLSPORTFEST'26",
                 eyebrow: "AR\u015e\u0130V",
-                h1: "Ge\u00e7mi\u015f sezon ar\u015fivleri burada toplanacak.",
-                hero: "Sezon bazl\u0131 foto\u011fraf ar\u015fivleri y\u0131llara g\u00f6re bu sayfada listelenecek.",
-                section: "SEZONLAR",
-                title2: "Ar\u015fiv Kategorileri",
+                h1: "DCFL SPORTFEST foto\u011fraf ar\u015fivi sezon bazl\u0131 olarak haz\u0131rlan\u0131yor.",
+                hero: "Ge\u00e7mi\u015f sezonlara ait foto\u011fraf, afi\u015f ve g\u00f6rsel kay\u0131tlar do\u011frulama ve d\u00fczenleme s\u00fcrecine g\u00f6re etap etap yay\u0131nlanacakt\u0131r.",
+                section: "AR\u015e\u0130V D\u00d6NEMLER\u0130",
+                title2: "Sezon Durumlar\u0131",
+                introText: "DCFL SPORTFEST ar\u015fivi d\u00f6nemler halinde yay\u0131nlanacakt\u0131r. Ge\u00e7mi\u015f y\u0131llara ait foto\u011fraf, afi\u015f ve i\u00e7erikler toplanma ve d\u00fczenlenme s\u00fcrecindedir.",
+                introNote: "2025-2026 ar\u015fivi festival tamamland\u0131ktan sonra eklenecek; bu alan eksik de\u011fil, kademeli olarak g\u00fcncellenen resmi ar\u015fiv b\u00f6l\u00fcm\u00fcd\u00fcr.",
                 seasonTitles: [
                     "2022-2023 Sezonu",
                     "2023-2024 Sezonu",
                     "2024-2025 Sezonu",
                     "2025-2026 Sezonu"
                 ],
-                seasonText: [
-                    "2022-2023 sezonuna ait foto\u011fraf ar\u015fivi a\u015fa\u011f\u0131da yay\u0131nda.",
-                    "2023-2024 sezonuna ait ar\u015fiv i\u00e7erikleri yak\u0131nda eklenecek.",
-                    "2024-2025 sezonuna ait ar\u015fiv i\u00e7erikleri yak\u0131nda eklenecek.",
-                    "2025-2026 sezonuna ait ar\u015fiv i\u00e7erikleri yak\u0131nda eklenecek."
+                seasonBadges: [
+                    "Ar\u015fiv Yay\u0131nda",
+                    "D\u00fczenleniyor",
+                    "Ar\u015fiv Toplan\u0131yor",
+                    "Festival Sonras\u0131 Yay\u0131nlanacak"
                 ],
+                seasonLeads: [
+                    "2022-2023 sezonuna ait foto\u011fraf ar\u015fivi a\u015fa\u011f\u0131da yay\u0131nda.",
+                    "Bu d\u00f6neme ait ar\u015fiv i\u00e7erikleri d\u00fczenlenme s\u00fcrecindedir.",
+                    "Bu d\u00f6neme ait ar\u015fiv i\u00e7erikleri d\u00fczenlenme s\u00fcrecindedir.",
+                    "2025-2026 DCFL SPORTFEST ar\u015fivi, festival tamamland\u0131ktan sonra yay\u0131nlanacakt\u0131r."
+                ],
+                seasonNotes: [
+                    "Bu sezon i\u00e7in do\u011frulanan g\u00f6rseller yay\u0131na al\u0131nm\u0131\u015ft\u0131r. Yeni kareler ar\u015fiv ak\u0131\u015f\u0131na g\u00f6re etap etap eklenecektir.",
+                    "",
+                    "",
+                    ""
+                ],
+                placeholderTitles: [
+                    "Ar\u015fiv D\u00fczenleniyor",
+                    "Kademeli Yay\u0131n Plan\u0131",
+                    "Festival Sonras\u0131 Yay\u0131n Plan\u0131"
+                ],
+                placeholderLines: [
+                    "Foto\u011fraf ve g\u00f6rsel kay\u0131tlar do\u011fruland\u0131ktan sonra payla\u015f\u0131lacakt\u0131r.",
+                    "Ar\u015fiv g\u00fcncellemeleri kademeli olarak yay\u0131nlanacakt\u0131r.",
+                    "Foto\u011fraf ve g\u00f6rsel kay\u0131tlar do\u011fruland\u0131ktan sonra payla\u015f\u0131lacakt\u0131r.",
+                    "Ar\u015fiv g\u00fcncellemeleri kademeli olarak yay\u0131nlanacakt\u0131r.",
+                    "Etkinlik foto\u011fraflar\u0131, m\u00fcsabaka kareleri ve festival an\u0131lar\u0131 organizasyon sonras\u0131 bu alanda yer alacakt\u0131r.",
+                    "Ar\u015fiv i\u00e7eri\u011fi do\u011frulama ve d\u00fczenleme s\u00fcreci sonras\u0131nda yay\u0131n ak\u0131\u015f\u0131na al\u0131nacakt\u0131r."
+                ],
+                footnote: "Ar\u015fiv i\u00e7erikleri do\u011frulama ve d\u00fczenleme s\u00fcrecinin ard\u0131ndan etap etap payla\u015f\u0131lacakt\u0131r.",
                 footer: "Ar\u015fiv Sayfas\u0131"
             },
             en: {
                 title: "Archive | DCFLSPORTFEST'26",
                 eyebrow: "ARCHIVE",
-                h1: "Past season archives will be collected here.",
-                hero: "Season-based photo archives will be listed on this page by year.",
-                section: "SEASONS",
-                title2: "Archive Categories",
+                h1: "The DCFL SPORTFEST photo archive is being prepared season by season.",
+                hero: "Photos, posters and verified visual records from past seasons will be published in phases after review and curation.",
+                section: "ARCHIVE PERIODS",
+                title2: "Season Status",
+                introText: "The DCFL SPORTFEST archive will be published in periods. Photos, posters and content from previous years are currently being collected and curated.",
+                introNote: "The 2025-2026 archive will be added after the festival is completed; this page is not incomplete, it is an official archive area updated in stages.",
                 seasonTitles: [
                     "2022-2023 Season",
                     "2023-2024 Season",
                     "2024-2025 Season",
                     "2025-2026 Season"
                 ],
-                seasonText: [
-                    "The photo archive for the 2022-2023 season is published below.",
-                    "Archive content for the 2023-2024 season will be added soon.",
-                    "Archive content for the 2024-2025 season will be added soon.",
-                    "Archive content for the 2025-2026 season will be added soon."
+                seasonBadges: [
+                    "Archive Live",
+                    "Being Curated",
+                    "Archive In Collection",
+                    "Will Be Published After The Festival"
                 ],
+                seasonLeads: [
+                    "The verified photo archive for the 2022-2023 season is published below.",
+                    "Archive materials for this period are currently in the curation process.",
+                    "Archive materials for this period are currently in the curation process.",
+                    "The 2025-2026 DCFL SPORTFEST archive will be published after the festival is completed."
+                ],
+                seasonNotes: [
+                    "Verified visuals for this season are already live. Additional frames will be added in stages according to the archive rollout.",
+                    "",
+                    "",
+                    ""
+                ],
+                placeholderTitles: [
+                    "Archive In Review",
+                    "Gradual Release Plan",
+                    "Post-Festival Release Plan"
+                ],
+                placeholderLines: [
+                    "Photo and visual records will be shared after verification is completed.",
+                    "Archive updates will be published gradually.",
+                    "Photo and visual records will be shared after verification is completed.",
+                    "Archive updates will be published gradually.",
+                    "Event photos, match captures and festival memories will appear in this area after the organization is completed.",
+                    "Archive content will enter the publishing flow after verification and curation are completed."
+                ],
+                footnote: "Archive content will be shared step by step after the verification and curation process is completed.",
                 footer: "Archive Page"
             },
             pl: {
                 title: "Archiwum | DCFLSPORTFEST'26",
                 eyebrow: "ARCHIWUM",
-                h1: "Archiwa poprzednich sezonow beda zebrane tutaj.",
-                hero: "Archiwa zdjec sezonowych beda na tej stronie uporzadkowane wedlug lat.",
-                section: "SEZONY",
-                title2: "Kategorie Archiwum",
+                h1: "Archiwum fotograficzne DCFL SPORTFEST jest przygotowywane sezon po sezonie.",
+                hero: "Zdjecia, plakaty i zweryfikowane materialy wizualne z poprzednich sezonow beda publikowane etapami po zakonczeniu procesu porzadkowania.",
+                section: "OKRESY ARCHIWUM",
+                title2: "Status Sezonow",
+                introText: "Archiwum DCFL SPORTFEST bedzie publikowane etapami. Zdjecia, plakaty i tresci z poprzednich lat sa obecnie zbierane i porzadkowane.",
+                introNote: "Archiwum 2025-2026 zostanie dodane po zakonczeniu festiwalu; ta strona nie jest niepelna, to oficjalna sekcja archiwum aktualizowana etapami.",
                 seasonTitles: [
                     "Sezon 2022-2023",
                     "Sezon 2023-2024",
                     "Sezon 2024-2025",
                     "Sezon 2025-2026"
                 ],
-                seasonText: [
-                    "Archiwum zdjec sezonu 2022-2023 jest opublikowane ponizej.",
-                    "Materialy archiwalne z sezonu 2023-2024 zostana wkrotce dodane.",
-                    "Materialy archiwalne z sezonu 2024-2025 zostana wkrotce dodane.",
-                    "Materialy archiwalne z sezonu 2025-2026 zostana wkrotce dodane."
+                seasonBadges: [
+                    "Archiwum Opublikowane",
+                    "W Opracowaniu",
+                    "Archiwum Jest Zbierane",
+                    "Publikacja Po Festiwalu"
                 ],
+                seasonLeads: [
+                    "Zweryfikowane archiwum zdjec sezonu 2022-2023 jest opublikowane ponizej.",
+                    "Materialy archiwalne dla tego okresu sa obecnie porzadkowane.",
+                    "Materialy archiwalne dla tego okresu sa obecnie porzadkowane.",
+                    "Archiwum DCFL SPORTFEST 2025-2026 zostanie opublikowane po zakonczeniu festiwalu."
+                ],
+                seasonNotes: [
+                    "Zweryfikowane materialy dla tego sezonu sa juz dostepne. Kolejne ujecia beda dodawane etapami zgodnie z harmonogramem archiwum.",
+                    "",
+                    "",
+                    ""
+                ],
+                placeholderTitles: [
+                    "Archiwum W Opracowaniu",
+                    "Plan Publikacji Etapowej",
+                    "Plan Publikacji Po Festiwalu"
+                ],
+                placeholderLines: [
+                    "Zdjecia i materialy wizualne zostana udostepnione po zakonczeniu weryfikacji.",
+                    "Aktualizacje archiwum beda publikowane stopniowo.",
+                    "Zdjecia i materialy wizualne zostana udostepnione po zakonczeniu weryfikacji.",
+                    "Aktualizacje archiwum beda publikowane stopniowo.",
+                    "Zdjecia z wydarzenia, kadry z rozgrywek i wspomnienia festiwalowe pojawia sie tutaj po zakonczeniu organizacji.",
+                    "Materialy archiwalne trafia do publikacji po zakonczeniu weryfikacji i porzadkowania."
+                ],
+                footnote: "Materialy archiwalne beda publikowane etapami po zakonczeniu procesu weryfikacji i porzadkowania.",
                 footer: "Strona Archiwum"
             }
         }[lang] || {};
@@ -2971,8 +3055,15 @@ var renderProgramFixtures = (function () {
         setText(".page-shell .hero-text", copy.hero);
         setText("main .section-head .section-kicker", copy.section);
         setText("main .section-head h2", copy.title2);
-        setList(".archive-season-panel h3", copy.seasonTitles);
-        setList(".archive-season-panel p", copy.seasonText);
+        setText(".archive-intro-text", copy.introText);
+        setText(".archive-intro-note", copy.introNote);
+        setList(".archive-season-title", copy.seasonTitles);
+        setList(".archive-status-badge", copy.seasonBadges);
+        setList(".archive-season-lead", copy.seasonLeads);
+        setList(".archive-season-note", copy.seasonNotes);
+        setList(".archive-placeholder-title", copy.placeholderTitles);
+        setList(".archive-placeholder-line", copy.placeholderLines);
+        setText(".archive-footnote", copy.footnote);
         setText(".footer p:nth-of-type(2)", copy.footer);
     }
 

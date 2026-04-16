@@ -1596,16 +1596,134 @@ main {
     gap: 0.45rem;
 }
 
+.archive-intro {
+    margin-top: 0.95rem;
+    padding: 1rem 1.05rem;
+    border-radius: 18px;
+    border: 1px solid rgba(168, 197, 245, 0.16);
+    background:
+        linear-gradient(135deg, rgba(14, 26, 56, 0.92), rgba(8, 17, 38, 0.96)),
+        rgba(255, 255, 255, 0.03);
+    box-shadow: var(--shadow-soft);
+}
+
+.archive-intro-text,
+.archive-intro-note {
+    margin: 0;
+    color: var(--text-soft);
+    line-height: 1.65;
+}
+
+.archive-intro-note {
+    margin-top: 0.6rem;
+    color: rgba(232, 239, 251, 0.9);
+}
+
 .archive-season-panels {
     margin-top: 0.9rem;
 }
 
-.archive-season-panel h3 {
-    margin: 0;
+.archive-season-panel {
+    min-height: 100%;
 }
 
-.archive-season-panel p {
+.archive-season-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.9rem;
+}
+
+.archive-season-label {
+    margin: 0;
+    color: rgba(248, 193, 70, 0.76);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.archive-season-title {
+    margin: 0.35rem 0 0;
+}
+
+.archive-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+    padding: 0.38rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid rgba(168, 197, 245, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(236, 243, 255, 0.92);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.archive-status-badge--live {
+    border-color: rgba(72, 207, 156, 0.3);
+    background: rgba(72, 207, 156, 0.12);
+    color: #b8f4dc;
+}
+
+.archive-status-badge--editing {
+    border-color: rgba(248, 193, 70, 0.28);
+    background: rgba(248, 193, 70, 0.12);
+    color: #f8d67f;
+}
+
+.archive-status-badge--collecting {
+    border-color: rgba(124, 163, 255, 0.3);
+    background: rgba(124, 163, 255, 0.12);
+    color: #c7d8ff;
+}
+
+.archive-status-badge--future {
+    border-color: rgba(198, 164, 255, 0.28);
+    background: rgba(198, 164, 255, 0.11);
+    color: #dfccff;
+}
+
+.archive-season-lead,
+.archive-season-note {
+    margin: 0.78rem 0 0;
+    color: var(--text-soft);
+    line-height: 1.65;
+}
+
+.archive-season-note:empty {
+    display: none;
+}
+
+.archive-placeholder {
+    margin-top: 0.95rem;
+    padding: 1rem 1.05rem;
+    border-radius: 18px;
+    border: 1px solid rgba(168, 197, 245, 0.16);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.archive-placeholder-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 14px;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(248, 193, 70, 0.26), transparent 55%),
+        linear-gradient(135deg, rgba(248, 193, 70, 0.18), rgba(115, 155, 240, 0.16));
+    border: 1px solid rgba(248, 193, 70, 0.2);
+    box-shadow: 0 10px 26px rgba(6, 11, 24, 0.28);
+}
+
+.archive-placeholder-title {
+    margin: 0.85rem 0 0;
+}
+
+.archive-placeholder-line {
     margin: 0.5rem 0 0;
+    color: var(--text-soft);
+    line-height: 1.65;
 }
 
 .archive-gallery {
@@ -1635,6 +1753,36 @@ main {
     aspect-ratio: 1 / 1;
     object-fit: cover;
     display: block;
+}
+
+.archive-footnote {
+    margin: 1rem 0 0;
+    padding: 0.9rem 1rem;
+    border-radius: 16px;
+    border: 1px solid rgba(168, 197, 245, 0.16);
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(232, 239, 251, 0.88);
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .archive-intro,
+    .archive-placeholder,
+    .archive-footnote {
+        padding: 0.92rem 0.9rem;
+        border-radius: 16px;
+    }
+
+    .archive-season-head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+    }
+
+    .archive-status-badge {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 .archive-lightbox[hidden] {
