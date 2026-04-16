@@ -808,6 +808,7 @@ function initializeArchiveLightbox(root) {
 var renderScoreResults = (function () {
     var uiCopy = {
         tr: {
+            branchTabsAria: "Branşa göre sonuç seçimi",
             dayTabsAria: "G\u00fcnlere g\u00f6re sonu\u00e7lar",
             dayCaptions: {
                 "12-mayis": "Bran\u015fa g\u00f6re \u00e7eyrek final ma\u00e7lar\u0131",
@@ -833,6 +834,7 @@ var renderScoreResults = (function () {
             }
         },
         en: {
+            branchTabsAria: "Results by branch",
             dayTabsAria: "Results by day",
             dayCaptions: {
                 "12-mayis": "Quarter-final matches by branch",
@@ -858,6 +860,7 @@ var renderScoreResults = (function () {
             }
         },
         pl: {
+            branchTabsAria: "Wyniki wedlug dyscyplin",
             dayTabsAria: "Wyniki wedlug dni",
             dayCaptions: {
                 "12-mayis": "Mecze cwiercfinalowe wedlug dyscyplin",
@@ -1037,6 +1040,7 @@ var renderScoreResults = (function () {
 
         return {
             publishResults: false,
+            resultMatches: [],
             branchTemplates: branchTemplates
         };
     }
@@ -1106,78 +1110,44 @@ var renderScoreResults = (function () {
         return copy.rounds[stageKey] + " " + String(index + 1);
     }
 
-    function createMatch(day, template, stageKey, index, time, home, away, score, lang, publishResults) {
-        var copy = uiCopy[lang] || uiCopy.tr;
-        var hasScore = hasPlayableScore(score, publishResults);
-        var winner = hasScore ? getWinnerKey(score, !!template.lowWins, publishResults) : null;
-        var normalizedScore = hasScore ? score : ["-", "-"];
+    function normalizeResultMatch(match, index) {
+        var source = match && typeof match === "object" ? match : {};
+        var teamStart = index * 2 + 1;
+        var homeScore = String(source.homeScore == null || source.homeScore === "" ? "0" : source.homeScore);
+        var awayScore = String(source.awayScore == null || source.awayScore === "" ? "0" : source.awayScore);
+        var winner = getWinnerKey([homeScore, awayScore], false, true);
         return {
-            stage: buildStageLabel(stageKey, index, lang),
-            time: time,
-            home: home,
-            away: away,
-            homeScore: normalizedScore[0],
-            awayScore: normalizedScore[1],
+            branch: String(source.branch || ("Bran\u015f " + String(index + 1))),
+            status: String(source.status || "Tamamland\u0131"),
+            home: String(source.home || ("Tak\u0131m " + String(teamStart))),
+            homeScore: homeScore,
+            away: String(source.away || ("Tak\u0131m " + String(teamStart + 1))),
+            awayScore: awayScore,
+            meta: String(source.meta || "Kar\u015f\u0131la\u015fma Sonucu"),
             winner: winner,
-            played: hasScore,
-            status: hasScore ? copy.statuses.completed : copy.statuses.pending,
-            badgeClass: hasScore ? "score-card-badge-final" : "score-card-badge-pending",
-            meta: pickText(day.fullDate, lang) + " | " + time + " | " + pickText(template.venue, lang)
+            badgeClass: winner ? "score-card-badge-final" : "score-card-badge-pending"
         };
     }
 
-    function getWinnerName(match) {
-        if (!match || !match.winner) {
-            return null;
-        }
-        return match.winner === "home" ? match.home : match.away;
-    }
+    function buildResultGroups(matches) {
+        return matches.reduce(function (groups, match) {
+            var existing = groups.find(function (group) {
+                return group.name === match.branch;
+            });
 
-    function buildMatchesForBranch(template, day, lang, publishResults) {
-        var qfMatches = template.qf.pairs.map(function (pair, index) {
-            return createMatch(day, template, "qf", index, template.qf.times[index], pair[0], pair[1], template.qf.scores[index], lang, publishResults);
-        }).filter(function (_match, index) {
-            return !(template.qf.hidden && template.qf.hidden[index]);
-        });
+            if (!existing) {
+                var nextKey = match.branch.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+                existing = {
+                    key: nextKey || ("branch-" + String(groups.length + 1)),
+                    name: match.branch,
+                    matches: []
+                };
+                groups.push(existing);
+            }
 
-        if (day.stage === "qf") {
-            return qfMatches;
-        }
-
-        var sfPairs = template.sf.pairs || [
-            [getWinnerName(qfMatches[0]), getWinnerName(qfMatches[1])],
-            [getWinnerName(qfMatches[2]), getWinnerName(qfMatches[3])]
-        ];
-
-        if (!publishResults || sfPairs.some(function (pair) { return !pair[0] || !pair[1]; })) {
-            sfPairs = [
-                buildPlaceholderPair("sf", lang, 0),
-                buildPlaceholderPair("sf", lang, 1)
-            ];
-        }
-
-        var sfMatches = sfPairs.map(function (pair, index) {
-            return createMatch(day, template, "sf", index, template.sf.times[index], pair[0], pair[1], template.sf.scores[index], lang, publishResults);
-        }).filter(function (_match, index) {
-            return !(template.sf.hidden && template.sf.hidden[index]);
-        });
-
-        if (day.stage === "sf") {
-            return sfMatches;
-        }
-
-        var finalPair = template.final.pair || [getWinnerName(sfMatches[0]), getWinnerName(sfMatches[1])];
-        if (!publishResults || !finalPair[0] || !finalPair[1]) {
-            finalPair = buildPlaceholderPair("final", lang, 0);
-        }
-
-        if (template.final.hidden) {
-            return [];
-        }
-
-        return [
-            createMatch(day, template, "final", 0, template.final.time, finalPair[0], finalPair[1], template.final.score, lang, publishResults)
-        ];
+            existing.matches.push(match);
+            return groups;
+        }, []);
     }
 
     function renderResultMatchCard(match) {
@@ -1185,60 +1155,22 @@ var renderScoreResults = (function () {
         var awayClass = match.winner === "away" ? " is-leading" : "";
 
         return [
-            "<article class=\"score-card score-card-result" + (match.played ? "" : " is-pending") + "\">",
+            "<article class=\"score-card score-card-result\">",
             "    <div class=\"score-card-head\">",
-            "        <p class=\"score-card-branch\">" + match.stage + "</p>",
-            "        <span class=\"score-card-badge " + match.badgeClass + "\">" + match.status + "</span>",
+            "        <p class=\"score-card-branch\">" + escapeHTML(match.meta) + "</p>",
+            "        <span class=\"score-card-badge " + match.badgeClass + "\">" + escapeHTML(match.status) + "</span>",
             "    </div>",
             "    <div class=\"score-card-teams\">",
             "        <div class=\"score-card-team" + homeClass + "\">",
-            "            <strong>" + match.home + "</strong>",
-            "            <span class=\"score-card-score\">" + match.homeScore + "</span>",
+            "            <strong>" + escapeHTML(match.home) + "</strong>",
+            "            <span class=\"score-card-score\">" + escapeHTML(match.homeScore) + "</span>",
             "        </div>",
             "        <div class=\"score-card-team" + awayClass + "\">",
-            "            <strong>" + match.away + "</strong>",
-            "            <span class=\"score-card-score\">" + match.awayScore + "</span>",
+            "            <strong>" + escapeHTML(match.away) + "</strong>",
+            "            <span class=\"score-card-score\">" + escapeHTML(match.awayScore) + "</span>",
             "        </div>",
             "    </div>",
-            "    <p class=\"score-card-meta\">" + match.meta + "</p>",
             "</article>"
-        ].join("");
-    }
-
-    function renderDayPanel(day, lang, dayUi, isActive, templates, publishResults, resultsCount) {
-        var branchTabs = templates.map(function (branch, index) {
-            return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-fixture-tab=\"" + branch.key + "\">" + pickText(branch.name, lang) + "</button>";
-        }).join("");
-
-        var branchPanels = templates.map(function (branch, index) {
-            var matches = buildMatchesForBranch(branch, day, lang, publishResults).slice(0, resultsCount);
-            var cards = matches.length
-                ? matches.map(function (match) { return renderResultMatchCard(match); }).join("")
-                : "<p class=\"score-results-empty-branch\">Bu branş için görünür sonuç kartı yok.</p>";
-
-            return [
-                "<article class=\"fixture-panel score-results-branch-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + branch.key + "\">",
-                "    <h3>" + dayUi.resultsTitle(pickText(branch.name, lang)) + "</h3>",
-                "    <div class=\"scoreboard-grid score-results-grid\">",
-                cards,
-                "    </div>",
-                "</article>"
-            ].join("");
-        }).join("");
-
-        return [
-            "<section class=\"score-results-day-panel" + (isActive ? " active" : "") + "\" id=\"score-results-" + day.key + "\" data-score-day-panel=\"" + day.key + "\" aria-hidden=\"" + (isActive ? "false" : "true") + "\">",
-            "    <div class=\"score-results-head\">",
-            "        <p class=\"score-results-date\">" + pickText(day.fullDate, lang) + "</p>",
-            "        <p class=\"score-results-caption\">" + dayUi.dayCaptions[day.key] + "</p>",
-            "    </div>",
-            "    <div class=\"fixture-tabs score-results-branch-tabs\" data-fixture-tabs>",
-            "        " + branchTabs,
-            "    </div>",
-            "    <div class=\"fixture-panels\">",
-            "        " + branchPanels,
-            "    </div>",
-            "</section>"
         ].join("");
     }
 
@@ -1246,16 +1178,16 @@ var renderScoreResults = (function () {
         var currentLang = uiCopy[lang] ? lang : "tr";
         var dayUi = uiCopy[currentLang];
         var state = getScoreData();
-        var templates = Array.isArray(state.branchTemplates) && state.branchTemplates.length ? state.branchTemplates : branchTemplates;
         var publishResults = !!state.publishResults;
-        var resultsCount = Math.max(0, Number(state.summary && state.summary.resultsCount != null ? state.summary.resultsCount : 4) || 0);
+        var resultMatches = Array.isArray(state.resultMatches) ? state.resultMatches.map(normalizeResultMatch) : [];
+        var groups = buildResultGroups(resultMatches);
         var shells = document.querySelectorAll("[data-score-results]");
         if (!shells.length) {
             return;
         }
 
         shells.forEach(function (shell) {
-            if (resultsCount === 0) {
+            if (!publishResults || !groups.length) {
                 shell.innerHTML = [
                     "<div class=\"score-results-empty\">",
                     "    <p class=\"score-results-empty-text\">" + dayUi.empty + "</p>",
@@ -1265,47 +1197,25 @@ var renderScoreResults = (function () {
             }
 
             shell.innerHTML = [
-                "<div class=\"fixture-tabs score-results-day-tabs\" data-score-day-tabs role=\"tablist\" aria-label=\"" + dayUi.dayTabsAria + "\">",
-                days.map(function (day, index) {
-                    return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-score-day-tab=\"" + day.key + "\" aria-selected=\"" + (index === 0 ? "true" : "false") + "\">" + pickText(day.label, currentLang) + "</button>";
+                "<div class=\"fixture-tabs score-results-branch-tabs\" data-fixture-tabs role=\"tablist\" aria-label=\"" + dayUi.branchTabsAria + "\">",
+                groups.map(function (group, index) {
+                    return "<button type=\"button\" class=\"fixture-tab" + (index === 0 ? " active" : "") + "\" data-fixture-tab=\"" + group.key + "\">" + escapeHTML(group.name) + "</button>";
                 }).join(""),
                 "</div>",
-                "<div class=\"score-results-day-panels\">",
-                days.map(function (day) {
-                    return renderDayPanel(day, currentLang, dayUi, day.key === days[0].key, templates, publishResults, resultsCount);
+                "<div class=\"fixture-panels\">",
+                groups.map(function (group, index) {
+                    return [
+                        "<article class=\"fixture-panel score-results-branch-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + group.key + "\">",
+                        "    <h3>" + dayUi.resultsTitle(escapeHTML(group.name)) + "</h3>",
+                        "    <div class=\"scoreboard-grid score-results-grid\">",
+                        group.matches.map(function (match) { return renderResultMatchCard(match); }).join(""),
+                        "    </div>",
+                        "</article>"
+                    ].join("");
                 }).join(""),
                 "</div>"
             ].join("");
 
-            var dayTabs = Array.prototype.slice.call(shell.querySelectorAll("[data-score-day-tab]"));
-            var dayPanels = Array.prototype.slice.call(shell.querySelectorAll("[data-score-day-panel]"));
-
-            function activateDay(dayKey) {
-                dayTabs.forEach(function (tab) {
-                    var isActive = tab.getAttribute("data-score-day-tab") === dayKey;
-                    tab.classList.toggle("active", isActive);
-                    tab.setAttribute("aria-selected", isActive ? "true" : "false");
-                });
-
-                dayPanels.forEach(function (panel) {
-                    var isActive = panel.getAttribute("data-score-day-panel") === dayKey;
-                    panel.classList.toggle("active", isActive);
-                    panel.setAttribute("aria-hidden", isActive ? "false" : "true");
-                });
-            }
-
-            dayTabs.forEach(function (tab) {
-                tab.setAttribute("role", "tab");
-                tab.addEventListener("click", function () {
-                    activateDay(tab.getAttribute("data-score-day-tab"));
-                });
-            });
-
-            dayPanels.forEach(function (panel) {
-                panel.setAttribute("role", "tabpanel");
-            });
-
-            activateDay(days[0].key);
             initializeFixtureTabGroups(shell);
         });
     };
@@ -2041,7 +1951,7 @@ var renderProgramFixtures = (function () {
                     "\u00c7ok dilli ileti\u015fim ve tan\u0131t\u0131m"
                 ],
                 cta: "Program ve Turnuva",
-                stats: ["10 Adet Bran\u015f", "14 Farkl\u0131 Okuldan Kat\u0131l\u0131mc\u0131lar", "Her G\u00fcn 300+ Kat\u0131l\u0131mc\u0131"],
+                stats: ["10 Adet Bran\u015f", "15 Farkl\u0131 Okuldan Kat\u0131l\u0131mc\u0131lar", "Her G\u00fcn 300+ Kat\u0131l\u0131mc\u0131"],
                 sponsorCta: "Sporcu Ba\u015fvurusu Yap",
                 countdown: "SportFeste kalan s\u00fcre",
                 countdownLabels: ["G\u00fcn", "Saat", "Dakika", "Saniye"],
@@ -2074,18 +1984,19 @@ var renderProgramFixtures = (function () {
                 schools: [
                     "Do\u011fan C\u00fccelo\u011flu Fen Lisesi",
                     "Atakent Anadolu Lisesi",
-                    "Atakent TED Koleji",
-                    "Tema Bah\u00e7e\u015fehir Koleji",
                     "Prof. Dr. Fuat Sezgin Fen Lisesi",
                     "Fahrettin Kerim G\u00f6kay Anadolu Lisesi",
                     "\u00c7apa Fen Lisesi",
-                    "Adnan Menderes Anadolu Lisesi",
                     "Bah\u00e7elievler Anadolu Lisesi",
                     "Prof. Dr. M\u00fcmtaz Turhan Sosyal Bilimler Lisesi",
-                    "Ca\u011falo\u011flu Fen Lisesi",
+                    "Ca\u011falo\u011flu Anadolu Lisesi",
                     "Orhan Gazi Anadolu Lisesi",
                     "Orhan Cemal Fersoy Anadolu Lisesi",
-                    "Ya\u015far Acar Fen Lisesi"
+                    "Ya\u015far Acar Fen Lisesi",
+                    "TOK\u0130 Atakent Spor Lisesi",
+                    "Gazi Anadolu Lisesi",
+                    "\u0130talyan Lisesi",
+                    "Var\u015fova/Polonya"
                 ],
                 contactTitle: "\u0130leti\u015fim Formu",
                 contactDetails: [
@@ -2115,7 +2026,7 @@ var renderProgramFixtures = (function () {
                     "Multilingual communication and promotion"
                 ],
                 cta: "Program and Tournament",
-                stats: ["10 Sports Branches", "Participants from 14 Different Schools", "300+ Participants Daily"],
+                stats: ["10 Sports Branches", "Participants from 15 Different Schools", "300+ Participants Daily"],
                 sponsorCta: "Apply as an Athlete",
                 countdown: "Time Left to Sportfest",
                 countdownLabels: ["Days", "Hours", "Minutes", "Seconds"],
@@ -2148,18 +2059,19 @@ var renderProgramFixtures = (function () {
                 schools: [
                     "Dogan Cuceloglu Science High School",
                     "Atakent Anatolian High School",
-                    "Atakent TED College",
-                    "Tema Bahcesehir College",
                     "Prof. Dr. Fuat Sezgin Science High School",
                     "Fahrettin Kerim Gokay Anatolian High School",
                     "Capa Science High School",
-                    "Adnan Menderes Anatolian High School",
                     "Bahcelievler Anatolian High School",
                     "Prof. Dr. Mumtaz Turhan Social Sciences High School",
-                    "Cagaloglu Science High School",
+                    "Cagaloglu Anatolian High School",
                     "Orhan Gazi Anatolian High School",
                     "Orhan Cemal Fersoy Anatolian High School",
-                    "Yasar Acar Science High School"
+                    "Yasar Acar Science High School",
+                    "TOKI Atakent Sports High School",
+                    "Gazi Anatolian High School",
+                    "Italian High School",
+                    "Warsaw/Poland"
                 ],
                 contactTitle: "Contact Form",
                 contactDetails: [
@@ -2189,7 +2101,7 @@ var renderProgramFixtures = (function () {
                     "Wielojezyczna komunikacja i promocja"
                 ],
                 cta: "Program i Turniej",
-                stats: ["10 Dyscyplin", "Uczestnicy z 14 Roznych Szkol", "300+ Uczestnikow Dziennie"],
+                stats: ["10 Dyscyplin", "Uczestnicy z 15 Roznych Szkol", "300+ Uczestnikow Dziennie"],
                 sponsorCta: "Zloz Wniosek Zawodnika",
                 countdown: "Czas do Sportfestu",
                 countdownLabels: ["Dni", "Godz.", "Min.", "Sek."],
@@ -2222,18 +2134,19 @@ var renderProgramFixtures = (function () {
                 schools: [
                     "Dogan Cuceloglu Fen Lisesi",
                     "Atakent Anadolu Lisesi",
-                    "Atakent TED Koleji",
-                    "Tema Bahcesehir Koleji",
                     "Prof. Dr. Fuat Sezgin Fen Lisesi",
                     "Fahrettin Kerim Gokay Anadolu Lisesi",
                     "Capa Fen Lisesi",
-                    "Adnan Menderes Anadolu Lisesi",
                     "Bahcelievler Anadolu Lisesi",
                     "Prof. Dr. Mumtaz Turhan Sosyal Bilimler Lisesi",
-                    "Cagaloglu Fen Lisesi",
+                    "Cagaloglu Anadolu Lisesi",
                     "Orhan Gazi Anadolu Lisesi",
                     "Orhan Cemal Fersoy Anadolu Lisesi",
-                    "Yasar Acar Fen Lisesi"
+                    "Yasar Acar Fen Lisesi",
+                    "TOKI Atakent Spor Lisesi",
+                    "Gazi Anadolu Lisesi",
+                    "Italian Lisesi",
+                    "Warszawa/Polska"
                 ],
                 contactTitle: "Formularz Kontaktowy",
                 contactDetails: [
@@ -2608,7 +2521,7 @@ var renderProgramFixtures = (function () {
             tr: {
                 title: "Etkinli\u011fin Amac\u0131 | DCFLSPORTFEST'26",
                 eyebrow: "AMACIMIZ",
-                h1: "Etkinli\u011fin Amac\u0131",
+                h1: "Amac\u0131m\u0131z",
                 hero: [
                     "DCFLSPORTFEST'26, \u00e7ok boyutlu bir spor ve gen\u00e7lik deneyimi sunmay\u0131 ama\u00e7layan uluslararas\u0131 bir organizasyondur.",
                     "Etkinlikteki temel ama\u00e7lar\u0131m\u0131z:",

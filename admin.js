@@ -37,6 +37,7 @@
     var contentTabButtons = Array.from(document.querySelectorAll("[data-admin-content-tab]"));
     var contentPanels = Array.from(document.querySelectorAll("[data-admin-content-panel]"));
     var liveAddButton = document.querySelector("[data-admin-live-add]");
+    var resultAddButton = document.querySelector("[data-admin-result-add]");
     var defaultTemplates = api.getDefaultData().branchTemplates.reduce(function (map, template) {
         map[template.key] = template;
         return map;
@@ -215,6 +216,15 @@
         ].join("");
     }
 
+    function renderReadOnlyField(label, field, value) {
+        return [
+            "<label class=\"admin-field admin-field-readonly\">",
+            "    <span>" + label + "</span>",
+            "    <input type=\"text\" value=\"" + escapeHTML(value) + "\" data-field=\"" + field + "\" readonly>",
+            "</label>"
+        ].join("");
+    }
+
     function getScoreLeader(homeScore, awayScore) {
         var home = Number(String(homeScore).replace(",", "."));
         var away = Number(String(awayScore).replace(",", "."));
@@ -284,122 +294,101 @@
         ].join("");
     }
 
-    function renderMatchCard(stageLabel, stageKey, index, time, home, away, homeScore, awayScore) {
+    function renderFixturePreviewCard(stageLabel, time, home, away, hidden) {
         return [
-            "<article class=\"admin-match-card\" data-stage-key=\"" + stageKey + "\" data-match-index=\"" + index + "\">",
-            "    <div class=\"admin-card-head\">",
-            "        <h4>" + stageLabel + "</h4>",
+            "<article class=\"score-card admin-preview-score-card admin-preview-score-card-fixture" + (hidden ? " is-hidden" : "") + "\">",
+            "    <div class=\"score-card-head\">",
+            "        <p class=\"score-card-branch\">" + escapeHTML(stageLabel) + "</p>",
+            "        <span class=\"score-card-badge score-card-badge-pending\">" + (hidden ? "Gizli" : "Fikstür") + "</span>",
             "    </div>",
-            "    <div class=\"admin-grid admin-grid-compact\">",
-            renderField("Saat", "time", time),
-            renderField("Ev Sahibi", "home", home),
-            renderField("Ev Skor", "homeScore", homeScore),
-            renderField("Deplasman", "away", away),
-            renderField("Dep. Skor", "awayScore", awayScore),
-            "</div>",
+            "    <div class=\"score-card-teams\">",
+            "        <div class=\"score-card-team\">",
+            "            <strong>" + escapeHTML(home || "-") + "</strong>",
+            "            <span class=\"score-card-score\">-</span>",
+            "        </div>",
+            "        <div class=\"score-card-team\">",
+            "            <strong>" + escapeHTML(away || "-") + "</strong>",
+            "            <span class=\"score-card-score\">-</span>",
+            "        </div>",
+            "    </div>",
+            "    <p class=\"score-card-meta\">" + escapeHTML(time || "Saat bekleniyor") + "</p>",
             "</article>"
         ].join("");
     }
 
-    function renderFixtureMatchCard(stageLabel, stageKey, index, time, home, away) {
+    function renderFixtureMatchCard(stageLabel, stageKey, index, time, home, away, hidden) {
         return [
             "<article class=\"admin-match-card\" data-stage-key=\"" + stageKey + "\" data-match-index=\"" + index + "\">",
-            "    <div class=\"admin-card-head\">",
-            "        <h4>" + stageLabel + "</h4>",
+            "    <div class=\"admin-card-head admin-card-head-actions\">",
+            "        <div>",
+            "            <h4>" + stageLabel + "</h4>",
+            "            <p>Fikstür önizlemesi</p>",
+            "        </div>",
+            "        <button type=\"button\" class=\"btn btn-ghost admin-card-action\" data-admin-fixture-toggle>" + (hidden ? "Geri Getir" : "Sil") + "</button>",
             "    </div>",
-            "    <div class=\"admin-grid admin-grid-compact\">",
+            "    <div class=\"admin-live-editor-layout admin-fixture-editor-layout\">",
+            "        <div class=\"admin-result-preview\" data-admin-fixture-preview>",
+            renderFixturePreviewCard(stageLabel, time, home, away, hidden),
+            "        </div>",
+            "        <div class=\"admin-grid admin-grid-compact admin-result-editor-fields\">",
             renderField("Saat", "time", time),
             renderField("Ev Sahibi", "home", home),
             renderField("Deplasman", "away", away),
+            "        </div>",
             "    </div>",
             "</article>"
         ].join("");
     }
 
-    function renderResultPreviewCard(stageLabel, home, away, homeScore, awayScore, hidden) {
-        var winner = getScoreLeader(homeScore, awayScore);
+    function renderResultPreviewCard(match) {
+        var winner = getScoreLeader(match.homeScore, match.awayScore);
         var homeClass = winner === "home" ? " is-leading" : "";
         var awayClass = winner === "away" ? " is-leading" : "";
-        var hasScore = homeScore !== "" || awayScore !== "";
+        var hasScore = match.homeScore !== "" || match.awayScore !== "";
 
         return [
-            "<article class=\"score-card score-card-result admin-preview-score-card" + (hidden ? " is-hidden" : "") + "\">",
+            "<article class=\"score-card score-card-result admin-preview-score-card\">",
             "    <div class=\"score-card-head\">",
-            "        <p class=\"score-card-branch\">" + stageLabel + "</p>",
-            "        <span class=\"score-card-badge " + (hasScore ? "score-card-badge-final" : "score-card-badge-pending") + "\">" + (hidden ? "Gizli" : (hasScore ? "Tamamland\u0131" : "Bekliyor")) + "</span>",
+            "        <p class=\"score-card-branch\">" + escapeHTML(match.branch || "Sonu\u00e7 Kart\u0131") + "</p>",
+            "        <span class=\"score-card-badge " + (hasScore ? "score-card-badge-final" : "score-card-badge-pending") + "\">" + escapeHTML(match.status || (hasScore ? "Tamamland\u0131" : "Bekliyor")) + "</span>",
             "    </div>",
             "    <div class=\"score-card-teams\">",
             "        <div class=\"score-card-team" + homeClass + "\">",
-            "            <strong>" + escapeHTML(home || "-") + "</strong>",
-            "            <span class=\"score-card-score\">" + escapeHTML(homeScore || "0") + "</span>",
+            "            <strong>" + escapeHTML(match.home || "-") + "</strong>",
+            "            <span class=\"score-card-score\">" + escapeHTML(match.homeScore || "0") + "</span>",
             "        </div>",
             "        <div class=\"score-card-team" + awayClass + "\">",
-            "            <strong>" + escapeHTML(away || "-") + "</strong>",
-            "            <span class=\"score-card-score\">" + escapeHTML(awayScore || "0") + "</span>",
+            "            <strong>" + escapeHTML(match.away || "-") + "</strong>",
+            "            <span class=\"score-card-score\">" + escapeHTML(match.awayScore || "0") + "</span>",
             "        </div>",
             "    </div>",
-            "    <p class=\"score-card-meta\">" + (hidden ? "Bu kart ana sayfada gizli." : "Ana sayfa sonu\u00e7 \u00f6nizlemesi") + "</p>",
+            "    <p class=\"score-card-meta\">" + escapeHTML(match.meta || "Ana sayfa sonu\u00e7 \u00f6nizlemesi") + "</p>",
             "</article>"
         ].join("");
     }
 
-    function renderResultMatchCard(stageLabel, stageKey, index, home, away, homeScore, awayScore, hidden) {
+    function renderResultMatchCard(match, index) {
         return [
-            "<article class=\"admin-match-card admin-match-card-results" + (hidden ? " is-hidden" : "") + "\" data-stage-key=\"" + stageKey + "\" data-match-index=\"" + index + "\">",
+            "<article class=\"admin-card admin-live-editor-card admin-match-card-results\" data-admin-result-card data-result-index=\"" + index + "\">",
             "    <div class=\"admin-card-head admin-card-head-actions\">",
-            "        <h4>" + stageLabel + "</h4>",
-            "        <button type=\"button\" class=\"btn btn-ghost admin-card-action\" data-admin-result-toggle>" + (hidden ? "Geri Getir" : "Sil") + "</button>",
+            "        <div>",
+            "            <h3>Sonu\u00e7 Kart\u0131 " + String(index + 1) + "</h3>",
+            "            <p>Sonuç önizlemesi</p>",
+            "        </div>",
+            "        <button type=\"button\" class=\"btn btn-ghost admin-card-action\" data-admin-result-remove>Sil</button>",
             "    </div>",
-            "    <div class=\"admin-results-match-head\">",
-            "        <strong>" + escapeHTML(home) + "</strong>",
-            "        <span>vs</span>",
-            "        <strong>" + escapeHTML(away) + "</strong>",
-            "    </div>",
-            "    <div class=\"admin-result-preview\" data-admin-result-preview>",
-            renderResultPreviewCard(stageLabel, home, away, homeScore, awayScore, hidden),
-            "    </div>",
-            "    <div class=\"admin-grid admin-grid-compact admin-result-editor-fields\">",
-            renderField("Ev Skor", "homeScore", homeScore),
-            renderField("Dep. Skor", "awayScore", awayScore),
-            "    </div>",
-            "</article>"
-        ].join("");
-    }
-
-    function renderBranchCard(template, index) {
-        var qfCards = template.qf.times.map(function (time, index) {
-            var pair = getPair(template, "qf", index);
-            var score = template.qf.scores[index] || ["", ""];
-            return renderMatchCard("\u00c7eyrek Final " + String(index + 1), "qf", index, time, pair[0], pair[1], score[0], score[1]);
-        }).join("");
-
-        var sfCards = template.sf.times.map(function (time, index) {
-            var pair = getPair(template, "sf", index);
-            var score = template.sf.scores[index] || ["", ""];
-            return renderMatchCard("Yar\u0131 Final " + String(index + 1), "sf", index, time, pair[0], pair[1], score[0], score[1]);
-        }).join("");
-
-        var finalPair = getPair(template, "final", 0);
-        var finalScore = template.final.score || ["", ""];
-
-        return [
-            "<article class=\"fixture-panel admin-branch-card" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + template.key + "\" data-branch-key=\"" + template.key + "\">",
-            "    <div class=\"admin-card-head\">",
-            "        <h3>" + escapeHTML(template.name.tr || template.key) + "</h3>",
-            "        <p>" + escapeHTML(template.venue.tr || "") + "</p>",
-            "    </div>",
-            "    <div class=\"admin-stage-group\">",
-            "        <h4>\u00c7eyrek Final</h4>",
-            "        <div class=\"admin-match-grid\">" + qfCards + "</div>",
-            "    </div>",
-            "    <div class=\"admin-stage-group\">",
-            "        <h4>Yar\u0131 Final</h4>",
-            "        <div class=\"admin-match-grid\">" + sfCards + "</div>",
-            "    </div>",
-            "    <div class=\"admin-stage-group\">",
-            "        <h4>Final</h4>",
-            "        <div class=\"admin-match-grid\">",
-            renderMatchCard("Final", "final", 0, template.final.time, finalPair[0], finalPair[1], finalScore[0], finalScore[1]),
+            "    <div class=\"admin-live-editor-layout admin-results-editor-layout\">",
+            "        <div class=\"admin-result-preview\" data-admin-result-preview>",
+            renderResultPreviewCard(match),
+            "        </div>",
+            "        <div class=\"admin-grid admin-grid-compact admin-result-editor-fields\">",
+            renderField("Bran\u015f", "branch", match.branch),
+            renderField("Durum", "status", match.status),
+            renderField("1. Tak\u0131m", "home", match.home),
+            renderField("1. Skor", "homeScore", match.homeScore),
+            renderField("2. Tak\u0131m", "away", match.away),
+            renderField("2. Skor", "awayScore", match.awayScore),
+            renderField("Alt metin", "meta", match.meta),
             "        </div>",
             "    </div>",
             "</article>"
@@ -407,14 +396,16 @@
     }
 
     function renderFixtureBranchCard(template, index) {
+        var qfHidden = normalizeBooleanList(template.qf && (template.qf.fixtureHidden || template.qf.hidden), template.qf.times.length);
         var qfCards = template.qf.times.map(function (time, fixtureIndex) {
             var pair = getPair(template, "qf", fixtureIndex);
-            return renderFixtureMatchCard("\u00c7eyrek Final " + String(fixtureIndex + 1), "qf", fixtureIndex, time, pair[0], pair[1]);
+            return renderFixtureMatchCard("\u00c7eyrek Final " + String(fixtureIndex + 1), "qf", fixtureIndex, time, pair[0], pair[1], qfHidden[fixtureIndex]);
         }).join("");
 
+        var sfHidden = normalizeBooleanList(template.sf && (template.sf.fixtureHidden || template.sf.hidden), template.sf.times.length);
         var sfCards = template.sf.times.map(function (time, fixtureIndex) {
             var pair = getPair(template, "sf", fixtureIndex);
-            return renderFixtureMatchCard("Yar\u0131 Final " + String(fixtureIndex + 1), "sf", fixtureIndex, time, pair[0], pair[1]);
+            return renderFixtureMatchCard("Yar\u0131 Final " + String(fixtureIndex + 1), "sf", fixtureIndex, time, pair[0], pair[1], sfHidden[fixtureIndex]);
         }).join("");
 
         var finalPair = getPair(template, "final", 0);
@@ -436,49 +427,7 @@
             "    <div class=\"admin-stage-group\">",
             "        <h4>Final</h4>",
             "        <div class=\"admin-match-grid\">",
-            renderFixtureMatchCard("Final", "final", 0, template.final.time, finalPair[0], finalPair[1]),
-            "        </div>",
-            "    </div>",
-            "</article>"
-        ].join("");
-    }
-
-    function renderResultsBranchCard(template, index) {
-        var qfHidden = normalizeBooleanList(template.qf && template.qf.hidden, template.qf.times.length);
-        var qfCards = template.qf.times.map(function (_time, resultIndex) {
-            var pair = getPair(template, "qf", resultIndex);
-            var score = template.qf.scores[resultIndex] || ["", ""];
-            return renderResultMatchCard("\u00c7eyrek Final " + String(resultIndex + 1), "qf", resultIndex, pair[0], pair[1], score[0], score[1], qfHidden[resultIndex]);
-        }).join("");
-
-        var sfHidden = normalizeBooleanList(template.sf && template.sf.hidden, template.sf.times.length);
-        var sfCards = template.sf.times.map(function (_time, resultIndex) {
-            var pair = getPair(template, "sf", resultIndex);
-            var score = template.sf.scores[resultIndex] || ["", ""];
-            return renderResultMatchCard("Yar\u0131 Final " + String(resultIndex + 1), "sf", resultIndex, pair[0], pair[1], score[0], score[1], sfHidden[resultIndex]);
-        }).join("");
-
-        var finalPair = getPair(template, "final", 0);
-        var finalScore = template.final.score || ["", ""];
-
-        return [
-            "<article class=\"fixture-panel admin-branch-card" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + template.key + "\" data-results-branch-key=\"" + template.key + "\">",
-            "    <div class=\"admin-card-head\">",
-            "        <h3>" + escapeHTML(template.name.tr || template.key) + "</h3>",
-            "        <p>" + escapeHTML(template.venue.tr || "") + "</p>",
-            "    </div>",
-            "    <div class=\"admin-stage-group\">",
-            "        <h4>\u00c7eyrek Final</h4>",
-            "        <div class=\"admin-match-grid\">" + qfCards + "</div>",
-            "    </div>",
-            "    <div class=\"admin-stage-group\">",
-            "        <h4>Yar\u0131 Final</h4>",
-            "        <div class=\"admin-match-grid\">" + sfCards + "</div>",
-            "    </div>",
-            "    <div class=\"admin-stage-group\">",
-            "        <h4>Final</h4>",
-            "        <div class=\"admin-match-grid\">",
-            renderResultMatchCard("Final", "final", 0, finalPair[0], finalPair[1], finalScore[0], finalScore[1], !!template.final.hidden),
+            renderFixtureMatchCard("Final", "final", 0, template.final.time, finalPair[0], finalPair[1], !!(template.final && (template.final.fixtureHidden || template.final.hidden))),
             "        </div>",
             "    </div>",
             "</article>"
@@ -497,7 +446,7 @@
         }
         completedInput.value = state.summary && state.summary.completedToday != null ? state.summary.completedToday : "9";
         if (resultsCountInput) {
-            resultsCountInput.value = state.summary && state.summary.resultsCount != null ? state.summary.resultsCount : "4";
+            resultsCountInput.value = String(Array.isArray(state.resultMatches) ? state.resultMatches.length : 0);
         }
         publishToggle.checked = !!state.publishResults;
         liveMount.innerHTML = state.liveMatches.map(renderLiveCard).join("");
@@ -509,18 +458,10 @@
             state.branchTemplates.map(renderFixtureBranchCard).join(""),
             "</div>"
         ].join("");
-        resultsMount.innerHTML = [
-            "<div class=\"fixture-tabs admin-branch-tabs\" data-fixture-tabs>",
-            renderBranchTabs(state.branchTemplates),
-            "</div>",
-            "<div class=\"fixture-panels admin-branch-panels\">",
-            state.branchTemplates.map(renderResultsBranchCard).join(""),
-            "</div>"
-        ].join("");
+        resultsMount.innerHTML = (state.resultMatches || []).map(renderResultMatchCard).join("");
 
         if (typeof initializeFixtureTabGroups === "function") {
             initializeFixtureTabGroups(fixtureMount);
-            initializeFixtureTabGroups(resultsMount);
         }
 
         applyEditorPermissions();
@@ -543,25 +484,37 @@
         });
     }
 
+    function updateFixturePreview(card) {
+        var preview = card.querySelector("[data-admin-fixture-preview]");
+        if (!preview) {
+            return;
+        }
+
+        var title = card.querySelector(".admin-card-head h4");
+        preview.innerHTML = renderFixturePreviewCard(
+            title ? title.textContent.trim() : "Fikstür",
+            getInputValue(card, "time"),
+            getInputValue(card, "home"),
+            getInputValue(card, "away"),
+            card.classList.contains("is-hidden")
+        );
+    }
+
     function updateResultPreview(card) {
         var preview = card.querySelector("[data-admin-result-preview]");
         if (!preview) {
             return;
         }
 
-        var teams = card.querySelectorAll(".admin-results-match-head strong");
-        var home = teams[0] ? teams[0].textContent.trim() : "-";
-        var away = teams[1] ? teams[1].textContent.trim() : "-";
-        var title = card.querySelector(".admin-card-head h4");
-
-        preview.innerHTML = renderResultPreviewCard(
-            title ? title.textContent.trim() : "Sonuç",
-            home,
-            away,
-            getInputValue(card, "homeScore"),
-            getInputValue(card, "awayScore"),
-            card.classList.contains("is-hidden")
-        );
+        preview.innerHTML = renderResultPreviewCard({
+            branch: getInputValue(card, "branch"),
+            status: getInputValue(card, "status"),
+            home: getInputValue(card, "home"),
+            homeScore: getInputValue(card, "homeScore"),
+            away: getInputValue(card, "away"),
+            awayScore: getInputValue(card, "awayScore"),
+            meta: getInputValue(card, "meta")
+        });
     }
 
     function syncDraftStateFromForm() {
@@ -596,9 +549,33 @@
         setMessage("Canlı kart silindi.", "info");
     }
 
-    function toggleResultCardVisibility(branchKey, stageKey, index) {
+    function addResultCard() {
         if (!canEditContent()) {
-            setMessage("Sonuç kartı düzenlemek için önce yetkili admin olarak giriş yap.", "warning");
+            setMessage("Yeni sonuç kartı eklemek için önce yetkili admin olarak giriş yap.", "warning");
+            return;
+        }
+
+        syncDraftStateFromForm();
+        state.resultMatches.push(api.createResultMatchTemplate(state.resultMatches.length));
+        render();
+        setMessage("Yeni sonuç kartı eklendi.", "success");
+    }
+
+    function removeResultCard(index) {
+        if (!canEditContent()) {
+            setMessage("Sonuç kartı silmek için önce yetkili admin olarak giriş yap.", "warning");
+            return;
+        }
+
+        syncDraftStateFromForm();
+        state.resultMatches.splice(index, 1);
+        render();
+        setMessage("Sonuç kartı silindi.", "info");
+    }
+
+    function toggleFixtureCardVisibility(branchKey, stageKey, index) {
+        if (!canEditContent()) {
+            setMessage("Fikstür kartı düzenlemek için önce yetkili admin olarak giriş yap.", "warning");
             return;
         }
 
@@ -620,16 +597,16 @@
         }
 
         if (stageKey === "final") {
-            template.final.hidden = !template.final.hidden;
+            template.final.fixtureHidden = !template.final.fixtureHidden;
             render();
-            setMessage(template.final.hidden ? "Sonuç kartı gizlendi." : "Sonuç kartı geri getirildi.", "info");
+            setMessage(template.final.fixtureHidden ? "Fikstür kartı gizlendi." : "Fikstür kartı geri getirildi.", "info");
             return;
         }
 
-        template[stageKey].hidden = normalizeBooleanList(template[stageKey].hidden, template[stageKey].times.length);
-        template[stageKey].hidden[index] = !template[stageKey].hidden[index];
+        template[stageKey].fixtureHidden = normalizeBooleanList(template[stageKey].fixtureHidden, template[stageKey].times.length);
+        template[stageKey].fixtureHidden[index] = !template[stageKey].fixtureHidden[index];
         render();
-        setMessage(template[stageKey].hidden[index] ? "Sonuç kartı gizlendi." : "Sonuç kartı geri getirildi.", "info");
+        setMessage(template[stageKey].fixtureHidden[index] ? "Fikstür kartı gizlendi." : "Fikstür kartı geri getirildi.", "info");
     }
 
     function setActiveContentTab(key) {
@@ -671,6 +648,32 @@
         render();
     }
 
+    function syncResultMatchCount(nextCount) {
+        if (resultsMount && resultsMount.children.length) {
+            syncDraftStateFromForm();
+        }
+
+        var safeCount = Math.max(0, Math.floor(Number(nextCount) || 0));
+        var current = Array.isArray(state.resultMatches) ? state.resultMatches.slice() : [];
+
+        if (safeCount === current.length) {
+            return;
+        }
+
+        if (safeCount < current.length) {
+            state.resultMatches = current.slice(0, safeCount);
+            render();
+            return;
+        }
+
+        while (current.length < safeCount) {
+            current.push(api.createResultMatchTemplate(current.length));
+        }
+
+        state.resultMatches = current;
+        render();
+    }
+
     function canEditContent() {
         return !!(accessState.session && accessState.session.user && accessState.isAdmin);
     }
@@ -683,7 +686,7 @@
             adminMain.setAttribute("data-edit-locked", editable ? "false" : "true");
         }
 
-        Array.from(scope.querySelectorAll("[data-field], [data-admin-completed-today], [data-admin-results-count], [data-admin-publish-results], [data-admin-live-add], [data-admin-live-remove], [data-admin-result-toggle]")).forEach(function (input) {
+        Array.from(scope.querySelectorAll("[data-field], [data-admin-completed-today], [data-admin-results-count], [data-admin-publish-results], [data-admin-live-add], [data-admin-live-remove], [data-admin-result-add], [data-admin-result-remove], [data-admin-fixture-toggle]")).forEach(function (input) {
             input.disabled = !editable;
         });
 
@@ -727,10 +730,10 @@
             adminAccessNote.textContent = !accessState.configured
                 ? "Supabase kapalıysa admin listesi yüklenmez."
                 : !session
-                    ? "Admin listesi için önce giriş yap."
+                    ? "Yetki durumunu görmek için giriş yap."
                     : accessState.isAdmin
-                        ? "Bu hesap skor ve sonuç güncelleyebilir. Admin listesi Supabase içinden yönetilir."
-                        : "Bu hesap giriş yaptı ama admin listesinde değil. E-postayı Supabase admin_users tablosuna eklemelisin.";
+                        ? "Bu hesap içerik güncelleyebilir."
+                        : "Bu hesap giriş yaptı ancak admin listesinde değil.";
         }
 
         applyEditorPermissions();
@@ -861,8 +864,8 @@
         }
         if (connectionNote) {
             connectionNote.textContent = configured
-                ? "Canl\u0131 veri Supabase \u00fczerinden okunabilir ve yaz\u0131labilir. Admin listesi e-posta bazl\u0131 y\u00f6netilir."
-                : "supabase-config.js bo\u015f. Panel sadece bu taray\u0131c\u0131da kay\u0131t yapar.";
+                ? "Canl\u0131 veri Supabase \u00fczerinden y\u00f6netiliyor."
+                : "Supabase kapal\u0131. Panel yaln\u0131zca yerel modda \u00e7al\u0131\u015f\u0131r.";
         }
         if (authStatus) {
             authStatus.textContent = session && session.user
@@ -871,10 +874,10 @@
         }
         if (authNote) {
             authNote.textContent = !session || !session.user
-                ? "Uzak kay\u0131t i\u00e7in admin giri\u015fi gerekli."
+                ? "Kaydetmek i\u00e7in admin giri\u015fi gerekli."
                 : isAdmin
                     ? (session.user.email || "Admin kullan\u0131c\u0131s\u0131")
-                    : "Bu hesap oturum a\u00e7t\u0131, ancak admin listesinde de\u011fil.";
+                    : "Bu hesap giri\u015f yapt\u0131 ancak admin yetkisi yok.";
         }
         if (loginButton) {
             loginButton.disabled = !configured || remaining > 0;
@@ -955,6 +958,20 @@
         });
     }
 
+    function collectResultMatches() {
+        return Array.from(document.querySelectorAll("[data-admin-result-card]")).map(function (card) {
+            return {
+                branch: getInputValue(card, "branch"),
+                status: getInputValue(card, "status"),
+                home: getInputValue(card, "home"),
+                homeScore: getInputValue(card, "homeScore"),
+                away: getInputValue(card, "away"),
+                awayScore: getInputValue(card, "awayScore"),
+                meta: getInputValue(card, "meta")
+            };
+        });
+    }
+
     function collectStageMatches(branchCard, stageKey) {
         return Array.from(branchCard.querySelectorAll("[data-stage-key=\"" + stageKey + "\"]")).map(function (card) {
             return {
@@ -967,19 +984,9 @@
         });
     }
 
-    function collectResultStageMatches(branchCard, stageKey) {
-        return Array.from(branchCard.querySelectorAll("[data-stage-key=\"" + stageKey + "\"]")).map(function (card) {
-            return {
-                homeScore: getInputValue(card, "homeScore"),
-                awayScore: getInputValue(card, "awayScore")
-            };
-        });
-    }
-
     function collectBranchTemplates() {
         return Array.from(document.querySelectorAll("[data-fixture-branch-key]")).map(function (branchCard) {
             var key = branchCard.getAttribute("data-fixture-branch-key");
-            var resultCard = resultsMount.querySelector("[data-results-branch-key=\"" + key + "\"]");
             var fallback = clone(defaultTemplates[key]);
             var currentTemplate = (state.branchTemplates || []).find(function (item) {
                 return item && item.key === key;
@@ -987,37 +994,39 @@
             var qfMatches = collectStageMatches(branchCard, "qf");
             var sfMatches = collectStageMatches(branchCard, "sf");
             var finalMatch = collectStageMatches(branchCard, "final")[0];
-            var qfScores = resultCard ? collectResultStageMatches(resultCard, "qf") : [];
-            var sfScores = resultCard ? collectResultStageMatches(resultCard, "sf") : [];
-            var finalScore = resultCard ? collectResultStageMatches(resultCard, "final")[0] : null;
 
             fallback.qf.times = qfMatches.map(function (match) { return match.time; });
             fallback.qf.pairs = qfMatches.map(function (match) { return [match.home, match.away]; });
-            fallback.qf.scores = qfScores.map(function (match) { return [match.homeScore, match.awayScore]; });
+            fallback.qf.scores = clone(currentTemplate.qf && currentTemplate.qf.scores ? currentTemplate.qf.scores : fallback.qf.scores);
 
             fallback.sf.times = sfMatches.map(function (match) { return match.time; });
             fallback.sf.pairs = sfMatches.map(function (match) { return [match.home, match.away]; });
-            fallback.sf.scores = sfScores.map(function (match) { return [match.homeScore, match.awayScore]; });
+            fallback.sf.scores = clone(currentTemplate.sf && currentTemplate.sf.scores ? currentTemplate.sf.scores : fallback.sf.scores);
 
             fallback.final.time = finalMatch.time;
             fallback.final.pair = [finalMatch.home, finalMatch.away];
-            fallback.final.score = finalScore ? [finalScore.homeScore, finalScore.awayScore] : ["", ""];
-            fallback.qf.hidden = normalizeBooleanList(currentTemplate.qf && currentTemplate.qf.hidden, fallback.qf.times.length);
-            fallback.sf.hidden = normalizeBooleanList(currentTemplate.sf && currentTemplate.sf.hidden, fallback.sf.times.length);
-            fallback.final.hidden = !!(currentTemplate.final && currentTemplate.final.hidden);
+            fallback.final.score = clone(currentTemplate.final && currentTemplate.final.score ? currentTemplate.final.score : fallback.final.score);
+            fallback.qf.fixtureHidden = normalizeBooleanList(currentTemplate.qf && (currentTemplate.qf.fixtureHidden || currentTemplate.qf.hidden), fallback.qf.times.length);
+            fallback.qf.resultHidden = normalizeBooleanList(currentTemplate.qf && (currentTemplate.qf.resultHidden || currentTemplate.qf.hidden), fallback.qf.times.length);
+            fallback.sf.fixtureHidden = normalizeBooleanList(currentTemplate.sf && (currentTemplate.sf.fixtureHidden || currentTemplate.sf.hidden), fallback.sf.times.length);
+            fallback.sf.resultHidden = normalizeBooleanList(currentTemplate.sf && (currentTemplate.sf.resultHidden || currentTemplate.sf.hidden), fallback.sf.times.length);
+            fallback.final.fixtureHidden = !!(currentTemplate.final && (currentTemplate.final.fixtureHidden || currentTemplate.final.hidden));
+            fallback.final.resultHidden = !!(currentTemplate.final && (currentTemplate.final.resultHidden || currentTemplate.final.hidden));
 
             return fallback;
         });
     }
 
     function collectFormData() {
+        var resultMatches = collectResultMatches();
         return {
             summary: {
                 completedToday: completedInput.value.trim(),
-                resultsCount: resultsCountInput ? resultsCountInput.value.trim() : "4"
+                resultsCount: String(resultMatches.length)
             },
             publishResults: !!publishToggle.checked,
             liveMatches: collectLiveMatches(),
+            resultMatches: resultMatches,
             branchTemplates: collectBranchTemplates()
         };
     }
@@ -1042,8 +1051,32 @@
         });
     }
 
+    if (resultsCountInput) {
+        resultsCountInput.addEventListener("input", function () {
+            if (!canEditContent()) {
+                return;
+            }
+
+            syncResultMatchCount(resultsCountInput.value);
+        });
+
+        resultsCountInput.addEventListener("change", function () {
+            if (!canEditContent()) {
+                setMessage("Sonuç kartı sayısını değiştirmek için önce yetkili admin olarak giriş yap.", "warning");
+                resultsCountInput.value = String(Array.isArray(state.resultMatches) ? state.resultMatches.length : 0);
+                return;
+            }
+
+            syncResultMatchCount(resultsCountInput.value);
+        });
+    }
+
     if (liveAddButton) {
         liveAddButton.addEventListener("click", addLiveCard);
+    }
+
+    if (resultAddButton) {
+        resultAddButton.addEventListener("click", addResultCard);
     }
 
     if (liveMount) {
@@ -1069,31 +1102,54 @@
         });
     }
 
+    if (fixtureMount) {
+        fixtureMount.addEventListener("input", function (event) {
+            var card = event.target.closest(".admin-match-card");
+            if (card) {
+                updateFixturePreview(card);
+            }
+        });
+
+        fixtureMount.addEventListener("click", function (event) {
+            var toggleButton = event.target.closest("[data-admin-fixture-toggle]");
+            if (!toggleButton) {
+                return;
+            }
+
+            var card = toggleButton.closest(".admin-match-card");
+            var branchCard = toggleButton.closest("[data-fixture-branch-key]");
+            if (!card || !branchCard) {
+                return;
+            }
+
+            toggleFixtureCardVisibility(
+                branchCard.getAttribute("data-fixture-branch-key"),
+                card.getAttribute("data-stage-key"),
+                Number(card.getAttribute("data-match-index")) || 0
+            );
+        });
+    }
+
     if (resultsMount) {
         resultsMount.addEventListener("input", function (event) {
-            var card = event.target.closest(".admin-match-card-results");
+            var card = event.target.closest("[data-admin-result-card]");
             if (card) {
                 updateResultPreview(card);
             }
         });
 
         resultsMount.addEventListener("click", function (event) {
-            var toggleButton = event.target.closest("[data-admin-result-toggle]");
-            if (!toggleButton) {
+            var removeButton = event.target.closest("[data-admin-result-remove]");
+            if (!removeButton) {
                 return;
             }
 
-            var card = toggleButton.closest(".admin-match-card-results");
-            var branchCard = toggleButton.closest("[data-results-branch-key]");
-            if (!card || !branchCard) {
+            var card = removeButton.closest("[data-admin-result-card]");
+            if (!card) {
                 return;
             }
 
-            toggleResultCardVisibility(
-                branchCard.getAttribute("data-results-branch-key"),
-                card.getAttribute("data-stage-key"),
-                Number(card.getAttribute("data-match-index")) || 0
-            );
+            removeResultCard(Number(card.getAttribute("data-result-index")) || 0);
         });
     }
 
@@ -1256,5 +1312,6 @@
         setMessage("Panel haz\u0131r.", "info");
     })();
 })();
+
 
 

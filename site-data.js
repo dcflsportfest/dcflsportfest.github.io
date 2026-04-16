@@ -90,6 +90,22 @@
         };
     }
 
+    function createResultMatchTemplate(index, seed) {
+        var safeIndex = Math.max(0, Number(index) || 0);
+        var source = seed && typeof seed === "object" ? seed : {};
+        var teamStart = safeIndex * 2 + 1;
+
+        return {
+            branch: asText(source.branch, "Bran\u015f " + String(safeIndex + 1)),
+            status: asText(source.status, "Tamamland\u0131"),
+            home: asText(source.home, "Tak\u0131m " + String(teamStart)),
+            homeScore: asText(source.homeScore, "0"),
+            away: asText(source.away, "Tak\u0131m " + String(teamStart + 1)),
+            awayScore: asText(source.awayScore, "0"),
+            meta: asText(source.meta, "Kar\u015f\u0131la\u015fma Sonucu")
+        };
+    }
+
     var defaultData = {
         summary: {
             completedToday: "9",
@@ -132,6 +148,44 @@
                 away: "Takım 8",
                 awayScore: "3",
                 meta: "Final | E-Spor Alanı | 2. maç"
+            }
+        ],
+        resultMatches: [
+            {
+                branch: "Voleybol",
+                status: "Tamamland\u0131",
+                home: "Tak\u0131m 1",
+                homeScore: "3",
+                away: "Tak\u0131m 4",
+                awayScore: "1",
+                meta: "Yar\u0131 Final"
+            },
+            {
+                branch: "Basketbol 3x3",
+                status: "Tamamland\u0131",
+                home: "Tak\u0131m 2",
+                homeScore: "21",
+                away: "Tak\u0131m 7",
+                awayScore: "18",
+                meta: "\u00c7eyrek Final"
+            },
+            {
+                branch: "Futbol",
+                status: "Tamamland\u0131",
+                home: "Tak\u0131m 3",
+                homeScore: "2",
+                away: "Tak\u0131m 6",
+                awayScore: "0",
+                meta: "Eleme Turu"
+            },
+            {
+                branch: "Masa Tenisi",
+                status: "Tamamland\u0131",
+                home: "Tak\u0131m 5",
+                homeScore: "3",
+                away: "Tak\u0131m 8",
+                awayScore: "2",
+                meta: "Final"
             }
         ],
         branchTemplates: [
@@ -265,13 +319,20 @@
             return template;
         }
 
-        template.qf.hidden = normalizeBooleanList(template.qf.hidden, template.qf.times.map(function () {
+        template.qf.fixtureHidden = normalizeBooleanList(template.qf.fixtureHidden || template.qf.hidden, template.qf.times.map(function () {
             return false;
         }));
-        template.sf.hidden = normalizeBooleanList(template.sf.hidden, template.sf.times.map(function () {
+        template.qf.resultHidden = normalizeBooleanList(template.qf.resultHidden || template.qf.hidden, template.qf.times.map(function () {
             return false;
         }));
-        template.final.hidden = !!template.final.hidden;
+        template.sf.fixtureHidden = normalizeBooleanList(template.sf.fixtureHidden || template.sf.hidden, template.sf.times.map(function () {
+            return false;
+        }));
+        template.sf.resultHidden = normalizeBooleanList(template.sf.resultHidden || template.sf.hidden, template.sf.times.map(function () {
+            return false;
+        }));
+        template.final.fixtureHidden = !!(template.final.fixtureHidden || template.final.hidden);
+        template.final.resultHidden = !!(template.final.resultHidden || template.final.hidden);
         return template;
     }
 
@@ -279,6 +340,18 @@
 
     function sanitizeLiveMatch(match, fallback, index) {
         return createLiveMatchTemplate(index, {
+            branch: asText(match && match.branch, fallback.branch),
+            status: asText(match && match.status, fallback.status),
+            home: asText(match && match.home, fallback.home),
+            homeScore: asText(match && match.homeScore, fallback.homeScore),
+            away: asText(match && match.away, fallback.away),
+            awayScore: asText(match && match.awayScore, fallback.awayScore),
+            meta: asText(match && match.meta, fallback.meta)
+        });
+    }
+
+    function sanitizeResultMatch(match, fallback, index) {
+        return createResultMatchTemplate(index, {
             branch: asText(match && match.branch, fallback.branch),
             status: asText(match && match.status, fallback.status),
             home: asText(match && match.home, fallback.home),
@@ -298,18 +371,21 @@
         next.qf.times = normalizeTextList(source.qf && source.qf.times, fallback.qf.times);
         next.qf.pairs = normalizePairList(source.qf && source.qf.pairs, fallback.qf.pairs);
         next.qf.scores = normalizePairList(source.qf && source.qf.scores, fallback.qf.scores);
-        next.qf.hidden = normalizeBooleanList(source.qf && source.qf.hidden, next.qf.hidden);
+        next.qf.fixtureHidden = normalizeBooleanList(source.qf && (source.qf.fixtureHidden || source.qf.hidden), next.qf.fixtureHidden);
+        next.qf.resultHidden = normalizeBooleanList(source.qf && (source.qf.resultHidden || source.qf.hidden), next.qf.resultHidden);
 
         next.sf.times = normalizeTextList(source.sf && source.sf.times, fallback.sf.times);
         next.sf.scores = normalizePairList(source.sf && source.sf.scores, fallback.sf.scores);
-        next.sf.hidden = normalizeBooleanList(source.sf && source.sf.hidden, next.sf.hidden);
+        next.sf.fixtureHidden = normalizeBooleanList(source.sf && (source.sf.fixtureHidden || source.sf.hidden), next.sf.fixtureHidden);
+        next.sf.resultHidden = normalizeBooleanList(source.sf && (source.sf.resultHidden || source.sf.hidden), next.sf.resultHidden);
         if (source.sf && Array.isArray(source.sf.pairs)) {
             next.sf.pairs = normalizePairList(source.sf.pairs, source.sf.pairs);
         }
 
         next.final.time = asText(source.final && source.final.time, fallback.final.time);
         next.final.score = normalizePairList([source.final && source.final.score], [fallback.final.score])[0];
-        next.final.hidden = !!(source.final && source.final.hidden);
+        next.final.fixtureHidden = !!(source.final && (source.final.fixtureHidden || source.final.hidden));
+        next.final.resultHidden = !!(source.final && (source.final.resultHidden || source.final.hidden));
         if (source.final && Array.isArray(source.final.pair)) {
             next.final.pair = normalizePairList([source.final.pair], [source.final.pair])[0];
         }
@@ -329,6 +405,13 @@
             defaults.liveMatches = source.liveMatches.map(function (match, index) {
                 var fallback = defaults.liveMatches[index] || createLiveMatchTemplate(index, defaults.liveMatches[index % defaults.liveMatches.length]);
                 return sanitizeLiveMatch(match, fallback, index);
+            });
+        }
+
+        if (Array.isArray(source.resultMatches)) {
+            defaults.resultMatches = source.resultMatches.map(function (match, index) {
+                var fallback = defaults.resultMatches[index] || createResultMatchTemplate(index, defaults.resultMatches[index % defaults.resultMatches.length]);
+                return sanitizeResultMatch(match, fallback, index);
             });
         }
 
@@ -474,6 +557,10 @@
 
     api.createLiveMatchTemplate = function (index) {
         return createLiveMatchTemplate(index, defaultData.liveMatches[index % defaultData.liveMatches.length]);
+    };
+
+    api.createResultMatchTemplate = function (index) {
+        return createResultMatchTemplate(index, defaultData.resultMatches[index % defaultData.resultMatches.length]);
     };
 
     window.DCFLSiteData = api;

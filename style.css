@@ -117,7 +117,7 @@ main,
 }
 
 .hero {
-    padding: 1.1rem 1.2rem 1.8rem;
+    padding: 0.64rem 0.95rem 1.28rem;
 }
 
 .top-nav {
@@ -126,7 +126,7 @@ main,
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.56rem;
 }
 
 .brand {
@@ -136,6 +136,36 @@ main,
     font-size: 1.18rem;
     letter-spacing: 0.08em;
     font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+.brand-wordmark {
+    display: block;
+    width: clamp(90px, 8.6vw, 126px);
+    height: auto;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .brand-wordmark {
+        width: clamp(94px, 24vw, 128px);
+    }
+
+    .purpose-shell {
+        grid-template-columns: 1fr;
+        padding: clamp(0.82rem, 3.6vw, 1.02rem);
+    }
+
+    .purpose-visual {
+        justify-items: stretch;
+    }
+
+    .purpose-photo-frame {
+        width: 100%;
+    }
 }
 
 .nav-actions {
@@ -167,7 +197,7 @@ main,
     color: var(--text);
     border: 1px solid var(--line);
     border-radius: 999px;
-    padding: 0.48rem 0.9rem;
+    padding: 0.48rem 0.92rem;
     font-size: 0.88rem;
     transition: 0.2s ease;
 }
@@ -294,6 +324,54 @@ main,
 .page-shell {
     display: grid;
     gap: 0.7rem;
+}
+
+.purpose-shell {
+    grid-template-columns: minmax(0, 0.96fr) minmax(360px, 1.04fr);
+    align-items: center;
+    gap: clamp(0.45rem, 1vw, 0.72rem);
+    padding: clamp(0.9rem, 2.2vw, 1.35rem);
+}
+
+.purpose-copy {
+    display: grid;
+    gap: 0.58rem;
+    min-width: 0;
+}
+
+.purpose-visual {
+    min-width: 0;
+    display: block;
+    width: 100%;
+}
+
+.purpose-photo-frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    border-radius: 22px;
+    border: 1px solid rgba(127, 170, 240, 0.32);
+    background: linear-gradient(160deg, rgba(18, 38, 77, 0.74), rgba(8, 20, 43, 0.92));
+    box-shadow: 0 24px 56px rgba(3, 8, 20, 0.42);
+    width: 100%;
+    max-width: none;
+}
+
+.purpose-photo-frame::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 24%;
+    background: linear-gradient(180deg, transparent, rgba(6, 14, 31, 0.28));
+    pointer-events: none;
+}
+
+.purpose-photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .eyebrow,
@@ -4050,40 +4128,66 @@ h1 {
 }
 
 .admin-page-shell {
-    max-width: 980px;
+    max-width: 920px;
 }
 
 .admin-main {
+    max-width: 1160px;
+    margin: 0 auto;
     gap: 1rem;
 }
 
-.admin-note-panel .section-text + .section-text {
-    margin-top: 0.6rem;
+.admin-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
 }
 
 .admin-access-note {
-    margin-top: 0.95rem;
+    margin-top: 0.2rem;
 }
 
 .admin-login-form {
-    margin-top: 0.95rem;
+    margin-top: 0.8rem;
 }
 
 .admin-add-user-form {
     margin-top: 1rem;
 }
 
+.admin-panel-note {
+    margin: 0.15rem 0 0;
+}
+
 .admin-toolbar {
     display: flex;
     flex-wrap: wrap;
     gap: 0.7rem;
-    margin-top: 0.9rem;
+    margin-top: 0.75rem;
+}
+
+.admin-toolbar-compact {
+    margin-top: 0.72rem;
+}
+
+.admin-toolbar-panel {
+    position: sticky;
+    top: 0.8rem;
+    z-index: 6;
+}
+
+.admin-content-tabs-panel {
+    position: sticky;
+    top: 0.8rem;
+    z-index: 5;
+    padding-block: 0.8rem;
+    backdrop-filter: blur(14px);
 }
 
 .admin-message {
-    margin: 0.85rem 0 0;
+    margin: 0.72rem 0 0;
     color: var(--muted);
-    font-size: 0.92rem;
+    font-size: 0.88rem;
 }
 
 .admin-message[data-tone="success"] {
@@ -4101,7 +4205,7 @@ h1 {
 .admin-status-card {
     border: 1px solid rgba(168, 197, 245, 0.18);
     border-radius: 16px;
-    padding: 0.95rem;
+    padding: 0.88rem;
     background: linear-gradient(160deg, rgba(10, 22, 46, 0.82), rgba(14, 31, 63, 0.74));
 }
 
@@ -4123,8 +4227,8 @@ h1 {
 .admin-status-note {
     margin: 0.4rem 0 0;
     color: var(--muted);
-    font-size: 0.86rem;
-    line-height: 1.5;
+    font-size: 0.84rem;
+    line-height: 1.45;
 }
 
 .admin-grid {
@@ -4177,7 +4281,7 @@ h1 {
 
 .admin-live-grid,
 .admin-branch-grid {
-    margin-top: 0.95rem;
+    margin-top: 0.8rem;
     display: grid;
     gap: 0.9rem;
     min-width: 0;
@@ -4188,7 +4292,7 @@ h1 {
 }
 
 .admin-inline-actions {
-    margin-top: 0.65rem;
+    margin-top: 0.45rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -4198,6 +4302,7 @@ h1 {
 
 .admin-inline-note {
     margin: 0;
+    font-size: 0.86rem;
 }
 
 .admin-user-list-wrap {
@@ -4276,7 +4381,7 @@ h1 {
 .admin-branch-card {
     border: 1px solid rgba(168, 197, 245, 0.18);
     border-radius: 18px;
-    padding: 1rem;
+    padding: 0.88rem;
     background: linear-gradient(160deg, rgba(10, 22, 46, 0.88), rgba(14, 31, 63, 0.8));
 }
 
@@ -4285,7 +4390,7 @@ h1 {
     align-items: baseline;
     justify-content: space-between;
     gap: 0.7rem;
-    margin-bottom: 0.85rem;
+    margin-bottom: 0.72rem;
 }
 
 .admin-card-head h3,
@@ -4315,6 +4420,29 @@ h1 {
 
 .admin-branch-tabs {
     margin-bottom: 0.15rem;
+}
+
+.admin-content-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding-bottom: 0.1rem;
+}
+
+.admin-content-tabs .fixture-tab {
+    flex: 0 0 auto;
+    min-height: 42px;
+    padding-inline: 1rem;
+}
+
+.admin-content-tabs::-webkit-scrollbar {
+    height: 6px;
+}
+
+.admin-content-tabs::-webkit-scrollbar-thumb {
+    background: rgba(160, 188, 235, 0.26);
+    border-radius: 999px;
 }
 
 .admin-branch-panels {
@@ -4352,6 +4480,11 @@ h1 {
     align-items: start;
 }
 
+.admin-fixture-editor-layout,
+.admin-results-editor-layout {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+}
+
 .admin-live-preview,
 .admin-result-preview {
     min-width: 0;
@@ -4366,24 +4499,28 @@ h1 {
     gap: 0.7rem;
 }
 
+.admin-field-readonly input {
+    background: rgba(7, 15, 34, 0.34);
+    color: rgba(245, 249, 255, 0.78);
+    cursor: default;
+}
+
+.admin-field-readonly input:focus {
+    outline: none;
+    border-color: rgba(171, 203, 248, 0.24);
+    box-shadow: none;
+}
+
 .admin-live-editor-fields .admin-field input,
 .admin-result-editor-fields .admin-field input {
     min-height: 42px;
     padding: 0.64rem 0.76rem;
 }
 
+.admin-match-card.is-hidden,
 .admin-match-card-results.is-hidden,
 .admin-preview-score-card.is-hidden {
     opacity: 0.58;
-}
-
-.admin-results-match-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.7rem;
-    margin-bottom: 0.75rem;
-    color: #f4f8ff;
 }
 
 .score-results-empty-branch {
@@ -4397,6 +4534,11 @@ h1 {
 }
 
 @media (max-width: 900px) {
+    .admin-overview-grid {
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+    }
+
     .corner-logo-stack {
         display: none !important;
     }
@@ -4418,8 +4560,413 @@ h1 {
         flex-wrap: wrap;
     }
 
-    .admin-live-editor-layout {
+    .admin-live-editor-layout,
+    .admin-fixture-editor-layout,
+    .admin-results-editor-layout {
         grid-template-columns: 1fr;
     }
 
+    .admin-toolbar-panel,
+    .admin-content-tabs-panel {
+        position: static;
+        top: auto;
+    }
+
+}
+
+@media (max-width: 640px) {
+    .admin-main {
+        gap: 0.78rem;
+    }
+
+    .admin-toolbar {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .admin-toolbar .btn {
+        width: 100%;
+    }
+
+    .admin-content-tabs-panel {
+        padding-block: 0.68rem;
+    }
+
+    .admin-content-tabs .fixture-tab {
+        min-height: 44px;
+        padding-inline: 0.88rem;
+    }
+
+    .admin-card,
+    .admin-branch-card,
+    .admin-status-card {
+        padding: 0.78rem;
+        border-radius: 15px;
+    }
+
+    .admin-card-head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+    }
+
+    .admin-field input,
+    .admin-toggle input {
+        min-height: 44px;
+    }
+
+    .admin-inline-actions {
+        align-items: stretch;
+    }
+}
+
+/* Final mobile optimization pass */
+@media (max-width: 768px) {
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+    img,
+    video,
+    canvas,
+    iframe {
+        max-width: 100%;
+    }
+
+    .hero-shell,
+    .page-shell,
+    .panel,
+    .fixture-panel,
+    .contact-form-card,
+    .contact-info,
+    .stats article,
+    .tile,
+    .post-card,
+    .step {
+        overflow: hidden;
+    }
+
+    .purpose-shell,
+    .contact-layout,
+    .finance-grid,
+    .record-grid,
+    .archive-gallery,
+    .stats,
+    .sponsor-grid,
+    .footer-sponsors__inner {
+        grid-template-columns: 1fr;
+    }
+
+    .archive-season-head,
+    .scoreboard-head,
+    .score-results-head,
+    .section-head,
+    .admin-card-head,
+    .admin-card-head-actions {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .fixture-tabs,
+    .admin-content-tabs,
+    .score-results-branch-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 0.2rem;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .fixture-tabs::-webkit-scrollbar,
+    .admin-content-tabs::-webkit-scrollbar,
+    .score-results-branch-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .fixture-tab,
+    .scoreboard-tab,
+    .admin-content-tabs .fixture-tab {
+        flex: 0 0 auto;
+        min-height: 44px;
+    }
+}
+
+@media (max-width: 640px) {
+    .hero {
+        padding: 0.42rem 0.34rem 0.72rem;
+    }
+
+    main {
+        padding: 0 0.34rem 0.9rem;
+    }
+
+    .top-nav {
+        width: 100%;
+        gap: 0.16rem 0.3rem;
+        padding: 0.22rem 0.12rem;
+    }
+
+    .brand {
+        max-width: 52vw;
+    }
+
+    .brand-wordmark {
+        width: clamp(80px, 22vw, 104px);
+    }
+
+    .nav-toggle {
+        min-height: 40px;
+        font-size: 0.78rem;
+        padding: 0.3rem 0.55rem;
+    }
+
+    .top-nav > .lang-switch[data-nav-lang] {
+        width: 64px;
+    }
+
+    .top-nav > .lang-switch[data-nav-lang] .lang-picker {
+        min-height: 40px;
+        padding: 0.28rem 0.42rem;
+        font-size: 0.72rem;
+    }
+
+    .nav-actions.open {
+        max-height: calc(100vh - 88px);
+        margin-top: 0.18rem;
+        padding: 0.24rem;
+        border: 1px solid rgba(173, 202, 248, 0.18);
+        background: rgba(6, 15, 33, 0.94);
+    }
+
+    .nav-link,
+    .lang-picker {
+        min-height: 42px;
+        padding: 0.5rem 0.72rem;
+        font-size: 0.88rem;
+    }
+
+    .hero-shell,
+    .page-shell,
+    .panel {
+        margin-top: 0.72rem;
+        padding: 0.72rem;
+        border-radius: 15px;
+    }
+
+    .hero-shell::before,
+    .page-shell::before {
+        left: 0.72rem;
+        right: 0.72rem;
+    }
+
+    h1 {
+        font-size: clamp(1.42rem, 8vw, 1.92rem);
+        line-height: 1.04;
+        margin: 0.42rem 0 0.52rem;
+    }
+
+    .hero-text,
+    .section-text,
+    .hero-list,
+    .archive-intro-text,
+    .archive-intro-note,
+    .archive-season-lead,
+    .archive-season-note,
+    .footer p,
+    .footer-committee p {
+        font-size: 0.9rem;
+        line-height: 1.55;
+    }
+
+    .hero-list {
+        padding-left: 0.95rem;
+        gap: 0.28rem;
+    }
+
+    .hero-badge,
+    .countdown-card,
+    .score-summary-card,
+    .score-card,
+    .archive-intro,
+    .archive-placeholder,
+    .archive-footnote {
+        padding: 0.72rem;
+    }
+
+    .purpose-shell {
+        gap: 0.7rem;
+        padding: 0.72rem;
+    }
+
+    .purpose-photo-frame {
+        aspect-ratio: 16 / 10;
+    }
+
+    .stats article,
+    .tile,
+    .post-card,
+    .step,
+    .contact-info,
+    .contact-form-card,
+    .admin-card,
+    .admin-status-card,
+    .admin-branch-card {
+        padding: 0.72rem;
+        border-radius: 14px;
+    }
+
+    .countdown-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .countdown-item {
+        min-height: 58px;
+    }
+
+    .scoreboard-tab {
+        min-width: 0;
+    }
+
+    .scoreboard-view > .scoreboard-grid .score-card,
+    .score-results-grid .score-card {
+        flex: 0 0 84vw;
+        min-width: 84vw;
+        max-width: 84vw;
+    }
+
+    .scoreboard-view > .scoreboard-grid,
+    .score-results-grid {
+        padding-right: 10vw;
+    }
+
+    .contact-form input,
+    .contact-form textarea,
+    .btn,
+    .admin-field input,
+    .admin-toggle input {
+        min-height: 46px;
+    }
+
+    .contact-form textarea {
+        min-height: 110px;
+    }
+
+    .archive-gallery {
+        gap: 0.7rem;
+    }
+
+    .archive-gallery-item {
+        border-radius: 14px;
+    }
+
+    .footer {
+        padding: 0.58rem 0.65rem 1rem;
+    }
+
+    .footer-social {
+        gap: 0.5rem;
+    }
+
+    .footer-social-link {
+        min-height: 42px;
+        padding: 0.46rem 0.72rem;
+    }
+
+    .footer-sponsors {
+        padding: 0.68rem 0.68rem 0.58rem;
+    }
+
+    .footer-sponsors__logo,
+    .footer-sponsors__logo--etap {
+        max-height: 78px;
+    }
+
+    .admin-main {
+        gap: 0.68rem;
+    }
+
+    .admin-inline-actions {
+        gap: 0.55rem;
+    }
+
+    .admin-inline-actions .btn,
+    .admin-card-action {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .admin-live-editor-layout,
+    .admin-fixture-editor-layout,
+    .admin-results-editor-layout {
+        gap: 0.72rem;
+    }
+
+    .admin-live-editor-fields,
+    .admin-result-editor-fields,
+    .admin-grid,
+    .admin-grid-compact,
+    .admin-live-grid,
+    .admin-overview-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 430px) {
+    .hero,
+    main {
+        padding-left: 0.24rem;
+        padding-right: 0.24rem;
+    }
+
+    .brand {
+        max-width: 48vw;
+    }
+
+    .brand-wordmark {
+        width: clamp(72px, 21vw, 92px);
+    }
+
+    .hero-shell,
+    .page-shell,
+    .panel {
+        padding: 0.62rem;
+        border-radius: 13px;
+    }
+
+    h1 {
+        font-size: clamp(1.3rem, 8.5vw, 1.72rem);
+    }
+
+    .hero-text,
+    .section-text,
+    .hero-list,
+    .archive-intro-text,
+    .archive-season-lead,
+    .archive-season-note {
+        font-size: 0.86rem;
+    }
+
+    .scoreboard-view > .scoreboard-grid .score-card,
+    .score-results-grid .score-card {
+        flex-basis: 88vw;
+        min-width: 88vw;
+        max-width: 88vw;
+    }
+
+    .countdown-value {
+        font-size: 0.82rem;
+    }
+
+    .countdown-label {
+        font-size: 0.56rem;
+    }
+
+    .fixture-tab,
+    .scoreboard-tab,
+    .nav-link,
+    .lang-picker {
+        font-size: 0.84rem;
+    }
 }

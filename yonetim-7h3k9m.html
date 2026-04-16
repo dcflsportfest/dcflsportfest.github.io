@@ -19,7 +19,7 @@
 <body>
     <header class="hero">
         <nav class="top-nav">
-            <a href="index.html" class="brand">DCFLSPORTFEST'26</a>
+            <a href="index.html" class="brand"><img src="assets/dcflsportfest-wordmark.png" alt="DCFL Sportfest 2026" class="brand-wordmark" loading="eager" decoding="async"></a>
             <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-links" data-nav-toggle>Men&#252;</button>
             <div class="nav-actions" id="site-nav-links" data-nav-links>
                 <a href="index.html" class="nav-link">Ana Sayfa</a>
@@ -35,111 +35,103 @@
         <div class="page-shell admin-page-shell" data-admin-page>
             <p class="eyebrow">ADMIN PANEL</p>
             <h1>Skor ve Sonu&#231; Y&#246;netimi</h1>
-            <p class="hero-text">Bu panel ayn&#305; taray&#305;c&#305;da canl&#305; skor ve turnuva sonu&#231; verisini y&#246;netir. GitHub Pages &#252;zerinde ger&#231;ek, g&#252;venli admin i&#231;in backend gerekir.</p>
+            <p class="hero-text">Canl&#305; skor, fikst&#252;r ve sonu&#231; kartlar&#305;n&#305; tek panelden y&#246;net.</p>
         </div>
     </header>
 
     <main class="admin-main" data-admin-page>
-        <section class="panel admin-remote-panel">
-            <div class="section-head">
-                <p class="section-kicker">SUPABASE</p>
-                <h2>Ger&#231;ek Online Admin</h2>
-            </div>
-            <div class="admin-grid admin-grid-compact">
-                <div class="admin-status-card">
-                    <p class="admin-status-label">Ba&#287;lant&#305; Durumu</p>
-                    <strong data-admin-connection-status>Ba&#287;lant&#305; kontrol ediliyor</strong>
-                    <p class="admin-status-note" data-admin-connection-note>Supabase ayarlar&#305; yoksa panel yerel modda &#231;al&#305;&#351;&#305;r.</p>
+        <div class="admin-overview-grid">
+            <section class="panel admin-remote-panel">
+                <div class="section-head">
+                    <p class="section-kicker">SUPABASE</p>
+                    <h2>Ba&#287;lant&#305; ve Oturum</h2>
                 </div>
-                <div class="admin-status-card">
-                    <p class="admin-status-label">Admin Oturumu</p>
-                    <strong data-admin-auth-status>Kapal&#305;</strong>
-                    <p class="admin-status-note" data-admin-auth-note>Kaydet butonu uzak veritaban&#305;na yazmak i&#231;in oturum ister.</p>
+                <div class="admin-grid admin-grid-compact">
+                    <div class="admin-status-card">
+                        <p class="admin-status-label">Ba&#287;lant&#305;</p>
+                        <strong data-admin-connection-status>Ba&#287;lant&#305; kontrol ediliyor</strong>
+                        <p class="admin-status-note" data-admin-connection-note>Supabase ayarlar&#305; yoksa panel yerel modda &#231;al&#305;&#351;&#305;r.</p>
+                    </div>
+                    <div class="admin-status-card">
+                        <p class="admin-status-label">Oturum</p>
+                        <strong data-admin-auth-status>Kapal&#305;</strong>
+                        <p class="admin-status-note" data-admin-auth-note>Kaydetmek i&#231;in admin giri&#351;i gerekir.</p>
+                    </div>
                 </div>
-            </div>
-            <form class="admin-login-form" data-admin-login-form>
+                <form class="admin-login-form" data-admin-login-form>
+                    <div class="admin-grid admin-grid-compact">
+                        <label class="admin-field">
+                            <span>E-posta</span>
+                            <input type="email" placeholder="admin@mail.com" autocomplete="username" inputmode="email" data-admin-email>
+                        </label>
+                        <label class="admin-field">
+                            <span>&#350;ifre</span>
+                            <input type="password" placeholder="********" autocomplete="current-password" data-admin-password>
+                        </label>
+                    </div>
+                    <div class="admin-toolbar admin-toolbar-compact">
+                        <button type="submit" class="btn btn-primary" data-admin-login>Giri&#351; Yap</button>
+                        <button type="button" class="btn btn-ghost" data-admin-logout>&#199;&#305;k&#305;&#351; Yap</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="panel admin-access-panel">
+                <div class="section-head">
+                    <p class="section-kicker">YETK&#304;</p>
+                    <h2>Admin Yetkisi</h2>
+                </div>
+                <div class="admin-status-card admin-access-note">
+                    <p class="admin-status-label">Yetki Durumu</p>
+                    <strong data-admin-access-title>Admin listesi y&#252;kleniyor</strong>
+                    <p class="admin-status-note" data-admin-access-note>Supabase ba&#287;lant&#305;s&#305; ve admin oturumu gerekir.</p>
+                </div>
+                <div class="admin-user-list-wrap" data-admin-users></div>
+            </section>
+
+            <section class="panel admin-toolbar-panel">
+                <div class="section-head">
+                    <p class="section-kicker">Y&#214;NET&#304;M</p>
+                    <h2>H&#305;zl&#305; &#304;&#351;lemler</h2>
+                </div>
+                <p class="section-text admin-panel-note">Kaydet online veriyi g&#252;nceller. JSON aktar&#305;m&#305; yedek almak i&#231;indir.</p>
+                <div class="admin-toolbar">
+                    <button type="button" class="btn btn-primary" data-admin-save>Kaydet</button>
+                    <button type="button" class="btn btn-ghost" data-admin-reset>Kay&#305;tl&#305; Veriyi Y&#252;kle</button>
+                    <button type="button" class="btn btn-ghost" data-admin-defaults>Varsay&#305;lana D&#246;n</button>
+                    <button type="button" class="btn btn-ghost" data-admin-export>JSON D&#305;&#351;a Aktar</button>
+                    <button type="button" class="btn btn-ghost" data-admin-import-trigger>JSON &#304;&#231;e Aktar</button>
+                    <a href="index.html" class="btn btn-ghost">Ana Sayfay&#305; A&#231;</a>
+                </div>
+                <input type="file" accept="application/json" hidden data-admin-import-input>
+                <p class="admin-message" data-admin-message>Haz&#305;r.</p>
+            </section>
+
+            <section class="panel admin-summary-panel">
+                <div class="section-head">
+                    <p class="section-kicker">&#214;ZET</p>
+                    <h2>Skor Merkezi</h2>
+                </div>
                 <div class="admin-grid admin-grid-compact">
                     <label class="admin-field">
-                        <span>E-posta</span>
-                        <input type="email" placeholder="admin@mail.com" autocomplete="username" inputmode="email" data-admin-email>
+                        <span>Aktif Kar&#351;&#305;la&#351;ma</span>
+                        <input type="number" min="0" step="1" value="4" data-admin-active-count>
                     </label>
                     <label class="admin-field">
-                        <span>&#350;ifre</span>
-                        <input type="password" placeholder="********" autocomplete="current-password" data-admin-password>
+                        <span>Bug&#252;n tamamlanan ma&#231;</span>
+                        <input type="text" value="9" data-admin-completed-today>
+                    </label>
+                    <label class="admin-field">
+                        <span>Sonu&#231; Kartlar&#305;</span>
+                        <input type="number" min="0" step="1" value="4" data-admin-results-count>
+                    </label>
+                    <label class="admin-toggle">
+                        <span>Sonu&#231;lar&#305; yay&#305;na a&#231;</span>
+                        <input type="checkbox" data-admin-publish-results>
                     </label>
                 </div>
-                <div class="admin-toolbar">
-                    <button type="submit" class="btn btn-primary" data-admin-login>Giri&#351; Yap</button>
-                    <button type="button" class="btn btn-ghost" data-admin-logout>&#199;&#305;k&#305;&#351; Yap</button>
-                </div>
-            </form>
-        </section>
-
-        <section class="panel admin-access-panel">
-            <div class="section-head">
-                <p class="section-kicker">YETK&#304;</p>
-                <h2>Admin Yetkileri</h2>
-            </div>
-            <p class="section-text">Admin hesaplar&#305; bu panelden de&#287;il, Supabase taraf&#305;nda <code>admin_users</code> tablosundan y&#246;netilir.</p>
-            <p class="section-text">Bu panel sadece listede olan e-postalar&#305;n skor ve sonu&#231; g&#252;ncellemesine izin verir.</p>
-            <div class="admin-status-card admin-access-note">
-                <p class="admin-status-label">Yetki Durumu</p>
-                <strong data-admin-access-title>Admin listesi y&#252;kleniyor</strong>
-                <p class="admin-status-note" data-admin-access-note>Supabase ba&#287;lant&#305;s&#305; ve admin oturumu gerekir.</p>
-            </div>
-            <div class="admin-user-list-wrap" data-admin-users></div>
-        </section>
-
-        <section class="panel admin-note-panel">
-            <div class="section-head">
-                <p class="section-kicker">YEDEK</p>
-                <h2>Yerel Kopya ve JSON Aktar&#305;m&#305;</h2>
-            </div>
-            <p class="section-text">Supabase oturumu a&#231;&#305;k ve yetkiliysen <strong>Kaydet</strong> butonu online veritaban&#305;na yazar. Ayn&#305; zamanda taray&#305;c&#305;da bir yerel kopya da tutulur.</p>
-            <p class="section-text"><strong>JSON D&#305;&#351;a Aktar</strong>, paneldeki mevcut veriyi bir <code>dcfl-admin-data.json</code> dosyas&#305; olarak bilgisayar&#305;na indirir. Bu dosya yedek almak veya ba&#351;ka ortama ta&#351;&#305;mak i&#231;in kullan&#305;l&#305;r.</p>
-        </section>
-
-        <section class="panel admin-toolbar-panel">
-            <div class="section-head">
-                <p class="section-kicker">Y&#214;NET&#304;M</p>
-                <h2>H&#305;zl&#305; &#304;&#351;lemler</h2>
-            </div>
-            <div class="admin-toolbar">
-                <button type="button" class="btn btn-primary" data-admin-save>Kaydet</button>
-                <button type="button" class="btn btn-ghost" data-admin-reset>Kay&#305;tl&#305; Veriyi Y&#252;kle</button>
-                <button type="button" class="btn btn-ghost" data-admin-defaults>Varsay&#305;lana D&#246;n</button>
-                <button type="button" class="btn btn-ghost" data-admin-export>JSON D&#305;&#351;a Aktar</button>
-                <button type="button" class="btn btn-ghost" data-admin-import-trigger>JSON &#304;&#231;e Aktar</button>
-                <a href="index.html" class="btn btn-ghost">Ana Sayfay&#305; A&#231;</a>
-            </div>
-            <input type="file" accept="application/json" hidden data-admin-import-input>
-            <p class="admin-message" data-admin-message>Haz&#305;r.</p>
-        </section>
-
-        <section class="panel admin-summary-panel">
-            <div class="section-head">
-                <p class="section-kicker">&#214;ZET</p>
-                <h2>Skor Merkezi Kartlar&#305;</h2>
-            </div>
-            <div class="admin-grid admin-grid-compact">
-                <label class="admin-field">
-                    <span>Aktif Kar&#351;&#305;la&#351;ma</span>
-                    <input type="number" min="0" step="1" value="4" data-admin-active-count>
-                </label>
-                <label class="admin-field">
-                    <span>Bug&#252;n tamamlanan ma&#231;</span>
-                    <input type="text" value="9" data-admin-completed-today>
-                </label>
-                <label class="admin-field">
-                    <span>Sonu&#231; Kartlar&#305;</span>
-                    <input type="number" min="0" step="1" value="4" data-admin-results-count>
-                </label>
-                <label class="admin-toggle">
-                    <span>Sonu&#231;lar&#305; yay&#305;na a&#231;</span>
-                    <input type="checkbox" data-admin-publish-results>
-                </label>
-            </div>
-        </section>
+            </section>
+        </div>
 
         <section class="panel admin-content-tabs-panel">
             <div class="fixture-tabs admin-content-tabs" data-admin-content-tabs>
@@ -167,16 +159,22 @@
                 <p class="section-kicker">F&#304;KST&#220;R</p>
                 <h2>Bran&#351; Bazl&#305; Fikst&#252;r Giri&#351;i</h2>
             </div>
+            <div class="admin-inline-actions">
+                <p class="section-text admin-inline-note">Her kartta solda fikst&#252;r &#246;nizlemesini, sa&#287;da kompakt giri&#351; alanlar&#305;n&#305; g&#246;r&#252;rs&#252;n.</p>
+            </div>
             <div class="admin-branch-grid" data-admin-fixtures></div>
         </section>
 
         <section class="panel admin-results-panel" data-admin-content-panel="results" hidden>
             <div class="section-head">
                 <p class="section-kicker">TURNUVA SONU&#199;LARI</p>
-                <h2>Bran&#351; Bazl&#305; Sonu&#231; Giri&#351;i</h2>
+                <h2>Sonu&#231; Kartlar&#305;</h2>
             </div>
-            <p class="section-text admin-inline-note">Sonu&#231; kartlar&#305;n&#305; gizleyebilir, geri getirebilir ve skorlar&#305; daha sade bir yerle&#351;imde d&#252;zenleyebilirsin.</p>
-            <div class="admin-branch-grid" data-admin-results></div>
+            <div class="admin-inline-actions">
+                <button type="button" class="btn btn-ghost" data-admin-result-add>Yeni Sonu&#231; Kart&#305;</button>
+                <p class="section-text admin-inline-note">Canl&#305; skor kartlar&#305;yla ayn&#305; mant&#305;kta ba&#287;&#305;ms&#305;z sonu&#231; kartlar&#305;n&#305; burada d&#252;zenlersin.</p>
+            </div>
+            <div class="admin-live-grid" data-admin-results></div>
         </section>
 
         <section class="panel admin-submissions-panel" data-admin-content-panel="messages" hidden>
@@ -201,5 +199,6 @@
     <script src="admin.js?v=20260413a"></script>
 </body>
 </html>
+
 
 
