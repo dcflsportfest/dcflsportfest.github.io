@@ -2512,6 +2512,14 @@ body.archive-lightbox-open {
     max-height: 82px;
 }
 
+.footer-sponsors__logo--morel {
+    max-height: 88px;
+}
+
+.footer-sponsors__logo--altunkaya {
+    max-height: 108px;
+}
+
 @media (max-width: 900px) {
     .hero {
         padding: 0.9rem 0.8rem 1.2rem;
@@ -3464,6 +3472,15 @@ canvas {
 
     .footer-sponsors__logo--etap {
         max-height: 86px;
+    }
+
+    .footer-sponsors__logo--morel {
+        grid-column: auto;
+        max-height: 82px;
+    }
+
+    .footer-sponsors__logo--altunkaya {
+        max-height: 92px;
     }
 }
 
@@ -4881,6 +4898,15 @@ h1 {
     .footer-sponsors__logo,
     .footer-sponsors__logo--etap {
         max-height: 78px;
+    }
+
+    .footer-sponsors__logo--morel {
+        grid-column: auto;
+        max-height: 74px;
+    }
+
+    .footer-sponsors__logo--altunkaya {
+        max-height: 82px;
     }
 
     .admin-main {
