@@ -1689,6 +1689,7 @@ var renderProgramFixtures = (function () {
     return function (lang) {
         var currentLang = copy[lang] ? lang : "tr";
         var state = getSharedSiteState();
+        var publishFixtures = !!state.publishFixtures;
         var templates = Array.isArray(state.branchTemplates) && state.branchTemplates.length ? state.branchTemplates : [];
         var section = document.querySelector(".fixture-section");
         if (!section) {
@@ -1697,6 +1698,20 @@ var renderProgramFixtures = (function () {
 
         var head = section.querySelector(".section-head");
         if (!head) {
+            return;
+        }
+
+        if (!publishFixtures) {
+            section.innerHTML = [
+                head.outerHTML,
+                "<div class=\"fixture-panels\">",
+                "    <article class=\"fixture-panel active\">",
+                "        <div class=\"fixture-placeholder-state\">",
+                "            <p class=\"fixture-placeholder-text\">" + escapeHTML(copy[currentLang].fixturePending) + "</p>",
+                "        </div>",
+                "    </article>",
+                "</div>"
+            ].join("");
             return;
         }
 
@@ -2778,16 +2793,16 @@ var renderProgramFixtures = (function () {
     function applyBlog(lang) {
         var copy = {
             tr: {
-                title: "Maç Kayıtları | DCFLSPORTFEST'26",
-                eyebrow: "MAÇ KAYITLARI",
-                h1: "Maç Kayıtları",
-                hero: "Karşılaşma kayıtları festival sonrasında bu sayfada yayınlanacaktır.",
+                title: "Ma\u00e7 Kay\u0131tlar\u0131 | DCFLSPORTFEST'26",
+                eyebrow: "MA\u00c7 KAYITLARI",
+                h1: "Ma\u00e7 Kay\u0131tlar\u0131",
+                hero: "Kar\u015f\u0131la\u015fma kay\u0131tlar\u0131 festival sonras\u0131nda bu sayfada yay\u0131nlanacakt\u0131r.",
                 note: "",
-                section: "KAYIT ARŞİVİ",
-                title2: "Kayıtlar",
-                sectionIntro: "Yeni kayıtlar yayınlandıkça bu alan güncellenecektir.",
-                branchTabs: ["Voleybol", "Basketbol 3x3", "Futbol", "Masa Tenisi", "Okçuluk", "Oryantiring", "Atletizm"],
-                footer: "Maç Kayıtları"
+                section: "KAYIT AR\u015e\u0130V\u0130",
+                title2: "Kay\u0131tlar",
+                sectionIntro: "Yeni kay\u0131tlar yay\u0131nland\u0131k\u00e7a bu alan g\u00fcncellenecektir.",
+                branchTabs: ["Voleybol", "Basketbol 3x3", "Futbol", "Masa Tenisi", "Ok\u00e7uluk", "Oryantiring", "Atletizm"],
+                footer: "Ma\u00e7 Kay\u0131tlar\u0131"
             },
             en: {
                 title: "Match Recordings | DCFLSPORTFEST'26",
@@ -3194,5 +3209,6 @@ var renderProgramFixtures = (function () {
         });
     }
 })();
+
 
 

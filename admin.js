@@ -14,6 +14,7 @@
     var completedInput = document.querySelector("[data-admin-completed-today]");
     var resultsCountInput = document.querySelector("[data-admin-results-count]");
     var publishToggle = document.querySelector("[data-admin-publish-results]");
+    var publishFixturesToggle = document.querySelector("[data-admin-publish-fixtures]");
     var saveButton = document.querySelector("[data-admin-save]");
     var resetButton = document.querySelector("[data-admin-reset]");
     var defaultsButton = document.querySelector("[data-admin-defaults]");
@@ -449,6 +450,9 @@
             resultsCountInput.value = String(Array.isArray(state.resultMatches) ? state.resultMatches.length : 0);
         }
         publishToggle.checked = !!state.publishResults;
+        if (publishFixturesToggle) {
+            publishFixturesToggle.checked = !!state.publishFixtures;
+        }
         liveMount.innerHTML = state.liveMatches.map(renderLiveCard).join("");
         fixtureMount.innerHTML = [
             "<div class=\"fixture-tabs admin-branch-tabs\" data-fixture-tabs>",
@@ -686,7 +690,7 @@
             adminMain.setAttribute("data-edit-locked", editable ? "false" : "true");
         }
 
-        Array.from(scope.querySelectorAll("[data-field], [data-admin-completed-today], [data-admin-results-count], [data-admin-publish-results], [data-admin-live-add], [data-admin-live-remove], [data-admin-result-add], [data-admin-result-remove], [data-admin-fixture-toggle]")).forEach(function (input) {
+        Array.from(scope.querySelectorAll("[data-field], [data-admin-completed-today], [data-admin-results-count], [data-admin-publish-results], [data-admin-publish-fixtures], [data-admin-live-add], [data-admin-live-remove], [data-admin-result-add], [data-admin-result-remove], [data-admin-fixture-toggle]")).forEach(function (input) {
             input.disabled = !editable;
         });
 
@@ -1025,6 +1029,7 @@
                 resultsCount: String(resultMatches.length)
             },
             publishResults: !!publishToggle.checked,
+            publishFixtures: !!(publishFixturesToggle && publishFixturesToggle.checked),
             liveMatches: collectLiveMatches(),
             resultMatches: resultMatches,
             branchTemplates: collectBranchTemplates()

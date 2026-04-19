@@ -112,6 +112,7 @@
             resultsCount: "4"
         },
         publishResults: false,
+        publishFixtures: false,
         liveMatches: [
             {
                 branch: "Voleybol",
@@ -400,6 +401,7 @@
         defaults.summary.completedToday = asText(source.summary && source.summary.completedToday, defaults.summary.completedToday);
         defaults.summary.resultsCount = asText(source.summary && source.summary.resultsCount, defaults.summary.resultsCount);
         defaults.publishResults = !!source.publishResults;
+        defaults.publishFixtures = !!source.publishFixtures;
 
         if (Array.isArray(source.liveMatches)) {
             defaults.liveMatches = source.liveMatches.map(function (match, index) {
