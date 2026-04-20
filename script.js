@@ -1365,20 +1365,30 @@ var renderProgramFixtures = (function () {
                 "Doğan Cüceloğlu Fen Lisesi",
                 "Fuat Sezgin Fen Lisesi",
                 "Bahçelievler Anadolu Lisesi",
-                "Müptas Turhan Sosyal Bilimler Lisesi",
+                "Mümtaz Turhan Sosyal Bilimler Lisesi",
                 "Gazi Anadolu Lisesi"
             ]
         },
         "atletizm": {
-            default: [
+            kiz: [
                 "Doğan Cüceloğlu Fen Lisesi",
                 "Fuat Sezgin Fen Lisesi",
-                "Orhan Cemal Anadolu Lisesi"
+                "Orhan Cemal Anadolu Lisesi",
+                "Atakent Anadolu Lisesi",
+                "TOKİ Atakent Spor Lisesi",
+                "Orhan Gazi Anadolu Lisesi"
+            ],
+            erkek: [
+                "Doğan Cüceloğlu Fen Lisesi",
+                "Fuat Sezgin Fen Lisesi",
+                "Atakent Anadolu Lisesi",
+                "TOKİ Atakent Spor Lisesi",
+                "Orhan Gazi Anadolu Lisesi"
             ]
         },
         "oryantiring": {
             default: [
-                "Orhan Cemal Anadolu Lisesi"
+                "Doğan Cüceloğlu Fen Lisesi"
             ]
         },
         "voleybol": {
@@ -1386,7 +1396,7 @@ var renderProgramFixtures = (function () {
                 "Doğan Cüceloğlu Fen Lisesi",
                 "Fuat Sezgin Fen Lisesi",
                 "Çapa Fen Lisesi",
-                "Müptas Turhan Sosyal Bilimler"
+                "Mümtaz Turhan Sosyal Bilimler"
             ],
             erkek: [
                 "Polonya",
@@ -1400,16 +1410,15 @@ var renderProgramFixtures = (function () {
             kiz: [
                 "Doğan Cüceloğlu Fen Lisesi",
                 "Fuat Sezgin Fen Lisesi",
-                "TED Atakent Koleji",
+                "Atakent Anadolu Lisesi",
                 "Çapa Fen Lisesi"
             ],
             erkek: [
                 "Atakent Anadolu",
                 "Doğan Cüceloğlu Fen Lisesi",
-                "Adnan Menderes Anadolu Lisesi",
                 "Fuat Sezgin Fen Lisesi",
                 "Bahçelievler Anadolu Lisesi",
-                "Müptas Turhan Sosyal Bilimler Lisesi"
+                "Mümtaz Turhan Sosyal Bilimler Lisesi"
             ]
         }
     };
@@ -1665,7 +1674,7 @@ var renderProgramFixtures = (function () {
         ].join("");
     }
 
-    function renderFixturePanel(template, index, lang) {
+    function renderFixturePanel(template, index, lang, publishFixtures) {
         var langCopy = copy[lang] || copy.tr;
         var divisions = createDivisionTemplates(template, lang);
         return [
@@ -1676,7 +1685,7 @@ var renderProgramFixtures = (function () {
             "    </div>",
             "    <div class=\"fixture-panels\">",
             "        <article class=\"fixture-panel fixture-subpanel active\" data-fixture-panel=\"" + template.key + "-fixture-group\">",
-            (divisions.length === 1 ? renderSingleModeGroup(divisions[0], lang, "fixture") : renderDivisionGroup(template, lang, "fixture")),
+            (publishFixtures ? (divisions.length === 1 ? renderSingleModeGroup(divisions[0], lang, "fixture") : renderDivisionGroup(template, lang, "fixture")) : renderFixturePanelBody(template, lang)),
             "        </article>",
             "        <article class=\"fixture-panel fixture-subpanel\" data-fixture-panel=\"" + template.key + "-participants-group\">",
             (divisions.length === 1 ? renderSingleModeGroup(divisions[0], lang, "participants") : renderDivisionGroup(template, lang, "participants")),
@@ -1701,20 +1710,6 @@ var renderProgramFixtures = (function () {
             return;
         }
 
-        if (!publishFixtures) {
-            section.innerHTML = [
-                head.outerHTML,
-                "<div class=\"fixture-panels\">",
-                "    <article class=\"fixture-panel active\">",
-                "        <div class=\"fixture-placeholder-state\">",
-                "            <p class=\"fixture-placeholder-text\">" + escapeHTML(copy[currentLang].fixturePending) + "</p>",
-                "        </div>",
-                "    </article>",
-                "</div>"
-            ].join("");
-            return;
-        }
-
         section.innerHTML = [
             head.outerHTML,
             "<div class=\"fixture-tabs\" data-fixture-tabs role=\"tablist\" aria-label=\"" + copy[currentLang].tabsAria + "\">",
@@ -1724,7 +1719,7 @@ var renderProgramFixtures = (function () {
             "</div>",
             "<div class=\"fixture-panels\">",
             templates.map(function (template, index) {
-                return renderFixturePanel(template, index, currentLang);
+                return renderFixturePanel(template, index, currentLang, publishFixtures);
             }).join(""),
             "</div>"
         ].join("");

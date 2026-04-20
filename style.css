@@ -2517,7 +2517,7 @@ body.archive-lightbox-open {
 }
 
 .footer-sponsors__row--bottom {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .footer-sponsors__logo {
@@ -2539,6 +2539,7 @@ body.archive-lightbox-open {
 .footer-sponsors__logo--morel,
 .footer-sponsors__logo--altunkaya,
 .footer-sponsors__logo--marlet,
+.footer-sponsors__logo--sembol,
 .footer-sponsors__logo--fodem,
 .footer-sponsors__logo--icool,
 .footer-sponsors__logo--bursa-kebap,
@@ -2549,6 +2550,16 @@ body.archive-lightbox-open {
 .footer-sponsors__logo--an {
     height: 82px;
     width: min(100%, 248px);
+}
+
+.footer-sponsors__logo--altunkaya {
+    height: 82px;
+    width: min(100%, 236px);
+}
+
+.footer-sponsors__logo--sembol {
+    height: 82px;
+    width: min(100%, 272px);
 }
 
 @media (max-width: 900px) {
@@ -3492,15 +3503,15 @@ canvas {
     }
 
     .footer-sponsors__inner {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.75rem;
     }
 
     .footer-sponsors__row--top,
     .footer-sponsors__row--middle,
     .footer-sponsors__row--bottom {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        width: 100%;
-        gap: 0.75rem;
+        display: contents;
     }
 
     .footer-sponsors__logo {
@@ -3509,8 +3520,52 @@ canvas {
         padding: 0;
     }
 
+    .footer-sponsors__logo--altunkaya {
+        width: min(100%, 230px);
+        height: 82px;
+        order: 1;
+    }
+
+    .footer-sponsors__logo--morel {
+        order: 2;
+    }
+
+    .footer-sponsors__logo--etap {
+        order: 3;
+    }
+
+    .footer-sponsors__logo--altaras {
+        order: 4;
+    }
+
     .footer-sponsors__logo--an {
         width: min(100%, 220px);
+        order: 5;
+    }
+
+    .footer-sponsors__logo--fodem {
+        order: 6;
+    }
+
+    .footer-sponsors__logo--marlet {
+        order: 7;
+    }
+
+    .footer-sponsors__logo--icool {
+        order: 8;
+    }
+
+    .footer-sponsors__logo--bursa-kebap {
+        order: 9;
+    }
+
+    .footer-sponsors__logo--elvan {
+        order: 10;
+    }
+
+    .footer-sponsors__logo--sembol {
+        width: min(100%, 236px);
+        order: 11;
     }
 }
 
@@ -5015,9 +5070,7 @@ h1 {
         font-size: 0.84rem;
     }
 
-    .footer-sponsors__row--top,
-    .footer-sponsors__row--middle,
-    .footer-sponsors__row--bottom {
+    .footer-sponsors__inner {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.45rem;
     }
@@ -5027,16 +5080,23 @@ h1 {
         height: 54px;
     }
 
+    .footer-sponsors__logo--altunkaya {
+        width: min(100%, 138px);
+        height: 60px;
+    }
+
     .footer-sponsors__logo--an {
         width: min(100%, 132px);
+    }
+
+    .footer-sponsors__logo--sembol {
+        width: min(100%, 146px);
     }
 }
 
 @media (max-width: 360px) {
-    .footer-sponsors__row--top,
-    .footer-sponsors__row--middle,
-    .footer-sponsors__row--bottom {
-        grid-template-columns: 1fr;
+    .footer-sponsors__inner {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .footer-sponsors__logo {
@@ -5044,7 +5104,16 @@ h1 {
         height: 48px;
     }
 
+    .footer-sponsors__logo--altunkaya {
+        width: min(100%, 118px);
+        height: 54px;
+    }
+
     .footer-sponsors__logo--an {
         width: min(100%, 108px);
+    }
+
+    .footer-sponsors__logo--sembol {
+        width: min(100%, 112px);
     }
 }
