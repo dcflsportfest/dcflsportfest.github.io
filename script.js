@@ -1021,8 +1021,8 @@ var renderScoreResults = (function () {
         },
         {
             key: "bahce-oyunlari",
-            name: { tr: "Bah\u00e7e Oyunlar\u0131", en: "Garden Games", pl: "Gry Ogrodowe" },
-            venue: { tr: "Bah\u00e7e Etkinlik Alan\u0131", en: "Garden Activity Zone", pl: "Strefa gier ogrodowych" },
+            name: { tr: "Debate", en: "Debate", pl: "Debata" },
+            venue: { tr: "M\u00fcnazara Salonu", en: "Debate Hall", pl: "Sala Debaty" },
             qf: {
                 times: ["10:45", "11:45", "13:45", "14:45"],
                 pairs: [["Tak\u0131m 1", "Tak\u0131m 8"], ["Tak\u0131m 2", "Tak\u0131m 7"], ["Tak\u0131m 3", "Tak\u0131m 6"], ["Tak\u0131m 4", "Tak\u0131m 5"]],
@@ -1345,7 +1345,7 @@ var renderProgramFixtures = (function () {
                 "Doğan Cüceloğlu Fen Lisesi",
                 "Fuat Sezgin Fen Lisesi",
                 "Bahçelievler Anadolu Lisesi",
-                "Küçükçekmece Spor Lisesi",
+                "Atakent Spor Lisesi",
                 "Atakent Anadolu Lisesi",
                 "İtalyan Lisesi",
                 "Gazi Anadolu Lisesi"
@@ -1391,6 +1391,13 @@ var renderProgramFixtures = (function () {
                 "Doğan Cüceloğlu Fen Lisesi"
             ]
         },
+        "bahce-oyunlari": {
+            default: [
+                "Doğan Cüceloğlu Fen Lisesi",
+                "Fahrettin Kerim Gökay Anadolu Lisesi",
+                "Varşova/ Polonya"
+            ]
+        },
         "voleybol": {
             kiz: [
                 "Doğan Cüceloğlu Fen Lisesi",
@@ -1420,6 +1427,249 @@ var renderProgramFixtures = (function () {
                 "Bahçelievler Anadolu Lisesi",
                 "Mümtaz Turhan Sosyal Bilimler Lisesi"
             ]
+        }
+    };
+
+    var fixtureDetails = {
+        "voleybol": {
+            kiz: {
+                title: {
+                    tr: "K\u0131z Voleybol Fikst\u00fcr\u00fc",
+                    en: "Girls Volleyball Fixture",
+                    pl: "Terminarz Siatkowki Dziewczat"
+                },
+                rounds: [
+                    {
+                        title: { tr: "1. Tur", en: "Round 1", pl: "1. Runda" },
+                        matches: [
+                            { datetime: "11.50 12 May\u0131s", pair: ["DCFL", "\u00c7apa Fen Lisesi"] },
+                            { datetime: "11.00 12 May\u0131s", pair: ["Gazi Anadolu Lisesi", "Prof. Dr. M\u00fcmtaz Turhan SBL"] }
+                        ]
+                    },
+                    {
+                        title: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "Polfinal" },
+                        matches: [
+                            { datetime: "13.30 12 May\u0131s", pair: ["DCFL / \u00c7apa Fen Lisesi Galibi", "Fuat Sezgin Fen Lisesi"] }
+                        ]
+                    },
+                    {
+                        title: { tr: "Final", en: "Final", pl: "Final" },
+                        matches: [
+                            { datetime: "Final", pair: ["Yar\u0131 Final 1 Galibi", "\u00c7eyrek Final Galibi 2"] }
+                        ]
+                    }
+                ],
+                rules: [
+                    "Tak\u0131mlar a\u00e7\u0131klanan ma\u00e7 saatinden 10 dakika \u00f6nce haz\u0131r olmal\u0131d\u0131r.",
+                    "Ma\u00e7 saatinde sahada haz\u0131r olmayan tak\u0131mlar diskalifiye edilecektir.",
+                    "M\u00fcsabakalar final ma\u00e7\u0131na kadar kazan\u0131lm\u0131\u015f 2 set \u00fczerinden oynanacakt\u0131r.",
+                    "Final ma\u00e7\u0131 kazan\u0131lm\u0131\u015f 3 set \u00fczerinden oynanacakt\u0131r.",
+                    "Beraberlik durumunda tie-break 15 say\u0131 \u00fczerinden oynanacakt\u0131r.",
+                    "Tak\u0131mlar 6 as ve 6 yedekten olu\u015facakt\u0131r."
+                ]
+            },
+            erkek: {
+                title: {
+                    tr: "Erkek Voleybol Fikst\u00fcr\u00fc",
+                    en: "Boys Volleyball Fixture",
+                    pl: "Terminarz Siatkowki Chlopcow"
+                },
+                rounds: [
+                    {
+                        title: { tr: "1. Tur", en: "Round 1", pl: "1. Runda" },
+                        matches: [
+                            { datetime: "12.40 12 May\u0131s", pair: ["DCFL", "Fuat Sezgin Fen Lisesi"] },
+                            { datetime: "14.20 12 May\u0131s", pair: ["\u00c7apa Fen Lisesi", "Var\u015fova"] }
+                        ]
+                    },
+                    {
+                        title: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "Polfinal" },
+                        matches: [
+                            { datetime: "15.10 12 May\u0131s", pair: ["DCFL / Fuat Sezgin Galibi", "Orhan Gazi Anadolu Lisesi"] }
+                        ]
+                    },
+                    {
+                        title: { tr: "Final", en: "Final", pl: "Final" },
+                        matches: [
+                            { datetime: "Final", pair: ["Yar\u0131 Final Galibi", "\u00c7apa Fen / Var\u015fova Galibi"] }
+                        ]
+                    }
+                ],
+                rules: [
+                    "Tak\u0131mlar a\u00e7\u0131klanan ma\u00e7 saatinden 10 dakika \u00f6nce haz\u0131r olmal\u0131d\u0131r.",
+                    "Ma\u00e7 saatinde sahada haz\u0131r olmayan tak\u0131mlar diskalifiye edilecektir.",
+                    "M\u00fcsabakalar final ma\u00e7\u0131na kadar kazan\u0131lm\u0131\u015f 2 set \u00fczerinden oynanacakt\u0131r.",
+                    "Final ma\u00e7\u0131 kazan\u0131lm\u0131\u015f 3 set \u00fczerinden oynanacakt\u0131r.",
+                    "Beraberlik durumunda tie-break 15 say\u0131 \u00fczerinden oynanacakt\u0131r.",
+                    "Tak\u0131mlar 6 as ve 6 yedekten olu\u015facakt\u0131r."
+                ]
+            }
+        },
+        "basketbol": {
+            default: {
+                title: {
+                    tr: "Streetball Fikst\u00fcr\u00fc",
+                    en: "Streetball Fixture",
+                    pl: "Terminarz Streetball"
+                },
+                rounds: [
+                    {
+                        title: { tr: "1. Tur", en: "Round 1", pl: "1. Runda" },
+                        matches: [
+                            { pair: ["TOK\u0130 Atakent Spor Lisesi", "Bah\u00e7elievler Anadolu Lisesi"] },
+                            { pair: ["\u0130talyan Lisesi", "BAY"] },
+                            { pair: ["Gazi Anadolu Lisesi", "DCFL"] },
+                            { pair: ["Atakent Anadolu Lisesi", "Fuat Sezgin Fen Lisesi"] }
+                        ]
+                    },
+                    {
+                        title: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "Polfinal" },
+                        matches: [
+                            { pair: ["TOK\u0130 / Bah\u00e7elievler Galibi", "\u0130talyan Lisesi"] },
+                            { pair: ["Gazi / DCFL Galibi", "Atakent / Fuat Sezgin Galibi"] }
+                        ]
+                    },
+                    {
+                        title: { tr: "Final", en: "Final", pl: "Final" },
+                        matches: [
+                            { pair: ["Yar\u0131 Final 1 Galibi", "Yar\u0131 Final 2 Galibi"] }
+                        ]
+                    }
+                ],
+                rules: [
+                    "Tak\u0131mlar a\u00e7\u0131klanan ma\u00e7 saatlerinden 5 dakika \u00f6nce saha kenar\u0131nda olmal\u0131d\u0131r.",
+                    "Ma\u00e7 saatinde sahada haz\u0131r olmayan tak\u0131mlar beklenmeden diskalifiye edilecektir.",
+                    "Ma\u00e7lar 11 say\u0131 olunca biter. E\u011fer ma\u00e7 5 dakikadan fazla s\u00fcrerse 11 say\u0131n\u0131n sa\u011flanmas\u0131na gerek kalmadan \u00f6nde olan tak\u0131m galip olur.",
+                    "Oyun durduktan sonra check yap\u0131lmal\u0131d\u0131r.",
+                    "Say\u0131 olduktan sonra atamayan tak\u0131m ba\u015flar ve check'e gerek yoktur.",
+                    "Streetball kay\u0131t formundaki tak\u0131m listesi d\u0131\u015f\u0131nda as ve yedek oyuncu bulunduran tak\u0131m turnuvadan diskalifiye edilecektir.",
+                    "Tak\u0131mlar aras\u0131nda formalar\u0131n kar\u0131\u015fabilecek durumda olmas\u0131 halinde ma\u00e7 \u00f6ncesinde hakemin yapaca\u011f\u0131 yaz\u0131-tura ile bir tak\u0131m formalar\u0131n\u0131n \u00fcst\u00fcne antrenman yele\u011fi giyecektir."
+                ]
+            }
+        },
+        "bahce-satranci": {
+            default: {
+                title: {
+                    tr: "Bah\u00e7e Satranc\u0131 Fikst\u00fcr\u00fc",
+                    en: "Garden Chess Fixture",
+                    pl: "Terminarz Szachow Ogrodowych"
+                },
+                rounds: [
+                    {
+                        title: { tr: "1. Tur", en: "Round 1", pl: "1. Runda" },
+                        matches: [
+                            { datetime: "10.30 13 May\u0131s", pair: ["Bah\u00e7elievler Anadolu Lisesi", "Gazi Anadolu Lisesi"] },
+                            { datetime: "11.00 13 May\u0131s", pair: ["Fuat Sezgin Fen Lisesi", "Prof. Dr. M\u00fcmtaz Turhan SBL"] }
+                        ]
+                    },
+                    {
+                        title: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "Polfinal" },
+                        matches: [
+                            { datetime: "11.30 13 May\u0131s", pair: ["Bah\u00e7elievler / Gazi Galibi", "DCFL"] }
+                        ]
+                    },
+                    {
+                        title: { tr: "Final", en: "Final", pl: "Final" },
+                        matches: [
+                            { datetime: "13.00 13 May\u0131s", pair: ["Yar\u0131 Final Galibi", "Fuat Sezgin / M\u00fcmtaz Turhan Galibi"] }
+                        ]
+                    }
+                ]
+            }
+        },
+        "masa-tenisi": {
+            kiz: {
+                title: {
+                    tr: "K\u0131z Masa Tenisi Fikst\u00fcr\u00fc",
+                    en: "Girls Table Tennis Fixture",
+                    pl: "Terminarz Tenisa Stolowego Dziewczat"
+                },
+                rounds: [
+                    {
+                        title: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "Polfinal" },
+                        matches: [
+                            { datetime: "11.00 12 May\u0131s", pair: ["Atakent Anadolu Lisesi", "\u00c7apa Fen Lisesi"] },
+                            { datetime: "11.00 12 May\u0131s", pair: ["DCFL", "Fuat Sezgin Fen Lisesi"] }
+                        ]
+                    },
+                    {
+                        title: { tr: "Final", en: "Final", pl: "Final" },
+                        matches: [
+                            { pair: ["Yar\u0131 Final 1 Galibi", "Yar\u0131 Final 2 Galibi"] }
+                        ]
+                    }
+                ],
+                rules: [
+                    "Toplam 3 sete ula\u015fan ma\u00e7\u0131 kazan\u0131r.",
+                    "Setler normalde 11 say\u0131da biter ancak 10-10 \u015feklinde e\u015fitlik sa\u011flan\u0131rsa biti\u015f say\u0131s\u0131 12'ye uzar. Her e\u015fitlik sa\u011fland\u0131\u011f\u0131nda bu ayn\u0131 \u015fekilde art\u0131\u015f devam eder.",
+                    "Servisler 2 say\u0131da bir taraf de\u011fi\u015ftirir."
+                ]
+            },
+            erkek: {
+                title: {
+                    tr: "Erkek Masa Tenisi Fikst\u00fcr\u00fc",
+                    en: "Boys Table Tennis Fixture",
+                    pl: "Terminarz Tenisa Stolowego Chlopcow"
+                },
+                rounds: [
+                    {
+                        title: { tr: "1. Tur", en: "Round 1", pl: "1. Runda" },
+                        matches: [
+                            { datetime: "11.00 12 May\u0131s", pair: ["Atakent Anadolu Lisesi", "Fuat Sezgin Fen Lisesi"] },
+                            { datetime: "11.45 12 May\u0131s", pair: ["DCFL", "Prof. Dr. M\u00fcmtaz Turhan SBL"] }
+                        ]
+                    },
+                    {
+                        title: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "Polfinal" },
+                        matches: [
+                            { datetime: "11.45 12 May\u0131s", pair: ["Atakent / Fuat Sezgin Galibi", "Bah\u00e7elievler Anadolu Lisesi"] }
+                        ]
+                    },
+                    {
+                        title: { tr: "Final", en: "Final", pl: "Final" },
+                        matches: [
+                            { pair: ["Yar\u0131 Final Galibi", "DCFL / M\u00fcmtaz Turhan Galibi"] }
+                        ]
+                    }
+                ],
+                rules: [
+                    "Toplam 3 sete ula\u015fan ma\u00e7\u0131 kazan\u0131r.",
+                    "Setler normalde 11 say\u0131da biter ancak 10-10 \u015feklinde e\u015fitlik sa\u011flan\u0131rsa biti\u015f say\u0131s\u0131 12'ye uzar. Her e\u015fitlik sa\u011fland\u0131\u011f\u0131nda bu ayn\u0131 \u015fekilde art\u0131\u015f devam eder.",
+                    "Servisler 2 say\u0131da bir taraf de\u011fi\u015ftirir."
+                ]
+            }
+        },
+        "futbol": {
+            default: {
+                title: {
+                    tr: "Hal\u0131saha Fikst\u00fcr",
+                    en: "Mini Football Fixture",
+                    pl: "Terminarz Halisaha"
+                },
+                rounds: [
+                    {
+                        title: { tr: "Yar\u0131 Final", en: "Semi-final", pl: "Polfinal" },
+                        matches: [
+                            { datetime: "11.00 12 May\u0131s", pair: ["DCFL", "\u00c7apa Fen Lisesi"] },
+                            { datetime: "11.50 12 May\u0131s", pair: ["\u0130talyan Lisesi", "Fuat Sezgin Fen Lisesi"] }
+                        ]
+                    },
+                    {
+                        title: { tr: "Final", en: "Final", pl: "Final" },
+                        matches: [
+                            { datetime: "11.30 13 May\u0131s", pair: ["Yar\u0131 Final 1 Galibi", "Yar\u0131 Final 2 Galibi"] }
+                        ]
+                    }
+                ],
+                rules: [
+                    "Tak\u0131mlar 4 as 4 yedekten olu\u015facakt\u0131r.",
+                    "Oyuncu de\u011fi\u015fikli\u011fi s\u0131n\u0131rs\u0131zd\u0131r.",
+                    "20'\u015fer dakikadan 2 devre \u015feklinde oynanacakt\u0131r.",
+                    "Devre aras\u0131 10 dakikad\u0131r.",
+                    "K\u0131rm\u0131z\u0131 kart yiyen tak\u0131m 2 dakika boyunca 1 ki\u015fi eksik oynayacakt\u0131r.",
+                    "K\u0131rm\u0131z\u0131 kart yiyen oyuncu tekrar oyuna giremez, yerine 2 dakika sonra ba\u015fka bir oyuncu girebilir."
+                ]
+            }
         }
     };
 
@@ -1479,6 +1729,81 @@ var renderProgramFixtures = (function () {
             "    <strong>" + stageLabel + "</strong>",
             "    <p>" + escapeHTML(pair[0]) + " vs " + escapeHTML(pair[1]) + " &#183; " + escapeHTML(venue) + "</p>",
             "</article>"
+        ].join("");
+    }
+
+    function getFixtureDetail(template) {
+        var branchKey = template.branchKey || template.key;
+        var detailGroup = fixtureDetails[branchKey];
+
+        if (!detailGroup) {
+            return null;
+        }
+
+        if (template.slug && detailGroup[template.slug]) {
+            return detailGroup[template.slug];
+        }
+
+        if (detailGroup.default) {
+            return detailGroup.default;
+        }
+
+        return null;
+    }
+
+    function renderDetailedFixtureMatch(match) {
+        var meta = match && match.datetime ? String(match.datetime) : "";
+        var pair = match && Array.isArray(match.pair) ? match.pair : ["", ""];
+
+        return [
+            "<article class=\"bracket-match bracket-match-fixture\">",
+            meta ? ("    <p class=\"bracket-match-meta\">" + escapeHTML(meta) + "</p>") : "",
+            "    <div class=\"bracket-team-row bracket-team-row-simple\"><span class=\"bracket-team-name\">" + escapeHTML(pair[0] || "") + "</span></div>",
+            "    <div class=\"bracket-team-row bracket-team-row-simple\"><span class=\"bracket-team-name\">" + escapeHTML(pair[1] || "") + "</span></div>",
+            "</article>"
+        ].join("");
+    }
+
+    function renderDetailedFixtureBody(template, lang) {
+        var detail = getFixtureDetail(template);
+        var roundCount;
+        var boardWidth;
+
+        if (!detail || !Array.isArray(detail.rounds) || !detail.rounds.length) {
+            return "";
+        }
+
+        roundCount = detail.rounds.length;
+        boardWidth = Math.max(540, roundCount * 220 + (roundCount - 1) * 16);
+
+        return [
+            "    <div class=\"fixture-division-group\">",
+            "    <h3>" + escapeHTML(pickLocalizedText(detail.title || template.name, lang)) + "</h3>",
+            "    <div class=\"fixture-layout fixture-layout-detailed\">",
+            "        <div class=\"bracket-scroller\">",
+            "            <div class=\"bracket-board bracket-board-detailed\" style=\"grid-template-columns: repeat(" + roundCount + ", minmax(220px, 1fr)); min-width: " + boardWidth + "px;\">",
+            detail.rounds.map(function (round) {
+                return [
+                    "<div class=\"bracket-round\">",
+                    "    <p class=\"bracket-round-title\">" + escapeHTML(pickLocalizedText(round.title, lang)) + "</p>",
+                    (round.matches || []).map(renderDetailedFixtureMatch).join(""),
+                    "</div>"
+                ].join("");
+            }).join(""),
+            "            </div>",
+            "        </div>",
+            detail.rules && detail.rules.length ? [
+                "        <aside class=\"fixture-rules-card\">",
+                "            <p class=\"fixture-schedule-kicker\">Oyun Kurallar\u0131</p>",
+                "            <ul class=\"fixture-rules-list\">",
+                detail.rules.map(function (rule) {
+                    return "                <li>" + escapeHTML(rule) + "</li>";
+                }).join(""),
+                "            </ul>",
+                "        </aside>"
+            ].join("") : "",
+            "    </div>",
+            "    </div>"
         ].join("");
     }
 
@@ -1608,6 +1933,11 @@ var renderProgramFixtures = (function () {
         var suffix = mode === "participants" ? langCopy.participantsSuffix : langCopy.fixtureSuffix;
         var pendingText = mode === "participants" ? langCopy.participantPending : langCopy.fixturePending;
         var participantItems = getParticipantItems(template, mode);
+        var detailedFixtureBody = mode === "fixture" ? renderDetailedFixtureBody(template, lang) : "";
+
+        if (detailedFixtureBody) {
+            return detailedFixtureBody;
+        }
 
         if (participantItems.length) {
             return [
@@ -1677,6 +2007,9 @@ var renderProgramFixtures = (function () {
     function renderFixturePanel(template, index, lang, publishFixtures) {
         var langCopy = copy[lang] || copy.tr;
         var divisions = createDivisionTemplates(template, lang);
+        var hasDetailedFixture = divisions.some(function (division) {
+            return !!getFixtureDetail(division);
+        });
         return [
             "<article class=\"fixture-panel" + (index === 0 ? " active" : "") + "\" data-fixture-panel=\"" + template.key + "\">",
             "    <div class=\"fixture-tabs fixture-subtabs fixture-group-tabs\" data-fixture-tabs role=\"tablist\" aria-label=\"" + langCopy.groupTabsAria + "\">",
@@ -1685,7 +2018,7 @@ var renderProgramFixtures = (function () {
             "    </div>",
             "    <div class=\"fixture-panels\">",
             "        <article class=\"fixture-panel fixture-subpanel active\" data-fixture-panel=\"" + template.key + "-fixture-group\">",
-            (publishFixtures ? (divisions.length === 1 ? renderSingleModeGroup(divisions[0], lang, "fixture") : renderDivisionGroup(template, lang, "fixture")) : renderFixturePanelBody(template, lang)),
+            ((publishFixtures || hasDetailedFixture) ? (divisions.length === 1 ? renderSingleModeGroup(divisions[0], lang, "fixture") : renderDivisionGroup(template, lang, "fixture")) : renderFixturePanelBody(template, lang)),
             "        </article>",
             "        <article class=\"fixture-panel fixture-subpanel\" data-fixture-panel=\"" + template.key + "-participants-group\">",
             (divisions.length === 1 ? renderSingleModeGroup(divisions[0], lang, "participants") : renderDivisionGroup(template, lang, "participants")),
@@ -2065,7 +2398,7 @@ var renderProgramFixtures = (function () {
                         "Elimination round | Garden Area"
                     ]
                 },
-                branches: ["Volleyball", "Basketball", "Football", "Table Tennis", "Archery", "Orienteering", "Garden Chess", "PlayStation Tournament", "Athletics", "Garden Games"],
+                branches: ["Volleyball", "Basketball", "Football", "Table Tennis", "Archery", "Orienteering", "Garden Chess", "PlayStation Tournament", "Athletics", "Debate"],
                 schools: [
                     "Dogan Cuceloglu Science High School",
                     "Atakent Anatolian High School",
@@ -2213,8 +2546,8 @@ var renderProgramFixtures = (function () {
                 hero: "A\u00e7\u0131l\u0131\u015f, g\u00fcnl\u00fck etkinlik plan\u0131 ve bran\u015f bazl\u0131 8 tak\u0131ml\u0131 t\u00fcm turnuva fikst\u00fcrlerini tek sayfada takip edebilirsin.",
                 sections: ["GENEL AKI\u015e PROGRAMI", "FEST\u0130VAL HATLARI", "F\u0130KST\u00dcR DETAYLARI"],
                 titles: ["Genel Ak\u0131\u015f Program\u0131", "Bran\u015flar", "Turnuva Se\u00e7im Ekran\u0131"],
-                tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Ok\u00e7uluk", "Oryantiring", "Bah\u00e7e Satranc\u0131", "PlayStation", "Atletizm", "Bah\u00e7e Oyunlar\u0131"],
-                panels: ["Voleybol Fikst\u00fcr\u00fc", "Basketbol Fikst\u00fcr\u00fc", "Futbol Fikst\u00fcr\u00fc", "Masa Tenisi Fikst\u00fcr\u00fc", "Ok\u00e7uluk Fikst\u00fcr\u00fc", "Oryantiring Fikst\u00fcr\u00fc", "Bah\u00e7e Satranc\u0131 Fikst\u00fcr\u00fc", "PlayStation Turnuvas\u0131 Fikst\u00fcr\u00fc", "Atletizm Fikst\u00fcr\u00fc", "Bah\u00e7e Oyunlar\u0131 Fikst\u00fcr\u00fc"],
+                tabs: ["Voleybol", "Basketbol", "Futbol", "Masa Tenisi", "Ok\u00e7uluk", "Oryantiring", "Bah\u00e7e Satranc\u0131", "PlayStation", "Atletizm", "Debate"],
+                panels: ["Voleybol Fikst\u00fcr\u00fc", "Basketbol Fikst\u00fcr\u00fc", "Futbol Fikst\u00fcr\u00fc", "Masa Tenisi Fikst\u00fcr\u00fc", "Ok\u00e7uluk Fikst\u00fcr\u00fc", "Oryantiring Fikst\u00fcr\u00fc", "Bah\u00e7e Satranc\u0131 Fikst\u00fcr\u00fc", "PlayStation Turnuvas\u0131 Fikst\u00fcr\u00fc", "Atletizm Fikst\u00fcr\u00fc", "Debate Fikst\u00fcr\u00fc"],
                 timelineTitles: [
                     "",
                     "",
@@ -2246,8 +2579,8 @@ var renderProgramFixtures = (function () {
                 hero: "Follow the opening, daily schedule and branch-based 8-team brackets on one page.",
                 sections: ["GENERAL FLOW PROGRAM", "FESTIVAL LINES", "FIXTURE DETAILS"],
                 titles: ["General Flow Program", "Sports Branches", "Tournament Selection Screen"],
-                tabs: ["Volleyball", "Basketball", "Football", "Table Tennis", "Archery", "Orienteering", "Garden Chess", "PlayStation", "Athletics", "Garden Games"],
-                panels: ["Volleyball Fixture", "Basketball Fixture", "Football Fixture", "Table Tennis Fixture", "Archery Fixture", "Orienteering Fixture", "Garden Chess Fixture", "PlayStation Tournament Fixture", "Athletics Fixture", "Garden Games Fixture"],
+                tabs: ["Volleyball", "Basketball", "Football", "Table Tennis", "Archery", "Orienteering", "Garden Chess", "PlayStation", "Athletics", "Debate"],
+                panels: ["Volleyball Fixture", "Basketball Fixture", "Football Fixture", "Table Tennis Fixture", "Archery Fixture", "Orienteering Fixture", "Garden Chess Fixture", "PlayStation Tournament Fixture", "Athletics Fixture", "Debate Fixture"],
                 timelineTitles: [
                     "",
                     "",
@@ -2303,8 +2636,8 @@ var renderProgramFixtures = (function () {
                 hero: "Na jednej stronie sledzisz otwarcie, plan dnia i drabinki turniejowe z udzialem 8 druzyn.",
                 sections: ["PROGRAM GLOWNEGO PRZEBIEGU", "LINIE FESTIWALU", "SZCZEGOLY TERMINARZA"],
                 titles: ["Program Glownego Przebiegu", "Dyscypliny", "Ekran Wyboru Turnieju"],
-                tabs: ["Siatkowka", "Koszykowka", "Pilka nozna", "Tenis stolowy", "Lucznictwo", "Bieg na orientacje", "Szachy ogrodowe", "PlayStation", "Lekkoatletyka", "Gry ogrodowe"],
-                panels: ["Terminarz siatkowki", "Terminarz koszykowki", "Terminarz pilki noznej", "Terminarz tenisa stolowego", "Terminarz lucznictwa", "Terminarz biegu na orientacje", "Terminarz szachow ogrodowych", "Terminarz turnieju PlayStation", "Terminarz lekkoatletyki", "Terminarz gier ogrodowych"],
+                tabs: ["Siatkowka", "Koszykowka", "Pilka nozna", "Tenis stolowy", "Lucznictwo", "Bieg na orientacje", "Szachy ogrodowe", "PlayStation", "Lekkoatletyka", "Debata"],
+                panels: ["Terminarz siatkowki", "Terminarz koszykowki", "Terminarz pilki noznej", "Terminarz tenisa stolowego", "Terminarz lucznictwa", "Terminarz biegu na orientacje", "Terminarz szachow ogrodowych", "Terminarz turnieju PlayStation", "Terminarz lekkoatletyki", "Terminarz debaty"],
                 timelineTitles: [
                     "",
                     "",
@@ -3204,6 +3537,8 @@ var renderProgramFixtures = (function () {
         });
     }
 })();
+
+
 
 
 

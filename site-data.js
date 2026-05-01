@@ -1,4 +1,4 @@
-(function (window) {
+﻿(function (window) {
     var STORAGE_KEY = "dcfl_admin_site_data_v2";
     var META_STORAGE_KEY = "dcfl_admin_site_meta_v1";
     var EVENT_NAME = "dcfl-site-data-updated";
@@ -112,43 +112,43 @@
             resultsCount: "4"
         },
         publishResults: false,
-        publishFixtures: false,
+        publishFixtures: true,
         liveMatches: [
             {
                 branch: "Voleybol",
-                status: "Canlı",
-                home: "Takım 1",
+                status: "CanlÄ±",
+                home: "TakÄ±m 1",
                 homeScore: "2",
-                away: "Takım 8",
+                away: "TakÄ±m 8",
                 awayScore: "1",
-                meta: "Yarı final | Kapalı Spor Salonu | 2. set"
+                meta: "YarÄ± final | KapalÄ± Spor Salonu | 2. set"
             },
             {
                 branch: "Basketbol",
-                status: "Canlı",
-                home: "Takım 8",
+                status: "CanlÄ±",
+                home: "TakÄ±m 8",
                 homeScore: "54",
-                away: "Takım 7",
+                away: "TakÄ±m 7",
                 awayScore: "61",
-                meta: "Grup A | Ana Saha | 3. çeyrek"
+                meta: "Grup A | Ana Saha | 3. Ã§eyrek"
             },
             {
                 branch: "Futbol",
                 status: "67. dakika",
-                home: "Takım 1",
+                home: "TakÄ±m 1",
                 homeScore: "1",
-                away: "Takım 7",
+                away: "TakÄ±m 7",
                 awayScore: "0",
-                meta: "Yarı final | Dış Saha | 67. dakika"
+                meta: "YarÄ± final | DÄ±ÅŸ Saha | 67. dakika"
             },
             {
                 branch: "PlayStation",
-                status: "Canlı",
-                home: "Takım 1",
+                status: "CanlÄ±",
+                home: "TakÄ±m 1",
                 homeScore: "2",
-                away: "Takım 8",
+                away: "TakÄ±m 8",
                 awayScore: "3",
-                meta: "Final | E-Spor Alanı | 2. maç"
+                meta: "Final | E-Spor AlanÄ± | 2. maÃ§"
             }
         ],
         resultMatches: [
@@ -193,10 +193,10 @@
             {
                 key: "voleybol",
                 name: { tr: "Voleybol", en: "Volleyball", pl: "Siatkowka" },
-                venue: { tr: "Kapalı Spor Salonu", en: "Indoor Hall", pl: "Hala sportowa" },
+                venue: { tr: "KapalÄ± Spor Salonu", en: "Indoor Hall", pl: "Hala sportowa" },
                 qf: {
                     times: ["10:00", "11:30", "14:00", "15:30"],
-                    pairs: [["Takım 1", "Takım 8"], ["Takım 2", "Takım 7"], ["Takım 3", "Takım 6"], ["Takım 4", "Takım 5"]],
+                    pairs: [["TakÄ±m 1", "TakÄ±m 8"], ["TakÄ±m 2", "TakÄ±m 7"], ["TakÄ±m 3", "TakÄ±m 6"], ["TakÄ±m 4", "TakÄ±m 5"]],
                     scores: [["2", "0"], ["2", "1"], ["2", "1"], ["0", "2"]]
                 },
                 sf: { times: ["11:00", "14:00"], scores: [["2", "1"], ["1", "2"]] },
@@ -205,10 +205,10 @@
             {
                 key: "basketbol",
                 name: { tr: "Basketbol", en: "Basketball", pl: "Koszykowka" },
-                venue: { tr: "Basketbol Sahası", en: "Basketball Court", pl: "Boisko do koszykowki" },
+                venue: { tr: "Basketbol SahasÄ±", en: "Basketball Court", pl: "Boisko do koszykowki" },
                 qf: {
                     times: ["09:30", "11:30", "13:30", "15:30"],
-                    pairs: [["Takım 1", "Takım 8"], ["Takım 2", "Takım 7"], ["Takım 3", "Takım 6"], ["Takım 4", "Takım 5"]],
+                    pairs: [["TakÄ±m 1", "TakÄ±m 8"], ["TakÄ±m 2", "TakÄ±m 7"], ["TakÄ±m 3", "TakÄ±m 6"], ["TakÄ±m 4", "TakÄ±m 5"]],
                     scores: [["66", "58"], ["63", "71"], ["74", "69"], ["61", "67"]]
                 },
                 sf: { times: ["12:00", "16:00"], scores: [["78", "72"], ["70", "76"]] },
@@ -217,10 +217,10 @@
             {
                 key: "futbol",
                 name: { tr: "Futbol", en: "Football", pl: "Pilka Nozna" },
-                venue: { tr: "Çim Saha", en: "Grass Field", pl: "Boisko trawiaste" },
+                venue: { tr: "Ã‡im Saha", en: "Grass Field", pl: "Boisko trawiaste" },
                 qf: {
                     times: ["10:30", "12:30", "14:30", "16:30"],
-                    pairs: [["Takım 1", "Takım 8"], ["Takım 2", "Takım 7"], ["Takım 3", "Takım 6"], ["Takım 4", "Takım 5"]],
+                    pairs: [["TakÄ±m 1", "TakÄ±m 8"], ["TakÄ±m 2", "TakÄ±m 7"], ["TakÄ±m 3", "TakÄ±m 6"], ["TakÄ±m 4", "TakÄ±m 5"]],
                     scores: [["2", "0"], ["1", "2"], ["3", "1"], ["2", "1"]]
                 },
                 sf: { times: ["12:30", "15:30"], scores: [["2", "1"], ["1", "0"]] },
@@ -229,10 +229,10 @@
             {
                 key: "masa-tenisi",
                 name: { tr: "Masa Tenisi", en: "Table Tennis", pl: "Tenis Stolowy" },
-                venue: { tr: "Masa Tenisi Alanı", en: "Table Tennis Zone", pl: "Strefa tenisa stolowego" },
+                venue: { tr: "Masa Tenisi AlanÄ±", en: "Table Tennis Zone", pl: "Strefa tenisa stolowego" },
                 qf: {
                     times: ["11:00", "12:00", "15:00", "16:00"],
-                    pairs: [["Takım 1", "Takım 8"], ["Takım 2", "Takım 7"], ["Takım 3", "Takım 6"], ["Takım 4", "Takım 5"]],
+                    pairs: [["TakÄ±m 1", "TakÄ±m 8"], ["TakÄ±m 2", "TakÄ±m 7"], ["TakÄ±m 3", "TakÄ±m 6"], ["TakÄ±m 4", "TakÄ±m 5"]],
                     scores: [["3", "1"], ["3", "2"], ["1", "3"], ["3", "0"]]
                 },
                 sf: { times: ["13:00", "15:00"], scores: [["3", "1"], ["2", "3"]] },
@@ -244,7 +244,7 @@
                 venue: { tr: "Okçuluk Parkuru", en: "Archery Range", pl: "Tor luczniczy" },
                 qf: {
                     times: ["10:00", "11:00", "13:00", "14:00"],
-                    pairs: [["Takım 1", "Takım 8"], ["Takım 2", "Takım 7"], ["Takım 3", "Takım 6"], ["Takım 4", "Takım 5"]],
+                    pairs: [["TakÄ±m 1", "TakÄ±m 8"], ["TakÄ±m 2", "TakÄ±m 7"], ["TakÄ±m 3", "TakÄ±m 6"], ["TakÄ±m 4", "TakÄ±m 5"]],
                     scores: [["122", "118"], ["117", "120"], ["119", "121"], ["123", "119"]]
                 },
                 sf: { times: ["14:30", "16:00"], scores: [["125", "121"], ["120", "124"]] },
@@ -253,11 +253,11 @@
             {
                 key: "oryantiring",
                 name: { tr: "Oryantiring", en: "Orienteering", pl: "Bieg na Orientacje" },
-                venue: { tr: "Kampüs Alanı", en: "Campus Course", pl: "Trasa kampusowa" },
+                venue: { tr: "KampÃ¼s AlanÄ±", en: "Campus Course", pl: "Trasa kampusowa" },
                 lowWins: true,
                 qf: {
                     times: ["09:45", "10:30", "12:45", "13:30"],
-                    pairs: [["Takım 1", "Takım 8"], ["Takım 2", "Takım 7"], ["Takım 3", "Takım 6"], ["Takım 4", "Takım 5"]],
+                    pairs: [["TakÄ±m 1", "TakÄ±m 8"], ["TakÄ±m 2", "TakÄ±m 7"], ["TakÄ±m 3", "TakÄ±m 6"], ["TakÄ±m 4", "TakÄ±m 5"]],
                     scores: [["38:14", "40:02"], ["37:44", "38:31"], ["39:10", "37:52"], ["36:58", "37:21"]]
                 },
                 sf: { times: ["10:45", "13:45"], scores: [["35:40", "36:12"], ["36:08", "35:49"]] },
@@ -265,11 +265,11 @@
             },
             {
                 key: "bahce-satranci",
-                name: { tr: "Bahçe Satrancı", en: "Garden Chess", pl: "Szachy Ogrodowe" },
-                venue: { tr: "Bahçe Satranç Alanı", en: "Garden Chess Zone", pl: "Strefa szachow ogrodowych" },
+                name: { tr: "BahÃ§e SatrancÄ±", en: "Garden Chess", pl: "Szachy Ogrodowe" },
+                venue: { tr: "BahÃ§e SatranÃ§ AlanÄ±", en: "Garden Chess Zone", pl: "Strefa szachow ogrodowych" },
                 qf: {
                     times: ["11:30", "12:30", "16:00", "17:00"],
-                    pairs: [["Takım 1", "Takım 8"], ["Takım 2", "Takım 7"], ["Takım 3", "Takım 6"], ["Takım 4", "Takım 5"]],
+                    pairs: [["TakÄ±m 1", "TakÄ±m 8"], ["TakÄ±m 2", "TakÄ±m 7"], ["TakÄ±m 3", "TakÄ±m 6"], ["TakÄ±m 4", "TakÄ±m 5"]],
                     scores: [["1", "0"], ["0", "1"], ["1", "0"], ["0", "1"]]
                 },
                 sf: { times: ["12:00", "15:00"], scores: [["1", "0"], ["1", "0"]] },
@@ -278,10 +278,10 @@
             {
                 key: "playstation",
                 name: { tr: "PlayStation", en: "PlayStation", pl: "PlayStation" },
-                venue: { tr: "E-Spor Alanı", en: "E-Sports Area", pl: "Strefa e-sportu" },
+                venue: { tr: "E-Spor AlanÄ±", en: "E-Sports Area", pl: "Strefa e-sportu" },
                 qf: {
                     times: ["10:15", "11:15", "14:15", "15:15"],
-                    pairs: [["Takım 1", "Takım 8"], ["Takım 2", "Takım 7"], ["Takım 3", "Takım 6"], ["Takım 4", "Takım 5"]],
+                    pairs: [["TakÄ±m 1", "TakÄ±m 8"], ["TakÄ±m 2", "TakÄ±m 7"], ["TakÄ±m 3", "TakÄ±m 6"], ["TakÄ±m 4", "TakÄ±m 5"]],
                     scores: [["3", "2"], ["1", "3"], ["2", "3"], ["3", "1"]]
                 },
                 sf: { times: ["15:30", "17:00"], scores: [["2", "3"], ["3", "1"]] },
@@ -294,7 +294,7 @@
                 lowWins: true,
                 qf: {
                     times: ["09:00", "10:00", "11:15", "12:15"],
-                    pairs: [["Takım 1", "Takım 8"], ["Takım 2", "Takım 7"], ["Takım 3", "Takım 6"], ["Takım 4", "Takım 5"]],
+                    pairs: [["TakÄ±m 1", "TakÄ±m 8"], ["TakÄ±m 2", "TakÄ±m 7"], ["TakÄ±m 3", "TakÄ±m 6"], ["TakÄ±m 4", "TakÄ±m 5"]],
                     scores: [["11.52", "11.68"], ["11.61", "11.57"], ["11.74", "11.66"], ["11.69", "11.72"]]
                 },
                 sf: { times: ["14:00", "16:30"], scores: [["11.48", "11.54"], ["11.59", "11.53"]] },
@@ -302,11 +302,11 @@
             },
             {
                 key: "bahce-oyunlari",
-                name: { tr: "Bahçe Oyunları", en: "Garden Games", pl: "Gry Ogrodowe" },
-                venue: { tr: "Bahçe Etkinlik Alanı", en: "Garden Activity Zone", pl: "Strefa gier ogrodowych" },
+                name: { tr: "Debate", en: "Debate", pl: "Debata" },
+                venue: { tr: "MÃ¼nazara Salonu", en: "Debate Hall", pl: "Sala Debaty" },
                 qf: {
                     times: ["10:45", "11:45", "13:45", "14:45"],
-                    pairs: [["Takım 1", "Takım 8"], ["Takım 2", "Takım 7"], ["Takım 3", "Takım 6"], ["Takım 4", "Takım 5"]],
+                    pairs: [["TakÄ±m 1", "TakÄ±m 8"], ["TakÄ±m 2", "TakÄ±m 7"], ["TakÄ±m 3", "TakÄ±m 6"], ["TakÄ±m 4", "TakÄ±m 5"]],
                     scores: [["21", "18"], ["19", "23"], ["24", "20"], ["17", "22"]]
                 },
                 sf: { times: ["16:15", "17:30"], scores: [["26", "21"], ["18", "24"]] },
@@ -568,3 +568,5 @@
     window.DCFLSiteData = api;
     window.DCFLAdminData = api;
 })(window);
+
+
